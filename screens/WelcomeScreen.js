@@ -5,6 +5,7 @@ import _ from 'lodash';
 import {AppLoading} from'expo'
 
 class WelcomeScreen extends Component{
+
     render(){
         return(
            <View >
