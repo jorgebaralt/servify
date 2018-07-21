@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {View, Text,ScrollView,Dimensions,Button} from 'react-native'
-//import {Button} from 'react-native-elements';
+import {View,ScrollView,Dimensions} from 'react-native'
+import {Button,Text} from 'native-base'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -8,7 +8,7 @@ class Slides extends Component{
     renderSlides=()=>{
         return this.props.data.map((slide,i)=>{
             return(
-                <View key={slide.text} style={[styles.slideStyle,{backgroundColor: slide.color}]}>
+                <View key={slide.text} style={[styles.slideStyle,{backgroundColor: slide.color }]}>
                     <Text style={styles.textStyle}>{slide.text}</Text>
                     {this.renderLastSlide(i)}
                 </View>
@@ -19,12 +19,14 @@ class Slides extends Component{
         if(i === this.props.data.length - 1){
             return (
 
+
                 <Button
-                    title={"onwards!"}
-                    raised
-                    buttonStyle={styles.buttonStyle}
+                    primary
+                    style={styles.buttonStyle}
                     onPress={this.props.onComplete}
-                />
+                >
+                    <Text>Lets Go!</Text>
+                </Button>
 
             )
         }
@@ -55,9 +57,8 @@ const styles={
 
     },
     buttonStyle:{
-        backgroundColor:'#0288D1',
-        marginTop: 15,
-
+        marginTop: 40,
+        marginLeft: '38%'
     }
 };
 export default Slides;
