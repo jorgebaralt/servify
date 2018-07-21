@@ -75,9 +75,11 @@ const styles={
         textAlign:'center'
     },
     buttonStyle:{
-        marginTop: 20
+        position: 'absolute',
+        bottom: 40
     },
     defaultDot:{
+        top:10,
         height: 10,
         width: 10,
         backgroundColor:'#bbb',
@@ -85,6 +87,7 @@ const styles={
         margin: 10
     },
     currentDot:{
+        top:10,
         height: 10,
         width: 10,
         backgroundColor:'#FAFAFA',

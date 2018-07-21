@@ -20,7 +20,7 @@ export default class App extends React.Component {
       },{
           lazy:true,
           navigationOptions:{
-              tabBarVisible:false
+              // tabBarVisible:false
           }
       });
 
