@@ -62,7 +62,7 @@ const styles={
     backIconStyle:{
         color:'white',
         top:35,
-        left:10,
+        left:0,
         marginBottom:40
     },
     formStyle:{
