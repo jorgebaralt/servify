@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import Slides from '../components/Slides';
 import Expo, {AppLoading} from 'expo';
+import {AsyncStorage} from 'react-native'
+import _ from 'lodash'
 
 const SLIDE_DATA=[
     {text:'Welcome to Servify', color:'#FFB300'},
@@ -10,9 +12,23 @@ const SLIDE_DATA=[
 
 class WelcomeScreen extends Component{
 
-    state ={loading : true};
+    state ={
+        loading : true,
+        token : null
+    };
 
     async componentWillMount(){
+
+        let token = await AsyncStorage.getItem('login_token');
+
+        //check if there is a token to skip tutorial / auth
+        if(token){
+            //navigate and skip auth and welcome
+            this.setState({token})
+        }else{
+            this.setState({token:false})
+        }
+        //check native base fonts loaded
         await Expo.Font.loadAsync({
             Roboto: require("native-base/Fonts/Roboto.ttf"),
             Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
@@ -27,7 +43,8 @@ class WelcomeScreen extends Component{
     };
 
     render(){
-        if(this.state.loading){
+        //if we are still loading font or we have not checked for token
+        if(this.state.loading || _.isNull(this.state.token)){
             return (<AppLoading/>)
         }
         return(

@@ -26,7 +26,7 @@ class Slides extends Component{
             return (
                 <View style={styles.buttonStyle}>
                     <Button
-                        primary
+                        bordered light
                         onPress={this.props.onComplete}
                     >
                         <Text>Lets Go!</Text>

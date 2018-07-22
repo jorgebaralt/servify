@@ -18,9 +18,8 @@ export default class App extends React.Component {
           //Auth Screen
           //Main : Already Logged in Screen
       },{
-          lazy:true,
           navigationOptions:{
-              // tabBarVisible:false
+              tabBarVisible:false
           }
       });
 
