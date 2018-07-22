@@ -5,8 +5,11 @@ import {Provider} from 'react-redux';
 import {createStore, compose, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk'
 import reducers from './reducers'
-import WelcomeScreen from './screens/WelcomeScreen';
 import AuthScreen from './screens/AuthScreen'
+import WelcomeScreen from './screens/WelcomeScreen';
+import CreateAccountScreen from './screens/CreateAccountScreen';
+import LoginScreen from './screens/LoginScreen';
+
 const store = createStore(reducers,{},compose(applyMiddleware(thunk)));
 
 export default class App extends React.Component {
@@ -14,12 +17,13 @@ export default class App extends React.Component {
 
       const MainNavigator = createBottomTabNavigator({
           welcome:{screen:WelcomeScreen},
-          auth:{screen:AuthScreen}
-          //Auth Screen
+          auth:{screen:AuthScreen},
+          createAccount:{screen:CreateAccountScreen},
+          login:{screen:LoginScreen}
           //Main : Already Logged in Screen
       },{
           navigationOptions:{
-              tabBarVisible:false
+              // tabBarVisible:false
           }
       });
 

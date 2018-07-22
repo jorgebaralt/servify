@@ -18,9 +18,14 @@ class WelcomeScreen extends Component{
     };
 
     async componentWillMount(){
+        //check if there is already a token
+       await this.checkToken();
+       //Make sure to load the Native Base Fonts
+       await this.loadFonts()
+    }
 
+    async checkToken(){
         let token = await AsyncStorage.getItem('login_token');
-
         //check if there is a token to skip tutorial / auth
         if(token){
             //navigate and skip auth and welcome
@@ -28,13 +33,14 @@ class WelcomeScreen extends Component{
         }else{
             this.setState({token:false})
         }
-        //check native base fonts loaded
+    }
+
+    async loadFonts(){
         await Expo.Font.loadAsync({
             Roboto: require("native-base/Fonts/Roboto.ttf"),
             Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
             Ionicons: require("@expo/vector-icons/fonts/Ionicons.ttf"),
         });
-
         this.setState({loading : false})
     }
 
