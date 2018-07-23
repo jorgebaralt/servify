@@ -1,19 +1,17 @@
 import React, {Component} from 'react';
 import {Text, Form, Item, Button, Label, Input, Icon} from 'native-base';
 import {LinearGradient} from 'expo';
-import {View} from 'react-native'
-
-class LoginScreen extends Component{
+import {View} from 'react-native';
+class LoginScreen extends Component{ 
     render(){
         const {inputStyle,labelStyle,itemStyle,backIconStyle,formStyle,titleStyle} = styles;
         return(
             <LinearGradient colors={['#FF7043','#F4511E','#BF360C']} style={{flex:1}}>
-
                 <Icon style={backIconStyle}
                       type={'Entypo'}
                       name={'chevron-thin-left'}
                       onPress={()=>{this.props.navigation.navigate('auth')}}
-                />
+                />  
 
                 <View style={{flex:1,alignItems:'center'}}>
                     <Text style={titleStyle}>Sign in</Text>

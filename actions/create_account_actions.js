@@ -3,10 +3,13 @@ import {
     CREATE_ACCOUNT_SUCCESS
 } from './types'
 
-export const createEmailAccount = ({email,password,firstName,lastName}) => async (dispatch) =>{
-    //send email and password to back-end to create account.
-    //if successful, dispatch Success
-    //else dispatch fail
-    //if not show error message
-    console.log('Request to Create Account ' + email + password + firstName + lastName);
+export const createEmailAccount = (user) => async (dispatch) =>{
+    const {email,password,firstName,lastName,phone} = user
+    //check not empty
+    if(email && password && firstName && lastName && phone ){
+        //send email and password to back-end to create account.
+        //if successful, dispatch Success
+    }else{
+        dispatch({CREATE_ACCOUNT_FAIL})
+    }
 }

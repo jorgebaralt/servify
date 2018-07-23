@@ -8,19 +8,21 @@ const initialState={
     firstName:'',
     lastName:'',
     email:'',
-    password:''
-}
+    password:'',
+    phone:''
+};
 class CreateAccountScreen extends Component{
 
     state=initialState
 
     createAccount(){
-        const {firstName,lastName,email,password} = this.state;
+        const {firstName,lastName,email,password,phone} = this.state;
         const user = {
             firstName,
             lastName,
             email,
-            password
+            password,
+            phone
         }
         this.props.createEmailAccount(user);
         this.cleanState();
@@ -64,7 +66,11 @@ class CreateAccountScreen extends Component{
                         </Item>
                         <Item floatingLabel style={itemStyle}>
                             <Label style={labelStyle}>Password</Label>
-                            <Input style={inputStyle} value={this.state.password} onChangeText={password=>{this.setState({password})}} />
+                            <Input style={inputStyle}  secureTextEntry value={this.state.password} onChangeText={password=>{this.setState({password})}} />
+                        </Item>
+                        <Item floatingLabel style={itemStyle}>
+                            <Label style={labelStyle}>Phone Number</Label>
+                            <Input style={inputStyle} value={this.state.phone} keyboardType='numeric' onChangeText={phone=>{this.setState({phone})}} />
                         </Item>
                     </Form>
                     <View>

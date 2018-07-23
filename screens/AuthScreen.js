@@ -3,7 +3,7 @@ import {View,TouchableOpacity,AsyncStorage} from 'react-native'
 import {connect} from 'react-redux';
 import {facebookLogin} from "../actions";
 import {Button,Text,Icon} from 'native-base';
-import {LinearGradient} from 'expo'
+import {LinearGradient} from 'expo';
 class AuthScreen extends Component{
     async loginWithFacebook(){
         await this.props.facebookLogin();
