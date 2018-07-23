@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Text, Form, Item,Button,Label,Input,Icon} from 'native-base';
+import {Text, Form, Item, Button, Label, Input, Icon} from 'native-base';
 import {LinearGradient} from 'expo';
 import {View} from 'react-native'
 

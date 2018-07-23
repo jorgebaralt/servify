@@ -19,16 +19,18 @@ class WelcomeScreen extends Component{
 
     async componentWillMount(){
         //check if there is already a token
-       await this.checkToken();
+       await this.checkForToken();
        //Make sure to load the Native Base Fonts
        await this.loadFonts()
     }
 
-    async checkToken(){
+    async checkForToken(){
         let token = await AsyncStorage.getItem('login_token');
         //check if there is a token to skip tutorial / auth
         if(token){
-            //navigate and skip auth and welcome
+            //Navigate to HomeScreen
+            this.props.navigation.navigate('main');
+            
             this.setState({token})
         }else{
             this.setState({token:false})
