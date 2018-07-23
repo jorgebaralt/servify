@@ -12,6 +12,9 @@ import WelcomeScreen from './screens/WelcomeScreen';
 import CreateAccountScreen from './screens/CreateAccountScreen';
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen'
+import BrowseScreen from './screens/BrowseScreen';
+import PostServiceScreen from './screens/PostServiceScreen'
+import ProfileScreen from './screens/ProfileScreen'
 
 const store = createStore(reducers,{},compose(applyMiddleware(thunk)));
 export default class App extends React.Component {
@@ -30,7 +33,10 @@ export default class App extends React.Component {
   render() {
         //Main - Second Navigation
         let Main = createBottomTabNavigator({
-            home:{screen:HomeScreen}
+            home:{screen:HomeScreen},
+            browse:{screen:BrowseScreen},
+            postService:{screen:PostServiceScreen},
+            profile:{screen:ProfileScreen}
         });
         //Welcome - First Navigation
         const MainNavigator = createBottomTabNavigator({

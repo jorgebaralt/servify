@@ -1,7 +1,11 @@
 import {AsyncStorage} from 'react-native'
-import {FACEBOOK_LOGIN_SUCCESS,FACEBOOK_LOGIN_FAIL} from "./types";
+import {
+    FACEBOOK_LOGIN_SUCCESS,
+    FACEBOOK_LOGIN_FAIL,
+} from "./types";
 import {Facebook} from 'expo';
 import firebase from 'firebase'
+
 //How to use AsyncStorage:
 //AsyncStorage.setItem(''fb_token,token);
 //AsyncStorage.getItem('fb_token');
@@ -14,7 +18,6 @@ export const facebookLogin = () => async (dispatch) => {
             await doFacebookLogin(dispatch)
         }
 };
-
 
 const doFacebookLogin = async (dispatch) =>{
     //get application ID
