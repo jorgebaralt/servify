@@ -1,7 +1,7 @@
 import {    
     CREATE_ACCOUNT_FAIL,
     CREATE_ACCOUNT_SUCCESS
-} from '../actions/types'
+} from '../actions/types';
 
 export default function(state={}, action){
     switch(action.type){
