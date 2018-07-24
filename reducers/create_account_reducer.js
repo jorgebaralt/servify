@@ -6,7 +6,7 @@ import {
 export default function(state={}, action){
     switch(action.type){
         case CREATE_ACCOUNT_FAIL:
-            return {user:null};
+            return {message:action.payload}
         case CREATE_ACCOUNT_SUCCESS:
             return {user:action.payload}
         default:

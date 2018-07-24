@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Text, Form, Item, Button,Input,Icon,Label} from 'native-base'
+import {Text, Form, Item, Button,Input,Icon,Label,Toast} from 'native-base'
 import {LinearGradient} from 'expo';
 import {View} from 'react-native';
 import {connect} from 'react-redux';
@@ -20,16 +20,38 @@ class CreateAccountScreen extends Component{
             firstName,
             lastName,
             email,
-            password
+            password,
+            showToast:false
         }
         this.props.createEmailAccount(user);
         this.cleanState();
-
-        if(this.props.user){
-            //navigate to Login!
-        }
-
     }
+    
+    //when we receive new props, instantly: 
+    componentWillUpdate(nextProps){
+        const {message,user} = nextProps
+
+        if(user){
+            console.log(user)
+            this.props.navigation.navigate('main');
+            Toast.show({
+                text: 'Welcome ' + user ,
+                buttonText: "Okay",
+                duration: 5000,
+                type:'success'
+              })
+        }
+        if(message){
+            console.log(message)
+            Toast.show({
+                text: message,
+                buttonText: "Okay",
+                duration: 5000,
+                type:'warning'
+              })
+        }
+    }
+
 
     cleanState(){
         this.setState(initialState)
@@ -107,7 +129,10 @@ const styles={
 };
 
 function mapStateToProps(state){
-    return{user:state.createAccount.user};
+    return{
+        user:state.createAccount.user,
+        message: state.createAccount.message
+    };
 }
 
 export default connect(mapStateToProps,{createEmailAccount})(CreateAccountScreen);

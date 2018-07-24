@@ -19,7 +19,6 @@ class AuthScreen extends Component{
 
     onAuthComplete(props) {
         if (props.token) {
-            console.log('WE HAVE A TOKEN')
             this.props.navigation.navigate('main');
         }
     }

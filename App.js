@@ -6,6 +6,7 @@ import {createStore, compose, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk'
 import firebase from 'firebase';
 import reducers from './reducers'
+import {Root} from 'native-base'
 //Screens
 import AuthScreen from './screens/AuthScreen'
 import WelcomeScreen from './screens/WelcomeScreen';
@@ -55,7 +56,9 @@ export default class App extends React.Component {
         return (
             <Provider store={store}>
               <View style={styles.container}>
-                  <MainNavigator/>
+                <Root>
+                    <MainNavigator/>
+                </Root>
               </View>
             </Provider>
         );
