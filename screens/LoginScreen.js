@@ -8,7 +8,7 @@ const initialState={
     email:'',
     password:'',
     showToast:false
-}
+};
 class LoginScreen extends Component{ 
     
     state=initialState;
@@ -16,10 +16,11 @@ class LoginScreen extends Component{
     loginUser=()=>{
         const {email,password} = this.state;
         this.props.emailAndPasswordLogin(email,password);
-    }
+        this.clearState();
+    };
 
     componentWillUpdate(nextProps){
-        const {user,message} = nextProps
+        const {user,message} = nextProps;
         if(user){
             this.props.navigation.navigate('main');
             Toast.show({
@@ -51,7 +52,7 @@ class LoginScreen extends Component{
                       name={'chevron-thin-left'}
                       onPress={()=>{this.props.navigation.navigate('auth')}}
                 />  
-
+                //Login Form
                 <View style={{flex:1,alignItems:'center'}}>
                     <Text style={titleStyle}>Sign in</Text>
                     <Form style={formStyle}>
@@ -66,7 +67,7 @@ class LoginScreen extends Component{
 
                     </Form>
                     <View>
-                        <Button bordered light rounded style={{marginTop:40}} onPress={this.loginUser}>
+                        <Button title={'Login User'} bordered light rounded style={{marginTop:40}} onPress={this.loginUser}>
                             <Text>Log in</Text>
                         </Button>
                     </View>

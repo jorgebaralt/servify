@@ -11,6 +11,10 @@ class HomeScreen extends Component {
                 <Text>Home Screen</Text>
                 <Text>Home Screen</Text>
                 <Text>Home Screen</Text>
+                <Text>Home Screen</Text>
+                <Text>Home Screen</Text>
+                <Text>Home Screen</Text>
+                <Text>Home Screen</Text>
             </View>
         )
     }

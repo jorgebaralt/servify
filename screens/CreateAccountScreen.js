@@ -22,10 +22,10 @@ class CreateAccountScreen extends Component{
             lastName,
             email,
             password
-        }
+        };
         this.props.createEmailAccount(user);
         this.clearState();
-    }
+    };
     
     //when we receive new props, instantly: 
     componentWillUpdate(nextProps){

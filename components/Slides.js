@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
-import {View,ScrollView,Dimensions} from 'react-native'
-import {Button,Text,Body} from 'native-base'
+import {View,ScrollView,Dimensions,TouchableOpacity} from 'react-native'
+import {Button,Text} from 'native-base'
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
-const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 class Slides extends Component{
     renderSlides=()=>{
@@ -15,6 +14,7 @@ class Slides extends Component{
                             {this.renderDots(i)}
                         </View>
                         {this.renderLastSlide(i)}
+                        {this.renderSkipButton(i)}
 
                     </View>
 
@@ -26,6 +26,7 @@ class Slides extends Component{
             return (
                 <View style={styles.buttonStyle}>
                     <Button
+                        title={'On Complete'}
                         bordered light
                         onPress={this.props.onComplete}
                     >
@@ -49,6 +50,18 @@ class Slides extends Component{
                 )
             }
         })
+    }
+    renderSkipButton(current){
+        if(current === 0){
+            return(
+                    <TouchableOpacity
+                        style={{ position:'absolute',bottom:30, right:30}}
+                        // onPress={} Navigate to Login Screen
+                    >
+                        <Text style={{fontSize:16, color: 'white'}} onPress={this.props.onComplete} >Skip Tutorial</Text>
+                    </TouchableOpacity>
+            )
+        }
     }
     render(){
         return(
