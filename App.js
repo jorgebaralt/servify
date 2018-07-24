@@ -48,7 +48,7 @@ export default class App extends React.Component {
             main: Main
           },{
               navigationOptions:{
-                //   tabBarVisible:false
+                   tabBarVisible:false
               }
           });
         

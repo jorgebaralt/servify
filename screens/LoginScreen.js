@@ -1,8 +1,47 @@
 import React, {Component} from 'react';
-import {Text, Form, Item, Button, Label, Input, Icon} from 'native-base';
+import {Text, Form, Item, Button, Label, Input, Icon,Toast} from 'native-base';
 import {LinearGradient} from 'expo';
 import {View} from 'react-native';
+import {connect} from 'react-redux';
+import {emailAndPasswordLogin} from '../actions';
+const initialState={
+    email:'',
+    password:'',
+    showToast:false
+}
 class LoginScreen extends Component{ 
+    
+    state=initialState;
+
+    loginUser=()=>{
+        const {email,password} = this.state;
+        this.props.emailAndPasswordLogin(email,password);
+    }
+
+    componentWillUpdate(nextProps){
+        const {user,message} = nextProps
+        if(user){
+            this.props.navigation.navigate('main');
+            Toast.show({
+                text: 'Welcome ' + user.displayName,
+                duration: 3000,
+                type:'success'
+              })
+        }
+        if(message){
+            Toast.show({
+                text: message,
+                buttonText: "Okay",
+                duration: 5000,
+                type:'warning'
+              })
+        }
+    }
+
+    clearState(){
+        this.setState(initialState);
+    }
+
     render(){
         const {inputStyle,labelStyle,itemStyle,backIconStyle,formStyle,titleStyle} = styles;
         return(
@@ -18,16 +57,16 @@ class LoginScreen extends Component{
                     <Form style={formStyle}>
                         <Item floatingLabel style={itemStyle}>
                             <Label style={labelStyle}>Email</Label>
-                            <Input style={inputStyle}  />
+                            <Input style={inputStyle} value={this.props.email} onChangeText={(email)=>{this.setState({email})}} />
                         </Item>
                         <Item floatingLabel style={itemStyle}>
                             <Label style={labelStyle}>Password</Label>
-                            <Input style={inputStyle} />
+                            <Input style={inputStyle} value={this.props.password} secureTextEntry onChangeText={(password)=>this.setState({password})} />
                         </Item>
 
                     </Form>
                     <View>
-                        <Button bordered light rounded style={{marginTop:40}}>
+                        <Button bordered light rounded style={{marginTop:40}} onPress={this.loginUser}>
                             <Text>Log in</Text>
                         </Button>
                     </View>
@@ -65,4 +104,11 @@ const styles={
     }
 };
 
-export default LoginScreen;
+function mapStateToProps(state){
+    return{
+        user: state.auth.user,
+        message: state.auth.message
+    }
+}
+
+export default connect(mapStateToProps,{emailAndPasswordLogin})(LoginScreen);

@@ -7,9 +7,8 @@ import {LinearGradient} from 'expo';
 class AuthScreen extends Component{
     async loginWithFacebook(){
         await this.props.facebookLogin();
-        //if we have a token already
-        //TODO: DELETE, ONLY FOR TESTING:
-        await AsyncStorage.removeItem('login_token');
+        //FOR TESTING
+        // await AsyncStorage.removeItem('login_token');
         this.onAuthComplete(this.props);
     }
 

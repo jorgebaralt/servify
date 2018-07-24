@@ -1,6 +1,8 @@
 import {
     FACEBOOK_LOGIN_FAIL,
-    FACEBOOK_LOGIN_SUCCESS
+    FACEBOOK_LOGIN_SUCCESS,
+    LOGIN_FAIL,
+    LOGIN_SUCESS
 } from "../actions/types";
 
 export default function (state= {}, action){
@@ -9,6 +11,10 @@ export default function (state= {}, action){
             return {token:action.payload};
         case FACEBOOK_LOGIN_FAIL:
             return {token: null};
+        case LOGIN_SUCESS:
+            return {user:action.payload};
+        case LOGIN_FAIL:
+            return {message:action.payload}
     
         default:
             return state;

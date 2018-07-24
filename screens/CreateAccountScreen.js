@@ -8,44 +8,42 @@ const initialState={
     firstName:'',
     lastName:'',
     email:'',
-    password:''
+    password:'',
+    showToast:false
 };
 class CreateAccountScreen extends Component{
 
     state=initialState;
 
-    createAccount(){
+    createAccount=()=>{
         const {firstName,lastName,email,password} = this.state;
         const user = {
             firstName,
             lastName,
             email,
-            password,
-            showToast:false
+            password
         }
         this.props.createEmailAccount(user);
-        this.cleanState();
+        this.clearState();
     }
     
     //when we receive new props, instantly: 
     componentWillUpdate(nextProps){
-        const {message,user} = nextProps
+        const {message,user} = nextProps;
 
         if(user){
-            console.log(user)
             this.props.navigation.navigate('main');
             Toast.show({
-                text: 'Welcome ' + user ,
-                buttonText: "Okay",
-                duration: 5000,
+                text: 'Welcome ' + user.displayName ,
+                buttonText: "OK",
+                duration: 3000,
                 type:'success'
               })
         }
         if(message){
-            console.log(message)
             Toast.show({
                 text: message,
-                buttonText: "Okay",
+                buttonText: "OK",
                 duration: 5000,
                 type:'warning'
               })
@@ -53,7 +51,7 @@ class CreateAccountScreen extends Component{
     }
 
 
-    cleanState(){
+    clearState(){
         this.setState(initialState)
     }
 
@@ -90,7 +88,7 @@ class CreateAccountScreen extends Component{
                         </Item>
                     </Form>
                     <View>
-                        <Button bordered light rounded style={{marginTop:40}} onPress={this.createAccount.bind(this)}>
+                        <Button bordered light rounded style={{marginTop:40}} onPress={this.createAccount}>
                             <Text>Create Account</Text>
                         </Button>
                     </View>

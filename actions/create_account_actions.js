@@ -4,6 +4,7 @@ import {
 } from './types'
 import axios from 'axios';
 import firebase from 'firebase'
+import {AsyncStorage} from 'react-native'
 
 export const createEmailAccount = (user) => async (dispatch) =>{
     const url = 'https://us-central1-servify-716c6.cloudfunctions.net/createUser'
@@ -22,7 +23,8 @@ export const createEmailAccount = (user) => async (dispatch) =>{
                 lastName
             })
             //Perform Login to Firebase
-            await firebase.auth().signInWithEmailAndPassword(email,password);
+            let {user} = await firebase.auth().signInWithEmailAndPassword(email,password);
+            console.log(user.refreshToken)
             dispatch({type:CREATE_ACCOUNT_SUCCESS,payload:data.uid});
         }catch(e){
             dispatch({type:CREATE_ACCOUNT_FAIL,payload:'Email already exist or information is not valid'});
