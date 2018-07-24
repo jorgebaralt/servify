@@ -3,26 +3,24 @@ import {Text, Form, Item, Button,Input,Icon,Label} from 'native-base'
 import {LinearGradient} from 'expo';
 import {View} from 'react-native';
 import {connect} from 'react-redux';
-import {createEmailAccount} from '../actions'
+import {createEmailAccount} from '../actions';
 const initialState={
     firstName:'',
     lastName:'',
     email:'',
-    password:'',
-    phone:''
+    password:''
 };
 class CreateAccountScreen extends Component{
 
-    state=initialState
+    state=initialState;
 
     createAccount(){
-        const {firstName,lastName,email,password,phone} = this.state;
+        const {firstName,lastName,email,password} = this.state;
         const user = {
             firstName,
             lastName,
             email,
-            password,
-            phone
+            password
         }
         this.props.createEmailAccount(user);
         this.cleanState();
@@ -67,10 +65,6 @@ class CreateAccountScreen extends Component{
                         <Item floatingLabel style={itemStyle}>
                             <Label style={labelStyle}>Password</Label>
                             <Input style={inputStyle}  secureTextEntry value={this.state.password} onChangeText={password=>{this.setState({password})}} />
-                        </Item>
-                        <Item floatingLabel style={itemStyle}>
-                            <Label style={labelStyle}>Phone Number</Label>
-                            <Input style={inputStyle} value={this.state.phone} keyboardType='numeric' onChangeText={phone=>{this.setState({phone})}} />
                         </Item>
                     </Form>
                     <View>

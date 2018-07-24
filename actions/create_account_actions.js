@@ -4,9 +4,9 @@ import {
 } from './types'
 
 export const createEmailAccount = (user) => async (dispatch) =>{
-    const {email,password,firstName,lastName,phone} = user
+    const {email,password,firstName,lastName} = user
     //check not empty
-    if(email && password && firstName && lastName && phone ){
+    if(email && password && firstName && lastName){
         //send email and password to back-end to create account.
         //if successful, dispatch Success
     }else{

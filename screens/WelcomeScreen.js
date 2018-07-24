@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import Slides from '../components/Slides';
 import Expo, {AppLoading} from 'expo';
-import {AsyncStorage} from 'react-native'
-import _ from 'lodash'
+import {AsyncStorage} from 'react-native';
+import _ from 'lodash';
 
 const SLIDE_DATA=[
     {text:'Welcome to Servify', color:'#FFB300'},
