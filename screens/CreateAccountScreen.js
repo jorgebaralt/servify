@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import {Text, Form, Item,Input,Icon,Label,Toast,Button} from 'native-base'
+import {Text, Form, Item,Input,Icon,Label,Toast,Button,Container,Content} from 'native-base'
 import {LinearGradient} from 'expo';
-import {View,KeyboardAvoidingView} from 'react-native';
+import {View, KeyboardAvoidingView, SafeAreaView, StatusBar, Platform} from 'react-native';
 import {connect} from 'react-redux';
 import {createEmailAccount} from '../actions';
 const initialState={
@@ -58,42 +58,84 @@ class CreateAccountScreen extends Component{
         const {inputStyle,labelStyle,itemStyle,backIconStyle,formStyle,titleStyle} = styles;
 
         return(
-
             <LinearGradient colors={['#FF7043','#F4511E','#BF360C']} style={{flex:1}}>
-
+                <SafeAreaView style={{flex:1}}>
                 <Icon style={backIconStyle}
                       type={'Entypo'}
                       name={'chevron-thin-left'}
                       onPress={()=>{this.props.navigation.navigate('auth')}}
                 />
-
-                <View style={{flex:1,alignItems:'center'}}>
+                <KeyboardAvoidingView behavior={Platform.OS==='android' ? 'padding' : null} style={{flex:1,justifyContent:'center'}} >
+                <Content>
+                    <View style={{flex:1,alignItems:'center'}}>
                     <Text style={titleStyle}>Sign up</Text>
                     <Form style={formStyle}>
                         <Item floatingLabel style={itemStyle}>
-                            <Label style={labelStyle}>First Name</Label>
-                            <Input style={inputStyle} value={this.state.firstName} onChangeText={firstName=>{this.setState({firstName})}}/>
+                             <Label style={labelStyle}>First Name</Label>
+                             <Input style={inputStyle} value={this.state.firstName} onChangeText={firstName=>{this.setState({firstName})}}/>
                         </Item>
                         <Item floatingLabel style={itemStyle}>
-                            <Label style={labelStyle}>Last Name</Label>
-                            <Input style={inputStyle} value={this.state.lastName} onChangeText={lastName => {this.setState({lastName})}}/>
+                             <Label style={labelStyle}>Last Name</Label>
+                             <Input style={inputStyle} value={this.state.lastName} onChangeText={lastName => {this.setState({lastName})}}/>
                         </Item>
                         <Item floatingLabel style={itemStyle}>
-                            <Label style={labelStyle}>Email</Label>
-                            <Input style={inputStyle} value={this.state.email} onChangeText={email=>{this.setState({email})}} />
+                             <Label style={labelStyle}>Email</Label>
+                             <Input style={inputStyle} value={this.state.email} onChangeText={email=>{this.setState({email})}} />
                         </Item>
                         <Item floatingLabel style={itemStyle}>
-                            <Label style={labelStyle}>Password</Label>
-                            <Input style={inputStyle}  secureTextEntry value={this.state.password} onChangeText={password=>{this.setState({password})}} />
+                             <Label style={labelStyle}>Password</Label>
+                             <Input style={inputStyle}  secureTextEntry value={this.state.password} onChangeText={password=>{this.setState({password})}} />
                         </Item>
                     </Form>
-                    <View>
-                        <Button bordered light rounded style={{marginTop:40}} onPress={this.createAccount}>
-                            <Text>Create Account</Text>
-                        </Button>
+                        <View>
+                            <Button bordered light rounded style={{marginTop:40}} onPress={this.createAccount}>
+                                <Text>Create Account</Text>
+                            </Button>
+                        </View>
+
                     </View>
-                </View>
+                </Content>
+                </KeyboardAvoidingView>
+                </SafeAreaView>
             </LinearGradient>
+
+
+            //
+            // <LinearGradient colors={['#FF7043','#F4511E','#BF360C']} style={{flex:1}}>
+            //
+            //     <Icon style={backIconStyle}
+            //           type={'Entypo'}
+            //           name={'chevron-thin-left'}
+            //           onPress={()=>{this.props.navigation.navigate('auth')}}
+            //     />
+            //
+            //     <View style={{flex:1,alignItems:'center'}}>
+            //         <Text style={titleStyle}>Sign up</Text>
+            //         <Form style={formStyle}>
+            //             <Item floatingLabel style={itemStyle}>
+            //                 <Label style={labelStyle}>First Name</Label>
+            //                 <Input style={inputStyle} value={this.state.firstName} onChangeText={firstName=>{this.setState({firstName})}}/>
+            //             </Item>
+            //             <Item floatingLabel style={itemStyle}>
+            //                 <Label style={labelStyle}>Last Name</Label>
+            //                 <Input style={inputStyle} value={this.state.lastName} onChangeText={lastName => {this.setState({lastName})}}/>
+            //             </Item>
+            //             <Item floatingLabel style={itemStyle}>
+            //                 <Label style={labelStyle}>Email</Label>
+            //                 <Input style={inputStyle} value={this.state.email} onChangeText={email=>{this.setState({email})}} />
+            //             </Item>
+            //             <Item floatingLabel style={itemStyle}>
+            //                 <Label style={labelStyle}>Password</Label>
+            //                 <Input style={inputStyle}  secureTextEntry value={this.state.password} onChangeText={password=>{this.setState({password})}} />
+            //             </Item>
+            //         </Form>
+            //         <View>
+            //             <Button bordered light rounded style={{marginTop:40}} onPress={this.createAccount}>
+            //                 <Text>Create Account</Text>
+            //             </Button>
+            //         </View>
+            //     </View>
+            // </LinearGradient>
 
         )
     }
@@ -113,12 +155,13 @@ const styles={
     },
     backIconStyle:{
         color:'white',
-        top:35,
+        top:3,
         left:0,
-        paddingBottom:40
+        paddingBottom:20
     },
     formStyle:{
-        width:'80%'
+        width:'80%',
+        alignItems:'center'
     },
     titleStyle:{
         color:'white',

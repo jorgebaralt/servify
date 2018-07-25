@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {Text, Form, Item, Button, Label, Input, Icon,Toast} from 'native-base';
+import {Text, Form, Item, Button, Label, Input, Icon,Toast,Content} from 'native-base';
 import {LinearGradient} from 'expo';
-import {View} from 'react-native';
+import {View,SafeAreaView} from 'react-native';
 import {connect} from 'react-redux';
 import {emailAndPasswordLogin} from '../actions';
 const initialState={
@@ -47,31 +47,36 @@ class LoginScreen extends Component{
         const {inputStyle,labelStyle,itemStyle,backIconStyle,formStyle,titleStyle} = styles;
         return(
             <LinearGradient colors={['#FF7043','#F4511E','#BF360C']} style={{flex:1}}>
-                <Icon style={backIconStyle}
-                      type={'Entypo'}
-                      name={'chevron-thin-left'}
-                      onPress={()=>{this.props.navigation.navigate('auth')}}
-                />  
-                {/*//Login Form*/}
-                <View style={{flex:1,alignItems:'center'}}>
-                    <Text style={titleStyle}>Sign in</Text>
-                    <Form style={formStyle}>
-                        <Item floatingLabel style={itemStyle}>
-                            <Label style={labelStyle}>Email</Label>
-                            <Input style={inputStyle} value={this.props.email} onChangeText={(email)=>{this.setState({email})}} />
-                        </Item>
-                        <Item floatingLabel style={itemStyle}>
-                            <Label style={labelStyle}>Password</Label>
-                            <Input style={inputStyle} value={this.props.password} secureTextEntry onChangeText={(password)=>this.setState({password})} />
-                        </Item>
 
-                    </Form>
-                    <View>
-                        <Button title={'Login User'} bordered light rounded style={{marginTop:40}} onPress={this.loginUser}>
-                            <Text>Log in</Text>
-                        </Button>
-                    </View>
-                </View>
+                <SafeAreaView style={{flex:1}}>
+                    <Icon style={backIconStyle}
+                          type={'Entypo'}
+                          name={'chevron-thin-left'}
+                          onPress={()=>{this.props.navigation.navigate('auth')}}
+                    />
+                    <Content>
+                        {/*//Login Form*/}
+                        <View style={{flex:1,alignItems:'center'}}>
+                            <Text style={titleStyle}>Sign in</Text>
+                            <Form style={formStyle}>
+                                <Item floatingLabel style={itemStyle}>
+                                    <Label style={labelStyle}>Email</Label>
+                                    <Input style={inputStyle} value={this.props.email} onChangeText={(email)=>{this.setState({email})}} />
+                                </Item>
+                                <Item floatingLabel style={itemStyle}>
+                                    <Label style={labelStyle}>Password</Label>
+                                    <Input style={inputStyle} value={this.props.password} secureTextEntry onChangeText={(password)=>this.setState({password})} />
+                                </Item>
+
+                            </Form>
+                            <View>
+                                <Button title={'Login User'} bordered light rounded style={{marginTop:40}} onPress={this.loginUser}>
+                                    <Text>Log in</Text>
+                                </Button>
+                            </View>
+                        </View>
+                    </Content>
+                </SafeAreaView>
             </LinearGradient>
         )
     }
@@ -90,7 +95,7 @@ const styles={
     },
     backIconStyle:{
         color:'white',
-        top:35,
+        top:3,
         left:0,
         marginBottom:40
     },
