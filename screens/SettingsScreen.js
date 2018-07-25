@@ -15,7 +15,7 @@ class SettingsScreen extends Component {
             <Container>
                 <Header>
                     <Left>
-                        <Button transparent >
+                        <Button transparent onPress={()=>{this.props.navigation.goBack()}} >
                             <Icon name='arrow-back' style={{color:'black'}}/>
                         </Button>
                     </Left>
