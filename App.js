@@ -16,6 +16,7 @@ import HomeScreen from './screens/HomeScreen'
 import BrowseScreen from './screens/BrowseScreen';
 import PostServiceScreen from './screens/PostServiceScreen'
 import ProfileScreen from './screens/ProfileScreen'
+import SettingsScreen from './screens/SettingsScreen'
 
 const store = createStore(reducers,{},compose(applyMiddleware(thunk)));
 export default class App extends React.Component {
@@ -32,12 +33,20 @@ export default class App extends React.Component {
     }
 
   render() {
+        let ProfileStack = createStackNavigator({
+            profile:ProfileScreen,
+            settings:SettingsScreen
+        },{
+            headerMode: 'none',
+            navigationOptions: {
+                headerVisible: false,
+            }});
         //Main - Second Navigation
         let Main = createBottomTabNavigator({
             home:{screen:HomeScreen},
             browse:{screen:BrowseScreen},
             postService:{screen:PostServiceScreen},
-            profile:{screen:ProfileScreen}
+            profile:ProfileStack
         });
         //Welcome - First Navigation
         const MainNavigator = createBottomTabNavigator({

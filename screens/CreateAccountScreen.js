@@ -34,7 +34,7 @@ class CreateAccountScreen extends Component{
         if(user){
             this.props.navigation.navigate('main');
             Toast.show({
-                text: 'Welcome ' + user.displayName ,
+                text: 'Welcome ' + user.displayName,
                 buttonText: "OK",
                 duration: 3000,
                 type:'success'

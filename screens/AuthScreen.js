@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {View,TouchableOpacity,AsyncStorage} from 'react-native'
+import {View,TouchableOpacity} from 'react-native'
 import {connect} from 'react-redux';
 import {facebookLogin} from "../actions";
 import {Button,Text,Icon} from 'native-base';

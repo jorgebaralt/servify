@@ -3,6 +3,7 @@ import Slides from '../components/Slides';
 import Expo, {AppLoading} from 'expo';
 import {AsyncStorage} from 'react-native';
 import _ from 'lodash';
+import firebase from 'firebase';
 
 const SLIDE_DATA=[
     {text:'Welcome to Servify', color:'#FFB300'},
@@ -14,27 +15,32 @@ class WelcomeScreen extends Component{
 
     state ={
         loading : true,
-        token : null
+        authenticated : null
     };
 
     async componentWillMount(){
-        //check if there is already a token
-       await this.checkForToken();
-       //Make sure to load the Native Base Fonts
-       await this.loadFonts()
+        //TODO: For Testing
+        //check if there is a user logged in already
+         await this.checkForUser();
+         //Make sure to load the Native Base Fonts
+         await this.loadFonts()
     }
 
-    async checkForToken(){
-        let token = await AsyncStorage.getItem('login_token');
-        //check if there is a token to skip tutorial / auth
-        if(token){
-            //Navigate to HomeScreen
-            this.props.navigation.navigate('main');
-            
-            this.setState({token})
-        }else{
-            this.setState({token:false})
-        }
+    async checkForUser(){
+        //TODO: for testing
+        // firebase.auth().signOut().then(()=>{console.log('Logging out')});
+
+        firebase.auth().onAuthStateChanged((user) =>{
+            if (user) {
+                this.props.navigation.navigate('main');
+                this.setState({authenticated:true});
+            } else {
+                // No user is signed in.
+                console.log('no user');
+                this.setState({authenticated:false})
+            }
+        });
+
     }
 
     async loadFonts(){
@@ -52,7 +58,7 @@ class WelcomeScreen extends Component{
 
     render(){
         //if we are still loading font or we have not checked for token
-        if(this.state.loading || _.isNull(this.state.token)){
+        if(this.state.loading || _.isNull(this.state.authenticated)){
             return (<AppLoading/>)
         }
         return(

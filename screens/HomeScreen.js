@@ -1,9 +1,16 @@
 import React, {Component} from 'react';
 import {View} from 'react-native';
 import {Text} from 'native-base'
-
+import {connect} from 'react-redux'
+import {getCurrentUserDisplayName} from "../actions";
 
 class HomeScreen extends Component {
+    async componentWillMount() {
+        this.props.getCurrentUserDisplayName();
+    }
+    componentWillUpdate(nextProps){
+    }
+
     render() {
         return (
             <View>
@@ -18,4 +25,6 @@ class HomeScreen extends Component {
             </View>
         )
     }
-}export default HomeScreen;
+}
+
+export default connect(null,{getCurrentUserDisplayName})(HomeScreen);
