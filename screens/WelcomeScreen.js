@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Slides from '../components/Slides';
 import Expo, {AppLoading} from 'expo';
-import {AsyncStorage} from 'react-native';
 import _ from 'lodash';
 import firebase from 'firebase';
 
@@ -19,7 +18,7 @@ class WelcomeScreen extends Component{
     };
 
     async componentWillMount(){
-        //TODO: For Testing
+
         //check if there is a user logged in already
          await this.checkForUser();
          //Make sure to load the Native Base Fonts
@@ -27,7 +26,7 @@ class WelcomeScreen extends Component{
     }
 
     async checkForUser(){
-        //TODO: for testing
+        //TODO: for testing Log out
         // firebase.auth().signOut().then(()=>{console.log('Logging out')});
 
         firebase.auth().onAuthStateChanged((user) =>{
@@ -36,7 +35,6 @@ class WelcomeScreen extends Component{
                 this.setState({authenticated:true});
             } else {
                 // No user is signed in.
-                console.log('no user');
                 this.setState({authenticated:false})
             }
         });
@@ -53,7 +51,7 @@ class WelcomeScreen extends Component{
     }
 
     onSlidesComplete=()=>{
-        this.props.navigation.navigate('auth')
+        this.props.navigation.navigate('auth');
     };
 
     render(){

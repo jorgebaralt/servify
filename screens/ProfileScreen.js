@@ -5,8 +5,8 @@ class ProfileScreen extends Component {
     render() {
         const {user} = this.props;
         return (
-            <Container>
-                <Header>
+            <Container >
+                <Header >
                     <Body>
                     <Title>{user.displayName}</Title>
                     </Body>

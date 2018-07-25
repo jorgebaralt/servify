@@ -52,7 +52,7 @@ class LoginScreen extends Component{
                       name={'chevron-thin-left'}
                       onPress={()=>{this.props.navigation.navigate('auth')}}
                 />  
-                //Login Form
+                {/*//Login Form*/}
                 <View style={{flex:1,alignItems:'center'}}>
                     <Text style={titleStyle}>Sign in</Text>
                     <Form style={formStyle}>

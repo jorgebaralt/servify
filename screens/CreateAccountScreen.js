@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import {Text, Form, Item, Button,Input,Icon,Label,Toast} from 'native-base'
+import {Text, Form, Item,Input,Icon,Label,Toast,Button} from 'native-base'
 import {LinearGradient} from 'expo';
-import {View} from 'react-native';
+import {View,KeyboardAvoidingView} from 'react-native';
 import {connect} from 'react-redux';
 import {createEmailAccount} from '../actions';
 const initialState={
@@ -32,7 +32,7 @@ class CreateAccountScreen extends Component{
         const {message,user} = nextProps;
 
         if(user){
-            this.props.navigation.navigate('main');
+            this.props.navigation.navigate('home');
             Toast.show({
                 text: 'Welcome ' + user.displayName,
                 buttonText: "OK",
@@ -50,7 +50,6 @@ class CreateAccountScreen extends Component{
         }
     }
 
-
     clearState(){
         this.setState(initialState)
     }
@@ -59,13 +58,14 @@ class CreateAccountScreen extends Component{
         const {inputStyle,labelStyle,itemStyle,backIconStyle,formStyle,titleStyle} = styles;
 
         return(
-            <LinearGradient colors={['#FF7043','#F4511E','#BF360C']} style={{flex:1}}>  
 
-                    <Icon style={backIconStyle}
-                          type={'Entypo'}
-                          name={'chevron-thin-left'}
-                          onPress={()=>{this.props.navigation.navigate('auth')}}
-                    />
+            <LinearGradient colors={['#FF7043','#F4511E','#BF360C']} style={{flex:1}}>
+
+                <Icon style={backIconStyle}
+                      type={'Entypo'}
+                      name={'chevron-thin-left'}
+                      onPress={()=>{this.props.navigation.navigate('auth')}}
+                />
 
                 <View style={{flex:1,alignItems:'center'}}>
                     <Text style={titleStyle}>Sign up</Text>
@@ -94,9 +94,11 @@ class CreateAccountScreen extends Component{
                     </View>
                 </View>
             </LinearGradient>
+
         )
     }
 }
+
 
 const styles={
     inputStyle:{
@@ -107,13 +109,13 @@ const styles={
         color:'white'
     },
     itemStyle:{
-        margin:10
+        padding:10
     },
     backIconStyle:{
         color:'white',
         top:35,
         left:0,
-        marginBottom:40
+        paddingBottom:40
     },
     formStyle:{
         width:'80%'
@@ -122,7 +124,7 @@ const styles={
         color:'white',
         fontWeight:'bold',
         fontSize:30,
-        margin:10
+        padding:10
     }
 };
 
