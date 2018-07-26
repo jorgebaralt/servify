@@ -18,7 +18,7 @@ class AuthScreen extends Component{
     }
 
     onAuthComplete(props) {
-        if (props.token) {
+        if (props.displayName) {
             this.props.navigation.navigate('main');
         }
     }
@@ -75,7 +75,7 @@ const styles={
 };
 
 function mapStateToProps(state){
-    return{token : state.auth.token}
+    return{displayName : state.auth.displayName}
 }
 
 export default connect(mapStateToProps,{facebookLogin})(AuthScreen);

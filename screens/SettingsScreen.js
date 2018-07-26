@@ -5,9 +5,13 @@ import {logOut} from "../actions";
 
 
 class SettingsScreen extends Component {
-    doLogOut = async () => {
+    doLogOut = () => {
         console.log('perform sign out');
-        this.props.logOut(()=>{this.props.navigation.navigate('auth')});
+        this.props.logOut(
+            ()=>{this.props.navigation.goBack(null)},
+            ()=>{this.props.navigation.navigate('home')},
+            ()=>{this.props.navigation.navigate('auth')}
+            );
     };
 
     render() {

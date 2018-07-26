@@ -27,7 +27,7 @@ class WelcomeScreen extends Component{
 
     async checkForUser(){
         //TODO: for testing Log out
-        // firebase.auth().signOut().then(()=>{console.log('Logging out')});
+        //  firebase.auth().signOut().then(()=>{console.log('Logging out')});
 
         firebase.auth().onAuthStateChanged((user) =>{
             if (user) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Platform, StatusBar, StyleSheet, Text, View} from 'react-native';
+import {Platform, StatusBar, StyleSheet, View} from 'react-native';
 import {createBottomTabNavigator,createStackNavigator} from 'react-navigation'
 import {Provider} from 'react-redux';
 import {createStore, compose, applyMiddleware} from 'redux';

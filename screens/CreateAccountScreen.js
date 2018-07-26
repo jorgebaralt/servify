@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import {Text, Form, Item,Input,Icon,Label,Toast,Button,Container,Content} from 'native-base'
+import {Text, Form, Item,Input,Icon,Label,Toast,Button,Content} from 'native-base'
 import {LinearGradient} from 'expo';
-import {View, KeyboardAvoidingView, SafeAreaView, StatusBar, Platform} from 'react-native';
+import {View, KeyboardAvoidingView, SafeAreaView, Platform} from 'react-native';
 import {connect} from 'react-redux';
 import {createEmailAccount} from '../actions';
 const initialState={
@@ -15,7 +15,7 @@ class CreateAccountScreen extends Component{
 
     state=initialState;
 
-    createAccount=()=>{
+    createAccount= async ()=>{
         const {firstName,lastName,email,password} = this.state;
         const user = {
             firstName,
@@ -23,18 +23,18 @@ class CreateAccountScreen extends Component{
             email,
             password
         };
-        this.props.createEmailAccount(user);
+        await this.props.createEmailAccount(user);
         this.clearState();
     };
     
     //when we receive new props, instantly: 
     componentWillUpdate(nextProps){
-        const {message,user} = nextProps;
+        const {message,displayName} = nextProps;
 
-        if(user){
+        if(displayName){
             this.props.navigation.navigate('home');
             Toast.show({
-                text: 'Welcome ' + user.displayName,
+                text: 'Welcome ' + displayName,
                 buttonText: "OK",
                 duration: 3000,
                 type:'success'
@@ -99,44 +99,6 @@ class CreateAccountScreen extends Component{
                 </SafeAreaView>
             </LinearGradient>
 
-
-            //
-            // <LinearGradient colors={['#FF7043','#F4511E','#BF360C']} style={{flex:1}}>
-            //
-            //     <Icon style={backIconStyle}
-            //           type={'Entypo'}
-            //           name={'chevron-thin-left'}
-            //           onPress={()=>{this.props.navigation.navigate('auth')}}
-            //     />
-            //
-            //     <View style={{flex:1,alignItems:'center'}}>
-            //         <Text style={titleStyle}>Sign up</Text>
-            //         <Form style={formStyle}>
-            //             <Item floatingLabel style={itemStyle}>
-            //                 <Label style={labelStyle}>First Name</Label>
-            //                 <Input style={inputStyle} value={this.state.firstName} onChangeText={firstName=>{this.setState({firstName})}}/>
-            //             </Item>
-            //             <Item floatingLabel style={itemStyle}>
-            //                 <Label style={labelStyle}>Last Name</Label>
-            //                 <Input style={inputStyle} value={this.state.lastName} onChangeText={lastName => {this.setState({lastName})}}/>
-            //             </Item>
-            //             <Item floatingLabel style={itemStyle}>
-            //                 <Label style={labelStyle}>Email</Label>
-            //                 <Input style={inputStyle} value={this.state.email} onChangeText={email=>{this.setState({email})}} />
-            //             </Item>
-            //             <Item floatingLabel style={itemStyle}>
-            //                 <Label style={labelStyle}>Password</Label>
-            //                 <Input style={inputStyle}  secureTextEntry value={this.state.password} onChangeText={password=>{this.setState({password})}} />
-            //             </Item>
-            //         </Form>
-            //         <View>
-            //             <Button bordered light rounded style={{marginTop:40}} onPress={this.createAccount}>
-            //                 <Text>Create Account</Text>
-            //             </Button>
-            //         </View>
-            //     </View>
-            // </LinearGradient>
-
         )
     }
 }
@@ -151,7 +113,7 @@ const styles={
         color:'white'
     },
     itemStyle:{
-        padding:10
+        margin:10
     },
     backIconStyle:{
         color:'white',
@@ -167,14 +129,14 @@ const styles={
         color:'white',
         fontWeight:'bold',
         fontSize:30,
-        padding:10
+        margin:10
     }
 };
 
 function mapStateToProps(state){
     return{
-        user:state.createAccount.user,
-        message: state.createAccount.message
+        displayName:state.auth.displayName,
+        message: state.auth.message
     };
 }
 

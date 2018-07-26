@@ -13,19 +13,19 @@ class LoginScreen extends Component{
     
     state=initialState;
 
-    loginUser=()=>{
+    loginUser=async ()=>{
         const {email,password} = this.state;
-        this.props.emailAndPasswordLogin(email,password);
+        await this.props.emailAndPasswordLogin(email,password);
         this.clearState();
     };
 
     componentWillUpdate(nextProps){
-        const {user,message} = nextProps;
-        if(user){
+        const {displayName,message} = nextProps;
+        if(displayName){
             this.props.navigation.navigate('main');
             Toast.show({
-                text: 'Welcome ' + user.displayName,
-                duration: 3000,
+                text: 'Welcome ' + displayName,
+                duration: 2000,
                 type:'success'
               })
         }
@@ -42,7 +42,6 @@ class LoginScreen extends Component{
     clearState(){
         this.setState(initialState);
     }
-
     render(){
         const {inputStyle,labelStyle,itemStyle,backIconStyle,formStyle,titleStyle} = styles;
         return(
@@ -61,11 +60,11 @@ class LoginScreen extends Component{
                             <Form style={formStyle}>
                                 <Item floatingLabel style={itemStyle}>
                                     <Label style={labelStyle}>Email</Label>
-                                    <Input style={inputStyle} value={this.props.email} onChangeText={(email)=>{this.setState({email})}} />
+                                    <Input style={inputStyle} value={this.state.email} onChangeText={(email)=>{this.setState({email})}} />
                                 </Item>
                                 <Item floatingLabel style={itemStyle}>
                                     <Label style={labelStyle}>Password</Label>
-                                    <Input style={inputStyle} value={this.props.password} secureTextEntry onChangeText={(password)=>this.setState({password})} />
+                                    <Input style={inputStyle} value={this.state.password} secureTextEntry onChangeText={(password)=>this.setState({password})} />
                                 </Item>
 
                             </Form>
@@ -112,7 +111,7 @@ const styles={
 
 function mapStateToProps(state){
     return{
-        user: state.auth.user,
+        displayName: state.auth.displayName,
         message: state.auth.message
     }
 }

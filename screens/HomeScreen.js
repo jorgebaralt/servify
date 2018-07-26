@@ -6,7 +6,8 @@ import {getCurrentUserDisplayName} from "../actions";
 
 class HomeScreen extends Component {
     async componentWillMount() {
-        this.props.getCurrentUserDisplayName();
+        console.log('getting display name');
+        await this.props.getCurrentUserDisplayName();
     }
     componentWillUpdate(nextProps){
     }

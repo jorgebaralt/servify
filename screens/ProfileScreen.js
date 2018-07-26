@@ -1,18 +1,25 @@
 import React, { Component } from 'react';
 import { Container, Header, Body, Right, Button, Icon, Title,Text} from 'native-base';
 import {connect} from 'react-redux'
+import {getCurrentUserDisplayName} from "../actions";
+
 class ProfileScreen extends Component {
+    componentWillMount(){
+        if(!this.props.displayName){
+            this.props.getCurrentUserDisplayName();
+        }
+    }
+
     render() {
-        const {user} = this.props;
         return (
             <Container >
                 <Header >
                     <Body>
-                    <Title>{user.displayName}</Title>
+                    <Title>{this.props.displayName}</Title>
                     </Body>
                     <Right>
-                        <Button transparent title={'Settings'} >
-                            <Icon type={'Entypo'} name='dots-three-horizontal' style={{color:'black'}} onPress={()=>this.props.navigation.navigate('settings')} />
+                        <Button transparent title={'Settings'} onPress={()=>this.props.navigation.navigate('settings')}>
+                            <Icon type={'Entypo'} name='dots-three-horizontal' style={{color:'black'}}  />
                         </Button>
                     </Right>
                 </Header>
@@ -22,7 +29,7 @@ class ProfileScreen extends Component {
 }
 
 function mapStateToProps(state){
-    return{user:state.currentUser};
+    return{displayName : state.auth.displayName}
 }
 
-export default connect(mapStateToProps)(ProfileScreen);
+export default connect(mapStateToProps,{getCurrentUserDisplayName})(ProfileScreen);
