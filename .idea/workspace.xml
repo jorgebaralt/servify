@@ -1,25 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ffdb8382-2231-46d2-b016-139dbf295247" name="Default" comment="">
+    <list default="true" id="ffdb8382-2231-46d2-b016-139dbf295247" name="Default" comment="Fixed every bug so far. keyboard, login, and navigation works correctly">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/actions/auth_actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/actions/auth_actions.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/actions/create_account_actions.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/actions/current_user_actions.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/actions/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/actions/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/actions/types.js" beforeDir="false" afterPath="$PROJECT_DIR$/actions/types.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/reducers/auth_reducer.js" beforeDir="false" afterPath="$PROJECT_DIR$/reducers/auth_reducer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/reducers/create_account_reducer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reducers/current_user_reducer.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reducers/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/reducers/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/AuthScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/AuthScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/CreateAccountScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/CreateAccountScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/HomeScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/HomeScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/LoginScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/LoginScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/ProfileScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ProfileScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/SettingsScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/SettingsScreen.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/WelcomeScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/WelcomeScreen.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -378,11 +361,18 @@
       <option name="project" value="LOCAL" />
       <updated>1532555891187</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Fixed every bug so far. keyboard, login, and navigation works correctly">
+      <created>1532571137262</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1532571137262</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="107562000" />
+    <option name="totallyTimeSpent" value="108258000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -457,7 +447,8 @@
     <MESSAGE value="on login, or open app, gather all the user information, and store it in the app state, for further need" />
     <MESSAGE value="cant get keyboard to work android" />
     <MESSAGE value="KeyboardAvoidingView working now on ios and android" />
-    <option name="LAST_COMMIT_MESSAGE" value="KeyboardAvoidingView working now on ios and android" />
+    <MESSAGE value="Fixed every bug so far. keyboard, login, and navigation works correctly" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed every bug so far. keyboard, login, and navigation works correctly" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/actions/auth_actions.js">
