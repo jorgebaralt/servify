@@ -1,154 +1,180 @@
-import React, {Component} from 'react'
-import {Text, Form, Item,Input,Icon,Label,Toast,Button,Content,Spinner} from 'native-base'
-import {LinearGradient} from 'expo';
-import {View, KeyboardAvoidingView, SafeAreaView, Platform,Keyboard} from 'react-native';
-import {connect} from 'react-redux';
-import {createEmailAccount} from '../actions';
-const initialState={
-    firstName:'',
-    lastName:'',
-    email:'',
-    password:'',
-    showToast:false,
-    loading:false
+import React, { Component } from 'react';
+import { Text, Form, Item, Input, Icon, Label, Toast, Button, Content, Spinner } from 'native-base';
+import { LinearGradient } from 'expo';
+import { View, KeyboardAvoidingView, SafeAreaView, Platform, Keyboard } from 'react-native';
+import { connect } from 'react-redux';
+import { createEmailAccount } from '../actions';
+
+const initialState = {
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
+  showToast: false,
+  loading: false
 };
-class CreateAccountScreen extends Component{
+class CreateAccountScreen extends Component {
 
-    state=initialState;
+  state = initialState;
 
-    createAccount= async ()=>{
-        Keyboard.dismiss();
-        this.setState({loading:true});
-        const {firstName,lastName,email,password} = this.state;
-        const user = {
-            firstName,
-            lastName,
-            email,
-            password
-        };
-        await this.props.createEmailAccount(user);
-        this.clearState();
+  // when we receive new props, instantly: 
+  componentWillUpdate(nextProps) {
+    const { message, displayName } = nextProps;
 
+    if (displayName) {
+      this.props.navigation.navigate('home');
+      Toast.show({
+        text: 'Welcome ' + displayName,
+        buttonText: 'OK',
+        duration: 3000,
+        type: 'success'
+      });
+    }
+    if (message) {
+      Toast.show({
+        text: message,
+        buttonText: 'OK',
+        duration: 5000,
+        type: 'warning'
+      });
+    }
+    // Reset message after showing.
+    this.props.message = '';
+  }
+
+  createAccount = async () => {
+    Keyboard.dismiss();
+    this.setState({ loading: true });
+    const { firstName, lastName, email, password } = this.state;
+    const user = {
+      firstName,
+      lastName,
+      email,
+      password
     };
-    
-    //when we receive new props, instantly: 
-    componentWillUpdate(nextProps){
-        const {message,displayName} = nextProps;
+    await this.props.createEmailAccount(user);
+    this.clearState();
+  };
 
-        if(displayName){
-            this.props.navigation.navigate('home');
-            Toast.show({
-                text: 'Welcome ' + displayName,
-                buttonText: "OK",
-                duration: 3000,
-                type:'success'
-              })
-        }
-        if(message){
-            Toast.show({
-                text: message,
-                buttonText: "OK",
-                duration: 5000,
-                type:'warning'
-              })
-        }
+  clearState() {
+    this.setState(initialState);
+  }
+
+  renderSpinner() {
+    if (this.state.loading) {
+      return (<Spinner color="white" />);
     }
+    return(<View />);
+  }
 
-    clearState(){
-        this.setState(initialState)
-    }
+  render() {
+    const { inputStyle, labelStyle, itemStyle, backIconStyle, formStyle, titleStyle } = styles;
 
-    renderSpinner(){
-        if(this.state.loading){
-            return(<Spinner color={'white'}/>)
-        }
-    }
+    return (
+      <LinearGradient colors={['#FF7043', '#F4511E', '#BF360C']} style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1 }}>
+          <Icon 
+            style={backIconStyle}
+            type="Entypo"
+            name="chevron-thin-left"
+            onPress={() => { this.props.navigation.navigate('auth'); }}
+          />
+          <KeyboardAvoidingView behavior={Platform.OS === 'android' ? 'padding' : null} style={{ flex: 1, justifyContent: 'center' }}>
+            <Content>
+              <View style={{ flex: 1, alignItems: 'center' }}>
+                <Text style={titleStyle}>Sign up</Text>
+                <Form style={formStyle}>
+                  <Item floatingLabel style={itemStyle}>
+                    <Label style={labelStyle}>First Name</Label>
+                    <Input 
+                      style={inputStyle} 
+                      value={this.state.firstName} 
+                      onChangeText={(firstName) => { this.setState({ firstName }); }} 
+                    />
+                  </Item>
+                  <Item floatingLabel style={itemStyle}>
+                    <Label style={labelStyle}>Last Name</Label>
+                    <Input 
+                      style={inputStyle} 
+                      value={this.state.lastName} 
+                      onChangeText={(lastName) => { this.setState({ lastName }); }} 
+                    />
+                  </Item>
+                  <Item floatingLabel style={itemStyle}>
+                    <Label style={labelStyle}>Email</Label>
+                    <Input 
+                      style={inputStyle} 
+                      value={this.state.email} 
+                      onChangeText={(email) => { this.setState({ email }); }} 
+                    />
+                  </Item>
+                  <Item floatingLabel style={itemStyle}>
+                    <Label style={labelStyle}>Password</Label>
+                    <Input 
+                      style={inputStyle} 
+                      secureTextEntry 
+                      value={this.state.password} 
+                      onChangeText={(password) => { this.setState({ password }); }} 
+                    />
+                  </Item>
+                </Form>
+                {this.renderSpinner()}
+                <View>
+                  <Button 
+                    bordered 
+                    light 
+                    rounded
+                    style={{ marginTop: 40 }} 
+                    onPress={this.createAccount}
+                  >
+                    <Text>Create Account</Text>
+                  </Button>
+                </View>
+              </View>
+            </Content>
+          </KeyboardAvoidingView>
+        </SafeAreaView>
+      </LinearGradient>
 
-    render(){
-        const {inputStyle,labelStyle,itemStyle,backIconStyle,formStyle,titleStyle} = styles;
-
-        return(
-            <LinearGradient colors={['#FF7043','#F4511E','#BF360C']} style={{flex:1}}>
-                <SafeAreaView style={{flex:1}}>
-                <Icon style={backIconStyle}
-                      type={'Entypo'}
-                      name={'chevron-thin-left'}
-                      onPress={()=>{this.props.navigation.navigate('auth')}}
-                />
-                <KeyboardAvoidingView behavior={Platform.OS==='android' ? 'padding' : null} style={{flex:1,justifyContent:'center'}} >
-                <Content>
-                    <View style={{flex:1,alignItems:'center'}}>
-                    <Text style={titleStyle}>Sign up</Text>
-                    <Form style={formStyle}>
-                        <Item floatingLabel style={itemStyle}>
-                             <Label style={labelStyle}>First Name</Label>
-                             <Input style={inputStyle} value={this.state.firstName} onChangeText={firstName=>{this.setState({firstName})}}/>
-                        </Item>
-                        <Item floatingLabel style={itemStyle}>
-                             <Label style={labelStyle}>Last Name</Label>
-                             <Input style={inputStyle} value={this.state.lastName} onChangeText={lastName => {this.setState({lastName})}}/>
-                        </Item>
-                        <Item floatingLabel style={itemStyle}>
-                             <Label style={labelStyle}>Email</Label>
-                             <Input style={inputStyle} value={this.state.email} onChangeText={email=>{this.setState({email})}} />
-                        </Item>
-                        <Item floatingLabel style={itemStyle}>
-                             <Label style={labelStyle}>Password</Label>
-                             <Input style={inputStyle}  secureTextEntry value={this.state.password} onChangeText={password=>{this.setState({password})}} />
-                        </Item>
-                    </Form>
-                        {this.renderSpinner()}
-                        <View>
-                            <Button bordered light rounded style={{marginTop:40}} onPress={this.createAccount}>
-                                <Text>Create Account</Text>
-                            </Button>
-                        </View>
-
-                    </View>
-                </Content>
-                </KeyboardAvoidingView>
-                </SafeAreaView>
-            </LinearGradient>
-
-        )
-    }
+    );
+  }
 }
 
 
-const styles={
-    inputStyle:{
-        color:'white',
-        width:'10%'
-    },
-    labelStyle:{
-        color:'white'
-    },
-    itemStyle:{
-        margin:10
-    },
-    backIconStyle:{
-        color:'white',
-        top:3,
-        left:0,
-        paddingBottom:20
-    },
-    formStyle:{
-        width:'80%',
-        alignItems:'center'
-    },
-    titleStyle:{
-        color:'white',
-        fontWeight:'bold',
-        fontSize:30,
-        margin:10
-    }
+const styles = {
+  inputStyle: {
+    color: 'white',
+    width: '10%'
+  },
+  labelStyle: {
+    color: 'white'
+  },
+  itemStyle: {
+    margin: 10
+  },
+  backIconStyle: {
+    color: 'white',
+    top: 3,
+    left: 0,
+    paddingBottom: 20
+  },
+  formStyle: {
+    width: '80%',
+    alignItems: 'center'
+  },
+  titleStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 30,
+    margin: 10
+  }
 };
 
-function mapStateToProps(state){
-    return{
-        displayName:state.auth.displayName,
-        message: state.auth.message
-    };
+function mapStateToProps(state) {
+  return {
+    displayName: state.auth.displayName,
+    message: state.auth.message
+  };
 }
 
-export default connect(mapStateToProps,{createEmailAccount})(CreateAccountScreen);
+export default connect(mapStateToProps, { createEmailAccount })(CreateAccountScreen);

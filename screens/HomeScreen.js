@@ -1,31 +1,36 @@
-import React, {Component} from 'react';
-import {View} from 'react-native';
-import {Text} from 'native-base'
-import {connect} from 'react-redux'
-import {getCurrentUserDisplayName} from "../actions";
+import React, { Component } from 'react';
+import { View } from 'react-native';
+import { Text, Container, Content } from 'native-base';
+import { connect } from 'react-redux';
+import { getCurrentUserDisplayName } from '../actions';
 
 class HomeScreen extends Component {
-    async componentWillMount() {
-        console.log('getting display name');
-        await this.props.getCurrentUserDisplayName();
-    }
-    componentWillUpdate(nextProps){
-    }
+	async componentWillMount() {
+		console.log('getting display name');
+		await this.props.getCurrentUserDisplayName();
+	}
 
-    render() {
-        return (
-            <View>
-                <Text>Home Screen</Text>
-                <Text>Home Screen</Text>
-                <Text>Home Screen</Text>
-                <Text>Home Screen</Text>
-                <Text>Home Screen</Text>
-                <Text>Home Screen</Text>
-                <Text>Home Screen</Text>
-                <Text>Home Screen</Text>
-            </View>
-        )
-    }
+	componentWillUpdate(nextProps) {}
+
+	render() {
+		return (
+			<Container>
+				<Content>
+					<Text>Home Screen</Text>
+					<Text>Home Screen</Text>
+					<Text>Home Screen</Text>
+					<Text>Home Screen</Text>
+					<Text>Home Screen</Text>
+					<Text>Home Screen</Text>
+					<Text>Home Screen</Text>
+					<Text>Home Screen</Text>
+				</Content>
+			</Container>
+		);
+	}
 }
 
-export default connect(null,{getCurrentUserDisplayName})(HomeScreen);
+export default connect(
+	null,
+	{ getCurrentUserDisplayName }
+)(HomeScreen);

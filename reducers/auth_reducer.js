@@ -3,18 +3,18 @@ import {
     LOG_OUT,
     LOGIN_FAIL,
     LOGIN_SUCCESS
-} from "../actions/types";
+} from '../actions/types';
 
-export default function (state= {}, action){
+export default function (state = {}, action){
     switch (action.type){
         case STORE_USER_DISPLAY_NAME:
-            return{displayName:action.payload};
+            return { displayName: action.payload };
         case LOGIN_SUCCESS:
-            return {displayName:action.payload};
+            return { displayName: action.payload };
         case LOGIN_FAIL:
-            return {message:action.payload};
+            return { message: action.payload };
         case LOG_OUT:
-            return state={};
+            return {};
         default:
             return state;
     }

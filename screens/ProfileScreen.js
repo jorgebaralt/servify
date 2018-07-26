@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { Container, Header, Body, Right, Button, Icon, Title,Text} from 'native-base';
-import {connect} from 'react-redux'
-import {getCurrentUserDisplayName} from "../actions";
+import { Container, Header, Body, Right, Button, Icon, Title, Text} from 'native-base';
+import { connect } from 'react-redux';
+import {getCurrentUserDisplayName } from '../actions';
 
 class ProfileScreen extends Component {
 
     static navigationOptions={
-        tabBarOptions:{
-            hide:true,
-            tabBarVisible:false,
-            hideTabBar:true
+        tabBarOptions: {
+            hide: true,
+            tabBarVisible: false,
+            hideTabBar: true
         }
     };
 
@@ -21,14 +21,14 @@ class ProfileScreen extends Component {
 
     render() {
         return (
-            <Container >
-                <Header >
+            <Container>
+                <Header>
                     <Body>
                     <Title>{this.props.displayName}</Title>
                     </Body>
                     <Right>
-                        <Button transparent title={'Settings'} onPress={()=>this.props.navigation.navigate('settings')}>
-                            <Icon type={'Entypo'} name='dots-three-horizontal' style={{color:'black'}}  />
+                        <Button transparent title="Settings" onPress={() => this.props.navigation.navigate('settings')}>
+                            <Icon type="Entypo" name="dots-three-horizontal" style={{ color: 'black' }} />
                         </Button>
                     </Right>
                 </Header>
@@ -38,7 +38,7 @@ class ProfileScreen extends Component {
 }
 
 function mapStateToProps(state){
-    return{displayName : state.auth.displayName}
+    return{ displayName: state.auth.displayName };
 }
 
-export default connect(mapStateToProps,{getCurrentUserDisplayName})(ProfileScreen);
+export default connect(mapStateToProps, { getCurrentUserDisplayName })(ProfileScreen);
