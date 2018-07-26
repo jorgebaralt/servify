@@ -5,6 +5,7 @@ import {logOut} from "../actions";
 
 
 class SettingsScreen extends Component {
+
     doLogOut = () => {
         console.log('perform sign out');
         this.props.logOut(

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import {Text, Form, Item,Input,Icon,Label,Toast,Button,Content} from 'native-base'
+import {Text, Form, Item,Input,Icon,Label,Toast,Button,Content,Spinner} from 'native-base'
 import {LinearGradient} from 'expo';
-import {View, KeyboardAvoidingView, SafeAreaView, Platform} from 'react-native';
+import {View, KeyboardAvoidingView, SafeAreaView, Platform,Keyboard} from 'react-native';
 import {connect} from 'react-redux';
 import {createEmailAccount} from '../actions';
 const initialState={
@@ -9,13 +9,16 @@ const initialState={
     lastName:'',
     email:'',
     password:'',
-    showToast:false
+    showToast:false,
+    loading:false
 };
 class CreateAccountScreen extends Component{
 
     state=initialState;
 
     createAccount= async ()=>{
+        Keyboard.dismiss();
+        this.setState({loading:true});
         const {firstName,lastName,email,password} = this.state;
         const user = {
             firstName,
@@ -25,6 +28,7 @@ class CreateAccountScreen extends Component{
         };
         await this.props.createEmailAccount(user);
         this.clearState();
+
     };
     
     //when we receive new props, instantly: 
@@ -52,6 +56,12 @@ class CreateAccountScreen extends Component{
 
     clearState(){
         this.setState(initialState)
+    }
+
+    renderSpinner(){
+        if(this.state.loading){
+            return(<Spinner color={'white'}/>)
+        }
     }
 
     render(){
@@ -87,6 +97,7 @@ class CreateAccountScreen extends Component{
                              <Input style={inputStyle}  secureTextEntry value={this.state.password} onChangeText={password=>{this.setState({password})}} />
                         </Item>
                     </Form>
+                        {this.renderSpinner()}
                         <View>
                             <Button bordered light rounded style={{marginTop:40}} onPress={this.createAccount}>
                                 <Text>Create Account</Text>

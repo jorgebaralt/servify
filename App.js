@@ -33,39 +33,38 @@ export default class App extends React.Component {
     }
 
   render() {
-        let ProfileStack = createStackNavigator({
-            profile:ProfileScreen,
-            settings:SettingsScreen
-        },{
-            headerMode: 'none',
-            navigationOptions: {
-                headerVisible: false,
-            }});
         //Main - Second Navigation
         let Main = createBottomTabNavigator({
             home:{screen:HomeScreen},
             browse:{screen:BrowseScreen},
             postService:{screen:PostServiceScreen},
-            profile:ProfileStack
+            profile:{screen:ProfileScreen}
         });
         //Welcome - First Navigation
-        const MainNavigator = createBottomTabNavigator({
+        const WelcomeNavigator = createBottomTabNavigator({
             welcome:{screen:WelcomeScreen},
             auth:{screen:AuthScreen},
             createAccount:{screen:CreateAccountScreen},
             login:{screen:LoginScreen},
-            main: Main
+            main: {screen:Main}
           },{
               navigationOptions:{
                    tabBarVisible:false
               }
           });
 
+        const RootNavigation = createStackNavigator({
+            initial:WelcomeNavigator,
+            settings:{screen:SettingsScreen}
+        },{
+            headerMode:'none'
+        });
+
         return (
             <Provider store={store}>
               <View style={[styles.container,{paddingTop: Platform.OS==='android' ? StatusBar.currentHeight : 0}]}>
                 <Root>
-                    <MainNavigator/>
+                    <RootNavigation/>
                 </Root>
               </View>
             </Provider>

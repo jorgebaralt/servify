@@ -1,19 +1,22 @@
 import React, {Component} from 'react';
-import {Text, Form, Item, Button, Label, Input, Icon,Toast,Content} from 'native-base';
+import {Text, Form, Item, Button, Label, Input, Icon,Toast,Content,Spinner} from 'native-base';
 import {LinearGradient} from 'expo';
-import {View,SafeAreaView} from 'react-native';
+import {View, SafeAreaView, Keyboard} from 'react-native';
 import {connect} from 'react-redux';
 import {emailAndPasswordLogin} from '../actions';
 const initialState={
     email:'',
     password:'',
-    showToast:false
+    showToast:false,
+    loading:false
 };
 class LoginScreen extends Component{ 
     
     state=initialState;
 
     loginUser=async ()=>{
+        Keyboard.dismiss();
+        this.setState({loading:true});
         const {email,password} = this.state;
         await this.props.emailAndPasswordLogin(email,password);
         this.clearState();
@@ -42,34 +45,45 @@ class LoginScreen extends Component{
     clearState(){
         this.setState(initialState);
     }
+    renderSpinner(){
+        if(this.state.loading){
+            return(<Spinner color={'white'}/>)
+        }
+    }
     render(){
-        const {inputStyle,labelStyle,itemStyle,backIconStyle,formStyle,titleStyle} = styles;
-        return(
-            <LinearGradient colors={['#FF7043','#F4511E','#BF360C']} style={{flex:1}}>
+        const {inputStyle, labelStyle, itemStyle, backIconStyle, formStyle, titleStyle} = styles;
 
-                <SafeAreaView style={{flex:1}}>
+        return (
+            <LinearGradient colors={['#FF7043', '#F4511E', '#BF360C']} style={{flex: 1}}>
+                <SafeAreaView style={{flex: 1}}>
                     <Icon style={backIconStyle}
                           type={'Entypo'}
                           name={'chevron-thin-left'}
-                          onPress={()=>{this.props.navigation.navigate('auth')}}
+                          onPress={() => {
+                              this.props.navigation.navigate('auth')
+                          }}
                     />
                     <Content>
                         {/*//Login Form*/}
-                        <View style={{flex:1,alignItems:'center'}}>
+                        <View style={{flex: 1, alignItems: 'center'}}>
                             <Text style={titleStyle}>Sign in</Text>
                             <Form style={formStyle}>
                                 <Item floatingLabel style={itemStyle}>
                                     <Label style={labelStyle}>Email</Label>
-                                    <Input style={inputStyle} value={this.state.email} onChangeText={(email)=>{this.setState({email})}} />
+                                    <Input style={inputStyle} value={this.state.email} onChangeText={(email) => {
+                                        this.setState({email})
+                                    }}/>
                                 </Item>
                                 <Item floatingLabel style={itemStyle}>
                                     <Label style={labelStyle}>Password</Label>
-                                    <Input style={inputStyle} value={this.state.password} secureTextEntry onChangeText={(password)=>this.setState({password})} />
+                                    <Input style={inputStyle} value={this.state.password} secureTextEntry
+                                           onChangeText={(password) => this.setState({password})}/>
                                 </Item>
-
                             </Form>
+                            {this.renderSpinner()}
                             <View>
-                                <Button title={'Login User'} bordered light rounded style={{marginTop:40}} onPress={this.loginUser}>
+                                <Button title={'Login User'} bordered light rounded style={{marginTop: 40}}
+                                        onPress={this.loginUser}>
                                     <Text>Log in</Text>
                                 </Button>
                             </View>

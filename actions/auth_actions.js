@@ -1,10 +1,8 @@
 import {
-    FACEBOOK_LOGIN_SUCCESS,
-    FACEBOOK_LOGIN_FAIL,
-    EMAIL_LOGIN_FAIL,
-    EMAIL_LOGIN_SUCCESS,
     LOG_OUT,
-    STORE_USER_DISPLAY_NAME, CREATE_ACCOUNT_SUCCESS
+    STORE_USER_DISPLAY_NAME,
+    LOGIN_FAIL,
+    LOGIN_SUCCESS
 } from "./types";
 import {Facebook} from 'expo';
 import firebase from 'firebase'
@@ -15,22 +13,21 @@ import axios from "axios";
 //AsyncStorage.getItem('fb_token');
 
 export const facebookLogin = () => async (dispatch) => {
-    //get application ID
     try{
         let {type , token} = await Facebook.logInWithReadPermissionsAsync('270665710375213',{permissions: ['public_profile','email']});
 
         if(type === 'cancel'){
-            dispatch({type:FACEBOOK_LOGIN_FAIL})
+            dispatch({type:LOGIN_FAIL})
         }
 
         const credential = await firebase.auth.FacebookAuthProvider.credential(token);
         let {user} = await firebase.auth().signInAndRetrieveDataWithCredential(credential)
             .catch(() => {
-                dispatch({type:FACEBOOK_LOGIN_FAIL})
+                dispatch({type:LOGIN_FAIL})
             });
 
         //if everything worked fine, we dispatch success and the displayName
-        dispatch({type:FACEBOOK_LOGIN_SUCCESS,payload:user.displayName})
+        dispatch({type:LOGIN_SUCCESS,payload:user.displayName})
     }catch (e) {
         console.log('facebook canceled')
     }
@@ -40,9 +37,9 @@ export const facebookLogin = () => async (dispatch) => {
 export const emailAndPasswordLogin = (email,password) => async (dispatch) =>{
     try{
         let {user} = await firebase.auth().signInWithEmailAndPassword(email,password);
-        dispatch({type:EMAIL_LOGIN_SUCCESS,payload:user.displayName})
+        dispatch({type:LOGIN_SUCCESS,payload:user.displayName})
     }catch(e){
-        dispatch({type:EMAIL_LOGIN_FAIL,payload:'Password and Email does not Match'})
+        dispatch({type:LOGIN_FAIL,payload:'Password and Email does not Match'})
     }
 };
 
@@ -57,7 +54,7 @@ export const createEmailAccount = (user) => async (dispatch) =>{
     //check not empty
     if(email && password && firstName && lastName){
         if(password.length < 6){
-            return dispatch({type:CREATE_ACCOUNT_FAIL,payload:'Password must be at least 6 characters'})
+            return dispatch({type:LOGIN_FAIL,payload:'Password must be at least 6 characters'})
         }
         //create the account
         try{
@@ -69,12 +66,12 @@ export const createEmailAccount = (user) => async (dispatch) =>{
             });
             //Perform Login Using Firebase.
             let {user} = await firebase.auth().signInWithEmailAndPassword(email,password);
-            dispatch({type:CREATE_ACCOUNT_SUCCESS,payload:user.displayName});
+            dispatch({type:LOGIN_SUCCESS,payload:user.displayName});
         }catch(e){
-            dispatch({type:CREATE_ACCOUNT_FAIL,payload:'Email already exist or information is not valid'});
+            dispatch({type:LOGIN_FAIL,payload:'Email already exist or information is not valid'});
         }
     }else{
-        dispatch({type:CREATE_ACCOUNT_FAIL,payload:'Please fill all the information'})
+        dispatch({type:LOGIN_FAIL,payload:'Please fill all the information'})
     }
 };
 
