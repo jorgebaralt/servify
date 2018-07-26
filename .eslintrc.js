@@ -35,7 +35,8 @@ module.exports = {
         "global-require" : [0],
         "import/no-extraneous-dependencies" : [0],
         "comma-spacing" : [1],
-        "arrow-parens" : [0]
+        "arrow-parens" : [0],
+        "linebreak-style" : [0]
 
     }
 };

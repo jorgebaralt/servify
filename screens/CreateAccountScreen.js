@@ -14,7 +14,6 @@ const initialState = {
   loading: false
 };
 class CreateAccountScreen extends Component {
-
   state = initialState;
 
   // when we receive new props, instantly: 
