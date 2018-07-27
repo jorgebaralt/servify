@@ -5,7 +5,7 @@ import {
     LOGIN_SUCCESS
 } from '../actions/types';
 
-export default function (state = {}, action){
+export default (state = {}, action) => {
     switch (action.type){
         case STORE_USER_DISPLAY_NAME:
             return { displayName: action.payload };
@@ -18,4 +18,4 @@ export default function (state = {}, action){
         default:
             return state;
     }
-}
+};

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, SafeAreaView } from 'react-native';
 import { Text, Content, Container} from 'native-base';
 
 class PostServiceScreen extends Component {
 	render() {
 		return (
-			<Container>
+			<SafeAreaView style={{ flex: 1 }}>
         <Content>
           <Text>PostServiceScreen</Text>
           <Text>PostServiceScreen</Text>
@@ -13,8 +13,7 @@ class PostServiceScreen extends Component {
           <Text>PostServiceScreen</Text>
           <Text>PostServiceScreen</Text>
         </Content>
-
-			</Container>
+			</SafeAreaView>
 		);
 	}
 }

@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, SafeAreaView } from 'react-native';
 import { Text, Container, Content } from 'native-base';
 import { connect } from 'react-redux';
 import { getCurrentUserDisplayName } from '../actions';
 
 class HomeScreen extends Component {
 	async componentWillMount() {
-		console.log('getting display name');
 		await this.props.getCurrentUserDisplayName();
 	}
 
@@ -14,7 +13,7 @@ class HomeScreen extends Component {
 
 	render() {
 		return (
-			<Container>
+			<SafeAreaView style={{ flex: 1 }}>
 				<Content>
 					<Text>Home Screen</Text>
 					<Text>Home Screen</Text>
@@ -25,7 +24,7 @@ class HomeScreen extends Component {
 					<Text>Home Screen</Text>
 					<Text>Home Screen</Text>
 				</Content>
-			</Container>
+			</SafeAreaView>
 		);
 	}
 }

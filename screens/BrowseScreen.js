@@ -1,24 +1,44 @@
 import React, { Component } from 'react';
-import { View, SafeAreaView } from 'react-native';
+import { View, SafeAreaView, ScrollView } from 'react-native';
 import { Text, Content, Container, Card, CardItem, Body } from 'native-base';
+import { connect } from 'react-redux';
 
 class BrowseScreen extends Component {
     renderCategories(){
-      return(
-        <View>
-            <Text>Hello</Text>
-        </View>
-      );
+      const { categories } = this.props;
+      // console.log(categories[0].subcategories[0].subcategoryTitle);
+      return categories.map((category) => {
+          return (
+          <Card key={category.id} style={{ height: 150 }}>
+            <CardItem header>
+              <Text>{category.categoryTitle}</Text>
+            </CardItem>
+            <CardItem>
+              <Body>
+                <Text>
+                  Click on any carditem
+                </Text>
+              </Body>
+            </CardItem>
+          </Card>
+        );
+      });
     }
 
     render() {
         return (
-            <SafeAreaView>
-                    {this.renderCategories()}
-
+            <SafeAreaView style={{ flex: 1 }}>
+              <Content>
+                {this.renderCategories()}
+              </Content>
+                    
             </SafeAreaView>
         );
     }
 }
 
-export default BrowseScreen;
+function mapStateToProps(state){
+  return { categories: state.categories };
+}
+
+export default connect(mapStateToProps)(BrowseScreen);
