@@ -1,23 +1,22 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, SafeAreaView } from 'react-native';
 import { Text, Content, Container, Card, CardItem, Body } from 'native-base';
 
 class BrowseScreen extends Component {
     renderCategories(){
       return(
         <View>
-            <Text> Hello </Text>
+            <Text>Hello</Text>
         </View>
       );
     }
 
     render() {
         return (
-            <Container>
-                <Content>
+            <SafeAreaView>
                     {this.renderCategories()}
-                </Content>
-            </Container>
+
+            </SafeAreaView>
         );
     }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, Form, Item, Button, Label, Input, Icon, Toast, Content, Spinner } from 'native-base';
+import { Text, Form, Item, Button, Label, Input, Icon, Toast, Spinner } from 'native-base';
 import { LinearGradient } from 'expo';
 import { View, SafeAreaView, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
@@ -32,6 +32,7 @@ class LoginScreen extends Component {
                 type: 'warning'
             });
         }
+        this.props.message = '';
     }
 
     loginUser = async () => {
@@ -67,7 +68,7 @@ class LoginScreen extends Component {
                             this.props.navigation.navigate('auth');
                         }}
                     />
-                    <Content>
+
                         { /* Login Form */ }
                         <View style={{ flex: 1, alignItems: 'center' }}>
                             <Text style={titleStyle}>Sign in</Text>
@@ -101,7 +102,7 @@ class LoginScreen extends Component {
                                 </Button>
                             </View>
                         </View>
-                    </Content>
+
                 </SafeAreaView>
             </LinearGradient>
         );
