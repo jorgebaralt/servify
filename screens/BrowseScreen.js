@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, SafeAreaView, ScrollView, Dimensions, TouchableOpacity, ListView, StyleSheet } from 'react-native';
 import { Text, Card, CardItem, Header, Body, Title } from 'native-base';
 import { connect } from 'react-redux';
+import {selectCategory} from '../actions';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 class BrowseScreen extends Component {
@@ -14,7 +15,11 @@ class BrowseScreen extends Component {
 
   renderCategories(category){
         return (
-          <TouchableOpacity key={category.id} style={styles.gridItem}>
+          <TouchableOpacity 
+            key={category.id} 
+            style={styles.gridItem} 
+            onPress={() => { this.props.selectCategory(category); }}
+          >
             <Card style={styles.cardStyle}>
               <CardItem header>
                 <Text>{category.categoryTitle}</Text>
@@ -55,6 +60,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 10,
     width: SCREEN_WIDTH / 2 - 15,
+
   }
 });
 
@@ -62,4 +68,4 @@ function mapStateToProps(state){
   return { categories: state.categories };
 }
 
-export default connect(mapStateToProps)(BrowseScreen);
+export default connect(mapStateToProps, { selectCategory })(BrowseScreen);

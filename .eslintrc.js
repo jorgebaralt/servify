@@ -40,7 +40,8 @@ module.exports = {
         "arrow-spacing" : [1],
         "arrow-body-style": [1],
         "no-alert" : [1],
-        "react/jsx-props-no-multi-spaces": [1]
+        "react/jsx-props-no-multi-spaces": [1],
+        "import/prefer-default-export": [0]
 
     }
 };

@@ -43,7 +43,7 @@ class LoginScreen extends Component {
         this.clearState();
     };
 
-    clearState() {
+    clearState(){
         this.setState(initialState);
     }
 

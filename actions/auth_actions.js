@@ -32,7 +32,6 @@ export const facebookLogin = () => async (dispatch) => {
     }catch (e) {
         console.log('facebook canceled');
     }
-
 };
 
 export const emailAndPasswordLogin = (email, password) => async (dispatch) => {
