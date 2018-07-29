@@ -1,41 +1,62 @@
 import React, { Component } from 'react';
-import { View, SafeAreaView, ScrollView } from 'react-native';
-import { Text, Content, Container, Card, CardItem, Body } from 'native-base';
+import { View, SafeAreaView, ScrollView, Dimensions, TouchableOpacity, ListView, StyleSheet } from 'react-native';
+import { Text, Card, CardItem, Header, Body, Title } from 'native-base';
 import { connect } from 'react-redux';
 
+const SCREEN_WIDTH = Dimensions.get('window').width;
 class BrowseScreen extends Component {
-    renderCategories(){
-      const { categories } = this.props;
-      // console.log(categories[0].subcategories[0].subcategoryTitle);
-      return categories.map((category) => {
-          return (
-          <Card key={category.id} style={{ height: 150 }}>
-            <CardItem header>
-              <Text>{category.categoryTitle}</Text>
-            </CardItem>
-            <CardItem>
-              <Body>
-                <Text>
-                  Click on any carditem
-                </Text>
-              </Body>
-            </CardItem>
-          </Card>
-        );
-      });
+  componentWillMount(){
+    const ds = new ListView.DataSource({
+      rowHasChanged: (r1, r2) => r1 !== r2
+    });
+    this.dataSource = ds.cloneWithRows(this.props.categories);
+  }
+
+  renderCategories(category){
+        return (
+          <TouchableOpacity key={category.id} style={styles.gridItem}>
+            <Card style={styles.cardStyle}>
+              <CardItem header>
+                <Text>{category.categoryTitle}</Text>
+              </CardItem>
+            </Card>
+          </TouchableOpacity>
+      );
     }
 
-    render() {
-        return (
-            <SafeAreaView style={{ flex: 1 }}>
-              <Content>
-                {this.renderCategories()}
-              </Content>
-                    
-            </SafeAreaView>
-        );
-    }
+  render() {
+      return (
+          <View style={{ flex: 1 }}>
+          <Header>
+          <Body>
+            <Title>Categories</Title>
+          </Body>
+          </Header>
+            <ListView 
+              contentContainerStyle={styles.contentStyle}
+              dataSource={this.dataSource}
+              renderRow={(category) => this.renderCategories(category)}
+            />    
+          </View>
+      );
+  }
 }
+
+const styles = StyleSheet.create({
+  contentStyle: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    flex: 1
+  },
+  cardStyle: {
+    height: 100
+  },
+  gridItem: {
+    marginLeft: 10,
+    marginTop: 10,
+    width: SCREEN_WIDTH / 2 - 15,
+  }
+});
 
 function mapStateToProps(state){
   return { categories: state.categories };

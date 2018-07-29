@@ -165,7 +165,7 @@ const styles = {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 30,
-    margin: 10
+    margin: 10,
   }
 };
 
