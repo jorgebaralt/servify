@@ -41,7 +41,8 @@ module.exports = {
         "arrow-body-style": [1],
         "no-alert" : [1],
         "react/jsx-props-no-multi-spaces": [1],
-        "import/prefer-default-export": [0]
+        "import/prefer-default-export": [0],
+        "max-len" : [0]
 
     }
 };

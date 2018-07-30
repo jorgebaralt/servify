@@ -18,7 +18,8 @@ import PostServiceScreen from './screens/PostServiceScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import SpecificCategoryScreen from './screens/SpecificCategoryScreen';
-import SubcategoryScreen from './screens/SubcategoryScreen';
+import SubcategoriesListScreen from './screens/SubcategoriesListScreen';
+import SpecificSubcategoryScreen from './screens/SpecificSubcategoryScreen';
 
 const store = createStore(reducers, {}, compose(applyMiddleware(thunk)));
 export default class App extends React.Component {
@@ -36,7 +37,8 @@ export default class App extends React.Component {
   render() {
     const SelectedCategory = createStackNavigator({
       category: { screen: SpecificCategoryScreen },
-      subcategory: {screen: SubcategoryScreen }
+      subcategories: { screen: SubcategoriesListScreen },
+      specificSubcategory: { screen: SpecificSubcategoryScreen }
     }, {
       headerMode: 'none'
     });

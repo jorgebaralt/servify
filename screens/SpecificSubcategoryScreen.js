@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import { Header,Text, Card, CardItem, Body, Title, Container, Left, Button, Icon, Right } from 'native-base';
+import { Header, Text, Card, CardItem, Body, Title, Container, Left, Button, Icon, Right } from 'native-base';
 import { connect } from 'react-redux';
 
 class SpecificCategoryScreen extends Component {
@@ -8,8 +8,8 @@ class SpecificCategoryScreen extends Component {
     // TODO: get all the post for this service in firebase
   }
 
-  onBackPress = () => {
-    this.props.navigation.goBack(null);
+  onBackPressed = () =>{
+    this.props.navigation.goBack();
   }
 
   render() {
@@ -17,14 +17,13 @@ class SpecificCategoryScreen extends Component {
       <Container>
         <Header>
           <Left>
-            <Button transparent onPress={() => { this.onBackPress(); }}>
+            <Button transparent onPress={() => this.onBackPressed()}>
               <Icon name="arrow-back" style={{ color: 'black' }} />
             </Button>
           </Left>
           <Body>
-            <Title>{this.props.category.title}</Title>
+            <Title>{this.props.subcategory.title}</Title>
           </Body>
-          <Right />
         </Header>
         <Text>Specific Category</Text>
       </Container>
@@ -32,6 +31,6 @@ class SpecificCategoryScreen extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({ category: state.selectedCategory.category });
+const mapStateToProps = (state) => ({ subcategory: state.selectedCategory.subcategory });
 
 export default connect(mapStateToProps)(SpecificCategoryScreen);

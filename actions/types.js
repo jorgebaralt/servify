@@ -10,3 +10,5 @@ export const LOGIN_FAIL = 'login_fail';
 export const LOG_OUT = 'logout';
 export const SELECT_CATEGORY = 'select_category';
 export const DESELECT_CATEGORY = 'deselect_category';
+export const SELECT_SUBCATEGORY = 'select_subcategory';
+export const DESELECT_SUBCATEGORY = 'deselect_subcategory';

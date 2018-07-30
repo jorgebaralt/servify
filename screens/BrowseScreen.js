@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, SafeAreaView, ScrollView, Dimensions, TouchableOpacity, ListView, StyleSheet } from 'react-native';
-import { Text, Card, CardItem, Header, Body, Title, Container } from 'native-base';
+import { Text, Card, CardItem, Header, Body, Title, Container, Right } from 'native-base';
 import { connect } from 'react-redux';
 import { selectCategory } from '../actions';
 
@@ -17,7 +17,7 @@ class BrowseScreen extends Component {
     this.props.selectCategory(category);
     // pick where to navigate
     if(category.subcategories){
-      this.props.navigation.navigate('subcategory');
+      this.props.navigation.navigate('subcategories');
     }else{
       this.props.navigation.navigate('category');
     }
@@ -32,7 +32,7 @@ class BrowseScreen extends Component {
           >
             <Card style={styles.cardStyle}>
               <CardItem header>
-                <Text>{category.categoryTitle}</Text>
+                <Text>{category.title}</Text>
               </CardItem>
             </Card>
           </TouchableOpacity>
