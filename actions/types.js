@@ -9,3 +9,4 @@ export const LOGIN_SUCCESS = 'login_success';
 export const LOGIN_FAIL = 'login_fail';
 export const LOG_OUT = 'logout';
 export const SELECT_CATEGORY = 'select_category';
+export const DESELECT_CATEGORY = 'deselect_category';

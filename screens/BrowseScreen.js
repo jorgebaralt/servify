@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { View, SafeAreaView, ScrollView, Dimensions, TouchableOpacity, ListView, StyleSheet } from 'react-native';
-import { Text, Card, CardItem, Header, Body, Title } from 'native-base';
+import { Text, Card, CardItem, Header, Body, Title, Container } from 'native-base';
 import { connect } from 'react-redux';
-import {selectCategory} from '../actions';
+import { selectCategory } from '../actions';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 class BrowseScreen extends Component {
@@ -13,12 +13,22 @@ class BrowseScreen extends Component {
     this.dataSource = ds.cloneWithRows(this.props.categories);
   }
 
+  doSelectCategory = (category) => {
+    this.props.selectCategory(category);
+    // pick where to navigate
+    if(category.subcategories){
+      this.props.navigation.navigate('subcategory');
+    }else{
+      this.props.navigation.navigate('category');
+    }
+  }
+
   renderCategories(category){
         return (
           <TouchableOpacity 
             key={category.id} 
             style={styles.gridItem} 
-            onPress={() => { this.props.selectCategory(category); }}
+            onPress={() => this.doSelectCategory(category)}
           >
             <Card style={styles.cardStyle}>
               <CardItem header>
@@ -31,7 +41,7 @@ class BrowseScreen extends Component {
 
   render() {
       return (
-          <View style={{ flex: 1 }}>
+          <Container style={{ flex: 1 }}>
           <Header>
           <Body>
             <Title>Categories</Title>
@@ -42,12 +52,12 @@ class BrowseScreen extends Component {
               dataSource={this.dataSource}
               renderRow={(category) => this.renderCategories(category)}
             />    
-          </View>
+          </Container>
       );
   }
 }
 
-const styles = StyleSheet.create({
+const styles = {
   contentStyle: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -60,9 +70,8 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 10,
     width: SCREEN_WIDTH / 2 - 15,
-
   }
-});
+};
 
 function mapStateToProps(state){
   return { categories: state.categories };

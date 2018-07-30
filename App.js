@@ -8,7 +8,7 @@ import thunk from 'redux-thunk';
 import firebase from 'firebase';
 import reducers from './reducers';
 // Screens
-import AuthScreen from './screens/AuthScreen'
+import AuthScreen from './screens/AuthScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
 import CreateAccountScreen from './screens/CreateAccountScreen';
 import LoginScreen from './screens/LoginScreen';
@@ -17,10 +17,11 @@ import BrowseScreen from './screens/BrowseScreen';
 import PostServiceScreen from './screens/PostServiceScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import SettingsScreen from './screens/SettingsScreen';
+import SpecificCategoryScreen from './screens/SpecificCategoryScreen';
+import SubcategoryScreen from './screens/SubcategoryScreen';
 
 const store = createStore(reducers, {}, compose(applyMiddleware(thunk)));
 export default class App extends React.Component {
-
   componentWillMount() {
     firebase.initializeApp({
       apiKey: 'AIzaSyBlfkH3vO25hXrejXrSeWRlejfETYUfb6I',
@@ -33,6 +34,12 @@ export default class App extends React.Component {
   }
 
   render() {
+    const SelectedCategory = createStackNavigator({
+      category: { screen: SpecificCategoryScreen },
+      subcategory: {screen: SubcategoryScreen }
+    }, {
+      headerMode: 'none'
+    });
     // Main - Second Navigation
     const Main = createBottomTabNavigator({
       home: { screen: HomeScreen },
@@ -53,9 +60,11 @@ export default class App extends React.Component {
         }
       });
 
+      // ROOT NAVIGATION
     const RootNavigation = createStackNavigator({
       initial: WelcomeNavigator,
-      settings: { screen: SettingsScreen }
+      settings: { screen: SettingsScreen },
+      selectedCategory: SelectedCategory
     }, {
         headerMode: 'none'
       });
