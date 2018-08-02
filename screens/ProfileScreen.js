@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import {getCurrentUserDisplayName } from '../actions';
 
 class ProfileScreen extends Component {
-
     static navigationOptions={
         tabBarOptions: {
             hide: true,
