@@ -19,6 +19,7 @@ import {
     Icon,
     Button
 } from 'native-base';
+import {createService} from "../actions";
 import { connect } from 'react-redux';
 
 const initialState = {
@@ -77,6 +78,21 @@ class PostServiceScreen extends Component {
         }
     }
 
+    doPostService = () =>{
+        const {selectedCategory, selectedSubcategory, title, phone,location,description} = this.state;
+        Keyboard.dismiss();
+        const servicePost = {
+            selectedCategory,
+            selectedSubcategory,
+            title,
+            phone,
+            location,
+            description
+        };
+        this.setState(initialState);
+        this.props.createService(servicePost);
+
+    };
 
     render() {
         const { titleStyle, formStyle, itemStyle, textAreaStyle, pickerStyle,buttonStyle } = styles;
@@ -113,14 +129,7 @@ class PostServiceScreen extends Component {
                                 </Item>
 
                                 <Item style={itemStyle} floatingLabel>
-                                    <Label>Email</Label>
-                                    <Input
-                                        value={this.state.email}
-                                        onChangeText={(text) => this.setState({ email: text })}
-                                    />
-                                </Item>
-                                <Item style={itemStyle} floatingLabel>
-                                    <Label>Phone</Label>
+                                    <Label>Contact Phone</Label>
                                     <Input
                                         value={this.state.phone}
                                         onChangeText={(text) => this.setState({ phone: text })}
@@ -143,7 +152,7 @@ class PostServiceScreen extends Component {
                                 />
 
                                 {/* TODO: add char count under textArea */}
-                                {/*TODO: Services should be first Submitted for approval.*/}
+
                             </Form>
                             <View>
                                 <Button
@@ -151,12 +160,14 @@ class PostServiceScreen extends Component {
                                     dark
                                     rounded
                                     style={buttonStyle}
-                                    onPress={() => console.log('click')}
+                                    onPress={() => this.doPostService()}
                                 >
                                     <Text>Submit</Text>
                                 </Button>
                             </View>
                         </View>
+                        {/* TODO: Services should be first Submitted for approval.*/}
+                        {/* TODO: Users will also be able to contact you through your account email, create message*/}
 
                     </Content>
                 </KeyboardAvoidingView>
@@ -191,4 +202,4 @@ function mapStateToProps(state) {
     return { categories: state.categories };
 }
 
-export default connect(mapStateToProps)(PostServiceScreen);
+export default connect(mapStateToProps,{createService})(PostServiceScreen);

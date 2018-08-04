@@ -12,3 +12,5 @@ export const SELECT_CATEGORY = 'select_category';
 export const DESELECT_CATEGORY = 'deselect_category';
 export const SELECT_SUBCATEGORY = 'select_subcategory';
 export const DESELECT_SUBCATEGORY = 'deselect_subcategory';
+export const POST_SERVICE_SUCCESS = 'post_service_success';
+export const POST_SERVICE_FAIL = 'post_service_fail';

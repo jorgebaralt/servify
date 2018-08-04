@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Expo, { AppLoading } from 'expo';
+import {StatusBar, View} from 'react-native'
 import _ from 'lodash';
 import firebase from 'firebase';
 import Slides from '../components/Slides';
@@ -58,7 +59,10 @@ class WelcomeScreen extends Component{
             return (<AppLoading />);
         }
         return(
-            <Slides data={SLIDE_DATA} onComplete={this.onSlidesComplete} />
+            <View style={{flex: 1}}>
+                <StatusBar hidden={true}/>
+                <Slides data={SLIDE_DATA} onComplete={this.onSlidesComplete} />
+            </View>
         );
     }
 }
