@@ -12,10 +12,9 @@ const SLIDE_DATA = [
 ];
 
 class WelcomeScreen extends Component{
-
     state ={
-        loading : true,
-        authenticated : null
+        loading: true,
+        authenticated: null
     };
 
     async componentWillMount(){
@@ -36,10 +35,10 @@ class WelcomeScreen extends Component{
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 this.props.navigation.navigate('main');
-                this.setState({ authenticated:true });
+                this.setState({ authenticated: true });
             } else {
                 // No user is signed in.
-                this.setState({ authenticated:false });
+                this.setState({ authenticated: false });
             }
         });
     }
@@ -59,8 +58,8 @@ class WelcomeScreen extends Component{
             return (<AppLoading />);
         }
         return(
-            <View style={{flex: 1}}>
-                <StatusBar hidden={true}/>
+            <View style={{ flex: 1 }}>
+                <StatusBar hidden />
                 <Slides data={SLIDE_DATA} onComplete={this.onSlidesComplete} />
             </View>
         );

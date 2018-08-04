@@ -19,8 +19,9 @@ import {
     Icon,
     Button
 } from 'native-base';
-import {createService} from "../actions";
 import { connect } from 'react-redux';
+import { createService } from '../actions';
+
 
 const initialState = {
     selectedCategory: undefined,
@@ -34,6 +35,21 @@ const initialState = {
 
 class PostServiceScreen extends Component {
     state = initialState;
+
+    doPostService = () =>{
+        const {selectedCategory, selectedSubcategory, title, phone,location,description} = this.state;
+        Keyboard.dismiss();
+        const servicePost = {
+            selectedCategory,
+            selectedSubcategory,
+            title,
+            phone,
+            location,
+            description
+        };
+        this.setState(initialState);
+        this.props.createService(servicePost);
+    };
 
     // TODO: animate when the new picker appears
     renderPickerItemsCategories() {
@@ -76,26 +92,10 @@ class PostServiceScreen extends Component {
                 );
             }
         }
-    }
-
-    doPostService = () =>{
-        const {selectedCategory, selectedSubcategory, title, phone,location,description} = this.state;
-        Keyboard.dismiss();
-        const servicePost = {
-            selectedCategory,
-            selectedSubcategory,
-            title,
-            phone,
-            location,
-            description
-        };
-        this.setState(initialState);
-        this.props.createService(servicePost);
-
-    };
+    }  
 
     render() {
-        const { titleStyle, formStyle, itemStyle, textAreaStyle, pickerStyle,buttonStyle } = styles;
+        const { titleStyle, formStyle, itemStyle, textAreaStyle, buttonStyle } = styles;
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <KeyboardAvoidingView
@@ -166,8 +166,8 @@ class PostServiceScreen extends Component {
                                 </Button>
                             </View>
                         </View>
-                        {/* TODO: Services should be first Submitted for approval.*/}
-                        {/* TODO: Users will also be able to contact you through your account email, create message*/}
+                        {/* TODO: Services should be first Submitted for approval. */}
+                        {/* TODO: Users will also be able to contact you through your account email, create message */}
 
                     </Content>
                 </KeyboardAvoidingView>
@@ -202,4 +202,4 @@ function mapStateToProps(state) {
     return { categories: state.categories };
 }
 
-export default connect(mapStateToProps,{createService})(PostServiceScreen);
+export default connect(mapStateToProps, { createService })(PostServiceScreen);
