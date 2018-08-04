@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ffdb8382-2231-46d2-b016-139dbf295247" name="Default" comment="Fixed every bug so far. keyboard, login, and navigation works correctly">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="ffdb8382-2231-46d2-b016-139dbf295247" name="Default" comment="Fixed every bug so far. keyboard, login, and navigation works correctly" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -48,18 +46,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/screens/PostServiceScreen.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="14" column="9" selection-start-line="14" selection-start-column="9" selection-end-line="14" selection-end-column="9" />
-              <folding>
-                <element signature="n#!!block;n#mapStateToProps#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/actions/post_service_actions.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -188,26 +174,6 @@
             <path>
               <item name="servify" type="b2602c69:ProjectViewProjectNode" />
               <item name="servify" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="servify" type="b2602c69:ProjectViewProjectNode" />
-              <item name="servify" type="462c0819:PsiDirectoryNode" />
-              <item name="actions" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="servify" type="b2602c69:ProjectViewProjectNode" />
-              <item name="servify" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="servify" type="b2602c69:ProjectViewProjectNode" />
-              <item name="servify" type="462c0819:PsiDirectoryNode" />
-              <item name="reducers" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="servify" type="b2602c69:ProjectViewProjectNode" />
-              <item name="servify" type="462c0819:PsiDirectoryNode" />
-              <item name="screens" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -363,7 +329,7 @@
       <workItem from="1533183475364" duration="52000" />
       <workItem from="1533183682713" duration="659000" />
       <workItem from="1533249492342" duration="26095000" />
-      <workItem from="1533406740267" duration="224000" />
+      <workItem from="1533406740267" duration="397000" />
     </task>
     <task id="LOCAL-00001" summary="Welcome Screen completed, Altered the component Slides for more friendly positioning and dot for tutorial track!">
       <created>1532191100566</created>
@@ -411,7 +377,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="142575000" />
+    <option name="totallyTimeSpent" value="142748000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="953" extended-state="0" />
@@ -586,9 +552,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="294">
           <caret line="14" column="9" selection-start-line="14" selection-start-column="9" selection-end-line="14" selection-end-column="9" />
-          <folding>
-            <element signature="n#!!block;n#mapStateToProps#0" />
-          </folding>
         </state>
       </provider>
     </entry>

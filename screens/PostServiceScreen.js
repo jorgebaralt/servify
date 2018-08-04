@@ -92,6 +92,7 @@ class PostServiceScreen extends Component {
                 );
             }
         }
+        return(<View />);
     }  
 
     render() {
