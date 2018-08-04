@@ -45,7 +45,7 @@ class SubcategoriesListScreen extends Component {
         </Card>
       </TouchableOpacity>
     );
-  }
+  };
 
   render() {
     return (

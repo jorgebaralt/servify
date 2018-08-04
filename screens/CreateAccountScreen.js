@@ -143,7 +143,6 @@ class CreateAccountScreen extends Component {
 const styles = {
   inputStyle: {
     color: 'white',
-    width: '10%'
   },
   labelStyle: {
     color: 'white'

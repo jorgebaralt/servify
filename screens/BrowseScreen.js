@@ -21,7 +21,7 @@ class BrowseScreen extends Component {
     }else{
       this.props.navigation.navigate('category');
     }
-  }
+  };
 
   renderCategories(category){
         return (
@@ -40,24 +40,29 @@ class BrowseScreen extends Component {
     }
 
   render() {
+      const {titleStyle} = styles;
       return (
-          <Container style={{ flex: 1 }}>
-          <Header>
-          <Body>
-            <Title>Categories</Title>
-          </Body>
-          </Header>
-            <ListView 
-              contentContainerStyle={styles.contentStyle}
-              dataSource={this.dataSource}
-              renderRow={(category) => this.renderCategories(category)}
-            />    
-          </Container>
+          <SafeAreaView style={{ flex: 1 }}>
+              <View style={{alignItems: 'center'}}>
+                <Text style={titleStyle}>Browse</Text>
+              </View>
+              <ListView
+                  contentContainerStyle={styles.contentStyle}
+                  dataSource={this.dataSource}
+                  renderRow={(category) => this.renderCategories(category)}
+              />
+          </SafeAreaView>
       );
   }
 }
 
 const styles = {
+    titleStyle: {
+        color: 'black',
+        fontWeight: 'bold',
+        fontSize: 30,
+        margin: 30,
+    },
   contentStyle: {
     flexDirection: 'row',
     flexWrap: 'wrap',

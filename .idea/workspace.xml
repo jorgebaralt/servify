@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ffdb8382-2231-46d2-b016-139dbf295247" name="Default" comment="Fixed every bug so far. keyboard, login, and navigation works correctly" />
+    <list default="true" id="ffdb8382-2231-46d2-b016-139dbf295247" name="Default" comment="Fixed every bug so far. keyboard, login, and navigation works correctly">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/BrowseScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/BrowseScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/CreateAccountScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/CreateAccountScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/PostServiceScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/PostServiceScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/SubcategoriesListScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/SubcategoriesListScreen.js" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -16,73 +22,57 @@
       <usages-collector id="statistics.lifecycle.project">
         <counts>
           <entry key="project.closed" value="2" />
-          <entry key="project.open.time.4" value="1" />
+          <entry key="project.open.time.4" value="2" />
           <entry key="project.open.time.6" value="1" />
-          <entry key="project.opened" value="2" />
+          <entry key="project.opened" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="js" value="58" />
+          <entry key="js" value="3526" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JavaScript" value="58" />
+          <entry key="JavaScript" value="3526" />
         </counts>
       </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="js" value="11" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="JavaScript" value="11" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.js.language.service.starts" />
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/screens/ProfileScreen.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="207">
-              <caret line="9" column="23" selection-start-line="9" selection-start-column="23" selection-end-line="9" selection-end-column="23" />
-              <folding>
-                <element signature="e#0#41#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/screens/SpecificSubcategoryScreen.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <folding>
-                <element signature="e#0#41#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/screens/SpecificCategoryScreen.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <folding>
-                <element signature="e#0#41#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/screens/LoginScreen.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="355">
-              <caret line="35" column="5" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/screens/PostServiceScreen.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7">
-              <caret line="5" column="14" selection-start-line="5" selection-start-column="14" selection-end-line="5" selection-end-column="14" />
+            <state relative-caret-position="504">
+              <caret line="27" column="14" lean-forward="true" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+              <folding>
+                <element signature="e#0#41#0" expanded="true" />
+                <element signature="n#!!block;n#renderPickerItems#0;n#PostServiceScreen#0" />
+                <element signature="n#!!block;n#renderPickerItemsSubcategories#0;n#PostServiceScreen#0" />
+                <element signature="n#!!block;n#renderSubcategories#0;n#PostServiceScreen#0" />
+                <element signature="n#!!block;n#mapStateToProps#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/screens/CreateAccountScreen.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="470">
+              <caret line="127" column="19" lean-forward="true" selection-start-line="121" selection-start-column="18" selection-end-line="127" selection-end-column="19" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -108,6 +98,7 @@
       <find>conso</find>
       <find>user</find>
       <find>token</find>
+      <find>categoryS</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -140,12 +131,15 @@
         <option value="$PROJECT_DIR$/actions/types.js" />
         <option value="$PROJECT_DIR$/reducers/auth_reducer.js" />
         <option value="$PROJECT_DIR$/actions/auth_actions.js" />
-        <option value="$PROJECT_DIR$/screens/CreateAccountScreen.js" />
         <option value="$PROJECT_DIR$/screens/SettingsScreen.js" />
         <option value="$PROJECT_DIR$/App.js" />
-        <option value="$PROJECT_DIR$/screens/PostServiceScreen.js" />
         <option value="$PROJECT_DIR$/screens/ProfileScreen.js" />
         <option value="$PROJECT_DIR$/screens/LoginScreen.js" />
+        <option value="$PROJECT_DIR$/reducers/category_list_reducer.js" />
+        <option value="$PROJECT_DIR$/screens/SubcategoriesListScreen.js" />
+        <option value="$PROJECT_DIR$/screens/BrowseScreen.js" />
+        <option value="$PROJECT_DIR$/screens/CreateAccountScreen.js" />
+        <option value="$PROJECT_DIR$/screens/PostServiceScreen.js" />
       </list>
     </option>
   </component>
@@ -176,17 +170,13 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="servify" type="b2602c69:ProjectViewProjectNode" />
               <item name="servify" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="servify" type="b2602c69:ProjectViewProjectNode" />
-              <item name="servify" type="462c0819:PsiDirectoryNode" />
-              <item name="actions" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="servify" type="b2602c69:ProjectViewProjectNode" />
@@ -202,7 +192,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="AndroidView" />
       <pane id="PackagesPane" />
     </panes>
@@ -351,6 +340,7 @@
       <workItem from="1533182314359" duration="895000" />
       <workItem from="1533183475364" duration="52000" />
       <workItem from="1533183682713" duration="659000" />
+      <workItem from="1533249492342" duration="15615000" />
     </task>
     <task id="LOCAL-00001" summary="Welcome Screen completed, Altered the component Slides for more friendly positioning and dot for tutorial track!">
       <created>1532191100566</created>
@@ -398,13 +388,13 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="116256000" />
+    <option name="totallyTimeSpent" value="131871000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="953" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19951779" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19951779" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Capture Tool" order="3" />
@@ -485,13 +475,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/screens/BrowseScreen.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="12" selection-start-column="12" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/screens/HomeScreen.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="253">
@@ -541,13 +524,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/screens/CreateAccountScreen.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="309">
-          <caret line="19" column="27" selection-start-line="19" selection-start-column="27" selection-end-line="19" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/App.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="779">
@@ -562,31 +538,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/screens/SpecificSubcategoryScreen.js">
+    <entry file="file://$PROJECT_DIR$/screens/LoginScreen.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/screens/SpecificCategoryScreen.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/screens/PostServiceScreen.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7">
-          <caret line="5" column="14" selection-start-line="5" selection-start-column="14" selection-end-line="5" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="507">
+          <caret line="35" column="5" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -600,10 +555,75 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/screens/LoginScreen.js">
+    <entry file="file://$PROJECT_DIR$/reducers/category_list_reducer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="355">
-          <caret line="35" column="5" selection-start-line="35" selection-start-column="5" selection-end-line="35" selection-end-column="5" />
+        <state relative-caret-position="299">
+          <caret line="13" column="8" lean-forward="true" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/screens/SpecificSubcategoryScreen.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-112">
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/screens/SubcategoriesListScreen.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1334">
+          <caret line="58" column="16" lean-forward="true" selection-start-line="58" selection-start-column="16" selection-end-line="58" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/reducers/select_category_reducer.js">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/screens/SpecificCategoryScreen.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/screens/BrowseScreen.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1196">
+          <caret line="52" column="16" lean-forward="true" selection-start-line="52" selection-start-column="16" selection-end-line="52" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/screens/CreateAccountScreen.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="470">
+          <caret line="127" column="19" lean-forward="true" selection-start-line="121" selection-start-column="18" selection-end-line="127" selection-end-column="19" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/screens/PostServiceScreen.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="27" column="14" lean-forward="true" selection-start-line="27" selection-start-column="14" selection-end-line="27" selection-end-column="14" />
+          <folding>
+            <element signature="e#0#41#0" expanded="true" />
+            <element signature="n#!!block;n#renderPickerItems#0;n#PostServiceScreen#0" />
+            <element signature="n#!!block;n#renderPickerItemsSubcategories#0;n#PostServiceScreen#0" />
+            <element signature="n#!!block;n#renderSubcategories#0;n#PostServiceScreen#0" />
+            <element signature="n#!!block;n#mapStateToProps#0" />
+          </folding>
         </state>
       </provider>
     </entry>
