@@ -16,7 +16,8 @@ import {
     Input,
     Textarea,
     Picker,
-    Icon
+    Icon,
+    Button
 } from 'native-base';
 import { connect } from 'react-redux';
 
@@ -78,7 +79,7 @@ class PostServiceScreen extends Component {
 
 
     render() {
-        const { titleStyle, formStyle, itemStyle, textAreaStyle, pickerStyle } = styles;
+        const { titleStyle, formStyle, itemStyle, textAreaStyle, pickerStyle,buttonStyle } = styles;
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <KeyboardAvoidingView
@@ -143,9 +144,20 @@ class PostServiceScreen extends Component {
 
                                 {/* TODO: add char count under textArea */}
                                 {/*TODO: Services should be first Submitted for approval.*/}
-
                             </Form>
+                            <View>
+                                <Button
+                                    bordered
+                                    dark
+                                    rounded
+                                    style={buttonStyle}
+                                    onPress={() => console.log('click')}
+                                >
+                                    <Text>Submit</Text>
+                                </Button>
+                            </View>
                         </View>
+
                     </Content>
                 </KeyboardAvoidingView>
             </SafeAreaView>
@@ -168,6 +180,10 @@ const styles = {
     textAreaStyle: {
         margin: 10,
         marginTop: 30
+    },
+    buttonStyle:{
+        marginTop: 10,
+        marginLeft: '50%'
     }
 };
 
