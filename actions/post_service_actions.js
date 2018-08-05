@@ -2,7 +2,6 @@ import axios from 'axios';
 import { POST_SERVICE_SUCCESS, POST_SERVICE_FAIL } from './types';
 
 export const createService = (servicePost) => async (dispatch) => {
-    
     const url = 'https://us-central1-servify-716c6.cloudfunctions.net/postService';
 	const {
 		selectedCategory,
@@ -40,7 +39,7 @@ export const createService = (servicePost) => async (dispatch) => {
         }
         try {
            await axios.post(url, newServicePost);
-            return dispatch({ type: POST_SERVICE_SUCCESS });
+            return dispatch({ type: POST_SERVICE_SUCCESS, payload: 'Post has been created' });
         } catch (error) {
             return dispatch({ type: POST_SERVICE_FAIL, payload: 'Error connecting to server' });
         }
