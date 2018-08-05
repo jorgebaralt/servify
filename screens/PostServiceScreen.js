@@ -26,7 +26,7 @@ import { createService } from '../actions';
 const initialState = {
     selectedCategory: undefined,
     selectedSubcategory: undefined,
-    title: '',
+    serviceTitle: '',
     email: '',
     phone: '',
     location: '',
@@ -37,12 +37,12 @@ class PostServiceScreen extends Component {
     state = initialState;
 
     doPostService = () =>{
-        const {selectedCategory, selectedSubcategory, title, phone,location,description} = this.state;
+        const {selectedCategory, selectedSubcategory, serviceTitle, phone,location,description} = this.state;
         Keyboard.dismiss();
         const servicePost = {
             selectedCategory,
             selectedSubcategory,
-            title,
+            serviceTitle,
             phone,
             location,
             description
@@ -124,8 +124,8 @@ class PostServiceScreen extends Component {
                                 <Item style={itemStyle} floatingLabel>
                                     <Label>Service Title</Label>
                                     <Input
-                                        value={this.state.title}
-                                        onChangeText={(text) => this.setState({ title: text })}
+                                        value={this.state.serviceTitle}
+                                        onChangeText={(text) => this.setState({ serviceTitle: text })}
                                     />
                                 </Item>
 
@@ -134,6 +134,7 @@ class PostServiceScreen extends Component {
                                     <Input
                                         value={this.state.phone}
                                         onChangeText={(text) => this.setState({ phone: text })}
+                                        // TODO: set keyboard to only numbers
                                     />
                                 </Item>
                                 <Item style={itemStyle} floatingLabel>
@@ -151,9 +152,7 @@ class PostServiceScreen extends Component {
                                     value={this.state.description}
                                     onChangeText={(text) => this.setState({ description: text })}
                                 />
-
                                 {/* TODO: add char count under textArea */}
-
                             </Form>
                             <View>
                                 <Button
@@ -193,9 +192,9 @@ const styles = {
         margin: 10,
         marginTop: 30
     },
-    buttonStyle:{
+    buttonStyle: {
         marginTop: 10,
-        marginLeft: '50%'
+        marginLeft: '50%',
     }
 };
 

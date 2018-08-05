@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Expo, { AppLoading } from 'expo';
-import {StatusBar, View } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import _ from 'lodash';
 import firebase from 'firebase';
 import Slides from '../components/Slides';

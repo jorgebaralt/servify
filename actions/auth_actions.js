@@ -58,7 +58,7 @@ export const createEmailAccount = (user) => async (dispatch) => {
         }
         // create the account
         try{
-            await axios.post(url,{
+            await axios.post(url, {
                 email,
                 password,
                 firstName,

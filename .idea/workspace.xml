@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ffdb8382-2231-46d2-b016-139dbf295247" name="Default" comment="Fixed every bug so far. keyboard, login, and navigation works correctly" />
+    <list default="true" id="ffdb8382-2231-46d2-b016-139dbf295247" name="Default" comment="Fixed every bug so far. keyboard, login, and navigation works correctly">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/actions/auth_actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/actions/auth_actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/actions/post_service_actions.js" beforeDir="false" afterPath="$PROJECT_DIR$/actions/post_service_actions.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/PostServiceScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/PostServiceScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/WelcomeScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screens/WelcomeScreen.js" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -15,30 +21,31 @@
     <session id="1714858795">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="3" />
+          <entry key="project.closed" value="5" />
+          <entry key="project.open.time.3" value="1" />
           <entry key="project.open.time.4" value="3" />
           <entry key="project.open.time.6" value="1" />
-          <entry key="project.opened" value="4" />
+          <entry key="project.opened" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="js" value="5621" />
+          <entry key="js" value="5845" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JavaScript" value="5621" />
+          <entry key="JavaScript" value="5845" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="js" value="28" />
+          <entry key="js" value="29" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JavaScript" value="28" />
+          <entry key="JavaScript" value="29" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts" />
@@ -46,20 +53,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/actions/post_service_actions.js">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/screens/PostServiceScreen.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="6" selection-start-line="6" selection-end-line="6" />
+            <state relative-caret-position="253">
+              <caret line="33" column="2" selection-start-line="33" selection-start-column="2" selection-end-line="33" selection-end-column="2" />
+              <folding>
+                <element signature="e#0#41#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/App.js">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/actions/post_service_actions.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="441">
-              <caret line="40" column="64" selection-start-line="40" selection-start-column="64" selection-end-line="40" selection-end-column="64" />
+            <state relative-caret-position="615">
+              <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
               <folding>
                 <element signature="e#0#26#0" expanded="true" />
               </folding>
@@ -70,7 +80,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/reducers/category_list_reducer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="273">
+            <state relative-caret-position="299">
               <caret line="13" column="8" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="8" />
             </state>
           </provider>
@@ -96,6 +106,7 @@
       <find>token</find>
       <find>categoryS</find>
       <find>skip</find>
+      <find>title</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -135,8 +146,8 @@
         <option value="$PROJECT_DIR$/actions/index.js" />
         <option value="$PROJECT_DIR$/actions/types.js" />
         <option value="$PROJECT_DIR$/screens/WelcomeScreen.js" />
-        <option value="$PROJECT_DIR$/screens/PostServiceScreen.js" />
         <option value="$PROJECT_DIR$/App.js" />
+        <option value="$PROJECT_DIR$/screens/PostServiceScreen.js" />
         <option value="$PROJECT_DIR$/actions/post_service_actions.js" />
       </list>
     </option>
@@ -329,7 +340,8 @@
       <workItem from="1533183475364" duration="52000" />
       <workItem from="1533183682713" duration="659000" />
       <workItem from="1533249492342" duration="26095000" />
-      <workItem from="1533406740267" duration="397000" />
+      <workItem from="1533406740267" duration="2093000" />
+      <workItem from="1533412552385" duration="190000" />
     </task>
     <task id="LOCAL-00001" summary="Welcome Screen completed, Altered the component Slides for more friendly positioning and dot for tutorial track!">
       <created>1532191100566</created>
@@ -377,10 +389,11 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="142748000" />
+    <option name="totallyTimeSpent" value="144634000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="953" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19951779" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -548,34 +561,37 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/screens/PostServiceScreen.js">
+    <entry file="file://$PROJECT_DIR$/App.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="14" column="9" selection-start-line="14" selection-start-column="9" selection-end-line="14" selection-end-column="9" />
+        <state relative-caret-position="600">
+          <caret line="40" column="64" selection-start-line="40" selection-start-column="64" selection-end-line="40" selection-end-column="64" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/App.js">
+    <entry file="file://$PROJECT_DIR$/screens/PostServiceScreen.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="40" column="64" selection-start-line="40" selection-start-column="64" selection-end-line="40" selection-end-column="64" />
+        <state relative-caret-position="253">
+          <caret line="33" column="2" selection-start-line="33" selection-start-column="2" selection-end-line="33" selection-end-column="2" />
           <folding>
-            <element signature="e#0#26#0" expanded="true" />
+            <element signature="e#0#41#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/reducers/category_list_reducer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="273">
+        <state relative-caret-position="299">
           <caret line="13" column="8" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="8" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/actions/post_service_actions.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="126">
-          <caret line="6" selection-start-line="6" selection-end-line="6" />
+        <state relative-caret-position="615">
+          <caret line="38" lean-forward="true" selection-start-line="38" selection-end-line="38" />
+          <folding>
+            <element signature="e#0#26#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
