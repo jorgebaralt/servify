@@ -6,7 +6,8 @@ import {
   LOG_OUT,
   STORE_USER_DISPLAY_NAME,
   LOGIN_FAIL,
-  LOGIN_SUCCESS
+  LOGIN_SUCCESS,
+  RESET_MESSAGE_CREATE
 } from './types';
 
 // How to use AsyncStorage:
@@ -86,4 +87,8 @@ export const logOut = (callback1, callback2, callback3) => async (dispatch) => {
     await callback2();
     await callback3();
     dispatch({ type: LOG_OUT });
+};
+
+export const resetMessageCreate = () => async (dispatch) => {
+    dispatch({ type: RESET_MESSAGE_CREATE });
 };

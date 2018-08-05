@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { POST_SERVICE_SUCCESS, POST_SERVICE_FAIL } from './types';
+import firebase from 'firebase';
+import { POST_SERVICE_SUCCESS, POST_SERVICE_FAIL, RESET_MESSAGE_POST } from './types';
 
 export const createService = (servicePost) => async (dispatch) => {
     const url = 'https://us-central1-servify-716c6.cloudfunctions.net/postService';
@@ -11,6 +12,8 @@ export const createService = (servicePost) => async (dispatch) => {
 		description,
 		serviceTitle
     } = servicePost;
+
+    const { email } = await firebase.auth().currentUser;
 
     if(selectedCategory && phone && location && description && serviceTitle){
         const category = selectedCategory.dbReference;
@@ -26,7 +29,8 @@ export const createService = (servicePost) => async (dispatch) => {
                 phone,
                 description,
                 serviceTitle,
-                location
+                location,
+                email
             };
         }else{
             newServicePost = {
@@ -34,7 +38,8 @@ export const createService = (servicePost) => async (dispatch) => {
                 phone,
                 description,
                 serviceTitle,
-                location
+                location,
+                email
             };
         }
         try {
@@ -44,6 +49,10 @@ export const createService = (servicePost) => async (dispatch) => {
             return dispatch({ type: POST_SERVICE_FAIL, payload: 'Error connecting to server' });
         }
     }else{
-        return dispatch({ type: POST_SERVICE_FAIL, payload: 'Please fill all the information correctly' });
+        return dispatch({ type: POST_SERVICE_FAIL, payload: 'Please fill all the information' });
     }
+};
+
+export const resetMessagePost = () => async (dispatch) => {
+    dispatch({ type: RESET_MESSAGE_POST });
 };

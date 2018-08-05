@@ -42,7 +42,8 @@ module.exports = {
         "no-alert" : [1],
         "react/jsx-props-no-multi-spaces": [1],
         "import/prefer-default-export": [0],
-        "max-len" : [0]
+        "max-len" : [0],
+        "lines-between-class-members":[1]
 
     }
 };

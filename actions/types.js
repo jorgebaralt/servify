@@ -14,3 +14,5 @@ export const SELECT_SUBCATEGORY = 'select_subcategory';
 export const DESELECT_SUBCATEGORY = 'deselect_subcategory';
 export const POST_SERVICE_SUCCESS = 'post_service_success';
 export const POST_SERVICE_FAIL = 'post_service_fail';
+export const RESET_MESSAGE_POST = 'reset_message_post';
+export const RESET_MESSAGE_CREATE = 'reset_message_create';

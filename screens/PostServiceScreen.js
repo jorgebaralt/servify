@@ -17,10 +17,11 @@ import {
     Textarea,
     Picker,
     Icon,
-    Button
+    Button,
+    Toast
 } from 'native-base';
 import { connect } from 'react-redux';
-import { createService } from '../actions';
+import { createService, resetMessagePost } from '../actions';
 
 
 const initialState = {
@@ -30,15 +31,42 @@ const initialState = {
     email: '',
     phone: '',
     location: '',
-    description: ''
+    description: '',
+    loading: false
 };
 
 class PostServiceScreen extends Component {
     state = initialState;
 
-    doPostService = () =>{
-        const {selectedCategory, selectedSubcategory, serviceTitle, phone,location,description} = this.state;
+    componentWillUpdate(nextProps){
+        const { result } = nextProps;
+        const { success, error } = result;
+        if(success){
+            Toast.show({
+                text: success,
+                buttonText: 'OK',
+                duration: 2000,
+                type: 'success'
+            });
+            this.props.resetMessagePost();
+        }
+        if(error){
+            Toast.show({
+                text: error,
+                buttonText: 'OK',
+                duration: 2000,
+                type: 'warning'
+            });
+            this.props.resetMessagePost();
+        }
+        // Reset the result prop to get rid of message
+        
+    }
+
+    doPostService = async () => {
         Keyboard.dismiss();
+        this.setState({ loading: true });
+        const { selectedCategory, selectedSubcategory, serviceTitle, phone, location, description } = this.state;
         const servicePost = {
             selectedCategory,
             selectedSubcategory,
@@ -47,8 +75,9 @@ class PostServiceScreen extends Component {
             location,
             description
         };
-        this.setState(initialState);
-        this.props.createService(servicePost);
+        
+       await this.props.createService(servicePost);
+       this.setState(initialState);
     };
 
     // TODO: animate when the new picker appears
@@ -94,6 +123,13 @@ class PostServiceScreen extends Component {
         }
         return(<View />);
     }  
+
+    renderSpinner() {
+        if (this.state.loading) {
+            return (<Spinner color="white" />);
+        }
+        return (<View />);
+    }
 
     render() {
         const { titleStyle, formStyle, itemStyle, textAreaStyle, buttonStyle } = styles;
@@ -154,6 +190,7 @@ class PostServiceScreen extends Component {
                                 />
                                 {/* TODO: add char count under textArea */}
                             </Form>
+                            {this.renderSpinner()}
                             <View>
                                 <Button
                                     bordered
@@ -199,7 +236,10 @@ const styles = {
 };
 
 function mapStateToProps(state) {
-    return { categories: state.categories };
+    return {
+        categories: state.categories,
+        result: state.postServiceResult
+     };
 }
 
-export default connect(mapStateToProps, { createService })(PostServiceScreen);
+export default connect(mapStateToProps, { createService, resetMessagePost })(PostServiceScreen);

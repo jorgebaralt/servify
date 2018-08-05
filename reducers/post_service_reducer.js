@@ -1,4 +1,4 @@
-import { POST_SERVICE_SUCCESS, POST_SERVICE_FAIL } from '../actions/types';
+import { POST_SERVICE_SUCCESS, POST_SERVICE_FAIL, RESET_MESSAGE_POST } from '../actions/types';
 
 export default (state = {}, action) => {
     switch(action.type){
@@ -6,6 +6,8 @@ export default (state = {}, action) => {
             return { error: action.payload };
         case POST_SERVICE_SUCCESS:
             return { success: action.payload };
+        case RESET_MESSAGE_POST:
+            return {};
         default:
             return state;
     }
