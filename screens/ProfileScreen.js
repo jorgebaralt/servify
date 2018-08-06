@@ -5,11 +5,7 @@ import {getCurrentUserDisplayName } from '../actions';
 
 class ProfileScreen extends Component {
     static navigationOptions={
-        tabBarOptions: {
-            hide: true,
-            tabBarVisible: false,
-            hideTabBar: true
-        }
+        //TODO: Icon
     };
 
     componentWillMount(){

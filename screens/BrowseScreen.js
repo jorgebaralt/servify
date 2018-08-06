@@ -6,6 +6,10 @@ import { selectCategory } from '../actions';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 class BrowseScreen extends Component {
+    static navigationOptions={
+        // TODO: Icon
+    };
+    
   componentWillMount(){
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => r1 !== r2

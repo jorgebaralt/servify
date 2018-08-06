@@ -36,6 +36,10 @@ const initialState = {
 };
 
 class PostServiceScreen extends Component {
+    static navigationOptions={
+        // TODO: Icon
+    };
+    
     state = initialState;
 
     componentWillUpdate(nextProps){

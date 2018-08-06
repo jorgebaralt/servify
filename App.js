@@ -48,6 +48,17 @@ export default class App extends React.Component {
       browse: { screen: BrowseScreen },
       postService: { screen: PostServiceScreen },
       profile: { screen: ProfileScreen }
+    }, {
+        tabBarOptions: {
+            activeTintColor: '#fff',
+            inactiveTintColor: '#000',
+            labelStyle: {
+                fontSize: 12,
+              },
+            style: {
+                backgroundColor: '#FF7043'
+            }
+        }
     });
     // Welcome - First Navigation
     const WelcomeNavigator = createBottomTabNavigator({
@@ -59,7 +70,8 @@ export default class App extends React.Component {
     }, {
         navigationOptions: {
           tabBarVisible: false
-        }
+        },
+       
       });
 
       // ROOT NAVIGATION
