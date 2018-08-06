@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Container, Header, Body, Right, Button, Icon, Title, Text} from 'native-base';
+import { Container, Header, Body, Right, Button, Icon, Title, Text,} from 'native-base';
 import { connect } from 'react-redux';
-import {getCurrentUserDisplayName } from '../actions';
+import { getCurrentUserDisplayName } from '../actions';
 
 class ProfileScreen extends Component {
     static navigationOptions={
-        //TODO: Icon
+        title: 'Profile',
+        tabBarIcon: ({ tintColor }) => (<Icon type="Feather" name="user" style={{ color: tintColor }} />)
     };
 
     componentWillMount(){

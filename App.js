@@ -50,6 +50,7 @@ export default class App extends React.Component {
       profile: { screen: ProfileScreen }
     }, {
         tabBarOptions: {
+            showLabel: true,
             activeTintColor: '#fff',
             inactiveTintColor: '#000',
             labelStyle: {
@@ -57,7 +58,10 @@ export default class App extends React.Component {
               },
             style: {
                 backgroundColor: '#FF7043'
-            }
+            },
+            tabStyle: {
+              paddingVertical: 0
+          }
         }
     });
     // Welcome - First Navigation

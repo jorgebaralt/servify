@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { View, SafeAreaView, ScrollView, Dimensions, TouchableOpacity, ListView, StyleSheet } from 'react-native';
-import { Text, Card, CardItem, Header, Body, Title, Container, Right } from 'native-base';
+import { Text, Card, CardItem, Header, Body, Title, Container, Right, Icon } from 'native-base';
 import { connect } from 'react-redux';
 import { selectCategory } from '../actions';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 class BrowseScreen extends Component {
-    static navigationOptions={
-        // TODO: Icon
-    };
+  static navigationOptions={
+    title: 'Browse',
+    tabBarIcon: ({ tintColor }) => (<Icon type="MaterialCommunityIcons" name="magnify" style={{color: tintColor }} />)
+};
     
   componentWillMount(){
     const ds = new ListView.DataSource({

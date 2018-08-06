@@ -37,7 +37,8 @@ const initialState = {
 
 class PostServiceScreen extends Component {
     static navigationOptions={
-        // TODO: Icon
+        title: 'Post',
+        tabBarIcon: ({ tintColor }) => (<Icon type="Entypo" name="plus" style={{ color: tintColor }} />)
     };
     
     state = initialState;
