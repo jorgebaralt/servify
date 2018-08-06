@@ -51,8 +51,8 @@ export default class App extends React.Component {
     }, {
         tabBarOptions: {
             showLabel: true,
-            activeTintColor: '#fff',
-            inactiveTintColor: '#000',
+            activeTintColor: '#000',
+            inactiveTintColor: '#FFF',
             labelStyle: {
                 fontSize: 12,
               },
