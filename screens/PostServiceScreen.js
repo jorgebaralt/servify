@@ -178,6 +178,7 @@ class PostServiceScreen extends Component {
                                     <Input
                                         value={this.state.location}
                                         onChangeText={(text) => this.setState({ location: text })}
+                                        // TODO: User EXPO library. follow trello for what to do
                                     />
                                 </Item>
                                 <Textarea
