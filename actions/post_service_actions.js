@@ -9,44 +9,38 @@ export const createService = (servicePost) => async (dispatch) => {
 		selectedCategory,
 		selectedSubcategory,
 		phone,
-		location,
+		zipCode,
 		description,
 		serviceTitle
     } = servicePost;
 
     const { email } = await firebase.auth().currentUser;
 
-    if(selectedCategory && phone && location && description && serviceTitle){
+    if(selectedCategory && phone && zipCode && description && serviceTitle){
         const category = selectedCategory.dbReference;
-        let newServicePost;
+        const locationData = await Location.geocodeAsync(zipCode);
+        const location = locationData[0];
+
+        const newServicePost = {
+            category,
+            phone,
+            description,
+            serviceTitle,
+            zipCode,
+            location,
+            email
+        };
+
+        // if there is subcategory option, and didnt pick one
         if(selectedCategory.subcategories && !selectedSubcategory){
             return dispatch({ type: POST_SERVICE_FAIL, payload: 'Please Fill Subcategories' });
         }
-        // TODO: Handle location with location api from expo
-        const locationData = await Location.geocodeAsync(location);
-        console.log(locationData);
 
+        // if there is subcategory, add it to the object
         if(selectedSubcategory){
-            const subcategory = selectedSubcategory.dbReference;
-            newServicePost = {
-                category,
-                subcategory,
-                phone,
-                description,
-                serviceTitle,
-                location,
-                email
-            };
-        }else{
-            newServicePost = {
-                category,
-                phone,
-                description,
-                serviceTitle,
-                location,
-                email
-            };
+            newServicePost.subcategory = selectedCategory.dbReference;
         }
+
         try {
            await axios.post(url, newServicePost);
             return dispatch({ type: POST_SERVICE_SUCCESS, payload: 'Post has been created' });

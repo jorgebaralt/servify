@@ -30,7 +30,7 @@ const initialState = {
     serviceTitle: '',
     email: '',
     phone: '',
-    location: '',
+    zipCode: '',
     description: '',
     loading: false,
     descriptionCharCount: maxCharCount
@@ -70,13 +70,13 @@ class PostServiceScreen extends Component {
     doPostService = async () => {
         Keyboard.dismiss();
         this.setState({ loading: true });
-        const { selectedCategory, selectedSubcategory, serviceTitle, phone, location, description } = this.state;
+        const { selectedCategory, selectedSubcategory, serviceTitle, phone, zipCode, description } = this.state;
         const servicePost = {
             selectedCategory,
             selectedSubcategory,
             serviceTitle,
             phone,
-            location,
+            zipCode,
             description
         };
         
@@ -137,7 +137,7 @@ class PostServiceScreen extends Component {
     
         renderSpinner() {
             if (this.state.loading) {
-                return (<Spinner color="white" />);
+                return (<Spinner color="orange" />);
             }
             return (<View />);
         }
@@ -184,11 +184,12 @@ class PostServiceScreen extends Component {
                                     />
                                 </Item>
                                 <Item style={itemStyle} floatingLabel>
-                                    <Label>Location</Label>
+                                    <Label>Zip Code</Label>
                                     <Input
-                                        value={this.state.location}
-                                        onChangeText={(text) => this.setState({ location: text })}
-                                        // TODO: handle location on action
+                                        value={this.state.zipCode}
+                                        onChangeText={(text) => this.setState({ zipCode: text })}
+                                        keyboardType="numeric"
+                                        // TODO: handle zipCode on action
                                     />
                                 </Item>
                                 <Textarea
