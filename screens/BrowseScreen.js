@@ -45,11 +45,11 @@ class BrowseScreen extends Component {
     }
 
   render() {
-      const {titleStyle} = styles;
+      const { titleStyle } = styles;
       return (
           <SafeAreaView style={{ flex: 1 }}>
-              <View style={{alignItems: 'center'}}>
-                <Text style={titleStyle}>Browse</Text>
+              <View>
+                <Text style={titleStyle}>Where do you need assistance?</Text>
               </View>
               <ListView
                   contentContainerStyle={styles.contentStyle}
@@ -65,8 +65,8 @@ const styles = {
     titleStyle: {
         color: 'black',
         fontWeight: 'bold',
-        fontSize: 30,
-        margin: 30,
+        fontSize: 26,
+        margin: 20,
     },
   contentStyle: {
     flexDirection: 'row',

@@ -23,7 +23,7 @@ import {
 import { connect } from 'react-redux';
 import { createService, resetMessagePost } from '../actions';
 
-
+const maxCharCount = 120;
 const initialState = {
     selectedCategory: undefined,
     selectedSubcategory: undefined,
@@ -32,7 +32,8 @@ const initialState = {
     phone: '',
     location: '',
     description: '',
-    loading: false
+    loading: false,
+    descriptionCharCount: maxCharCount
 };
 
 class PostServiceScreen extends Component {
@@ -64,8 +65,6 @@ class PostServiceScreen extends Component {
             });
             this.props.resetMessagePost();
         }
-        // Reset the result prop to get rid of message
-        
     }
 
     doPostService = async () => {
@@ -85,7 +84,14 @@ class PostServiceScreen extends Component {
        this.setState(initialState);
     };
 
-    // TODO: animate when the new picker appears
+    descriptionChangeText = (text) => {
+        const { descriptionCharCount } = this.state;
+        if(descriptionCharCount < maxCharCount){
+            this.setState({ description: text });
+        }
+        this.setState({ descriptionCharCount: maxCharCount - text.length });
+    }
+
     renderPickerItemsCategories() {
         return this.props.categories.map((category) => (
             <Picker.Item
@@ -105,39 +111,39 @@ class PostServiceScreen extends Component {
             />
         ));
     }
-
-    renderSubcategories() {
-        if (this.state.selectedCategory) {
-            if (this.state.selectedCategory.subcategories) {
-                return (
-                    <Item picker style={styles.itemStyle}>
-                        <Picker
-                            mode="dropdown"
-                            iosIcon={<Icon name={this.state.selectedSubcategory ? undefined : 'ios-arrow-down-outline'} />}
-                            placeholder="Pick a Category"
-                            placeholderStyle={{ color: '#bfc6ea' }}
-                            placeholderIconColor="#007aff"
-                            selectedValue={this.state.selectedSubcategory}
-                            onValueChange={(value) => { this.setState({ selectedSubcategory: value }); }}
-                        >
-                            {this.renderPickerItemsSubcategories()}
-                        </Picker>
-                    </Item>
-                );
+    
+        // TODO: animate when the new picker appears
+        renderSubcategories() {
+            if (this.state.selectedCategory) {
+                if (this.state.selectedCategory.subcategories) {
+                    return (
+                        <Item picker style={{ margin: 10, marginLeft: 15, width: '90%' }}>
+                            <Picker
+                                mode="dropdown"
+                                iosIcon={<Icon name={this.state.selectedSubcategory ? undefined : 'ios-arrow-down-outline'} />}
+                                placeholder="Pick a Subcategory"
+                                placeholderStyle={{ color: '#bfc6ea' }}
+                                selectedValue={this.state.selectedSubcategory}
+                                onValueChange={(value) => { this.setState({ selectedSubcategory: value }); }}
+                            >
+                                {this.renderPickerItemsSubcategories()}
+                            </Picker>
+                        </Item>
+                    );
+                }
             }
+            return(<View />);
+        }  
+    
+        renderSpinner() {
+            if (this.state.loading) {
+                return (<Spinner color="white" />);
+            }
+            return (<View />);
         }
-        return(<View />);
-    }  
-
-    renderSpinner() {
-        if (this.state.loading) {
-            return (<Spinner color="white" />);
-        }
-        return (<View />);
-    }
 
     render() {
-        const { titleStyle, formStyle, itemStyle, textAreaStyle, buttonStyle } = styles;
+        const { titleStyle, formStyle, itemStyle, textAreaStyle, buttonStyle, charCountStyle } = styles;
         return (
             <SafeAreaView style={{ flex: 1 }}>
                 <KeyboardAvoidingView
@@ -145,16 +151,15 @@ class PostServiceScreen extends Component {
                     style={{ flex: 1, justifyContent: 'center' }}
                 >
                     <Content>
+                    <Text style={titleStyle}>Post a new service</Text>
                         <View style={{ flex: 1, alignItems: 'center' }}>
-                            <Text style={titleStyle}>Post a Service</Text>
                             <Form style={formStyle}>
-                                <Item picker styl={itemStyle}>
+                                <Item picker style={{ margin: 10, marginLeft: 15, width: '90%' }}>
                                     <Picker
                                         mode="dropdown"
-                                        iosIcon={<Icon name={this.state.selectedCategory ? undefined : 'ios-arrow-down-outline'} />}
                                         placeholder="Pick a Category"
                                         placeholderStyle={{ color: '#bfc6ea' }}
-                                        placeholderIconColor="#007aff"
+                                        iosIcon={<Icon name={this.state.selectedCategory ? undefined : 'ios-arrow-down-outline'} />}
                                         selectedValue={this.state.selectedCategory}
                                         onValueChange={(value) => this.setState({ selectedCategory: value })}
                                     >
@@ -175,7 +180,7 @@ class PostServiceScreen extends Component {
                                     <Input
                                         value={this.state.phone}
                                         onChangeText={(text) => this.setState({ phone: text })}
-                                        // TODO: set keyboard to only numbers
+                                        keyboardType="phone-pad"
                                     />
                                 </Item>
                                 <Item style={itemStyle} floatingLabel>
@@ -183,19 +188,20 @@ class PostServiceScreen extends Component {
                                     <Input
                                         value={this.state.location}
                                         onChangeText={(text) => this.setState({ location: text })}
-                                        // TODO: User EXPO library. follow trello for what to do
+                                        // TODO: handle location on action
                                     />
                                 </Item>
                                 <Textarea
                                     style={textAreaStyle}
-                                    rowSpan={5}
+                                    rowSpan={4}
                                     bordered
                                     placeholder="Describe your Service Here"
+                                    maxLength={maxCharCount}
                                     value={this.state.description}
-                                    onChangeText={(text) => this.setState({ description: text })}
+                                    onChangeText={(text) => this.descriptionChangeText(text)}
                                 />
-                                {/* TODO: add char count under textArea */}
                             </Form>
+                            <Text style={charCountStyle}>{this.state.descriptionCharCount}</Text>
                             {this.renderSpinner()}
                             <View>
                                 <Button
@@ -222,8 +228,8 @@ const styles = {
     titleStyle: {
         color: 'black',
         fontWeight: 'bold',
-        fontSize: 30,
-        margin: 30
+        fontSize: 26,
+        margin: 25
     },
     formStyle: {
         width: '80%'
@@ -238,6 +244,10 @@ const styles = {
     buttonStyle: {
         marginTop: 10,
         marginLeft: '50%',
+    },
+    charCountStyle: {
+        right: '-33%',
+        color: '#bfc6ea'
     }
 };
 

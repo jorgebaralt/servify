@@ -1,5 +1,6 @@
 import axios from 'axios';
 import firebase from 'firebase';
+import { Location } from 'expo';
 import { POST_SERVICE_SUCCESS, POST_SERVICE_FAIL, RESET_MESSAGE_POST } from './types';
 
 export const createService = (servicePost) => async (dispatch) => {
@@ -21,6 +22,10 @@ export const createService = (servicePost) => async (dispatch) => {
         if(selectedCategory.subcategories && !selectedSubcategory){
             return dispatch({ type: POST_SERVICE_FAIL, payload: 'Please Fill Subcategories' });
         }
+        // TODO: Handle location with location api from expo
+        const locationData = await Location.geocodeAsync(location);
+        console.log(locationData);
+
         if(selectedSubcategory){
             const subcategory = selectedSubcategory.dbReference;
             newServicePost = {

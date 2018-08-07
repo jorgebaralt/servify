@@ -30,7 +30,7 @@ class HomeScreen extends Component {
       
 	render() {
 		return (
-			<SafeAreaView style={{ flex: 1 }}>
+			<SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: 'always'}}>
 				<Content>
 					<Text>Home Screen</Text>
 					<Text>Home Screen</Text>
