@@ -189,7 +189,6 @@ class PostServiceScreen extends Component {
                                         value={this.state.zipCode}
                                         onChangeText={(text) => this.setState({ zipCode: text })}
                                         keyboardType="numeric"
-                                        // TODO: handle zipCode on action
                                     />
                                 </Item>
                                 <Textarea

@@ -41,6 +41,8 @@ export const createService = (servicePost) => async (dispatch) => {
             newServicePost.subcategory = selectedCategory.dbReference;
         }
 
+        // TODO: check if the user, has a post in the category && subcategory already, unless it is other.
+
         try {
            await axios.post(url, newServicePost);
             return dispatch({ type: POST_SERVICE_SUCCESS, payload: 'Post has been created' });
