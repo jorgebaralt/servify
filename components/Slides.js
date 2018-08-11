@@ -6,8 +6,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 
 class Slides extends Component {
     renderSlides = () => {
-        return this.props.data.map((slide, i) => {
-            return (
+        return this.props.data.map((slide, i) => (
                 <View key={slide.text} style={[styles.slideStyle, { backgroundColor: slide.color }]}>
                     <Text style={styles.textStyle}>{slide.text}</Text>
                     <View style={{ flexDirection: 'row' }}>
@@ -18,8 +17,7 @@ class Slides extends Component {
 
                 </View>
 
-            );
-        });
+            ));
     };
 
     renderLastSlide(i) {
