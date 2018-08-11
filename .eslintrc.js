@@ -43,7 +43,8 @@ module.exports = {
         "react/jsx-props-no-multi-spaces": [1],
         "import/prefer-default-export": [0],
         "max-len" : [0],
-        "lines-between-class-members":[1]
+        "lines-between-class-members":[1],
+        "react/no-array-index-key": [0]
 
     }
 };
