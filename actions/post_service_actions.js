@@ -33,12 +33,12 @@ export const createService = (servicePost) => async (dispatch) => {
 
         // if there is subcategory option, and didnt pick one
         if(selectedCategory.subcategories && !selectedSubcategory){
-            return dispatch({ type: POST_SERVICE_FAIL, payload: 'Please Fill Subcategories' });
+            return dispatch({ type: POST_SERVICE_FAIL, payload: 'Please Fill Subcategory' });
         }
 
         // if there is subcategory, add it to the object
         if(selectedSubcategory){
-            newServicePost.subcategory = selectedCategory.dbReference;
+            newServicePost.subcategory = selectedSubcategory.dbReference;
         }
 
         // TODO: check if the user, has a post in the category && subcategory already, unless it is other.
