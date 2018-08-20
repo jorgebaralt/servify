@@ -27,7 +27,7 @@ const maxCharCount = 120;
 const initialState = {
     selectedCategory: undefined,
     selectedSubcategory: undefined,
-    serviceTitle: '',
+    title: '',
     email: '',
     phone: '',
     zipCode: '',
@@ -70,11 +70,11 @@ class PostServiceScreen extends Component {
     doPostService = async () => {
         Keyboard.dismiss();
         this.setState({ loading: true });
-        const { selectedCategory, selectedSubcategory, serviceTitle, phone, zipCode, description } = this.state;
+        const { selectedCategory, selectedSubcategory, title, phone, zipCode, description } = this.state;
         const servicePost = {
             selectedCategory,
             selectedSubcategory,
-            serviceTitle,
+            title,
             phone,
             zipCode,
             description
@@ -170,8 +170,8 @@ class PostServiceScreen extends Component {
                                 <Item style={itemStyle} floatingLabel>
                                     <Label>Service Title</Label>
                                     <Input
-                                        value={this.state.serviceTitle}
-                                        onChangeText={(text) => this.setState({ serviceTitle: text })}
+                                        value={this.state.title}
+                                        onChangeText={(text) => this.setState({ title: text })}
                                     />
                                 </Item>
 

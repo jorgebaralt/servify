@@ -1,4 +1,8 @@
-import { POST_SERVICE_SUCCESS, POST_SERVICE_FAIL, RESET_MESSAGE_POST } from '../actions/types';
+import { 
+    POST_SERVICE_SUCCESS, 
+    POST_SERVICE_FAIL, 
+    RESET_MESSAGE_POST 
+} from '../actions/types';
 
 export default (state = {}, action) => {
     switch(action.type){

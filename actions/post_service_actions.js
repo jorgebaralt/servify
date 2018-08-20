@@ -11,12 +11,12 @@ export const createService = (servicePost) => async (dispatch) => {
 		phone,
 		zipCode,
 		description,
-		serviceTitle
+		title
     } = servicePost;
 
     const { email } = await firebase.auth().currentUser;
 
-    if(selectedCategory && phone && zipCode && description && serviceTitle){
+    if (selectedCategory && phone && zipCode && description && title) {
         const category = selectedCategory.dbReference;
         const locationData = await Location.geocodeAsync(zipCode);
         const location = locationData[0];
@@ -25,7 +25,7 @@ export const createService = (servicePost) => async (dispatch) => {
             category,
             phone,
             description,
-            serviceTitle,
+            title,
             zipCode,
             location,
             email
@@ -44,12 +44,12 @@ export const createService = (servicePost) => async (dispatch) => {
         // TODO: check if the user, has a post in the category && subcategory already, unless it is other.
 
         try {
-           await axios.post(url, newServicePost);
+            await axios.post(url, newServicePost);
             return dispatch({ type: POST_SERVICE_SUCCESS, payload: 'Post has been created' });
         } catch (error) {
             return dispatch({ type: POST_SERVICE_FAIL, payload: 'Error connecting to server' });
         }
-    }else{
+    } else {
         return dispatch({ type: POST_SERVICE_FAIL, payload: 'Please fill all the information' });
     }
 };

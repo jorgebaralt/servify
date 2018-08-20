@@ -8,7 +8,7 @@ import { getCurrentUserDisplayName } from '../actions';
 class HomeScreen extends Component {
 	static navigationOptions={
 		title: 'Home',
-		tabBarIcon: ({ tintColor }) => (<Icon type="MaterialCommunityIcons" name="home-outline" style={{color: tintColor }} />)
+		tabBarIcon: ({ tintColor }) => (<Icon type="MaterialCommunityIcons" name="home-outline" style={{ color: tintColor }} />)
 	};
 	
 	// <Icon type="Entypo" name="dots-three-horizontal" style={{ color: 'black' }} />

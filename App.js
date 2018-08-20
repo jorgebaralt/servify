@@ -23,85 +23,94 @@ import SpecificSubcategoryScreen from './screens/SpecificSubcategoryScreen';
 
 const store = createStore(reducers, {}, compose(applyMiddleware(thunk)));
 export default class App extends React.Component {
-  componentWillMount() {
-    firebase.initializeApp({
-      apiKey: 'AIzaSyBlfkH3vO25hXrejXrSeWRlejfETYUfb6I',
-      authDomain: 'servify-716c6.firebaseapp.com',
-      databaseURL: 'https://servify-716c6.firebaseio.com',
-      projectId: 'servify-716c6',
-      storageBucket: 'servify-716c6.appspot.com',
-      messagingSenderId: '737506787644'
-    });
-  }
+    componentWillMount() {
+        firebase.initializeApp({
+            apiKey: 'AIzaSyBlfkH3vO25hXrejXrSeWRlejfETYUfb6I',
+            authDomain: 'servify-716c6.firebaseapp.com',
+            databaseURL: 'https://servify-716c6.firebaseio.com',
+            projectId: 'servify-716c6',
+            storageBucket: 'servify-716c6.appspot.com',
+            messagingSenderId: '737506787644'
+        });
+    }
 
-  render() {
-    const SelectedCategory = createStackNavigator({
-      category: { screen: SpecificCategoryScreen },
-      subcategories: { screen: SubcategoriesListScreen },
-      specificSubcategory: { screen: SpecificSubcategoryScreen }
-    }, {
-      headerMode: 'none'
-    });
-    // Main - Second Navigation
-    const Main = createBottomTabNavigator({
-      home: { screen: HomeScreen },
-      browse: { screen: BrowseScreen },
-      postService: { screen: PostServiceScreen },
-      profile: { screen: ProfileScreen }
-    }, {
-        tabBarOptions: {
-            showLabel: true,
-            activeTintColor: '#FF7043',
-            inactiveTintColor: '#000',
-            labelStyle: {
-                fontSize: 12,
-              },
-            style: {
-                // backgroundColor: '#FF7043'
-            },
-            tabStyle: {
-              paddingVertical: 0
-          }
-        }
-    });
-    // Welcome - First Navigation
-    const WelcomeNavigator = createBottomTabNavigator({
-      welcome: { screen: WelcomeScreen },
-      auth: { screen: AuthScreen },
-      createAccount: { screen: CreateAccountScreen },
-      login: { screen: LoginScreen },
-      main: { screen: Main }
-    }, {
-        navigationOptions: {
-          tabBarVisible: false
-        },
-       
-      });
+    render() {
+        // Selected Category - category and specific
+        const SelectedCategory = createStackNavigator({
+            category: { screen: SpecificCategoryScreen },
+        }, {
+                headerMode: 'none'
+            });
 
-      // ROOT NAVIGATION
-    const RootNavigation = createStackNavigator({
-      initial: WelcomeNavigator,
-      settings: { screen: SettingsScreen },
-      selectedCategory: SelectedCategory
-    }, {
-        headerMode: 'none'
-      });
+        // Selected Subcategory - subcategory and specific
+        const SelectedSubcategory = createStackNavigator({
+            subcategories: { screen: SubcategoriesListScreen },
+            specificSubcategory: { screen: SpecificSubcategoryScreen }
+        }, {
+                headerMode: 'none'
+            });
 
-    return (
-      <Provider store={store}>
-        <View style={styles.container}>
-          <Root>
-            <RootNavigation />
-          </Root>
-        </View>
-      </Provider>
-    );
-  }
+        // Main - Second Navigation
+        const Main = createBottomTabNavigator({
+            home: { screen: HomeScreen },
+            browse: { screen: BrowseScreen },
+            postService: { screen: PostServiceScreen },
+            profile: { screen: ProfileScreen }
+        }, {
+                tabBarOptions: {
+                    showLabel: true,
+                    activeTintColor: '#FF7043',
+                    inactiveTintColor: '#000',
+                    labelStyle: {
+                        fontSize: 12,
+                    },
+                    style: {
+                        // backgroundColor: '#FF7043'
+                    },
+                    tabStyle: {
+                        paddingVertical: 0
+                    }
+                }
+            });
+        // Welcome - First Navigation
+        const WelcomeNavigator = createBottomTabNavigator({
+            welcome: { screen: WelcomeScreen },
+            auth: { screen: AuthScreen },
+            createAccount: { screen: CreateAccountScreen },
+            login: { screen: LoginScreen },
+            main: { screen: Main }
+        }, {
+                navigationOptions: {
+                    tabBarVisible: false
+                },
+
+            });
+
+        // ROOT NAVIGATION
+        const RootNavigation = createStackNavigator({
+            initial: WelcomeNavigator,
+            settings: { screen: SettingsScreen },
+            selectedCategory: SelectedCategory,
+            selectedSubcategory: SelectedSubcategory
+        }, {
+                headerMode: 'none'
+        });
+
+        return (
+            <Provider store={store}>
+                <View style={styles.container}>
+                    <Root>
+                        <RootNavigation />
+                    </Root>
+                </View>
+            </Provider>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff'
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff'
+    },
 });
