@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { deselectCategory, selectSubcategory } from '../actions';
 
 class SubcategoriesListScreen extends Component {
-
     componentWillMount() {
         const { subcategories } = this.props.category;
         const ds = new ListView.DataSource({
@@ -15,8 +14,8 @@ class SubcategoriesListScreen extends Component {
     }
 
     onBackPressed = () => {
-        this.props.navigation.goBack('browse');
         this.props.deselectCategory();
+        this.props.navigation.goBack('browse');
     };
 
     doSelectSubcategory = (subcategory) => {
@@ -32,7 +31,7 @@ class SubcategoriesListScreen extends Component {
             >
                 <Card style={styles.cardStyle}>
                     <CardItem header>
-                        <Left><Text>{subcategory.title}</Text></Left>
+                        <Text>{subcategory.title}</Text>
                         <Right>
                             <Icon name="arrow-forward" />
                         </Right>

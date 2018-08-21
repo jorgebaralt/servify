@@ -30,7 +30,7 @@ const initialState = {
     title: '',
     email: '',
     phone: '',
-    zipCode: '',
+    leftCode: '',
     description: '',
     loading: false,
     descriptionCharCount: maxCharCount
@@ -70,19 +70,35 @@ class PostServiceScreen extends Component {
     doPostService = async () => {
         Keyboard.dismiss();
         this.setState({ loading: true });
-        const { selectedCategory, selectedSubcategory, title, phone, zipCode, description } = this.state;
+        const { selectedCategory, selectedSubcategory, title, phone, leftCode, description } = this.state;
         const servicePost = {
             selectedCategory,
             selectedSubcategory,
             title,
             phone,
-            zipCode,
+            leftCode,
             description
         };
         
        await this.props.createService(servicePost);
        this.setState(initialState);
     };
+
+    // text is only what I have typed, not value
+    phoneChangeText = (text) => {
+        const input = text.replace(/\D/g, '').substring(0, 10);
+        const left = input.substring(0, 3);
+        const middle = input.substring(3, 6);
+        const right = input.substring(6, 10);
+
+        if(input.length > 6){
+            this.setState({ phone: `(${left}) ${middle} - ${right}` });
+        }else if(input.length > 3){
+            this.setState({ phone: `(${left}) ${middle}` });
+        }else if(input.length > 0){
+            this.setState({ phone: `(${left}` });
+        }
+    }
 
     descriptionChangeText = (text) => {
         const { descriptionCharCount } = this.state;
@@ -166,12 +182,15 @@ class PostServiceScreen extends Component {
                                         {this.renderPickerItemsCategories()}
                                     </Picker>
                                 </Item>
+
                                 {this.renderSubcategories()}
+                                
                                 <Item style={itemStyle} floatingLabel>
                                     <Label>Service Title</Label>
                                     <Input
                                         value={this.state.title}
                                         onChangeText={(text) => this.setState({ title: text })}
+                                        maxLength={22}
                                     />
                                 </Item>
 
@@ -179,15 +198,16 @@ class PostServiceScreen extends Component {
                                     <Label>Contact Phone</Label>
                                     <Input
                                         value={this.state.phone}
-                                        onChangeText={(text) => this.setState({ phone: text })}
+                                        onChangeText={(text) => this.phoneChangeText(text)}
                                         keyboardType="phone-pad"
+                                        maxLength={16}
                                     />
                                 </Item>
                                 <Item style={itemStyle} floatingLabel>
-                                    <Label>Zip Code</Label>
+                                    <Label>left Code</Label>
                                     <Input
-                                        value={this.state.zipCode}
-                                        onChangeText={(text) => this.setState({ zipCode: text })}
+                                        value={this.state.leftCode}
+                                        onChangeText={(text) => this.setState({ leftCode: text })}
                                         keyboardType="numeric"
                                     />
                                 </Item>
