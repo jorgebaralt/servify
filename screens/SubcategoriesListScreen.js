@@ -26,8 +26,8 @@ class SubcategoriesListScreen extends Component {
     renderSubcategories = (subcategory) => {
         return (
             <TouchableOpacity
-                key={subcategory.id}
-                onPress={() => this.doSelectSubcategory(subcategory)}
+            key={subcategory.id}
+            onPress={() => this.doSelectSubcategory(subcategory)}
             >
                 <Card style={styles.cardStyle}>
                     <CardItem header>

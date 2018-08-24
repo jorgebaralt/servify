@@ -10,8 +10,6 @@ class HomeScreen extends Component {
 		title: 'Home',
 		tabBarIcon: ({ tintColor }) => (<Icon type="MaterialCommunityIcons" name="home-outline" style={{ color: tintColor }} />)
 	};
-	
-	// <Icon type="Entypo" name="dots-three-horizontal" style={{ color: 'black' }} />
 
 	async componentWillMount() {
         await this.props.getCurrentUserDisplayName();
@@ -26,7 +24,7 @@ class HomeScreen extends Component {
           return Location.getCurrentPositionAsync({ enableHighAccuracy: true });
         } 
           throw new Error('Location permission not granted');
-        }
+    }
       
 	render() {
 		return (

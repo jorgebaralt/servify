@@ -14,7 +14,7 @@ export default (state = {}, action) => {
         case GET_SUBCATEGORY_FAIL:
             return state;
         case GET_SUBCATEGORY_SUCCESS:
-            return { subcategories: action.payload };
+            return { servicesList: action.payload };
         default:
             return state;
     }

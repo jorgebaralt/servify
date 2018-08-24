@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, ListView, TouchableOpacity, Dimensions } from 'react-native';
 import { Header, Text, Card, CardItem, Body, Title, Container, Left, Button, Icon, Right, Spinner } from 'native-base';
 import { connect } from 'react-redux';
+import { LinearGradient } from 'expo';
 import { getServicesCategory } from '../actions';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -27,7 +28,7 @@ class SpecificCategoryScreen extends Component {
     }
 
     renderServices = (service) => {
-        const { descriptionStyle, cardStyle, titleStyle, phoneLocationStyle } = styles;
+        const { grayStyle, cardStyle, titleStyle, phoneLocationStyle } = styles;
         const displayDescription = service.description.substring(0, 30) + '...';
         return(
             <TouchableOpacity
@@ -35,23 +36,23 @@ class SpecificCategoryScreen extends Component {
                 onPress={() => console.log(service.title)}
             >
                 <Card style={cardStyle}>
-                    <CardItem header>
-                        <Text style={titleStyle}>{service.title}</Text>
-                        <Right>
-                            <Icon name="arrow-forward" />
-                        </Right>
-                    </CardItem>
-                    <CardItem>
-                        <Body style={phoneLocationStyle}>
-                            <Text>{service.phone}</Text>
-                            <Text style={{ marginLeft: '20%' }}>Location</Text>
-                        </Body>
-                    </CardItem>
-                    <CardItem>
-                        <Body>
-                            <Text style={descriptionStyle}>{displayDescription}</Text>
-                        </Body>
-                    </CardItem>
+                        <CardItem header>
+                            <Text style={titleStyle}>{service.title}</Text>
+                            <Right>
+                                <Icon name="arrow-forward" />
+                            </Right>
+                        </CardItem>
+                        <CardItem>
+                            <Body style={phoneLocationStyle}>
+                                <Text style={grayStyle}>{service.phone}</Text>
+                                <Text style={[grayStyle, { marginLeft: '15%' }]}>{service.location.city}</Text>
+                            </Body>
+                        </CardItem>
+                        <CardItem>
+                            <Body>
+                                <Text style={grayStyle}>{displayDescription}</Text>
+                            </Body>
+                        </CardItem>
                 </Card>
             </TouchableOpacity>
         );
@@ -91,17 +92,17 @@ class SpecificCategoryScreen extends Component {
 
 const styles = {
     headerStyle: {
-        backgroundColor: 'blue'
+        
     },
     cardStyle: {
         width: '80%',
         marginLeft: '10%',
-        marginTop: '2.5%'
+        marginTop: '2.5%',
     },
     contentStyle: {
 
     },
-    descriptionStyle: {
+    grayStyle: {
         color: 'gray'
     },
     titleStyle: {

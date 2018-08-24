@@ -30,7 +30,7 @@ const initialState = {
     title: '',
     email: '',
     phone: '',
-    leftCode: '',
+    zipCode: '',
     description: '',
     loading: false,
     descriptionCharCount: maxCharCount
@@ -70,13 +70,13 @@ class PostServiceScreen extends Component {
     doPostService = async () => {
         Keyboard.dismiss();
         this.setState({ loading: true });
-        const { selectedCategory, selectedSubcategory, title, phone, leftCode, description } = this.state;
+        const { selectedCategory, selectedSubcategory, title, phone, zipCode, description } = this.state;
         const servicePost = {
             selectedCategory,
             selectedSubcategory,
             title,
             phone,
-            leftCode,
+            zipCode,
             description
         };
         
@@ -128,35 +128,36 @@ class PostServiceScreen extends Component {
         ));
     }
     
-        // TODO: animate when the new picker appears
-        renderSubcategories() {
-            if (this.state.selectedCategory) {
-                if (this.state.selectedCategory.subcategories) {
-                    return (
-                        <Item picker style={{ margin: 10, marginLeft: 15, width: '90%' }}>
-                            <Picker
-                                mode="dropdown"
-                                iosIcon={<Icon name={this.state.selectedSubcategory ? undefined : 'ios-arrow-down-outline'} />}
-                                placeholder="Pick a Subcategory"
-                                placeholderStyle={{ color: '#bfc6ea' }}
-                                selectedValue={this.state.selectedSubcategory}
-                                onValueChange={(value) => { this.setState({ selectedSubcategory: value }); }}
-                            >
-                                {this.renderPickerItemsSubcategories()}
-                            </Picker>
-                        </Item>
-                    );
-                }
+    // TODO: animate when the new picker appears
+    renderSubcategories() {
+        if (this.state.selectedCategory) {
+            if (this.state.selectedCategory.subcategories) {
+                return (
+                    <Item picker style={{ margin: 10, marginLeft: 15, width: '90%' }}>
+                        <Picker
+                            mode="dropdown"
+                            iosIcon={<Icon name={this.state.selectedSubcategory ? undefined : 'ios-arrow-down-outline'} />}
+                            placeholder="Pick a Subcategory"
+                            placeholderStyle={{ color: '#bfc6ea', left: -15 }}
+                            selectedValue={this.state.selectedSubcategory}
+                            onValueChange={(value) => { this.setState({ selectedSubcategory: value }); }}
+                            textStyle={{ left: -15 }}
+                        >
+                            {this.renderPickerItemsSubcategories()}
+                        </Picker>
+                    </Item>
+                );
             }
-            return(<View />);
-        }  
-    
-        renderSpinner() {
-            if (this.state.loading) {
-                return (<Spinner color="orange" />);
-            }
-            return (<View />);
         }
+        return(<View />);
+    }  
+    
+    renderSpinner() {
+        if (this.state.loading) {
+            return (<Spinner color="orange" />);
+        }
+        return (<View />);
+    }
 
     render() {
         const { titleStyle, formStyle, itemStyle, textAreaStyle, buttonStyle, charCountStyle } = styles;
@@ -173,11 +174,13 @@ class PostServiceScreen extends Component {
                                 <Item picker style={{ margin: 10, marginLeft: 15, width: '90%' }}>
                                     <Picker
                                         mode="dropdown"
+                                        style={{ width: undefined }}
                                         placeholder="Pick a Category"
-                                        placeholderStyle={{ color: '#bfc6ea' }}
+                                        placeholderStyle={{ color: '#bfc6ea', left: -15 }}
                                         iosIcon={<Icon name={this.state.selectedCategory ? undefined : 'ios-arrow-down-outline'} />}
                                         selectedValue={this.state.selectedCategory}
                                         onValueChange={(value) => this.setState({ selectedCategory: value })}
+                                        textStyle={{ left: -15 }}
                                     >
                                         {this.renderPickerItemsCategories()}
                                     </Picker>
@@ -190,7 +193,7 @@ class PostServiceScreen extends Component {
                                     <Input
                                         value={this.state.title}
                                         onChangeText={(text) => this.setState({ title: text })}
-                                        maxLength={22}
+                                        maxLength={36}
                                     />
                                 </Item>
 
@@ -204,10 +207,10 @@ class PostServiceScreen extends Component {
                                     />
                                 </Item>
                                 <Item style={itemStyle} floatingLabel>
-                                    <Label>left Code</Label>
+                                    <Label>Address, Zip Code, or Location</Label>
                                     <Input
-                                        value={this.state.leftCode}
-                                        onChangeText={(text) => this.setState({ leftCode: text })}
+                                        value={this.state.zipCode}
+                                        onChangeText={(text) => this.setState({ zipCode: text })}
                                         keyboardType="numeric"
                                     />
                                 </Item>

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, SafeAreaView, Dimensions, TouchableOpacity, ListView } from 'react-native';
 import { Text, Card, CardItem, Icon } from 'native-base';
 import { connect } from 'react-redux';
+import { LinearGradient } from 'expo';
 import { selectCategory } from '../actions';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -29,6 +30,7 @@ class BrowseScreen extends Component {
     };
 
     renderCategories(category) {
+        const { color } = category;
         return (
             <TouchableOpacity
                 key={category.id}
@@ -36,9 +38,12 @@ class BrowseScreen extends Component {
                 onPress={() => this.doSelectCategory(category)}
             >
                 <Card style={styles.cardStyle}>
-                    <CardItem header>
-                        <Text>{category.title}</Text>
-                    </CardItem>
+                {/* TODO: grab specific color from each category, ADD: An array of [x, y] where x and y are floats */}
+                    <LinearGradient colors={color} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={{ flex: 1 }}>
+                        <CardItem header style={{ backgroundColor: 'transparent' }}>
+                            <Text style={{ color: 'white' }}>{category.title}</Text>
+                        </CardItem>
+                    </LinearGradient>
                 </Card>
             </TouchableOpacity>
         );
@@ -74,7 +79,8 @@ const styles = {
         flex: 1
     },
     cardStyle: {
-        height: 100
+        height: 100,
+        backgroundColor: '#FF7043',
     },
     gridItem: {
         marginLeft: 10,

@@ -4,7 +4,7 @@ export default () => [
     title: 'Home Services',
     description: 'Home Services Description',
     dbReference: 'home_services',
-    color: '',
+    color: ['#0288D1', '#90CAF9'],
     subcategories: [
       {
         id: '0.1',
@@ -31,7 +31,7 @@ export default () => [
     title: 'Car Wash and Repair',
     description: 'Car Wash and Repair Description',
     dbReference: 'car_services',
-    color: '',
+    color: ['#37474F', '#90A4AE'],
     subcategories: [
       {
         id: '1.1',
@@ -59,7 +59,7 @@ export default () => [
     title: 'Handyman',
     description: 'Handyman Description',
     dbReference: 'handyman',
-    color: '',
+    color: ['#00695C', '#4DB6AC'],
     subcategories: [
       {
         id: '2.1',
@@ -86,13 +86,13 @@ export default () => [
     title: 'Baby Sitting',
     description: 'Baby Sitting Description',
     dbReference: 'baby_sitting',
-    color: ''
+    color: ['#AD1457', '#F06292']
   },
   {
     id: '4', 
     title: 'Other',
     description: 'Other Description',
     dbReference: 'other',
-    color: ''
+    color: ['#FF8F00', '#FFF176']
   }
 ];

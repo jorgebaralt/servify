@@ -18,7 +18,9 @@ export const createService = (servicePost) => async (dispatch) => {
 
     if (selectedCategory && phone && zipCode && description && title) {
         const category = selectedCategory.dbReference;
-        const locationData = await Location.geocodeAsync(zipCode);
+        const geolocationData = await Location.geocodeAsync(zipCode);
+        const geolocation = geolocationData[0];
+        const locationData = await Location.reverseGeocodeAsync({ latitude: geolocation.latitude, longitude: geolocation.longitude });
         const location = locationData[0];
 
         const newServicePost = {
@@ -27,6 +29,7 @@ export const createService = (servicePost) => async (dispatch) => {
             description,
             title,
             zipCode,
+            geolocation,
             location,
             email
         };

@@ -44,7 +44,8 @@ module.exports = {
         "import/prefer-default-export": [0],
         "max-len" : [0],
         "lines-between-class-members":[1],
-        "react/no-array-index-key": [0]
+        "react/no-array-index-key": [0],
+        "react/no-unused-state": [1]
 
     }
 };
