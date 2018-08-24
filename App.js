@@ -36,14 +36,6 @@ export default class App extends React.Component {
     }
 
     render() {
-        // Selected Subcategory - subcategory and specific
-        const SelectedSubcategory = createStackNavigator({
-            subcategories: { screen: SubcategoriesListScreen },
-            specificSubcategory: { screen: SpecificSubcategoryScreen }
-        }, {
-                headerMode: 'none'
-            });
-
         // Main - Second Navigation
         const Main = createBottomTabNavigator({
             home: { screen: HomeScreen },
@@ -85,7 +77,8 @@ export default class App extends React.Component {
             initial: WelcomeNavigator,
             settings: { screen: SettingsScreen },
             category: { screen: SpecificCategoryScreen },
-            selectedSubcategory: SelectedSubcategory,
+            subcategories: { screen: SubcategoriesListScreen },
+            specificSubcategory: { screen: SpecificSubcategoryScreen },
             service: SpecificService
         }, {
                 headerMode: 'none'
