@@ -33,7 +33,7 @@ class SpecificCategoryScreen extends Component {
         return(
             <TouchableOpacity
                 key={service.id}
-                onPress={() => console.log(service.title)}
+                onPress={() => this.props.navigation.navigate('service')}
             >
                 <Card style={cardStyle}>
                         <CardItem header>

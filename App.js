@@ -20,6 +20,7 @@ import SettingsScreen from './screens/SettingsScreen';
 import SpecificCategoryScreen from './screens/SpecificCategoryScreen';
 import SubcategoriesListScreen from './screens/SubcategoriesListScreen';
 import SpecificSubcategoryScreen from './screens/SpecificSubcategoryScreen';
+import SpecificService from './screens/SpecificService';
 
 const store = createStore(reducers, {}, compose(applyMiddleware(thunk)));
 export default class App extends React.Component {
@@ -91,7 +92,8 @@ export default class App extends React.Component {
             initial: WelcomeNavigator,
             settings: { screen: SettingsScreen },
             selectedCategory: SelectedCategory,
-            selectedSubcategory: SelectedSubcategory
+            selectedSubcategory: SelectedSubcategory,
+            service: SpecificService
         }, {
                 headerMode: 'none'
         });
