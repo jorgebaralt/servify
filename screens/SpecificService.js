@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, SafeAreaView } from 'react-native';
-import { Container, Header, Body, Right, Button, Icon, Title, Text, Left } from 'native-base';
+import { Container, Header, Body, Right, Button, Icon, Title, Text, Left, Content } from 'native-base';
 import { connect } from 'react-redux';
 import { Location, Permissions } from 'expo';
 import { getCurrentUserDisplayName } from '../actions';
@@ -14,6 +14,12 @@ class SpecificService extends Component {
     onBackPress = () => {
         this.props.navigation.goBack(null);
     }
+
+    renderService = () => {
+        return (
+            <Text> asd </Text>
+        );
+    }
       
 	render() {
         return (
@@ -24,14 +30,27 @@ class SpecificService extends Component {
                             <Icon name="arrow-back" style={{ color: 'black' }} />
                         </Button>
                     </Left>
-                        <Title style={{ alignItems: 'center' }}>Service</Title>
+                        <Title style={styles.titleStyle}>{this.props.service.title}</Title>
                     <Right />
                 </Header>
+                <Content>
+                    {this.renderService()}
+                </Content>
+                
             </Container>
         );
 	}
 }
+const styles = {
+    titleStyle: {
+        alignItems: 'center',
+        marginTop: '10%',
+        fontSize: 20
+    }
+};
 
-export default connect(
-	null,
-)(SpecificService);
+const mapStateToProps = (state) => {
+    return { service: state.selectedService.service };
+};
+
+export default connect(mapStateToProps)(SpecificService);

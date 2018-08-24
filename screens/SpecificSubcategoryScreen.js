@@ -105,7 +105,8 @@ const styles = {
         color: 'gray'
     },
     titleStyle: {
-        fontSize: 18
+        fontSize: 18,
+        width: '90%'
     },
     phoneLocationStyle: {
         flexDirection: 'row',

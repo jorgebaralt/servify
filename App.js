@@ -36,13 +36,6 @@ export default class App extends React.Component {
     }
 
     render() {
-        // Selected Category - category and specific
-        const SelectedCategory = createStackNavigator({
-            category: { screen: SpecificCategoryScreen },
-        }, {
-                headerMode: 'none'
-            });
-
         // Selected Subcategory - subcategory and specific
         const SelectedSubcategory = createStackNavigator({
             subcategories: { screen: SubcategoriesListScreen },
@@ -91,7 +84,7 @@ export default class App extends React.Component {
         const RootNavigation = createStackNavigator({
             initial: WelcomeNavigator,
             settings: { screen: SettingsScreen },
-            selectedCategory: SelectedCategory,
+            category: { screen: SpecificCategoryScreen },
             selectedSubcategory: SelectedSubcategory,
             service: SpecificService
         }, {

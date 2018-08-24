@@ -51,16 +51,18 @@ class SubcategoriesListScreen extends Component {
         return (
             <Container>
                 <Header style={{ backgroundColor: this.props.category.color[0] }}>
-                        <Left>
+                        <Left> 
                             <Button transparent onPress={() => { this.props.navigation.navigate('browse'); }}>
                                 <Icon name="arrow-back" style={{ color: 'white' }} />
                             </Button>
                         </Left>
-                        <Body>
+                        <Body style={{ flex: 3 }}>
                             <Title style={{ color: 'white' }}>{this.props.category.title}</Title>
                         </Body>
+                        <Right />
                 </Header>
                 <ListView
+                    style={{ marginTop: 10 }}
                     contentContainerStyle={styles.contentStyle}
                     dataSource={this.dataSource}
                     renderRow={(subcategory) => this.renderSubcategories(subcategory)}

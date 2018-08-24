@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { LinearGradient } from 'expo';
 import { getServicesCategory, selectService } from '../actions';
 
-
 const SCREEN_WIDTH = Dimensions.get('window').width;
 class SpecificCategoryScreen extends Component {
     state={ dataLoaded: false }
@@ -42,15 +41,15 @@ class SpecificCategoryScreen extends Component {
                 <Card style={cardStyle}>
                         <CardItem header>
                             <Text style={titleStyle}>{service.title}</Text>
-                            <Right>
-                                <Icon name="arrow-forward" />
-                            </Right>
                         </CardItem>
                         <CardItem>
                             <Body style={phoneLocationStyle}>
                                 <Text style={grayStyle}>{service.phone}</Text>
                                 <Text style={[grayStyle, { marginLeft: '15%' }]}>{service.location.city}</Text>
                             </Body>
+                            <Right>
+                                <Icon name="arrow-forward" style={{ color: this.props.category.color[0] }} />
+                            </Right>
                         </CardItem>
                         <CardItem>
                             <Body>
@@ -66,6 +65,7 @@ class SpecificCategoryScreen extends Component {
         if(this.state.dataLoaded){
             return(
                 <ListView
+                    style={{ marginTop: 10 }}
                     dataSource={this.dataSource}
                     renderRow={(service) => this.renderServices(service)}
                     enableEmptySections
@@ -76,6 +76,7 @@ class SpecificCategoryScreen extends Component {
     }
 
     render() {
+        const {headerTitleStyle} = styles;
         return (
             <Container>
                 <Header style={{ backgroundColor: this.props.category.color[0] }}>
@@ -84,9 +85,10 @@ class SpecificCategoryScreen extends Component {
                             <Icon name="arrow-back" style={{ color: 'white' }} />
                         </Button>
                     </Left>
-                    <Body>
-                        <Title style={{ color: 'white' }}>{this.props.category.title}</Title>
+                    <Body style={{ flex: 3 }}>
+                        <Title style={headerTitleStyle}>{this.props.category.title}</Title>
                     </Body>
+                    <Right />
                 </Header>
                 {this.renderListView()}
             </Container>
@@ -110,13 +112,16 @@ const styles = {
         color: 'gray'
     },
     titleStyle: {
-        fontSize: 18
+        fontSize: 18,
+        width: '90%'
     },
     phoneLocationStyle: {
         flexDirection: 'row',
         flex: 1,
+    },
+    headerTitleStyle: {
+        color: 'white'
     }
-
 };
 
 const mapStateToProps = (state) => ({
