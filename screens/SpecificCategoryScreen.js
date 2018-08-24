@@ -3,7 +3,8 @@ import { View, ListView, TouchableOpacity, Dimensions } from 'react-native';
 import { Header, Text, Card, CardItem, Body, Title, Container, Left, Button, Icon, Right, Spinner } from 'native-base';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo';
-import { getServicesCategory } from '../actions';
+import { getServicesCategory, selectService } from '../actions';
+
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 class SpecificCategoryScreen extends Component {
@@ -33,7 +34,10 @@ class SpecificCategoryScreen extends Component {
         return(
             <TouchableOpacity
                 key={service.id}
-                onPress={() => this.props.navigation.navigate('service')}
+                onPress={() => { 
+                    this.props.selectService(service);
+                    this.props.navigation.navigate('service'); 
+                }}
             >
                 <Card style={cardStyle}>
                         <CardItem header>
@@ -120,4 +124,4 @@ const mapStateToProps = (state) => ({
     servicesList: state.getServiceResult.servicesList
 });
 
-export default connect(mapStateToProps, { getServicesCategory })(SpecificCategoryScreen);
+export default connect(mapStateToProps, { getServicesCategory, selectService })(SpecificCategoryScreen);

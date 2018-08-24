@@ -7,9 +7,9 @@ import { getCurrentUserDisplayName } from '../actions';
 
 class SpecificService extends Component {
 
-	async componentWillMount() {
-        console.log('Specific Service');
-    }
+	// async componentWillMount() {
+
+    // }
 
     onBackPress = () => {
         this.props.navigation.goBack(null);
