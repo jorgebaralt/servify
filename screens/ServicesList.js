@@ -3,16 +3,23 @@ import { View, ListView, TouchableOpacity, Dimensions } from 'react-native';
 import { Header, Text, Card, CardItem, Body, Title, Container, Left, Button, Icon, Right, Spinner } from 'native-base';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo';
-import { getServicesCategory, selectService } from '../actions';
+import { getServicesCategory, getServicesSubcategory, selectService } from '../actions';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
-class SpecificCategoryScreen extends Component {
+class ServicesList extends Component {
     state={ dataLoaded: false }
-
+    
     componentWillMount = async () => {
-        // TODO: get all the post for this service in firebase
-        const { dbReference } = this.props.category;
-        await this.props.getServicesCategory(dbReference);
+        const { category, subcategory } = this.props;
+        const categoryRef = category.dbReference;
+
+        if(subcategory){
+            const subcategoryRef = subcategory.dbReference;
+            await this.props.getServicesSubcategory(categoryRef, subcategoryRef);
+        } else {
+            await this.props.getServicesCategory(categoryRef);
+        }
+
         const { servicesList } = this.props;
         const ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2
@@ -72,21 +79,22 @@ class SpecificCategoryScreen extends Component {
                 />
             );
         }
-        return (<Spinner color="orange" />);
+        return (<Spinner color={this.props.category.color[0]} />);
     }
 
     render() {
-        const {headerTitleStyle} = styles;
+        const { headerTitleStyle } = styles;
+        const { subcategory, category } = this.props;
         return (
             <Container>
-                <Header style={{ backgroundColor: this.props.category.color[0] }}>
+                <Header style={{ backgroundColor: category.color[0] }}>
                     <Left>
                         <Button transparent onPress={() => { this.onBackPress(); }}>
                             <Icon name="arrow-back" style={{ color: 'white' }} />
                         </Button>
                     </Left>
                     <Body style={{ flex: 3 }}>
-                        <Title style={headerTitleStyle}>{this.props.category.title}</Title>
+                        <Title style={headerTitleStyle}>{subcategory ? subcategory.title : category.title}</Title>
                     </Body>
                     <Right />
                 </Header>
@@ -113,7 +121,6 @@ const styles = {
     },
     titleStyle: {
         fontSize: 18,
-        width: '90%'
     },
     phoneLocationStyle: {
         flexDirection: 'row',
@@ -125,8 +132,9 @@ const styles = {
 };
 
 const mapStateToProps = (state) => ({
+    subcategory: state.selectedCategory.subcategory,
     category: state.selectedCategory.category,
     servicesList: state.getServiceResult.servicesList
 });
 
-export default connect(mapStateToProps, { getServicesCategory, selectService })(SpecificCategoryScreen);
+export default connect(mapStateToProps, { getServicesCategory, getServicesSubcategory, selectService })(ServicesList);

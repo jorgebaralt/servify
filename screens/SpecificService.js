@@ -45,7 +45,8 @@ const styles = {
     titleStyle: {
         alignItems: 'center',
         marginTop: '10%',
-        fontSize: 20
+        fontSize: 20,
+        width: '85%'
     }
 };
 

@@ -193,7 +193,7 @@ class PostServiceScreen extends Component {
                                     <Input
                                         value={this.state.title}
                                         onChangeText={(text) => this.setState({ title: text })}
-                                        maxLength={36}
+                                        maxLength={25}
                                     />
                                 </Item>
 

@@ -25,7 +25,7 @@ class BrowseScreen extends Component {
         if (category.subcategories) {
             this.props.navigation.navigate('subcategories');
         } else {
-            this.props.navigation.navigate('category');
+            this.props.navigation.navigate('servicesList');
         }
     };
 

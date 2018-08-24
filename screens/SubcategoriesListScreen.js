@@ -21,7 +21,7 @@ class SubcategoriesListScreen extends Component {
 
     doSelectSubcategory = (subcategory) => {
         this.props.selectSubcategory(subcategory);
-        this.props.navigation.navigate('specificSubcategory');
+        this.props.navigation.navigate('servicesList');
     };
 
     renderSubcategories = (subcategory) => {
@@ -34,7 +34,7 @@ class SubcategoriesListScreen extends Component {
                     <CardItem header>
                         <Text>{subcategory.title}</Text>
                         <Right>
-                            <Icon name="arrow-forward" />
+                            <Icon name="arrow-forward" style={{ color: this.props.category.color[0] }} />
                         </Right>
                     </CardItem>
                     <CardItem>

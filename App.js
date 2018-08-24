@@ -17,9 +17,8 @@ import BrowseScreen from './screens/BrowseScreen';
 import PostServiceScreen from './screens/PostServiceScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import SettingsScreen from './screens/SettingsScreen';
-import SpecificCategoryScreen from './screens/SpecificCategoryScreen';
+import ServicesList from './screens/ServicesList';
 import SubcategoriesListScreen from './screens/SubcategoriesListScreen';
-import SpecificSubcategoryScreen from './screens/SpecificSubcategoryScreen';
 import SpecificService from './screens/SpecificService';
 
 const store = createStore(reducers, {}, compose(applyMiddleware(thunk)));
@@ -76,10 +75,9 @@ export default class App extends React.Component {
         const RootNavigation = createStackNavigator({
             initial: WelcomeNavigator,
             settings: { screen: SettingsScreen },
-            category: { screen: SpecificCategoryScreen },
+            servicesList: { screen: ServicesList },
             subcategories: { screen: SubcategoriesListScreen },
-            specificSubcategory: { screen: SpecificSubcategoryScreen },
-            service: SpecificService
+            service: { screen: SpecificService }
         }, {
                 headerMode: 'none'
         });

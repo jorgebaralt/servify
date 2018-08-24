@@ -470,11 +470,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/screens/SpecificSubcategoryScreen.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-112" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/screens/SubcategoriesListScreen.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1334">
@@ -483,9 +478,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/reducers/select_category_reducer.js">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/screens/SpecificCategoryScreen.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/screens/BrowseScreen.js">
