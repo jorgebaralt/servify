@@ -78,14 +78,14 @@ class SpecificCategoryScreen extends Component {
     render() {
         return (
             <Container>
-                <Header>
+                <Header style={{ backgroundColor: this.props.category.color[0] }}>
                     <Left>
                         <Button transparent onPress={() => { this.onBackPress(); }}>
-                            <Icon name="arrow-back" style={{ color: 'black' }} />
+                            <Icon name="arrow-back" style={{ color: 'white' }} />
                         </Button>
                     </Left>
                     <Body>
-                        <Title>{this.props.category.title}</Title>
+                        <Title style={{ color: 'white' }}>{this.props.category.title}</Title>
                     </Body>
                 </Header>
                 {this.renderListView()}

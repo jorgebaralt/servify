@@ -80,7 +80,6 @@ const styles = {
     },
     cardStyle: {
         height: 100,
-        backgroundColor: '#FF7043',
     },
     gridItem: {
         marginLeft: 10,
