@@ -31,6 +31,7 @@ const initialState = {
     email: '',
     phone: '',
     zipCode: '',
+    miles: '',
     description: '',
     loading: false,
     descriptionCharCount: maxCharCount
@@ -70,13 +71,14 @@ class PostServiceScreen extends Component {
     doPostService = async () => {
         Keyboard.dismiss();
         this.setState({ loading: true });
-        const { selectedCategory, selectedSubcategory, title, phone, zipCode, description } = this.state;
+        const { selectedCategory, selectedSubcategory, title, phone, zipCode, description, miles } = this.state;
         const servicePost = {
             selectedCategory,
             selectedSubcategory,
             title,
             phone,
             zipCode,
+            miles,
             description
         };
         
@@ -211,6 +213,14 @@ class PostServiceScreen extends Component {
                                     <Input
                                         value={this.state.zipCode}
                                         onChangeText={(text) => this.setState({ zipCode: text })}
+                                        keyboardType="numeric"
+                                    />
+                                </Item>
+                                <Item style={itemStyle} floatingLabel>
+                                    <Label>Service Radius (Miles)</Label>
+                                    <Input
+                                        value={this.state.miles}
+                                        onChangeText={(text) => this.setState({ miles: text })}
                                         keyboardType="numeric"
                                     />
                                 </Item>

@@ -11,7 +11,8 @@ export const createService = (servicePost) => async (dispatch) => {
 		phone,
 		zipCode,
 		description,
-		title
+        title,
+        miles
     } = servicePost;
 
     const { email } = await firebase.auth().currentUser;
@@ -31,6 +32,7 @@ export const createService = (servicePost) => async (dispatch) => {
             zipCode,
             geolocation,
             location,
+            miles,
             email
         };
 
