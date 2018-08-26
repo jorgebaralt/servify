@@ -147,11 +147,10 @@ const styles = {
         color: '#FF7043'
     },
     mapStyle: {
-        width: SCREEN_WIDTH,
+        width: SCREEN_WIDTH - ((SCREEN_WIDTH * 7 / 100) * 2),
         height: 200,
         marginTop: 10,
-        marginLeft: '7%',
-        marginRight: '7%'
+        marginLeft: '7%'
     },
     infoStyle: {
         marginTop: 5,
