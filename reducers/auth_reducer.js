@@ -17,7 +17,7 @@ export default (state = {}, action) => {
         case LOG_OUT:
             return { displayName: undefined };
         case RESET_MESSAGE_CREATE:
-            return {};
+            return {...state, message: undefined };
         default:
             return state;
     }

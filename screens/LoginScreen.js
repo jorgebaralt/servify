@@ -3,7 +3,7 @@ import { Text, Form, Item, Button, Label, Input, Icon, Toast, Spinner } from 'na
 import { LinearGradient } from 'expo';
 import { View, SafeAreaView, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
-import { emailAndPasswordLogin } from '../actions';
+import { emailAndPasswordLogin, resetMessageCreate } from '../actions';
 
 const initialState = {
     email: '',
@@ -32,7 +32,7 @@ class LoginScreen extends Component {
                 type: 'warning'
             });
         }
-        this.props.message = '';
+        this.props.resetMessageCreate();
     }
 
     loginUser = async () => {
@@ -144,4 +144,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, { emailAndPasswordLogin })(LoginScreen);
+export default connect(mapStateToProps, { emailAndPasswordLogin, resetMessageCreate })(LoginScreen);
