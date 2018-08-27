@@ -10,6 +10,7 @@ import {
   RESET_MESSAGE_CREATE
 } from './types';
 
+const addUserdbURL = 'https://us-central1-servify-716c6.cloudfunctions.net/addUserdb';
 // How to use AsyncStorage:
 // AsyncStorage.setItem(''fb_token,token);
 // AsyncStorage.getItem('fb_token');
@@ -23,15 +24,12 @@ export const facebookLogin = () => async (dispatch) => {
         }
 
         const credential = await firebase.auth.FacebookAuthProvider.credential(token);
-        const { user } = await firebase.auth().signInAndRetrieveDataWithCredential(credential)
-            .catch(() => {
-                dispatch({ type: LOGIN_FAIL });
-            });
-
+        const { user } = await firebase.auth().signInAndRetrieveDataWithCredential(credential);
+        await axios.post(addUserdbURL, { email: user.email, displayName: user.displayName });
         // if everything worked fine, we dispatch success and the displayName
-        dispatch({ type: LOGIN_SUCCESS, payload: user.displayName });
+        return dispatch({ type: LOGIN_SUCCESS, payload: user.displayName });
     }catch (e) {
-        console.log('facebook canceled');
+        return dispatch({ type: LOGIN_FAIL });
     }
 };
 
@@ -40,7 +38,7 @@ export const emailAndPasswordLogin = (email, password) => async (dispatch) => {
         const { user } = await firebase.auth().signInWithEmailAndPassword(email,password);
         dispatch({ type: LOGIN_SUCCESS, payload: user.displayName });
     }catch(e){
-        dispatch({ type: LOGIN_FAIL,payload:'Password and Email does not Match' });
+        dispatch({ type: LOGIN_FAIL, payload: 'Password and Email does not Match' });
     }
 };
 
@@ -67,9 +65,8 @@ export const createEmailAccount = (user) => async (dispatch) => {
             });
 
             // Perform Login Using Firebase.
-            const { loggedUser } = await firebase.auth()
-              .signInWithEmailAndPassword(email, password);
-
+            const { loggedUser } = await firebase.auth().signInWithEmailAndPassword(email, password);
+            await axios.post(addUserdbURL, { email, firstName, lastName });
             return dispatch({ type: LOGIN_SUCCESS, payload: loggedUser.displayName });
         }catch(e){
             return dispatch({ type: LOGIN_FAIL, payload: 'Email already exist or information is not valid' });
