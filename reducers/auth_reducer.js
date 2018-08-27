@@ -13,9 +13,9 @@ export default (state = {}, action) => {
         case LOGIN_SUCCESS:
             return { displayName: action.payload };
         case LOGIN_FAIL:
-            return { message: action.payload };
+            return { displayName: undefined, message: action.payload };
         case LOG_OUT:
-            return {};
+            return { displayName: undefined };
         case RESET_MESSAGE_CREATE:
             return {};
         default:

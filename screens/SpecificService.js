@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { View, SafeAreaView, Dimensions } from 'react-native';
+import { View, Dimensions } from 'react-native';
 import { Container, Header, Body, Right, Button, Icon, Title, Text, Left, Content, Card, CardItem } from 'native-base';
 import { connect } from 'react-redux';
-import { MapView } from 'expo';
-import {Circle} from 'react-native-maps';
-import { getCurrentUserDisplayName } from '../actions';
+import { MapView, Linking } from 'expo';
+import { addFavorite, removeFavorite } from '../actions';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -16,15 +15,21 @@ class SpecificService extends Component {
     }
 
     favPressed = () => {
+        const { email } = this.props.service;
         if(this.state.isFav){
+            this.props.removeFavorite(email);
             this.setState({ isFav: false });
-            // TODO: Remove from fav
         } else {
+            this.props.addFavorite(email);
             this.setState({ isFav: true });
-            // TODO: Add to fav
         }
     }
-      
+
+    contactPressed = async () => {
+        const { phone } = this.props.service;
+        await Linking.openURL('tel:+1' + phone.replace(/\D/g, ''));
+    }
+
 	render() {
         const { service } = this.props;
         const { descriptionStyle, cardStyle, footerBarStyle, favIconStyle, mapStyle, subtitleStyle, infoStyle } = styles;
@@ -104,7 +109,7 @@ class SpecificService extends Component {
                 </Content>         
 
                 <View style={{ bottom: 30, justifyContent: 'center', alignItems: 'center', left: '28%' }}>
-                    <Button style={{ backgroundColor: '#FF7043', width: '43%' }}>
+                    <Button style={{ backgroundColor: '#FF7043', width: '43%' }} onPress={() => this.contactPressed()}>
                         <Text>Contact Now!</Text>
                         <Icon type="Feather" name="phone" style={{ color: 'white', fontSize: 18, left: -20, marginBottom: 5 }} />
                     </Button>
@@ -126,14 +131,14 @@ const styles = {
         elevation: null
     },
     descriptionStyle: {
-        fontSize: 14
+        fontSize: 16
     },
     subtitleStyle: {
         marginLeft: '7%',
         marginTop: 10,
         fontWeight: 'bold',
         color: '#4DB6AC',
-        fontSize: 14
+        fontSize: 16
     },
     footerBarStyle: {
         position: 'absolute',
@@ -154,7 +159,7 @@ const styles = {
     },
     infoStyle: {
         marginTop: 5,
-        fontSize: 14
+        fontSize: 16
     }
 };
 
@@ -162,4 +167,4 @@ const mapStateToProps = (state) => {
     return { service: state.selectedService.service };
 };
 
-export default connect(mapStateToProps)(SpecificService);
+export default connect(mapStateToProps, { addFavorite, removeFavorite })(SpecificService);

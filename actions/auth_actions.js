@@ -29,7 +29,7 @@ export const facebookLogin = () => async (dispatch) => {
             });
 
         // if everything worked fine, we dispatch success and the displayName
-        dispatch({ type: LOGIN_SUCCESS,payload: user.displayName });
+        dispatch({ type: LOGIN_SUCCESS, payload: user.displayName });
     }catch (e) {
         console.log('facebook canceled');
     }
@@ -70,14 +70,13 @@ export const createEmailAccount = (user) => async (dispatch) => {
             const { loggedUser } = await firebase.auth()
               .signInWithEmailAndPassword(email, password);
 
-            dispatch({ type: LOGIN_SUCCESS, payload: loggedUser.displayName });
+            return dispatch({ type: LOGIN_SUCCESS, payload: loggedUser.displayName });
         }catch(e){
-            dispatch({ type: LOGIN_FAIL, payload: 'Email already exist or information is not valid' });
+            return dispatch({ type: LOGIN_FAIL, payload: 'Email already exist or information is not valid' });
         }
     }else{
         return dispatch({ type: LOGIN_FAIL, payload: 'Please fill all the information' });
     }
-    return dispatch({ type: LOGIN_FAIL, payload: 'Please Fill With Valid Information' });
   };
 
 export const logOut = (callback1, callback2, callback3) => async (dispatch) => {

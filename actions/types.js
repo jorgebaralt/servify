@@ -21,3 +21,5 @@ export const GET_CATEGORY_FAIL = 'get_category_fail';
 export const GET_SUBCATEGORY_SUCCESS = 'get_subcategory_success';
 export const GET_SUBCATEGORY_FAIL = 'get_subcategory_fail';
 export const SELECT_SERVICE = 'select_service';
+export const ADD_FAVORITE = 'add_favorite';
+export const REMOVE_FAVORITE = 'remove_favorite';
