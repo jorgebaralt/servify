@@ -33,7 +33,6 @@ class BrowseScreen extends Component {
         const { color } = category;
         return (
             <TouchableOpacity
-                key={category.id}
                 style={styles.gridItem}
                 onPress={() => this.doSelectCategory(category)}
             >
