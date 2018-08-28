@@ -46,6 +46,7 @@ module.exports = {
         "lines-between-class-members":[1],
         "react/no-array-index-key": [0],
         "react/no-unused-state": [1],
-        "import/named": [0]
+        "import/named": [0],
+        "no-plusplus": [0]
     }
 };

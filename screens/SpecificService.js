@@ -3,25 +3,57 @@ import { View, Dimensions } from 'react-native';
 import { Container, Header, Body, Right, Button, Icon, Title, Text, Left, Content, Card, CardItem } from 'native-base';
 import { connect } from 'react-redux';
 import { MapView, Linking } from 'expo';
-import { addFavorite, removeFavorite } from '../actions';
+import axios from 'axios';
+import firebase from 'firebase';
+import _ from 'lodash';
 
+const getFavURL = 'https://us-central1-servify-716c6.cloudfunctions.net/getFavorite';
+const updateFavURL = 'https://us-central1-servify-716c6.cloudfunctions.net/updateFavorite';
 const SCREEN_WIDTH = Dimensions.get('window').width;
-
+let favorites = [];
 class SpecificService extends Component {
     state={ isFav: false };
+
+    componentWillMount = async () => {
+        const {service} = this.props;
+        const { email } = await firebase.auth().currentUser;
+        const { data } = await axios.post(getFavURL, { email });
+        favorites = data;
+        favorites.forEach(element => {
+            if(element.title === service.title && element.category === service.category && element.description === service.description){
+                this.setState({ isFav: true });
+            }
+        });
+    }
 
     onBackPress = () => {
         this.props.navigation.goBack(null);
     }
 
+    addFavorite = async (email) => {
+        this.setState({ isFav: true });
+        favorites.push(this.props.service);
+        await axios.post(updateFavURL, { email, favorites });
+    }
+
+    removeFavorite = async (email) => {
+        const { service } = this.props;
+        this.setState({ isFav: false });
+        favorites.forEach((element, i) => {
+            if(element.title === service.title && element.category === service.category && element.description === service.description){
+                favorites.splice(i, 1);
+            }
+        });
+        await axios.post(updateFavURL, { email, favorites });
+    }
+
+
     favPressed = () => {
         const { email } = this.props.service;
         if(this.state.isFav){
-            this.props.removeFavorite(email);
-            this.setState({ isFav: false });
+            this.removeFavorite(email);
         } else {
-            this.props.addFavorite(email);
-            this.setState({ isFav: true });
+            this.addFavorite(email);
         }
     }
 
@@ -167,4 +199,4 @@ const mapStateToProps = (state) => {
     return { service: state.selectedService.service };
 };
 
-export default connect(mapStateToProps, { addFavorite, removeFavorite })(SpecificService);
+export default connect(mapStateToProps)(SpecificService);
