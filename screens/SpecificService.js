@@ -1,29 +1,33 @@
 import React, { Component } from 'react';
 import { View, Dimensions } from 'react-native';
-import { Container, Header, Body, Right, Button, Icon, Title, Text, Left, Content, Card, CardItem } from 'native-base';
+import { Container, Header, Body, Right, Button, Icon, Title, Text, Left, Content, Card, CardItem, Spinner } from 'native-base';
 import { connect } from 'react-redux';
 import { MapView, Linking } from 'expo';
 import axios from 'axios';
 import firebase from 'firebase';
-import _ from 'lodash';
 
 const getFavURL = 'https://us-central1-servify-716c6.cloudfunctions.net/getFavorite';
 const updateFavURL = 'https://us-central1-servify-716c6.cloudfunctions.net/updateFavorite';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 let favorites = [];
 class SpecificService extends Component {
-    state={ isFav: false };
+    state={ isFav: false, loaded: false };
 
     componentWillMount = async () => {
-        const {service} = this.props;
+        const { service } = this.props;
         const { email } = await firebase.auth().currentUser;
         const { data } = await axios.post(getFavURL, { email });
-        favorites = data;
-        favorites.forEach(element => {
-            if(element.title === service.title && element.category === service.category && element.description === service.description){
-                this.setState({ isFav: true });
-            }
-        });
+        if(data){
+            favorites = data;
+            favorites.forEach(element => {
+                if(element.title === service.title && element.category === service.category && element.description === service.description){
+                    this.setState({ isFav: true });
+                } 
+            });
+            this.setState({ loaded: true });
+        } else {
+            this.setState({ loaded: true });
+        }
     }
 
     onBackPress = () => {
@@ -80,6 +84,13 @@ class SpecificService extends Component {
             latitudeDelta = 1.5;
         }
 
+        if(!this.state.loaded){
+            return (
+                <Container style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    <Spinner color="orange" />
+                </Container>
+            );
+        } 
         return (
             <Container style={{ flex: 1 }}>
                 <Header>
