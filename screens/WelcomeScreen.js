@@ -3,7 +3,9 @@ import Expo, { AppLoading } from 'expo';
 import { StatusBar, View } from 'react-native';
 import _ from 'lodash';
 import firebase from 'firebase';
+import { connect } from 'react-redux';
 import Slides from '../components/Slides';
+import { getFavorites } from '../actions';
 
 const SLIDE_DATA = [
     { text: 'Welcome to Servify', color: '#FFB300' },
@@ -31,9 +33,11 @@ class WelcomeScreen extends Component{
     async checkForUser(){
         // TODO: for testing Log out
         //  firebase.auth().signOut().then(()=>{console.log('Logging out')});
-
-        firebase.auth().onAuthStateChanged((user) => {
+        
+        firebase.auth().onAuthStateChanged(async (user) => {
+            const { email } = await firebase.auth().currentUser;
             if (user) {
+                this.props.getFavorites(email);
                 this.props.navigation.navigate('main');
                 this.setState({ authenticated: true });
             } else {
@@ -65,4 +69,4 @@ class WelcomeScreen extends Component{
         );
     }
 }
-export default WelcomeScreen;
+export default connect(null, { getFavorites })(WelcomeScreen);

@@ -28,6 +28,7 @@ export const facebookLogin = () => async (dispatch) => {
         await axios.post(addUserdbURL, { email: user.email, displayName: user.displayName });
         // if everything worked fine, we dispatch success and the displayName
         return dispatch({ type: LOGIN_SUCCESS, payload: user.displayName });
+        // TODO: grab favorite list and store on device for fast access
     }catch (e) {
         return dispatch({ type: LOGIN_FAIL });
     }
@@ -35,10 +36,11 @@ export const facebookLogin = () => async (dispatch) => {
 
 export const emailAndPasswordLogin = (email, password) => async (dispatch) => {
     try{
-        const { user } = await firebase.auth().signInWithEmailAndPassword(email,password);
-        dispatch({ type: LOGIN_SUCCESS, payload: user.displayName });
+        const { user } = await firebase.auth().signInWithEmailAndPassword(email, password);
+        // TODO: grab favorite list and store on device for fast access
+        return dispatch({ type: LOGIN_SUCCESS, payload: user.displayName });
     }catch(e){
-        dispatch({ type: LOGIN_FAIL, payload: 'Password and Email does not Match' });
+        return dispatch({ type: LOGIN_FAIL, payload: 'Password and Email does not Match' });
     }
 };
 

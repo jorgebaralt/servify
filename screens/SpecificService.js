@@ -3,31 +3,26 @@ import { View, Dimensions } from 'react-native';
 import { Container, Header, Body, Right, Button, Icon, Title, Text, Left, Content, Card, CardItem, Spinner } from 'native-base';
 import { connect } from 'react-redux';
 import { MapView, Linking } from 'expo';
-import axios from 'axios';
-import firebase from 'firebase';
+import { updateFavorite } from '../actions';
 
-const getFavURL = 'https://us-central1-servify-716c6.cloudfunctions.net/getFavorite';
-const updateFavURL = 'https://us-central1-servify-716c6.cloudfunctions.net/updateFavorite';
 const SCREEN_WIDTH = Dimensions.get('window').width;
-let favorites = [];
+let currentFavorite = [];
+
 class SpecificService extends Component {
-    state={ isFav: false, loaded: false };
+    state={ isFav: false };
 
     componentWillMount = async () => {
         const { service } = this.props;
-        const { email } = await firebase.auth().currentUser;
-        const { data } = await axios.post(getFavURL, { email });
-        if(data){
-            favorites = data;
-            favorites.forEach(element => {
+        const { favorites } = this.props;
+        console.log(favorites);
+        if(favorites){
+            currentFavorite = favorites;
+            currentFavorite.forEach(element => {
                 if(element.title === service.title && element.category === service.category && element.description === service.description){
                     this.setState({ isFav: true });
                 } 
             });
-            this.setState({ loaded: true });
-        } else {
-            this.setState({ loaded: true });
-        }
+        } 
     }
 
     onBackPress = () => {
@@ -36,24 +31,24 @@ class SpecificService extends Component {
 
     addFavorite = async (email) => {
         this.setState({ isFav: true });
-        favorites.push(this.props.service);
-        await axios.post(updateFavURL, { email, favorites });
+        currentFavorite.push(this.props.service);
+        await this.props.updateFavorite(email, currentFavorite);
     }
 
     removeFavorite = async (email) => {
         const { service } = this.props;
         this.setState({ isFav: false });
-        favorites.forEach((element, i) => {
+        currentFavorite.forEach((element, i) => {
             if(element.title === service.title && element.category === service.category && element.description === service.description){
-                favorites.splice(i, 1);
+                currentFavorite.splice(i, 1);
             }
         });
-        await axios.post(updateFavURL, { email, favorites });
+        await this.props.updateFavorite(email, currentFavorite);
     }
-
 
     favPressed = () => {
         const { email } = this.props.service;
+
         if(this.state.isFav){
             this.removeFavorite(email);
         } else {
@@ -84,13 +79,6 @@ class SpecificService extends Component {
             latitudeDelta = 1.5;
         }
 
-        if(!this.state.loaded){
-            return (
-                <Container style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    <Spinner color="orange" />
-                </Container>
-            );
-        } 
         return (
             <Container style={{ flex: 1 }}>
                 <Header>
@@ -207,7 +195,10 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-    return { service: state.selectedService.service };
+    return { 
+        service: state.selectedService.service,
+        favorites: state.favoriteServices
+     };
 };
 
-export default connect(mapStateToProps)(SpecificService);
+export default connect(mapStateToProps, { updateFavorite })(SpecificService);
