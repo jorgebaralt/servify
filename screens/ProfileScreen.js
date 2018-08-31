@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Container, Header, Body, Right, Button, Icon, Title, Text,} from 'native-base';
+import { FlatList } from 'react-native';
+import { Container, Header, Body, Right, Button, Icon, Title, Text, Content, List, ListItem, Left } from 'native-base';
 import { connect } from 'react-redux';
 import { getCurrentUserDisplayName } from '../actions';
 
@@ -15,6 +16,17 @@ class ProfileScreen extends Component {
         }
     }
 
+    renderListItems = (item) => (
+            <ListItem onPress={() => console.log(item.title)}>
+                <Left>
+                    <Text>{item.title}</Text>
+                </Left>
+                <Right>
+                    <Icon type={item.iconType} name={item.iconName} style={{ color: 'black', fontSize: 28 }} />
+                </Right>
+            </ListItem>
+        )
+
     render() {
         return (
             <Container>
@@ -28,13 +40,23 @@ class ProfileScreen extends Component {
                         </Button>
                     </Right>
                 </Header>
+                <Content>
+                    <FlatList
+                        data={this.props.profileList}
+                        renderItem={({ item }) => this.renderListItems(item)}
+                        keyExtractor={(item) => item.title}
+                    />
+                </Content>
             </Container>
         );
     }
 }
 
 function mapStateToProps(state){
-    return{ displayName: state.auth.displayName };
+    return{ 
+        displayName: state.auth.displayName,
+        profileList: state.profileList
+    };
 }
 
 export default connect(mapStateToProps, { getCurrentUserDisplayName })(ProfileScreen);

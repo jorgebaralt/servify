@@ -6,6 +6,7 @@ import postServiceResult from './post_service_reducer';
 import getServiceResult from './get_service_reducer';
 import selectedService from './select_service_reducer';
 import favoriteServices from './fav_reducer';
+import profileList from './profile_list_reducer';
 
 export default combineReducers({
     auth,
@@ -14,5 +15,6 @@ export default combineReducers({
     postServiceResult,
     getServiceResult,
     selectedService,
-    favoriteServices
+    favoriteServices,
+    profileList
 });

@@ -14,7 +14,7 @@ class SpecificService extends Component {
     componentWillMount = async () => {
         const { service } = this.props;
         const { favorites } = this.props;
-        console.log(favorites);
+
         if(favorites){
             currentFavorite = favorites;
             currentFavorite.forEach(element => {
