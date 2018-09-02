@@ -32,11 +32,11 @@ class WelcomeScreen extends Component{
 
     async checkForUser(){
         // TODO: for testing Log out
-        //  firebase.auth().signOut().then(()=>{console.log('Logging out')});
+        //  firebase.auth().signOut().then(() => { console.log('Logging out'); });
         
         firebase.auth().onAuthStateChanged(async (user) => {
-            const { email } = await firebase.auth().currentUser;
             if (user) {
+                const { email } = await firebase.auth().currentUser;
                 this.props.getFavorites(email);
                 this.props.navigation.navigate('main');
                 this.setState({ authenticated: true });

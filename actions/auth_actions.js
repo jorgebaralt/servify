@@ -1,4 +1,3 @@
-
 import { Facebook } from 'expo';
 import firebase from 'firebase';
 import axios from 'axios';
@@ -9,6 +8,7 @@ import {
   LOGIN_SUCCESS,
   RESET_MESSAGE_CREATE
 } from './types';
+import { getFavorites } from './favorite_actions';
 
 const addUserdbURL = 'https://us-central1-servify-716c6.cloudfunctions.net/addUserdb';
 // How to use AsyncStorage:
@@ -20,12 +20,13 @@ export const facebookLogin = () => async (dispatch) => {
         const { type, token } = await Facebook.logInWithReadPermissionsAsync('270665710375213', { permissions: ['public_profile','email'] });
 
         if(type === 'cancel'){
-            dispatch({ type: LOGIN_FAIL });
+            return dispatch({ type: LOGIN_FAIL });
         }
 
         const credential = await firebase.auth.FacebookAuthProvider.credential(token);
         const { user } = await firebase.auth().signInAndRetrieveDataWithCredential(credential);
         await axios.post(addUserdbURL, { email: user.email, displayName: user.displayName });
+        await getFavorites(user.email);
         // if everything worked fine, we dispatch success and the displayName
         return dispatch({ type: LOGIN_SUCCESS, payload: user.displayName });
         // TODO: grab favorite list and store on device for fast access
@@ -37,6 +38,7 @@ export const facebookLogin = () => async (dispatch) => {
 export const emailAndPasswordLogin = (email, password) => async (dispatch) => {
     try{
         const { user } = await firebase.auth().signInWithEmailAndPassword(email, password);
+        await getFavorites(email);
         // TODO: grab favorite list and store on device for fast access
         return dispatch({ type: LOGIN_SUCCESS, payload: user.displayName });
     }catch(e){
@@ -46,7 +48,7 @@ export const emailAndPasswordLogin = (email, password) => async (dispatch) => {
 
 export const getCurrentUserDisplayName = () => async (dispatch) => {
     const { displayName } = await firebase.auth().currentUser;
-    dispatch({ type: STORE_USER_DISPLAY_NAME, payload: displayName });
+    return dispatch({ type: STORE_USER_DISPLAY_NAME, payload: displayName });
 };
 
 export const createEmailAccount = (user) => async (dispatch) => {
@@ -67,10 +69,12 @@ export const createEmailAccount = (user) => async (dispatch) => {
             });
 
             // Perform Login Using Firebase.
+            const displayName = firstName + ' ' + lastName;
+            await axios.post(addUserdbURL, { email, displayName });
             const { loggedUser } = await firebase.auth().signInWithEmailAndPassword(email, password);
-            await axios.post(addUserdbURL, { email, firstName, lastName });
             return dispatch({ type: LOGIN_SUCCESS, payload: loggedUser.displayName });
         }catch(e){
+            console.log(e);
             return dispatch({ type: LOGIN_FAIL, payload: 'Email already exist or information is not valid' });
         }
     }else{
@@ -84,9 +88,10 @@ export const logOut = (callback1, callback2, callback3) => async (dispatch) => {
     await callback1();
     await callback2();
     await callback3();
-    dispatch({ type: LOG_OUT });
+
+    return dispatch({ type: LOG_OUT });
 };
 
 export const resetMessageCreate = () => async (dispatch) => {
-    dispatch({ type: RESET_MESSAGE_CREATE });
+    return dispatch({ type: RESET_MESSAGE_CREATE });
 };

@@ -122,7 +122,7 @@ const styles = {
     },
     backIconStyle: {
         color: 'white',
-        top: 3,
+        top: 10,
         left: 0,
         marginBottom: 40
     },
