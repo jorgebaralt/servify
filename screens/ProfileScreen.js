@@ -16,8 +16,14 @@ class ProfileScreen extends Component {
         }
     }
 
+    goSelectedScreen = (item) => {
+        if(item.isList){
+            this.props.navigation.navigate('profileService', { item });
+        }
+    }
+
     renderListItems = (item) => (
-            <ListItem onPress={() => console.log(item.title)}>
+            <ListItem onPress={() => this.goSelectedScreen(item)}>
                 <Left>
                     <Text>{item.title}</Text>
                 </Left>
@@ -25,15 +31,15 @@ class ProfileScreen extends Component {
                     <Icon type={item.iconType} name={item.iconName} style={{ color: 'black', fontSize: 28 }} />
                 </Right>
             </ListItem>
-        )
+    )
 
     render() {
         return (
             <Container>
                 <Header>
-                    <Body>
-                    <Title>{this.props.displayName}</Title>
-                    </Body>
+                    <Left>
+                        <Title>{this.props.displayName}</Title>
+                    </Left>
                     <Right>
                         <Button transparent title="Settings" onPress={() => this.props.navigation.navigate('settings')}>
                             <Icon type="Entypo" name="dots-three-horizontal" style={{ color: 'black' }} />

@@ -259,6 +259,7 @@ class PostServiceScreen extends Component {
 }
 const styles = {
     titleStyle: {
+        textAlign: 'center',
         color: 'black',
         fontWeight: 'bold',
         fontSize: 26,
