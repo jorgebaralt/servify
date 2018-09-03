@@ -124,7 +124,7 @@ const styles = {
     },
     phoneLocationStyle: {
         flexDirection: 'row',
-        flex: 1,
+        flex: 1
     },
     headerTitleStyle: {
         color: 'white'

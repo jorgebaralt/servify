@@ -3,7 +3,7 @@ import { Text, Form, Item, Input, Icon, Label, Toast, Button, Content, Spinner }
 import { LinearGradient } from 'expo';
 import { View, KeyboardAvoidingView, SafeAreaView, Platform, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
-import { createEmailAccount, resetMessageCreate } from '../actions';
+import { createEmailAccount, resetMessage } from '../actions';
 
 const initialState = {
     firstName: '',
@@ -28,7 +28,7 @@ class CreateAccountScreen extends Component {
                 duration: 3000,
                 type: 'success'
             });
-            this.props.resetMessageCreate();
+            this.props.resetMessage();
         }
         if (message) {
             Toast.show({
@@ -37,7 +37,7 @@ class CreateAccountScreen extends Component {
                 duration: 5000,
                 type: 'warning'
             });
-            this.props.resetMessageCreate();
+            this.props.resetMessage();
         }
     }
 
@@ -102,6 +102,7 @@ class CreateAccountScreen extends Component {
                                     <Item floatingLabel style={itemStyle}>
                                         <Label style={labelStyle}>Email</Label>
                                         <Input
+                                            autoCapitalize="none"
                                             style={inputStyle}
                                             value={this.state.email}
                                             onChangeText={(email) => { this.setState({ email }); }}
@@ -175,4 +176,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, { createEmailAccount, resetMessageCreate })(CreateAccountScreen);
+export default connect(mapStateToProps, { createEmailAccount, resetMessage })(CreateAccountScreen);

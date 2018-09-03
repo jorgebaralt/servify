@@ -8,6 +8,7 @@ export const updateFavorite = (email, favorites) => async (dispatch) => {
     try{
         await axios.post(updateFavURL, { email, favorites });
         const { data } = await axios.post(getFavURL, { email });
+
         dispatch({ type: UPDATE_FAVORITE, payload: data });
     } catch (e) {
         console.log(e);

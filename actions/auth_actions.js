@@ -6,7 +6,9 @@ import {
   STORE_USER_DISPLAY_NAME,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
-  RESET_MESSAGE_CREATE
+  RESET_MESSAGE_CREATE,
+  GET_EMAIL_FAIL,
+  GET_EMAIL_SUCCESS
 } from './types';
 import { getFavorites } from './favorite_actions';
 
@@ -31,7 +33,7 @@ export const facebookLogin = () => async (dispatch) => {
         return dispatch({ type: LOGIN_SUCCESS, payload: user.displayName });
         // TODO: grab favorite list and store on device for fast access
     }catch (e) {
-        return dispatch({ type: LOGIN_FAIL });
+        return dispatch({ type: LOGIN_FAIL });  
     }
 };
 
@@ -39,9 +41,11 @@ export const emailAndPasswordLogin = (email, password) => async (dispatch) => {
     try{
         const { user } = await firebase.auth().signInWithEmailAndPassword(email, password);
         await getFavorites(email);
+        await getEmail();
         // TODO: grab favorite list and store on device for fast access
         return dispatch({ type: LOGIN_SUCCESS, payload: user.displayName });
     }catch(e){
+        console.log(e);
         return dispatch({ type: LOGIN_FAIL, payload: 'Password and Email does not Match' });
     }
 };
@@ -51,9 +55,9 @@ export const getCurrentUserDisplayName = () => async (dispatch) => {
     return dispatch({ type: STORE_USER_DISPLAY_NAME, payload: displayName });
 };
 
-export const createEmailAccount = (user) => async (dispatch) => {
+export const createEmailAccount = (newUser) => async (dispatch) => {
     const url = 'https://us-central1-servify-716c6.cloudfunctions.net/createUser';
-    const { email, password, firstName, lastName } = user;
+    const { email, password, firstName, lastName } = newUser;
     // check not empty
     if(email && password && firstName && lastName){
         if(password.length < 6){
@@ -71,8 +75,8 @@ export const createEmailAccount = (user) => async (dispatch) => {
             // Perform Login Using Firebase.
             const displayName = firstName + ' ' + lastName;
             await axios.post(addUserdbURL, { email, displayName });
-            const { loggedUser } = await firebase.auth().signInWithEmailAndPassword(email, password);
-            return dispatch({ type: LOGIN_SUCCESS, payload: loggedUser.displayName });
+            const { user } = await firebase.auth().signInWithEmailAndPassword(email, password);
+            return dispatch({ type: LOGIN_SUCCESS, payload: user.displayName });
         }catch(e){
             console.log(e);
             return dispatch({ type: LOGIN_FAIL, payload: 'Email already exist or information is not valid' });
@@ -92,6 +96,16 @@ export const logOut = (callback1, callback2, callback3) => async (dispatch) => {
     return dispatch({ type: LOG_OUT });
 };
 
-export const resetMessageCreate = () => async (dispatch) => {
+export const resetMessage = () => async (dispatch) => {
     return dispatch({ type: RESET_MESSAGE_CREATE });
+};
+
+export const getEmail = () => async (dispatch) => {
+    try{
+        const { email } = await firebase.auth().currentUser;
+        return dispatch({ type: GET_EMAIL_SUCCESS, payload: email });
+    } catch(e) {
+        console.log(e);
+        return dispatch({ type: GET_EMAIL_FAIL });
+    }
 };

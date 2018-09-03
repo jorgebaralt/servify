@@ -3,7 +3,7 @@ import { Text, Form, Item, Button, Label, Input, Icon, Toast, Spinner } from 'na
 import { LinearGradient } from 'expo';
 import { View, SafeAreaView, Keyboard } from 'react-native';
 import { connect } from 'react-redux';
-import { emailAndPasswordLogin, resetMessageCreate } from '../actions';
+import { emailAndPasswordLogin, resetMessage } from '../actions';
 
 const initialState = {
     email: '',
@@ -23,7 +23,7 @@ class LoginScreen extends Component {
                 duration: 2000,
                 type: 'success'
             });
-        }
+        }   
         if (message) {
             Toast.show({
                 text: message,
@@ -32,7 +32,7 @@ class LoginScreen extends Component {
                 type: 'warning'
             });
         }
-        this.props.resetMessageCreate();
+        this.props.resetMessage();
     }
 
     loginUser = async () => {
@@ -76,6 +76,7 @@ class LoginScreen extends Component {
                                 <Item floatingLabel style={itemStyle}>
                                     <Label style={labelStyle}>Email</Label>
                                     <Input 
+                                        autoCapitalize="none"
                                         style={inputStyle} 
                                         value={this.state.email} 
                                         onChangeText={(email) => {
@@ -144,4 +145,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, { emailAndPasswordLogin, resetMessageCreate })(LoginScreen);
+export default connect(mapStateToProps, { emailAndPasswordLogin, resetMessage })(LoginScreen);

@@ -44,7 +44,9 @@ class HomeScreen extends Component {
 	}
 }
 
-export default connect(
-	null,
-	{ getCurrentUserDisplayName }
-)(HomeScreen);
+function mapStateToProps(state){
+    return{
+    };
+}
+
+export default connect(mapStateToProps, { getCurrentUserDisplayName })(HomeScreen);

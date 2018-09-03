@@ -5,7 +5,7 @@ import _ from 'lodash';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
 import Slides from '../components/Slides';
-import { getFavorites } from '../actions';
+import { getFavorites, getEmail } from '../actions';
 
 const SLIDE_DATA = [
     { text: 'Welcome to Servify', color: '#FFB300' },
@@ -36,8 +36,10 @@ class WelcomeScreen extends Component{
         
         firebase.auth().onAuthStateChanged(async (user) => {
             if (user) {
-                const { email } = await firebase.auth().currentUser;
-                this.props.getFavorites(email);
+                await this.props.getEmail();
+                if(this.props.email){
+                    this.props.getFavorites(this.props.email);
+                }
                 this.props.navigation.navigate('main');
                 this.setState({ authenticated: true });
             } else {
@@ -69,4 +71,10 @@ class WelcomeScreen extends Component{
         );
     }
 }
-export default connect(null, { getFavorites })(WelcomeScreen);
+function mapStateToProps(state){
+    return{
+        email: state.auth.email
+    };
+}
+
+export default connect(mapStateToProps, { getFavorites, getEmail })(WelcomeScreen);

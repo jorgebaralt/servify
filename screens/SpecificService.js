@@ -14,8 +14,7 @@ class SpecificService extends Component {
     componentWillMount = async () => {
         const { service } = this.props;
         const { favorites } = this.props;
-
-        if(favorites){
+        if(favorites.length){
             currentFavorite = favorites;
             currentFavorite.forEach(element => {
                 if(element.title === service.title && element.category === service.category && element.description === service.description){
@@ -30,7 +29,7 @@ class SpecificService extends Component {
     }
 
     addFavorite = async (email) => {
-        this.setState({ isFav: true });
+        this.setState({ isFav: true});
         currentFavorite.push(this.props.service);
         await this.props.updateFavorite(email, currentFavorite);
     }
@@ -44,11 +43,11 @@ class SpecificService extends Component {
             }
         });
         await this.props.updateFavorite(email, currentFavorite);
+
     }
 
     favPressed = () => {
-        const { email } = this.props.service;
-
+        const { email } = this.props;
         if(this.state.isFav){
             this.removeFavorite(email);
         } else {
@@ -63,7 +62,7 @@ class SpecificService extends Component {
 
 	render() {
         const { service } = this.props;
-        const { descriptionStyle, cardStyle, footerBarStyle, favIconStyle, mapStyle, subtitleStyle, infoStyle } = styles;
+        const { descriptionStyle, cardStyle, footerBarStyle, favIconStyle, mapStyle, subtitleStyle, infoStyle, rowDirectionStyle, regularTextStyle } = styles;
         const { latitude, longitude } = service.geolocation;
         const coords = { latitude, longitude };
         const meters = service.miles * 1609.34;
@@ -101,6 +100,12 @@ class SpecificService extends Component {
                 <Content style={{ flex: 1, marginTop: 10 }}>
                     {/* TODO: Add Ratings */}
                     {/* <Text style={subtitleStyle}>Rating </Text> */}
+
+                    {/* <View style={rowDirectionStyle}>
+                        <Text style={subtitleStyle}>Category</Text>
+                        <Text style={regularTextStyle}>{service.title}</Text>
+                    </View> */}
+                        
                     <Text style={subtitleStyle}>Service Description </Text>
                     <Card style={cardStyle}>
                         <CardItem>
@@ -162,7 +167,7 @@ const styles = {
         elevation: null
     },
     descriptionStyle: {
-        fontSize: 16
+        fontSize: 14
     },
     subtitleStyle: {
         marginLeft: '7%',
@@ -190,14 +195,23 @@ const styles = {
     },
     infoStyle: {
         marginTop: 5,
-        fontSize: 16
+        fontSize: 14
+    },
+    rowDirectionStyle: {
+        flexDirection: 'row'
+    },
+    regularTextStyle: {
+        marginTop: 12,
+        fontSize: 14,
+        marginLeft: '3%'
     }
 };
 
 const mapStateToProps = (state) => {
     return { 
         service: state.selectedService.service,
-        favorites: state.favoriteServices
+        favorites: state.favoriteServices,
+        email: state.auth.email
      };
 };
 
