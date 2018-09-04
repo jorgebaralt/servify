@@ -21,6 +21,7 @@ import ServicesList from './screens/ServicesList';
 import SubcategoriesListScreen from './screens/SubcategoriesListScreen';
 import SpecificService from './screens/SpecificService';
 import ProfileServices from './screens/ProfileServices';
+import Feedback from './screens/Feedback';
 
 const store = createStore(reducers, {}, compose(applyMiddleware(thunk)));
 export default class App extends React.Component {
@@ -79,7 +80,8 @@ export default class App extends React.Component {
             servicesList: { screen: ServicesList },
             subcategories: { screen: SubcategoriesListScreen },
             service: { screen: SpecificService },
-            profileService: { screen: ProfileServices }
+            profileService: { screen: ProfileServices },
+            feedback: { screen: Feedback }
         }, {
                 headerMode: 'none'
         });

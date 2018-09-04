@@ -3,8 +3,10 @@ import { View, ListView, TouchableOpacity, Dimensions } from 'react-native';
 import { Header, Text, Card, CardItem, Body, Title, Container, Left, Button, Icon, Right, Spinner } from 'native-base';
 import { connect } from 'react-redux';
 import { getServicesByEmail, selectService } from '../actions';
+import EmptyListMessage from '../components/EmptyListMessage';
 
-let item;
+let item; 
+let errorMessage;
 class ProfileServices extends Component {
     state={ dataLoaded: false }
 
@@ -13,9 +15,11 @@ class ProfileServices extends Component {
         item = this.props.navigation.getParam('item');
         if (item.id === 'favorites') {
             data = this.props.favorites;
+            errorMessage = 'There is nothing in this list, Make sure that you add Services to Favorite by cliking on the top right icon, when looking at services.';
         } else if (item.id === 'my_services') {
             await this.props.getServicesByEmail(this.props.email);
             data = this.props.servicesList;
+            errorMessage = 'There is nothing in this list, Make sure that you create a Service from our Post screen, then you will be able to modify it here';
         }
         const ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2
@@ -66,14 +70,17 @@ class ProfileServices extends Component {
 
     renderListView = () => {
         if(this.state.dataLoaded){
-            return(
-                <ListView
-                    style={{ marginTop: 10 }}
-                    dataSource={this.dataSource}
-                    renderRow={(service) => this.renderServices(service)}
-                    enableEmptySections
-                />
-            );
+            if(this.dataSource._cachedRowCount > 0){
+                return(
+                    <ListView
+                        style={{ marginTop: 10 }}
+                        dataSource={this.dataSource}
+                        renderRow={(service) => this.renderServices(service)}
+                        enableEmptySections
+                    />
+                );
+            }
+            return (<EmptyListMessage buttonPress={this.onBackPress}>{errorMessage}</EmptyListMessage>);
         }
         return (<Spinner color='#FF7043' />);
     }
@@ -124,7 +131,7 @@ const styles = {
     },
     headerTitleStyle: {
         color: 'white'
-    }
+    },
 };
 
 function mapStateToProps(state){

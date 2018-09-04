@@ -19,6 +19,8 @@ class ProfileScreen extends Component {
     goSelectedScreen = (item) => {
         if(item.isList){
             this.props.navigation.navigate('profileService', { item });
+        } else if (item.id === 'feedback'){
+            this.props.navigation.navigate('feedback');
         }
     }
 

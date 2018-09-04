@@ -43,7 +43,6 @@ class SpecificService extends Component {
             }
         });
         await this.props.updateFavorite(email, currentFavorite);
-
     }
 
     favPressed = () => {

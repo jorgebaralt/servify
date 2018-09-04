@@ -4,6 +4,7 @@ import { Header, Text, Card, CardItem, Body, Title, Container, Left, Button, Ico
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo';
 import { getServicesCategory, getServicesSubcategory, selectService } from '../actions';
+import EmptyListMessage from '../components/EmptyListMessage';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 class ServicesList extends Component {
@@ -70,14 +71,17 @@ class ServicesList extends Component {
 
     renderListView(){
         if(this.state.dataLoaded){
-            return(
-                <ListView
-                    style={{ marginTop: 10 }}
-                    dataSource={this.dataSource}
-                    renderRow={(service) => this.renderServices(service)}
-                    enableEmptySections
-                />
-            );
+            if(this.dataSource > 0){
+                return(
+                    <ListView
+                        style={{ marginTop: 10 }}
+                        dataSource={this.dataSource}
+                        renderRow={(service) => this.renderServices(service)}
+                        enableEmptySections
+                    />
+                );
+            }
+            return (<EmptyListMessage>Unfortunetly there are no services posted for this category, we are working on getting more people to Post Services!</EmptyListMessage>);
         }
         return (<Spinner color={this.props.category.color[0]} />);
     }

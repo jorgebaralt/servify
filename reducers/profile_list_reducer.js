@@ -21,6 +21,13 @@ export default () => [
         isList: false
     },
     {
+        id: 'help',
+        title: 'Help',
+        iconType: 'MaterialIcons',
+        iconName: 'help-outline',
+        isList: false
+    },
+    {
         id: 'feedback',
         title: 'Give some Feedback',
         iconType: 'MaterialIcons',
