@@ -90,14 +90,14 @@ class ProfileServices extends Component {
 
         return (
             <Container>
-                <Header style={{ backgroundColor: '#FF7043' }}>
+                <Header>
                     <Left>
                         <Button transparent onPress={() => { this.onBackPress(); }}>
-                            <Icon name="arrow-back" style={{ color: 'white' }} />
+                            <Icon name="arrow-back" style={{ color: 'black' }} />
                         </Button>
                     </Left>
                     <Body style={{ flex: 3 }}>
-                        <Title style={{ color: 'white' }}> {item.title} </Title>
+                        <Title> {item.title} </Title>
                     </Body>
                     <Right />
                 </Header>

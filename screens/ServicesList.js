@@ -71,7 +71,7 @@ class ServicesList extends Component {
 
     renderListView(){
         if(this.state.dataLoaded){
-            if(this.dataSource > 0){
+            if(this.dataSource._cachedRowCount > 0){
                 return(
                     <ListView
                         style={{ marginTop: 10 }}
@@ -80,7 +80,7 @@ class ServicesList extends Component {
                         enableEmptySections
                     />
                 );
-            }
+            } 
             return (<EmptyListMessage>Unfortunetly there are no services posted for this category, we are working on getting more people to Post Services!</EmptyListMessage>);
         }
         return (<Spinner color={this.props.category.color[0]} />);
