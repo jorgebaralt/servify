@@ -81,7 +81,7 @@ class ServicesList extends Component {
                     />
                 );
             } 
-            return (<EmptyListMessage>Unfortunetly there are no services posted for this category, we are working on getting more people to Post Services!</EmptyListMessage>);
+            return (<EmptyListMessage buttonPress={this.onBackPress}>Unfortunetly there are no services posted for this category, we are working on getting more people to Post Services!</EmptyListMessage>);
         }
         return (<Spinner color={this.props.category.color[0]} />);
     }

@@ -1,10 +1,16 @@
 import axios from 'axios';
 import firebase from 'firebase';
 import { Location } from 'expo';
-import { POST_SERVICE_SUCCESS, POST_SERVICE_FAIL, RESET_MESSAGE_POST } from './types';
+import { 
+    POST_SERVICE_SUCCESS, 
+    POST_SERVICE_FAIL, 
+    RESET_MESSAGE_POST 
+} from './types';
 
-export const createService = (servicePost) => async (dispatch) => {
+export const createService = (servicePost, email) => async (dispatch) => {
+    let isEmpty;
     const url = 'https://us-central1-servify-716c6.cloudfunctions.net/postService';
+    const countBaseURL = 'https://us-central1-servify-716c6.cloudfunctions.net/getServicesCount/';
 	const {
 		selectedCategory,
 		selectedSubcategory,
@@ -14,8 +20,6 @@ export const createService = (servicePost) => async (dispatch) => {
         title,
         miles
     } = servicePost;
-
-    const { email } = await firebase.auth().currentUser;
 
     if (selectedCategory && phone && zipCode && description && title) {
         const category = selectedCategory.dbReference;
@@ -44,11 +48,27 @@ export const createService = (servicePost) => async (dispatch) => {
         // if there is subcategory, add it to the object
         if(selectedSubcategory){
             newServicePost.subcategory = selectedSubcategory.dbReference;
+            // check duplicate post by same user. under subcategory
+            const countURL = countBaseURL + '/?email=' + email + '&subcategory=' + selectedSubcategory.dbReference;
+            try{
+                const response = await axios.get(countURL);
+                isEmpty = response.data;
+                if(!isEmpty){
+                    return dispatch({ type: POST_SERVICE_FAIL, payload: 'This email already have a Service under this Subcategory, Only 1 service per subcategory is allowed' });
+                }
+            } catch(e){
+                console.log(e);
+                return dispatch({ type: POST_SERVICE_FAIL, payload: 'Error connecting to server' });
+            }
         }
-
+        const countURL = countBaseURL + '/?email=' + email + '&category=' + category;
         // TODO: check if the user, has a post in the category && subcategory already, unless it is other.
-
         try {
+            const response = await axios.get(countURL);
+            isEmpty = response.data;
+            if(!isEmpty){
+                return dispatch({ type: POST_SERVICE_FAIL, payload: 'This email already have a Service under this category, Only 1 service per category is allowed' });
+            }
             await axios.post(url, newServicePost);
             return dispatch({ type: POST_SERVICE_SUCCESS, payload: 'Post has been created' });
         } catch (error) {

@@ -52,7 +52,7 @@ class PostServiceScreen extends Component {
             Toast.show({
                 text: success,
                 buttonText: 'OK',
-                duration: 2000,
+                duration: 5000,
                 type: 'success'
             });
             this.props.resetMessagePost();
@@ -82,7 +82,7 @@ class PostServiceScreen extends Component {
             description
         };
         
-       await this.props.createService(servicePost);
+       await this.props.createService(servicePost, this.props.email);
        this.setState(initialState);
     };
 
@@ -288,7 +288,8 @@ const styles = {
 function mapStateToProps(state) {
     return {
         categories: state.categories,
-        result: state.postServiceResult
+        result: state.postServiceResult,
+        email: state.auth.email
      };
 }
 

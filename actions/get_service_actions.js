@@ -4,12 +4,12 @@ import {
     GET_SERVICES_SUCCESS
 } from './types';
 
-const BASE_URL = 'https://us-central1-servify-716c6.cloudfunctions.net/getServices';
+const GET_URL = 'https://us-central1-servify-716c6.cloudfunctions.net/getServices';
 
 // TODO: grab db_reference of category and subcategory, append to url only 1. 
 // if it has subcategory look for subcategory. else only category
 export const getServicesCategory = (category) => async (dispatch) => {
-    const url = BASE_URL + '/?category=' + category;
+    const url = GET_URL + '/?category=' + category;
     try {
         const { data } = await axios.get(url);
         return dispatch({ type: GET_SERVICES_SUCCESS, payload: data });
@@ -19,7 +19,7 @@ export const getServicesCategory = (category) => async (dispatch) => {
 };
 
 export const getServicesSubcategory = (category, subcategory) => async (dispatch) => {
-    const url = BASE_URL + '/?category' + category + '&subcategory=' + subcategory;
+    const url = GET_URL + '/?subcategory=' + subcategory;
     try {
         const { data } = await axios.get(url);
         return dispatch({ type: GET_SERVICES_SUCCESS, payload: data });
@@ -29,7 +29,7 @@ export const getServicesSubcategory = (category, subcategory) => async (dispatch
 };
 
 export const getServicesByEmail = (email) => async (dispatch) => {
-    const url = BASE_URL + '/?email=' + email;
+    const url = GET_URL + '/?email=' + email;
     try {
         // TODO: change here
         const { data } = await axios.get(url);

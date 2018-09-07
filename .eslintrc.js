@@ -48,6 +48,7 @@ module.exports = {
         "react/no-unused-state": [1],
         "import/named": [0],
         "no-plusplus": [0],
-        "no-underscore-dangle": [0]
+        "no-underscore-dangle": [0],
+        "prefer-const": [1]
     }
 };
