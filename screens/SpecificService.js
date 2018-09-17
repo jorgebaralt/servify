@@ -29,7 +29,7 @@ class SpecificService extends Component {
     }
 
     addFavorite = async (email) => {
-        this.setState({ isFav: true});
+        this.setState({ isFav: true });
         currentFavorite.push(this.props.service);
         await this.props.updateFavorite(email, currentFavorite);
     }
@@ -57,6 +57,16 @@ class SpecificService extends Component {
     contactPressed = async () => {
         const { phone } = this.props.service;
         await Linking.openURL('tel:+1' + phone.replace(/\D/g, ''));
+    }
+
+    renderEditButton = () => {
+        if (this.props.email === this.props.service.email) {
+            return (
+                <Button transparent title="Settings" onPress={() => this.props.navigation.navigate('editService')}>
+                    <Icon type="Entypo" name="dots-three-horizontal" style={{ color: 'black' }} />
+                </Button>
+            );
+        }
     }
 
 	render() {
@@ -93,6 +103,7 @@ class SpecificService extends Component {
                         <Button transparent title="Settings" onPress={() => this.favPressed()}>
                             <Icon type="MaterialIcons" name={this.state.isFav ? 'favorite' : 'favorite-border'} style={{ color: '#D84315' }} />
                         </Button>
+                        {this.renderEditButton()}
                     </Right>
                 </Header>
 

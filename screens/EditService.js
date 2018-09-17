@@ -13,8 +13,8 @@ class EditService extends Component {
                                 <Icon name="arrow-back" style={{ color: 'black' }} />
                             </Button>
                         </Left>
-                        <Body>
-                            <Title>Edit Your Service</Title>
+                        <Body style={{ flex: 3 }}>
+                            <Title>Update your Service</Title>
                         </Body>
                         <Right />
                     </Header>
