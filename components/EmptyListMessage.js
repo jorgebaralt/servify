@@ -36,7 +36,7 @@ const styles = {
         textAlign: 'center'
     },
     cardStyle: {
-        top: '10%',
+        top: '5%',
         marginLeft: '5%',
         width: '90%',
         height: '80%',
@@ -62,7 +62,7 @@ const styles = {
     },
     buttonStyleiOS: {
         position: 'absolute',
-        top: '87%',
+        top: '82%',
         alignItems: 'center',
         left: '37%'
     },
