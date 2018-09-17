@@ -123,7 +123,6 @@ class CreateAccountScreen extends Component {
                                     <Button
                                         bordered
                                         light
-                                        rounded
                                         style={{ marginTop: 40 }}
                                         onPress={this.createAccount}
                                     >

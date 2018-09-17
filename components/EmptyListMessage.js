@@ -19,7 +19,7 @@ class EmptyListMessage extends Component{
                         </CardItem>
                     </Card>
                     <View style={Platform.OS === 'android' ? buttonStyleAndroid : buttonStyleiOS}>
-                        <Button rounded style={{ backgroundColor: '#C62828' }} onPress={this.props.buttonPress}>
+                        <Button style={{ backgroundColor: '#C62828' }} onPress={this.props.buttonPress}>
                                 <Text>Go Back!</Text>
                         </Button>
                     </View>

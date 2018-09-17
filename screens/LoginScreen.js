@@ -98,7 +98,7 @@ class LoginScreen extends Component {
                             </Form>
                             {this.renderSpinner()}
                             <View>
-                                <Button title="Login User" bordered light rounded style={{ marginTop: 40 }} onPress={this.loginUser}>
+                                <Button title="Login User" bordered light style={{ marginTop: 40 }} onPress={this.loginUser}>
                                     <Text>Log in</Text>
                                 </Button>
                             </View>
