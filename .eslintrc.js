@@ -49,6 +49,7 @@ module.exports = {
         "import/named": [0],
         "no-plusplus": [0],
         "no-underscore-dangle": [0],
-        "prefer-const": [1]
+        "prefer-const": [1],
+        "consistent-return": [0]
     }
 };

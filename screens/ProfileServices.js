@@ -82,7 +82,7 @@ class ProfileServices extends Component {
             }
             return (<EmptyListMessage buttonPress={this.onBackPress}>{errorMessage}</EmptyListMessage>);
         }
-        return (<Spinner color='#FF7043' />);
+        return (<Spinner color="#FF7043" />);
     }
 
     render() {
@@ -109,7 +109,7 @@ class ProfileServices extends Component {
 
 const styles = {
     headerStyle: {
-        
+
     },
     cardStyle: {
         width: '80%',

@@ -240,7 +240,6 @@ class PostServiceScreen extends Component {
                                 <Button
                                     bordered
                                     dark
-                                    rounded
                                     style={buttonStyle}
                                     onPress={() => this.doPostService()}
                                 >
