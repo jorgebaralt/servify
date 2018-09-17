@@ -278,6 +278,7 @@ const styles = {
     buttonStyle: {
         marginTop: 10,
         marginLeft: '50%',
+        marginBottom: 20
     },
     charCountStyle: {
         right: '-33%',
