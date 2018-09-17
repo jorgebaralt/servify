@@ -46,23 +46,26 @@ class ProfileServices extends Component {
                 }}
             >
                 <Card style={cardStyle}>
-                        <CardItem header>
-                            <Text style={titleStyle}>{service.title}</Text>
-                        </CardItem>
-                        <CardItem>
-                            <Body style={phoneLocationStyle}>
-                                <Text style={grayStyle}>{service.phone}</Text>
-                                <Text style={[grayStyle, { marginLeft: '15%' }]}>{service.location.city}</Text>
-                            </Body>
-                            <Right>
-                                <Icon name="arrow-forward" style={{ color: '#FF7043' }} />
-                            </Right>
-                        </CardItem>
-                        <CardItem>
-                            <Body>
-                                <Text style={grayStyle}>{displayDescription}</Text>
-                            </Body>
-                        </CardItem>
+                    <CardItem header>
+                        <Text style={titleStyle}>{service.title}</Text>
+                    </CardItem>
+                    <CardItem>
+                        <Text>{service.displayName}</Text>
+                    </CardItem>
+                    <CardItem>
+                        <Body style={phoneLocationStyle}>
+                            <Text style={grayStyle}>{service.phone}</Text>
+                            <Text style={[grayStyle, { marginLeft: '15%' }]}>{service.location.city}</Text>
+                        </Body>
+                        <Right>
+                            <Icon name="arrow-forward" style={{ color: '#FF7043' }} />
+                        </Right>
+                    </CardItem>
+                    <CardItem>
+                        <Body>
+                            <Text style={grayStyle}>{displayDescription}</Text>
+                        </Body>
+                    </CardItem>
                 </Card>
             </TouchableOpacity>
         );

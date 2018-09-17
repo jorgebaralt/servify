@@ -51,6 +51,9 @@ class ServicesList extends Component {
                             <Text style={titleStyle}>{service.title}</Text>
                         </CardItem>
                         <CardItem>
+                        <Text>{service.displayName}</Text>
+                        </CardItem>
+                        <CardItem>
                             <Body style={phoneLocationStyle}>
                                 <Text style={grayStyle}>{service.phone}</Text>
                                 <Text style={[grayStyle, { marginLeft: '15%' }]}>{service.location.city}</Text>

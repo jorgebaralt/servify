@@ -72,6 +72,7 @@ class PostServiceScreen extends Component {
         Keyboard.dismiss();
         this.setState({ loading: true });
         const { selectedCategory, selectedSubcategory, title, phone, zipCode, description, miles } = this.state;
+        const { displayName } = this.props;
         const servicePost = {
             selectedCategory,
             selectedSubcategory,
@@ -79,7 +80,8 @@ class PostServiceScreen extends Component {
             phone,
             zipCode,
             miles,
-            description
+            description,
+            displayName
         };
         
        await this.props.createService(servicePost, this.props.email);
@@ -213,7 +215,6 @@ class PostServiceScreen extends Component {
                                     <Input
                                         value={this.state.zipCode}
                                         onChangeText={(text) => this.setState({ zipCode: text })}
-                                        keyboardType="numeric"
                                     />
                                 </Item>
                                 <Item style={itemStyle} floatingLabel>
@@ -288,7 +289,8 @@ function mapStateToProps(state) {
     return {
         categories: state.categories,
         result: state.postServiceResult,
-        email: state.auth.email
+        email: state.auth.email,
+        displayName: state.auth.displayName,
      };
 }
 

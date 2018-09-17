@@ -78,7 +78,7 @@ class SpecificService extends Component {
         let latitudeDelta = 0.0922;
 
         if(service.miles <= 3) {
-            latitudeDelta = 0.0922;
+            latitudeDelta = 0.0799;
         } else if (service.miles <= 10 && service.miles > 3) {
             latitudeDelta = 0.45;
         } else if (service.miles <= 30 && service.miles > 20){

@@ -18,7 +18,8 @@ export const createService = (servicePost, email) => async (dispatch) => {
 		zipCode,
 		description,
         title,
-        miles
+        miles,
+        displayName
     } = servicePost;
 
     if (selectedCategory && phone && zipCode && description && title) {
@@ -37,7 +38,8 @@ export const createService = (servicePost, email) => async (dispatch) => {
             geolocation,
             location,
             miles,
-            email
+            email,
+            displayName
         };
 
         // if there is subcategory option, and didnt pick one
@@ -46,29 +48,33 @@ export const createService = (servicePost, email) => async (dispatch) => {
         }
 
         // if there is subcategory, add it to the object
-        if(selectedSubcategory){
+        if (selectedSubcategory) {
             newServicePost.subcategory = selectedSubcategory.dbReference;
             // check duplicate post by same user. under subcategory
             const countURL = countBaseURL + '/?email=' + email + '&subcategory=' + selectedSubcategory.dbReference;
-            try{
+            try {
                 const response = await axios.get(countURL);
                 isEmpty = response.data;
-                if(!isEmpty){
+                if (!isEmpty) {
                     return dispatch({ type: POST_SERVICE_FAIL, payload: 'This email already have a Service under this Subcategory, Only 1 service per subcategory is allowed' });
                 }
-            } catch(e){
-                console.log(e);
+            } catch (e) {
+                return dispatch({ type: POST_SERVICE_FAIL, payload: 'Error connecting to server' });
+            }
+        } else if (selectedCategory && !selectedSubcategory) { 
+            const countURL = countBaseURL + '/?email=' + email + '&category=' + category;
+            try {
+                const response = await axios.get(countURL);
+                isEmpty = response.data;
+                if (!isEmpty) {
+                    return dispatch({ type: POST_SERVICE_FAIL, payload: 'This email already have a Service under this category, Only 1 service per category is allowed' });
+                }
+            } catch (error) {
                 return dispatch({ type: POST_SERVICE_FAIL, payload: 'Error connecting to server' });
             }
         }
-        const countURL = countBaseURL + '/?email=' + email + '&category=' + category;
-        // TODO: check if the user, has a post in the category && subcategory already, unless it is other.
+      
         try {
-            const response = await axios.get(countURL);
-            isEmpty = response.data;
-            if(!isEmpty){
-                return dispatch({ type: POST_SERVICE_FAIL, payload: 'This email already have a Service under this category, Only 1 service per category is allowed' });
-            }
             await axios.post(url, newServicePost);
             return dispatch({ type: POST_SERVICE_SUCCESS, payload: 'Post has been created' });
         } catch (error) {
