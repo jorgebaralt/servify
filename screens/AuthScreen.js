@@ -33,8 +33,7 @@ class AuthScreen extends Component {
 					<View style={styles.buttonStyle}>
 						<Button 
 							bordered 
-							light 
-							rounded 
+							light  
 							title="Servify" 
 							onPress={() => { this.props.navigation.navigate('createAccount'); }}
 						>
@@ -48,7 +47,6 @@ class AuthScreen extends Component {
 						<Button
 							bordered
 							light
-							rounded
 							title="Facebook"
 							onPress={this.loginWithFacebook}
 						>

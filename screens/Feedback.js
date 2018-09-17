@@ -101,21 +101,21 @@ class Feedback extends Component {
 									placeholder="Pick an Option"
 									placeholderStyle={{ color: '#bfc6ea', left: -15 }}
 									iosIcon={(
-<Icon
+										<Icon
 											name={
 												this.state.selectedOption
 													? undefined
 													: 'ios-arrow-down-outline'
 											}
-/>
-)}
+										/>
+									)}
 									selectedValue={this.state.selectedOption}
 									onValueChange={(value) => this.setState({ selectedOption: value })
 									}
 									textStyle={{ left: -15 }}
 								>
-									<Picker.Item label="Give some Feedback" value="feedback" />
-									<Picker.Item label="Report a Bug" value="bug" />
+									<Picker.Item label="Give some feedback" value="feedback" />
+									<Picker.Item label="Report a bug" value="bug" />
 								</Picker>
 							</Item>
 							{this.renderDescription()}
