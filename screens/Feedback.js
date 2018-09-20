@@ -28,6 +28,7 @@ import {
 	Textarea
 } from 'native-base';
 import { connect } from 'react-redux';
+import { submitFeedback } from '../actions';
 
 class Feedback extends Component {
 	state = {
@@ -39,9 +40,14 @@ class Feedback extends Component {
 		this.props.navigation.goBack(null);
 	};
 
-	sendFeedback = () => {
-		console.log('send feed back');
-	}
+	sendFeedback = async () => {
+		const feedback = {
+			email: this.props.email,
+			option: this.state.selectedOption,
+			description: this.state.description
+		};
+		await this.props.submitFeedback(feedback);
+	};
 
 	renderDescription() {
 		const { textAreaStyle, buttonStyle } = styles;
@@ -105,14 +111,14 @@ class Feedback extends Component {
 									placeholder="Pick an Option"
 									placeholderStyle={{ color: '#bfc6ea', left: -15 }}
 									iosIcon={(
-										<Icon
+<Icon
 											name={
 												this.state.selectedOption
 													? undefined
 													: 'ios-arrow-down-outline'
 											}
-										/>
-									)}
+/>
+)}
 									selectedValue={this.state.selectedOption}
 									onValueChange={(value) => this.setState({ selectedOption: value })
 									}
@@ -154,8 +160,15 @@ const styles = {
 	},
 	buttonStyle: {
 		top: 20,
-		borderColor: '#FF7043',
+		borderColor: '#FF7043'
 	}
 };
 
-export default connect(null)(Feedback);
+const mapStateToProps = (state) => ({
+	email: state.auth.email
+});
+
+export default connect(
+	mapStateToProps,
+	{ submitFeedback }
+)(Feedback);

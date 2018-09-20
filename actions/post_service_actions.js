@@ -1,5 +1,4 @@
 import axios from 'axios';
-import firebase from 'firebase';
 import { Location } from 'expo';
 import { 
     POST_SERVICE_SUCCESS, 

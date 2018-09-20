@@ -22,3 +22,5 @@ export const SELECT_SERVICE = 'select_service';
 export const UPDATE_FAVORITE = 'update_favorite';
 export const GET_EMAIL_SUCCESS = 'get_email_success';
 export const GET_EMAIL_FAIL = 'get_email_fail';
+export const POST_FEEDBACK_SUCCESS = 'post_feedback_success';
+export const POST_FEEDBACK_FAIL = 'post_feedback_fail';

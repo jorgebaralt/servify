@@ -7,6 +7,7 @@ import getServiceResult from './get_service_reducer';
 import selectedService from './select_service_reducer';
 import favoriteServices from './fav_reducer';
 import profileList from './profile_list_reducer';
+import feedback from './feedback_reducer';
 
 export default combineReducers({
     auth,
@@ -16,5 +17,6 @@ export default combineReducers({
     getServiceResult,
     selectedService,
     favoriteServices,
-    profileList
+    profileList,
+    feedback
 });
