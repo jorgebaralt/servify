@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import {
-	View,
-	ListView,
-	TouchableOpacity,
-	Dimensions,
-	SafeAreaView,
-	KeyboardAvoidingView,
-	Platform
-} from 'react-native';
+import { View } from 'react-native';
 import {
 	Content,
 	Header,
@@ -25,29 +17,64 @@ import {
 	Form,
 	Item,
 	Picker,
-	Textarea
+	Textarea,
+	Toast
 } from 'native-base';
 import { connect } from 'react-redux';
-import { submitFeedback } from '../actions';
+import { submitFeedback, resetFeedbackMessage } from '../actions';
 
+const initialState = {
+	selectedOption: undefined,
+	description: '',
+	loading: false
+};
 class Feedback extends Component {
-	state = {
-		selectedOption: undefined,
-		description: ''
-	};
+	state = initialState;
+
+	componentWillUpdate(nextProps) {
+		const { result } = nextProps;
+		const { success, error } = result;
+		if (success) {
+			Toast.show({
+				text: success,
+				buttonText: 'OK',
+				duration: 5000,
+				type: 'success'
+			});
+			this.props.resetFeedbackMessage();
+		}
+		if (error) {
+			Toast.show({
+				text: error,
+				buttonText: 'OK',
+				duration: 2000,
+				type: 'warning'
+			});
+			this.props.resetFeedbackMessage();
+		}
+	}
 
 	onBackPress = () => {
 		this.props.navigation.goBack(null);
 	};
 
 	sendFeedback = async () => {
+		this.setState({ loading: true });
 		const feedback = {
 			email: this.props.email,
 			option: this.state.selectedOption,
 			description: this.state.description
 		};
 		await this.props.submitFeedback(feedback);
+		this.setState(initialState);
 	};
+
+	renderSpinner() {
+		if (this.state.loading) {
+			return <Spinner color="orange" />;
+		}
+		return <View />;
+	}
 
 	renderDescription() {
 		const { textAreaStyle, buttonStyle } = styles;
@@ -70,6 +97,7 @@ class Feedback extends Component {
 					>
 						<Text style={{ color: '#FF7043' }}>Submit</Text>
 					</Button>
+					{this.renderSpinner()}
 				</View>
 			);
 		}
@@ -165,10 +193,11 @@ const styles = {
 };
 
 const mapStateToProps = (state) => ({
-	email: state.auth.email
+	email: state.auth.email,
+	result: state.feedback
 });
 
 export default connect(
 	mapStateToProps,
-	{ submitFeedback }
+	{ submitFeedback, resetFeedbackMessage }
 )(Feedback);
