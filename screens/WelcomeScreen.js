@@ -33,7 +33,7 @@ class WelcomeScreen extends Component{
     async checkForUser(){
         // TODO: for testing Log out
         //  firebase.auth().signOut().then(() => { console.log('Logging out'); });
-        
+        // this checks for user on the first screen on the app
         firebase.auth().onAuthStateChanged(async (user) => {
             if (user) {
                 await this.props.getEmail();

@@ -28,20 +28,6 @@ class AuthScreen extends Component {
 			<LinearGradient colors={['#FF7043', '#F4511E', '#BF360C']} style={{ flex: 1 }}>
 				<View style={styles.authStyle}>
 					<Text style={styles.titleStyle}> Servify </Text>
-
-					{/* //Create account with email */}
-					<View style={styles.buttonStyle}>
-						<Button 
-							bordered 
-							light  
-							title="Servify" 
-							onPress={() => { this.props.navigation.navigate('createAccount'); }}
-						>
-							<Text style={styles.textStyle}>
-									Create Account With Email
-							</Text>
-						</Button>
-					</View>
 					{/* //log in with facebook */}
 					<View style={styles.buttonStyle}>
 						<Button
@@ -51,7 +37,6 @@ class AuthScreen extends Component {
 							onPress={this.loginWithFacebook}
 						>
 							<Text style={styles.textStyle}>
-								{' '}
 								<Icon
 									style={{
 										color: 'white',
@@ -63,6 +48,19 @@ class AuthScreen extends Component {
 								/>
 								{' '}
 								Log in with Facebook
+							</Text>
+						</Button>
+					</View>
+					{/* //Create account with email */}
+					<View style={styles.buttonStyle}>
+						<Button
+							bordered
+							light
+							title="Servify"
+							onPress={() => { this.props.navigation.navigate('createAccount'); }}
+						>
+							<Text style={styles.textStyle}>
+								Create account with Email
 							</Text>
 						</Button>
 					</View>
