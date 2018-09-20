@@ -76,22 +76,34 @@ class SpecificService extends Component {
 		}
 	};
 
-	contactPressed = async () => {
+	callPressed = async () => {
 		const { phone } = this.props.service;
 		await Linking.openURL('tel:+1' + phone.replace(/\D/g, ''));
 	};
 
-	renderEditButton = () => {
+	openEmail = async () => {
+		Linking.openURL(`mailto:${this.props.service.email}`);
+	};
+
+	renderIcon = () => {
 		if (this.props.email === this.props.service.email) {
 			return (
-                <Icon
-                    type="Entypo"
-                    name="dots-three-horizontal"
-                    style={{ color: 'black' }}
-                    onPress={() => this.props.navigation.navigate('editService')}
-                />
+				<Icon
+					type="Entypo"
+					name="dots-three-horizontal"
+					style={{ color: 'black' }}
+					onPress={() => this.props.navigation.navigate('editService')}
+				/>
 			);
 		}
+		return (
+			<Icon
+				type="MaterialIcons"
+				name={this.state.isFav ? 'favorite' : 'favorite-border'}
+				style={{ color: '#D84315' }}
+				onPress={() => this.favPressed()}
+			/>
+		);
 	};
 
 	render() {
@@ -99,13 +111,12 @@ class SpecificService extends Component {
 		const {
 			descriptionStyle,
 			cardStyle,
-			footerBarStyle,
-			favIconStyle,
 			mapStyle,
 			subtitleStyle,
 			infoStyle,
-			rowDirectionStyle,
-			regularTextStyle
+			contentStyle,
+			buttonStyle,
+			buttonViewStyle
 		} = styles;
 		const { latitude, longitude } = service.geolocation;
 		const coords = { latitude, longitude };
@@ -141,18 +152,12 @@ class SpecificService extends Component {
 
 					<Right>
 						<Button transparent title="Settings">
-							<Icon
-								type="MaterialIcons"
-								name={this.state.isFav ? 'favorite' : 'favorite-border'}
-								style={{ color: '#D84315' }}
-								onPress={() => this.favPressed()}
-							/>
-							{this.renderEditButton()}
+							{this.renderIcon()}
 						</Button>
 					</Right>
 				</Header>
 
-				<Content style={{ flex: 1, marginTop: 10 }}>
+				<Content style={contentStyle} padder>
 					{/* TODO: Add Ratings */}
 					{/* <Text style={subtitleStyle}>Rating </Text> */}
 
@@ -169,85 +174,92 @@ class SpecificService extends Component {
 							</Body>
 						</CardItem>
 					</Card>
-					<Text style={subtitleStyle}>
-						{service.location.city}, {service.location.region}
-					</Text>
-					<MapView
-						style={mapStyle}
-						initialRegion={{
-							latitude,
-							longitude,
-							latitudeDelta,
-							longitudeDelta: 0.0421
-						}}
-					>
-						<MapView.Circle
-							center={coords}
-							radius={meters}
-							strokeColor="#FF7043"
-						/>
-					</MapView>
 					<Text style={subtitleStyle}>Contact Information </Text>
 					<Card style={cardStyle}>
 						<CardItem>
 							<Body>
-								<Text style={infoStyle}>{service.email}</Text>
-								<Text style={infoStyle}>{service.phone}</Text>
+								<Text selectable style={infoStyle}>
+									{service.displayName}:
+								</Text>
+								<Text selectable style={infoStyle}>
+									{service.email}
+								</Text>
+								<Text selectable style={infoStyle}>
+									{service.phone}
+								</Text>
 							</Body>
 						</CardItem>
 					</Card>
-					{/* TODO: Add Reviews */}
-					{/* <Text style={subtitleStyle}>Reviews </Text> */}
+					<Text style={subtitleStyle}>
+						{service.location.city}, {service.location.region}
+					</Text>
+					<Card style={cardStyle}>
+						<CardItem>
+							<Body>
+								<Text style={descriptionStyle}>
+									We cover the following area
+								</Text>
+								<MapView
+									style={mapStyle}
+									initialRegion={{
+										latitude,
+										longitude,
+										latitudeDelta,
+										longitudeDelta: 0.0421
+									}}
+								>
+									<MapView.Circle
+										center={coords}
+										radius={meters}
+										strokeColor="#FF7043"
+									/>
+								</MapView>
+							</Body>
+						</CardItem>
+					</Card>
+					<View style={buttonViewStyle}>
+						<Button
+							bordered
+							style={buttonStyle}
+							onPress={() => this.callPressed()}
+						>
+							<Text style={{ color: '#FF7043', fontSize: 14 }}>Call Now</Text>
+						</Button>
+						<Button
+							bordered
+							style={[buttonStyle, { marginLeft: '5%' }]}
+							onPress={() => this.openEmail()}
+						>
+							<Text style={{ color: '#FF7043', fontSize: 14 }}>Email Now</Text>
+						</Button>
+					</View>
+					<Text style={subtitleStyle}>Reviews</Text>
+
 					{/* TODO: Add a share fab button */}
 				</Content>
-
-				<View
-					style={{
-						bottom: 30,
-						justifyContent: 'center',
-						alignItems: 'center',
-						left: '28%'
-					}}
-				>
-					<Button
-						style={{ backgroundColor: '#FF7043', width: '43%' }}
-						onPress={() => this.contactPressed()}
-					>
-						<Text>Contact Now!</Text>
-						<Icon
-							type="Feather"
-							name="phone"
-							style={{
-								color: 'white',
-								fontSize: 18,
-								left: -20,
-								marginBottom: 5
-							}}
-						/>
-					</Button>
-				</View>
 			</Container>
 		);
 	}
 }
 const styles = {
 	titleStyle: {
-		flex: 3
+		flex: 4
+	},
+	contentStyle: {
+		flex: 1,
+		marginTop: 10
 	},
 	cardStyle: {
-		width: '80%',
-		marginLeft: '7%',
-		shadowColor: null,
-		shadowOffset: null,
-		shadowOpacity: null,
-		elevation: null
+		// shadowColor: null,
+		// shadowOffset: null,
+		// shadowOpacity: null,
+		// elevation: null
 	},
 	descriptionStyle: {
 		fontSize: 14
 	},
 	subtitleStyle: {
-		marginLeft: '7%',
-		marginTop: 10,
+		marginTop: 12,
 		fontWeight: 'bold',
 		color: '#4DB6AC',
 		fontSize: 16
@@ -256,29 +268,28 @@ const styles = {
 		position: 'absolute',
 		bottom: 30
 	},
-	favIconStyle: {},
 	categoryStyle: {
-		marginLeft: '7%',
 		marginTop: 10,
 		color: '#FF7043'
 	},
 	mapStyle: {
 		width: SCREEN_WIDTH - ((SCREEN_WIDTH * 7) / 100) * 2,
 		height: 200,
-		marginTop: 10,
-		marginLeft: '7%'
+		marginTop: 10
 	},
 	infoStyle: {
 		marginTop: 5,
 		fontSize: 14
 	},
-	rowDirectionStyle: {
-		flexDirection: 'row'
+	buttonViewStyle: {
+		top: 12,
+		flexDirection: 'row',
+		width: '80%',
+		alignItems: 'center',
+		marginBottom: 10
 	},
-	regularTextStyle: {
-		marginTop: 12,
-		fontSize: 14,
-		marginLeft: '3%'
+	buttonStyle: {
+		borderColor: '#FF7043'
 	}
 };
 

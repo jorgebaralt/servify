@@ -172,7 +172,7 @@ class PostServiceScreen extends Component {
                     style={{ flex: 1, justifyContent: 'center' }}
                 >
                     <Content>
-                    <Text style={titleStyle}>Post a new service</Text>
+                    <Text style={titleStyle}>Post a New Service</Text>
                         <View style={{ flex: 1, alignItems: 'center' }}>
                             <Form style={formStyle}>
                                 <Item picker style={{ margin: 10, marginLeft: 15, width: '90%' }}>
@@ -276,8 +276,8 @@ const styles = {
         marginTop: 30
     },
     buttonStyle: {
-        marginTop: 10,
         marginLeft: '50%',
+        marginTop: 10,
         marginBottom: 20
     },
     charCountStyle: {

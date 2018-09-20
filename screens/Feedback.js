@@ -39,6 +39,10 @@ class Feedback extends Component {
 		this.props.navigation.goBack(null);
 	};
 
+	sendFeedback = () => {
+		console.log('send feed back');
+	}
+
 	renderDescription() {
 		const { textAreaStyle, buttonStyle } = styles;
 		if (this.state.selectedOption) {
@@ -56,7 +60,7 @@ class Feedback extends Component {
 						bordered
 						dark
 						style={buttonStyle}
-						onPress={() => this.doPostService()}
+						onPress={() => this.sendFeedback()}
 					>
 						<Text style={{ color: '#FF7043' }}>Submit</Text>
 					</Button>
