@@ -39,7 +39,7 @@ class ProfileScreen extends Component {
         return (
             <Container>
                 <Header>
-                    <Left>
+                    <Left style={{ flex: 4 }}>
                         <Title>{this.props.displayName}</Title>
                     </Left>
                     <Right>

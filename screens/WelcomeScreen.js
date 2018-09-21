@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Expo, { AppLoading } from 'expo';
-import { StatusBar, View } from 'react-native';
+import { View } from 'react-native';
 import _ from 'lodash';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
@@ -65,7 +65,6 @@ class WelcomeScreen extends Component{
         }
         return(
             <View style={{ flex: 1 }}>
-                <StatusBar hidden />
                 <Slides data={SLIDE_DATA} onComplete={this.onSlidesComplete} />
             </View>
         );

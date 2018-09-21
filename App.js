@@ -90,7 +90,7 @@ export default class App extends React.Component {
 
         return (
             <Provider store={store}>
-                <View style={styles.container}>
+                <View style={[styles.container, { paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 }]}>
                     <Root>
                         <RootNavigation />
                     </Root>
