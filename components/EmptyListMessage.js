@@ -67,7 +67,8 @@ const styles = {
         left: '37%'
     },
     buttonStyleAndroid: {
-        left: '37%'
+        left: '37%',
+        top: 35
     }
 };
 

@@ -123,12 +123,50 @@ class PostServiceScreen extends Component {
 	};
 
 	renderPickerItemsCategories() {
+		const arr = [
+			{
+				id: '0.0',
+				title: 'Pick a category',
+				description: 'none',
+				dbReference: 'none',
+				color: ['#AD1457', '#F06292']
+			}
+		];
+		if (Platform.OS === 'android') {
+			const newArray = arr.concat(this.props.categories);
+			return newArray.map((category) => (
+				<Picker.Item
+					key={category.id}
+					label={category.title}
+					value={category}
+				/>
+			));
+		}
 		return this.props.categories.map((category) => (
 			<Picker.Item key={category.id} label={category.title} value={category} />
 		));
 	}
 
 	renderPickerItemsSubcategories() {
+		const arr = [
+			{
+				id: '0.0',
+				title: 'Pick a Subcategory',
+				description: 'none',
+				dbReference: 'none',
+				color: ['#AD1457', '#F06292']
+			}
+		];
+		if (Platform.OS === 'android') {
+			const newArray = arr.concat(this.state.selectedCategory.subcategories);
+			return newArray.map((category) => (
+				<Picker.Item
+					key={category.id}
+					label={category.title}
+					value={category}
+				/>
+			));
+		}
 		return this.state.selectedCategory.subcategories.map((subcategory) => (
 			<Picker.Item
 				key={subcategory.id}
@@ -147,14 +185,14 @@ class PostServiceScreen extends Component {
 						<Picker
 							mode="dropdown"
 							iosIcon={(
-                                <Icon
+<Icon
 									name={
 										this.state.selectedSubcategory
 											? undefined
 											: 'ios-arrow-down-outline'
 									}
-                                />
-                            )}
+/>
+)}
 							placeholder="Pick a Subcategory"
 							placeholderStyle={{ color: '#bfc6ea', left: -15 }}
 							selectedValue={this.state.selectedSubcategory}
@@ -208,14 +246,14 @@ class PostServiceScreen extends Component {
 										placeholder="Pick a Category"
 										placeholderStyle={{ color: '#bfc6ea', left: -15 }}
 										iosIcon={(
-                                            <Icon
+<Icon
 												name={
 													this.state.selectedCategory
 														? undefined
 														: 'ios-arrow-down-outline'
 												}
-                                            />
-                                        )}
+/>
+)}
 										selectedValue={this.state.selectedCategory}
 										onValueChange={(value) => this.setState({ selectedCategory: value })
 										}

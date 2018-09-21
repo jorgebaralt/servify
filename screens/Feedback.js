@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Platform } from 'react-native';
 import {
 	Content,
 	Header,
@@ -67,6 +67,12 @@ class Feedback extends Component {
 		};
 		await this.props.submitFeedback(feedback);
 		this.setState(initialState);
+	};
+
+	androidFirstOption = () => {
+		if (Platform.OS === 'android') {
+			return <Picker.Item label="Pick an option" value="feedback" />;
+		}
 	};
 
 	renderSpinner() {
@@ -152,6 +158,7 @@ class Feedback extends Component {
 									}
 									textStyle={{ left: -15 }}
 								>
+									{this.androidFirstOption()}
 									<Picker.Item label="Give some feedback" value="feedback" />
 									<Picker.Item label="Report a bug" value="bug" />
 								</Picker>
@@ -188,7 +195,8 @@ const styles = {
 	},
 	buttonStyle: {
 		top: 20,
-		borderColor: '#FF7043'
+		borderColor: '#FF7043',
+		marginBottom: 20
 	}
 };
 
