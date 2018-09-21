@@ -28,7 +28,7 @@ const initialState = {
 	description: '',
 	loading: false
 };
-class Feedback extends Component {
+class FeedbackScreen extends Component {
 	state = initialState;
 
 	componentWillUpdate(nextProps) {
@@ -69,11 +69,29 @@ class Feedback extends Component {
 		this.setState(initialState);
 	};
 
-	androidFirstOption = () => {
+	renderPicker = () => {
+		let pickerArr;
 		if (Platform.OS === 'android') {
-			return <Picker.Item label="Pick an option" value="feedback" />;
+			pickerArr = [
+				{ label: 'Pick an option', value: 'none' },
+				{ label: 'Give some feedback', value: 'feedback' },
+				{ label: 'Report a bug', value: 'bug' }
+			];
+		} else {
+			pickerArr = [
+				{ label: 'Give some feedback', value: 'feedback' },
+				{ label: 'Report a bug', value: 'bug' }
+			];
 		}
-	};
+			return pickerArr.map((picker, i) => (
+				<Picker.Item
+					key={i}
+					label={picker.label}
+					value={picker.value}
+				/>
+			));
+		}
+	
 
 	renderSpinner() {
 		if (this.state.loading) {
@@ -103,7 +121,6 @@ class Feedback extends Component {
 					>
 						<Text style={{ color: '#FF7043' }}>Submit</Text>
 					</Button>
-					{this.renderSpinner()}
 				</View>
 			);
 		}
@@ -158,9 +175,7 @@ class Feedback extends Component {
 									}
 									textStyle={{ left: -15 }}
 								>
-									{this.androidFirstOption()}
-									<Picker.Item label="Give some feedback" value="feedback" />
-									<Picker.Item label="Report a bug" value="bug" />
+									{this.renderPicker()}
 								</Picker>
 							</Item>
 							{this.renderDescription()}
@@ -208,4 +223,4 @@ const mapStateToProps = (state) => ({
 export default connect(
 	mapStateToProps,
 	{ submitFeedback, resetFeedbackMessage }
-)(Feedback);
+)(FeedbackScreen);

@@ -21,7 +21,7 @@ import ServicesList from './screens/ServicesList';
 import SubcategoriesListScreen from './screens/SubcategoriesListScreen';
 import SpecificService from './screens/SpecificService';
 import ProfileServices from './screens/ProfileServices';
-import Feedback from './screens/Feedback';
+import FeedbackScreen from './screens/FeedbackScreen';
 import EditService from './screens/EditService';
 
 const store = createStore(reducers, {}, compose(applyMiddleware(thunk)));
@@ -83,7 +83,7 @@ export default class App extends React.Component {
             service: { screen: SpecificService },
             editService: { screen: EditService },
             profileService: { screen: ProfileServices },
-            feedback: { screen: Feedback }
+            feedback: { screen: FeedbackScreen }
         }, {
                 headerMode: 'none'
         });
