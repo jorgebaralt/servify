@@ -24,7 +24,8 @@ import {
 import EmptyListMessage from '../components/EmptyListMessage';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
-class ServicesList extends Component {
+
+class ServicesListScreen extends Component {
 	state = { dataLoaded: false };
 
 	componentWillMount = async () => {
@@ -187,4 +188,4 @@ const mapStateToProps = (state) => ({
 export default connect(
 	mapStateToProps,
 	{ getServicesCategory, getServicesSubcategory, selectService }
-)(ServicesList);
+)(ServicesListScreen);

@@ -20,7 +20,7 @@ import EmptyListMessage from '../components/EmptyListMessage';
 
 let item;
 let errorMessage;
-class ProfileServices extends Component {
+class ProfileServicesScreen extends Component {
 	state = { dataLoaded: false };
 
 	async componentWillMount() {
@@ -176,4 +176,4 @@ function mapStateToProps(state) {
 export default connect(
 	mapStateToProps,
 	{ getServicesByEmail, selectService }
-)(ProfileServices);
+)(ProfileServicesScreen);

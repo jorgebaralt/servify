@@ -22,7 +22,7 @@ import { updateFavorite } from '../actions';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 let currentFavorite = [];
 
-class SpecificService extends Component {
+class SpecificServiceScreen extends Component {
 	state = { isFav: false };
 
 	componentWillMount = async () => {
@@ -302,4 +302,4 @@ const mapStateToProps = (state) => ({
 export default connect(
 	mapStateToProps,
 	{ updateFavorite }
-)(SpecificService);
+)(SpecificServiceScreen);

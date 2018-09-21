@@ -17,12 +17,12 @@ import BrowseScreen from './screens/BrowseScreen';
 import PostServiceScreen from './screens/PostServiceScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import SettingsScreen from './screens/SettingsScreen';
-import ServicesList from './screens/ServicesList';
+import ServicesListScreen from './screens/ServicesListScreen';
 import SubcategoriesListScreen from './screens/SubcategoriesListScreen';
-import SpecificService from './screens/SpecificService';
-import ProfileServices from './screens/ProfileServices';
+import SpecificServiceScreen from './screens/SpecificServiceScreen';
+import ProfileServicesScreen from './screens/ProfileServicesScreen';
 import FeedbackScreen from './screens/FeedbackScreen';
-import EditService from './screens/EditService';
+import EditServiceScreen from './screens/EditServiceScreen';
 
 const store = createStore(reducers, {}, compose(applyMiddleware(thunk)));
 export default class App extends React.Component {
@@ -78,11 +78,11 @@ export default class App extends React.Component {
         const RootNavigation = createStackNavigator({
             initial: WelcomeNavigator,
             settings: { screen: SettingsScreen },
-            servicesList: { screen: ServicesList },
+            servicesList: { screen: ServicesListScreen },
             subcategories: { screen: SubcategoriesListScreen },
-            service: { screen: SpecificService },
-            editService: { screen: EditService },
-            profileService: { screen: ProfileServices },
+            service: { screen: SpecificServiceScreen },
+            editService: { screen: EditServiceScreen },
+            profileService: { screen: ProfileServicesScreen },
             feedback: { screen: FeedbackScreen }
         }, {
                 headerMode: 'none'

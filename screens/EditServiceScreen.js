@@ -17,7 +17,7 @@ import {
 import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { connect } from 'react-redux';
 
-class EditService extends Component {
+class EditServiceScreen extends Component {
 	state = {
 		title: this.props.service.title,
 		description: this.props.service.description,
@@ -181,4 +181,4 @@ const mapStateToProps = (state) => ({
 	service: state.selectedService.service
 });
 
-export default connect(mapStateToProps)(EditService);
+export default connect(mapStateToProps)(EditServiceScreen);
