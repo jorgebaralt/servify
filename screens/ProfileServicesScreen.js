@@ -168,7 +168,7 @@ const styles = {
 function mapStateToProps(state) {
 	return {
 		favorites: state.favoriteServices,
-		servicesList: state.getServiceResult.servicesList,
+		servicesList: state.serviceResult.servicesList,
 		email: state.auth.email
 	};
 }

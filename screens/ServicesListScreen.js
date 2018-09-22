@@ -182,7 +182,7 @@ const styles = {
 const mapStateToProps = (state) => ({
 	subcategory: state.selectedCategory.subcategory,
 	category: state.selectedCategory.category,
-	servicesList: state.getServiceResult.servicesList
+	servicesList: state.serviceResult.servicesList
 });
 
 export default connect(

@@ -31,11 +31,15 @@ class EditServiceScreen extends Component {
 		miles: this.props.service.miles
 	};
 
+	deleteService = () => {
+		
+	}
+
 	openAlert = () => {
 		Alert.alert('Delete', 'Are you sure you want to delete this service?', [
 			{
 				text: 'Delete',
-				onPress: () => console.log('delete here')
+				onPress: () => this.deleteService()
 			},
 			{
 				text: 'Cancel'

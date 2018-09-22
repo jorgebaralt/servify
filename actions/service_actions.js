@@ -10,10 +10,11 @@ import {
 
 const GET_URL =	'https://us-central1-servify-716c6.cloudfunctions.net/getServices';
 
+// POST-Service
 export const createService = (servicePost, email) => async (dispatch) => {
 	let isEmpty;
-	const url =		'https://us-central1-servify-716c6.cloudfunctions.net/postService';
-	const countBaseURL =		'https://us-central1-servify-716c6.cloudfunctions.net/getServicesCount/';
+	const url =	'https://us-central1-servify-716c6.cloudfunctions.net/postService';
+	const checkDuplicateBaseUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/getServicesCount/';
 	const {
 		selectedCategory,
 		selectedSubcategory,
@@ -29,12 +30,20 @@ export const createService = (servicePost, email) => async (dispatch) => {
 		const category = selectedCategory.dbReference;
 		const geolocationData = await Location.geocodeAsync(zipCode);
 		const geolocation = geolocationData[0];
-		const locationData = await Location.reverseGeocodeAsync({
-			latitude: geolocation.latitude,
-			longitude: geolocation.longitude
-		});
-		const location = locationData[0];
-
+		let location;
+		try {
+			const locationData = await Location.reverseGeocodeAsync({
+				latitude: geolocation.latitude,
+				longitude: geolocation.longitude
+			});
+			[location] = locationData;
+		} catch (e) {
+			return dispatch({
+				type: POST_SERVICE_FAIL,
+				payload: 'We could not find your address, please provide a correct address'
+			});
+		}
+		
 		const newServicePost = {
 			category,
 			phone,
@@ -60,13 +69,13 @@ export const createService = (servicePost, email) => async (dispatch) => {
 		if (selectedSubcategory) {
 			newServicePost.subcategory = selectedSubcategory.dbReference;
 			// check duplicate post by same user. under subcategory
-			const countURL =				countBaseURL
+			const checkURL = checkDuplicateBaseUrl
 				+ '/?email='
 				+ email
 				+ '&subcategory='
 				+ selectedSubcategory.dbReference;
 			try {
-				const response = await axios.get(countURL);
+				const response = await axios.get(checkURL);
 				isEmpty = response.data;
 				if (!isEmpty) {
 					return dispatch({
@@ -82,9 +91,9 @@ export const createService = (servicePost, email) => async (dispatch) => {
 				});
 			}
 		} else if (selectedCategory && !selectedSubcategory) {
-			const countURL =				countBaseURL + '/?email=' + email + '&category=' + category;
+			const checkURL = checkDuplicateBaseUrl + '/?email=' + email + '&category=' + category;
 			try {
-				const response = await axios.get(countURL);
+				const response = await axios.get(checkURL);
 				isEmpty = response.data;
 				if (!isEmpty) {
 					return dispatch({
@@ -123,4 +132,44 @@ export const createService = (servicePost, email) => async (dispatch) => {
 
 export const resetMessagePost = () => async (dispatch) => {
 	dispatch({ type: RESET_MESSAGE_POST });
+};
+
+// GET-SERVICE
+// if it has subcategory look for subcategory. else only category
+export const getServicesCategory = (category) => async (dispatch) => {
+	const url = GET_URL + '/?category=' + category;
+	try {
+		const { data } = await axios.get(url);
+		return dispatch({ type: GET_SERVICES_SUCCESS, payload: data });
+	} catch (e) {
+		return dispatch({ type: GET_SERVICES_FAIL, payload: 'Error... Check your connection' });
+	}
+};
+
+export const getServicesSubcategory = (category, subcategory) => async (dispatch) => {
+	const url = GET_URL + '/?subcategory=' + subcategory;
+	try {
+		const { data } = await axios.get(url);
+		return dispatch({ type: GET_SERVICES_SUCCESS, payload: data });
+	} catch (e) {
+		return dispatch({ type: GET_SERVICES_FAIL });
+	}
+};
+
+export const getServicesByEmail = (email) => async (dispatch) => {
+	const url = GET_URL + '/?email=' + email;
+	try {
+		// TODO: change here
+		const { data } = await axios.get(url);
+		return dispatch({ type: GET_SERVICES_SUCCESS, payload: data });
+	} catch (e) {
+		console.log(e);
+		return dispatch({ type: GET_SERVICES_FAIL });
+	}
+};
+
+// DELETE-SERVICE
+
+export const deleteService = (service) => async (dispatch) => {
+
 };

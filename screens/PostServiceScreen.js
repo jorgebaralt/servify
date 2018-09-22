@@ -54,7 +54,7 @@ class PostServiceScreen extends Component {
 			Toast.show({
 				text: success,
 				buttonText: 'OK',
-				duration: 5000,
+				duration: 3000,
 				type: 'success'
 			});
 			this.props.resetMessagePost();
@@ -63,7 +63,7 @@ class PostServiceScreen extends Component {
 			Toast.show({
 				text: error,
 				buttonText: 'OK',
-				duration: 2000,
+				duration: 5000,
 				type: 'warning'
 			});
 			this.props.resetMessagePost();
@@ -246,14 +246,14 @@ class PostServiceScreen extends Component {
 										placeholder="Pick a Category"
 										placeholderStyle={{ color: '#bfc6ea', left: -15 }}
 										iosIcon={(
-<Icon
+											<Icon
 												name={
 													this.state.selectedCategory
 														? undefined
 														: 'ios-arrow-down-outline'
 												}
-/>
-)}
+											/>
+										)}
 										selectedValue={this.state.selectedCategory}
 										onValueChange={(value) => this.setState({ selectedCategory: value })
 										}
@@ -311,17 +311,18 @@ class PostServiceScreen extends Component {
 							<Text style={charCountStyle}>
 								{this.state.descriptionCharCount}
 							</Text>
+							{this.renderSpinner()}
 							<View>
 								<Button
 									bordered
 									dark
+									disabled={this.state.loading}
 									style={buttonStyle}
 									onPress={() => this.doPostService()}
 								>
 									<Text>Submit</Text>
 								</Button>
 							</View>
-							{this.renderSpinner()}
 						</View>
 						{/* TODO: Services should be first Submitted for approval. */}
 						{/* TODO: Users will also be able to contact you through your account email, create message */}
@@ -363,7 +364,7 @@ const styles = {
 function mapStateToProps(state) {
 	return {
 		categories: state.categories,
-		result: state.postServiceResult,
+		result: state.serviceResult,
 		email: state.auth.email,
 		displayName: state.auth.displayName
 	};
