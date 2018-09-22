@@ -21,7 +21,7 @@ import {
 	Toast
 } from 'native-base';
 import { connect } from 'react-redux';
-import { createService, resetMessagePost } from '../actions';
+import { createService, resetMessageService } from '../actions';
 
 const maxCharCount = 120;
 const initialState = {
@@ -57,7 +57,7 @@ class PostServiceScreen extends Component {
 				duration: 3000,
 				type: 'success'
 			});
-			this.props.resetMessagePost();
+			this.props.resetMessageService();
 		}
 		if (error) {
 			Toast.show({
@@ -66,7 +66,7 @@ class PostServiceScreen extends Component {
 				duration: 5000,
 				type: 'warning'
 			});
-			this.props.resetMessagePost();
+			this.props.resetMessageService();
 		}
 	}
 
@@ -372,5 +372,5 @@ function mapStateToProps(state) {
 
 export default connect(
 	mapStateToProps,
-	{ createService, resetMessagePost }
+	{ createService, resetMessageService }
 )(PostServiceScreen);

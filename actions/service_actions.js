@@ -5,7 +5,8 @@ import {
 	POST_SERVICE_FAIL,
 	RESET_MESSAGE_POST,
 	GET_SERVICES_FAIL,
-	GET_SERVICES_SUCCESS
+	GET_SERVICES_SUCCESS,
+	DELETE_SERVICE_SUCCESS
 } from './types';
 
 const GET_URL =	'https://us-central1-servify-716c6.cloudfunctions.net/getServices';
@@ -130,7 +131,7 @@ export const createService = (servicePost, email) => async (dispatch) => {
 	}
 };
 
-export const resetMessagePost = () => async (dispatch) => {
+export const resetMessageService = () => async (dispatch) => {
 	dispatch({ type: RESET_MESSAGE_POST });
 };
 
@@ -171,5 +172,6 @@ export const getServicesByEmail = (email) => async (dispatch) => {
 // DELETE-SERVICE
 
 export const deleteService = (service) => async (dispatch) => {
-
+	console.log(service);
+	return dispatch({ type: DELETE_SERVICE_SUCCESS, payload: 'Your service have been deleted' });
 };

@@ -3,7 +3,8 @@ import {
 	POST_SERVICE_FAIL,
 	RESET_MESSAGE_POST,
 	GET_SERVICES_FAIL,
-	GET_SERVICES_SUCCESS
+	GET_SERVICES_SUCCESS,
+	DELETE_SERVICE_SUCCESS
 } from '../actions/types';
 
 export default (state = {}, action) => {
@@ -18,6 +19,8 @@ export default (state = {}, action) => {
 			return { servicesList: action.payload };
 		case RESET_MESSAGE_POST:
 			return { ...state, error: undefined, success: undefined };
+		case DELETE_SERVICE_SUCCESS:
+			return { success: action.payload };
 		default:
 			return state;
 	}

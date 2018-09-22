@@ -12,10 +12,12 @@ import {
 	Content,
 	Input,
 	Item,
-	Textarea
+	Textarea,
+	Toast
 } from 'native-base';
 import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { connect } from 'react-redux';
+import { deleteService, resetMessageService } from '../actions';
 
 class EditServiceScreen extends Component {
 	state = {
@@ -31,9 +33,23 @@ class EditServiceScreen extends Component {
 		miles: this.props.service.miles
 	};
 
-	deleteService = () => {
-		
+	componentWillUpdate = (nextProps) => {
+		const { result } = nextProps;
+		const { success } = result;
+		if (success) {
+			Toast.show({
+				text: success,
+				buttonText: 'OK',
+				duration: 3000,
+				type: 'success'
+			});
+			this.props.resetMessageService();
+		}
 	}
+
+	deleteService = () => {
+		this.props.deleteService(this.props.service);
+	};
 
 	openAlert = () => {
 		Alert.alert('Delete', 'Are you sure you want to delete this service?', [
@@ -150,7 +166,6 @@ class EditServiceScreen extends Component {
 					</Content>
 				</KeyboardAvoidingView>
 			</Container>
-			
 		);
 	}
 }
@@ -182,7 +197,11 @@ const styles = {
 };
 
 const mapStateToProps = (state) => ({
-	service: state.selectedService.service
+	service: state.selectedService.service,
+	result: state.serviceResult
 });
 
-export default connect(mapStateToProps)(EditServiceScreen);
+export default connect(
+	mapStateToProps,
+	{ deleteService, resetMessageService }
+)(EditServiceScreen);

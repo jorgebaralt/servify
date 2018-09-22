@@ -25,3 +25,4 @@ export const GET_EMAIL_FAIL = 'get_email_fail';
 export const POST_FEEDBACK_SUCCESS = 'post_feedback_success';
 export const POST_FEEDBACK_FAIL = 'post_feedback_fail';
 export const RESET_FEEDBACK_MESSAGE = 'reset_feedback_messsage';
+export const DELETE_SERVICE_SUCCESS = 'delete_feedback_success';
