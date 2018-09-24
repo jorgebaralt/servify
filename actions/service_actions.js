@@ -6,7 +6,8 @@ import {
 	RESET_MESSAGE_POST,
 	GET_SERVICES_FAIL,
 	GET_SERVICES_SUCCESS,
-	DELETE_SERVICE_SUCCESS
+	DELETE_SERVICE_SUCCESS,
+	DELETE_SERVICE_FAIL
 } from './types';
 
 const GET_URL =	'https://us-central1-servify-716c6.cloudfunctions.net/getServices';
@@ -14,8 +15,8 @@ const GET_URL =	'https://us-central1-servify-716c6.cloudfunctions.net/getService
 // POST-Service
 export const createService = (servicePost, email) => async (dispatch) => {
 	let isEmpty;
-	const url =	'https://us-central1-servify-716c6.cloudfunctions.net/postService';
-	const checkDuplicateBaseUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/getServicesCount/';
+	const url =		'https://us-central1-servify-716c6.cloudfunctions.net/postService';
+	const checkDuplicateBaseUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getServicesCount/';
 	const {
 		selectedCategory,
 		selectedSubcategory,
@@ -41,10 +42,11 @@ export const createService = (servicePost, email) => async (dispatch) => {
 		} catch (e) {
 			return dispatch({
 				type: POST_SERVICE_FAIL,
-				payload: 'We could not find your address, please provide a correct address'
+				payload:
+					'We could not find your address, please provide a correct address'
 			});
 		}
-		
+
 		const newServicePost = {
 			category,
 			phone,
@@ -70,7 +72,7 @@ export const createService = (servicePost, email) => async (dispatch) => {
 		if (selectedSubcategory) {
 			newServicePost.subcategory = selectedSubcategory.dbReference;
 			// check duplicate post by same user. under subcategory
-			const checkURL = checkDuplicateBaseUrl
+			const checkURL =				checkDuplicateBaseUrl
 				+ '/?email='
 				+ email
 				+ '&subcategory='
@@ -92,7 +94,7 @@ export const createService = (servicePost, email) => async (dispatch) => {
 				});
 			}
 		} else if (selectedCategory && !selectedSubcategory) {
-			const checkURL = checkDuplicateBaseUrl + '/?email=' + email + '&category=' + category;
+			const checkURL =				checkDuplicateBaseUrl + '/?email=' + email + '&category=' + category;
 			try {
 				const response = await axios.get(checkURL);
 				isEmpty = response.data;
@@ -143,11 +145,16 @@ export const getServicesCategory = (category) => async (dispatch) => {
 		const { data } = await axios.get(url);
 		return dispatch({ type: GET_SERVICES_SUCCESS, payload: data });
 	} catch (e) {
-		return dispatch({ type: GET_SERVICES_FAIL, payload: 'Error... Check your connection' });
+		return dispatch({
+			type: GET_SERVICES_FAIL,
+			payload: 'Error... Check your connection'
+		});
 	}
 };
 
-export const getServicesSubcategory = (category, subcategory) => async (dispatch) => {
+export const getServicesSubcategory = (category, subcategory) => async (
+	dispatch
+) => {
 	const url = GET_URL + '/?subcategory=' + subcategory;
 	try {
 		const { data } = await axios.get(url);
@@ -172,6 +179,24 @@ export const getServicesByEmail = (email) => async (dispatch) => {
 // DELETE-SERVICE
 
 export const deleteService = (service) => async (dispatch) => {
-	console.log(service);
-	return dispatch({ type: DELETE_SERVICE_SUCCESS, payload: 'Your service have been deleted' });
+	const deleteUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/deleteService/?email=' + service.email;
+	let url;
+	if (service.subcategory) {
+		url = deleteUrl + '&subcategory=' + service.subcategory;
+	} else {
+		url = deleteUrl + '&category=' + service.category;
+	}
+	try {
+		await axios.delete(url);
+		return dispatch({
+			type: DELETE_SERVICE_SUCCESS,
+			payload: 'Your service have been deleted'
+		});
+	} catch (e) {
+		return dispatch({
+			type: DELETE_SERVICE_FAIL,
+			payload: 'Error deleting the service'
+		});
+	}
+	
 };

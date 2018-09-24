@@ -35,7 +35,7 @@ class EditServiceScreen extends Component {
 
 	componentWillUpdate = (nextProps) => {
 		const { result } = nextProps;
-		const { success } = result;
+		const { success, error } = result;
 		if (success) {
 			Toast.show({
 				text: success,
@@ -44,8 +44,16 @@ class EditServiceScreen extends Component {
 				type: 'success'
 			});
 			this.props.resetMessageService();
+		} else if (error) {
+			Toast.show({
+				text: error,
+				buttonText: 'OK',
+				duration: 3000,
+				type: 'warning'
+			});
+			this.props.resetMessageService();
 		}
-	}
+	};
 
 	deleteService = () => {
 		this.props.deleteService(this.props.service);

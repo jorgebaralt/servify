@@ -28,7 +28,7 @@ export default () => [
     },
     {
         id: '1',
-        title: 'Car Wash and Repair',
+        title: 'Auto Services',
         description: 'Car Wash and Repair Description',
         dbReference: 'car_services',
         color: ['#37474F', '#90A4AE'],
