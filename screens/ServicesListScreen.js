@@ -54,7 +54,7 @@ class ServicesListScreen extends Component {
 	};
 
 	renderServices = (service) => {
-        const { grayStyle, cardStyle, titleStyle, phoneLocationStyle, displayNameStyle, cardHeaderStyle, cardItemStyle } = styles;
+        const { cardStyle, titleStyle, phoneLocationStyle, displayNameStyle, cardHeaderStyle, cardItemStyle } = styles;
 		const displayDescription = service.description.substring(0, 30) + '...';
 		return (
 			<TouchableOpacity
@@ -71,8 +71,8 @@ class ServicesListScreen extends Component {
 					</CardItem>
 					<CardItem style={cardItemStyle}>
 						<Body style={phoneLocationStyle}>
-							<Text style={grayStyle}>{service.phone}</Text>
-							<Text style={[grayStyle, { marginLeft: '15%' }]}>
+							<Text>{service.phone}</Text>
+							<Text style={{ marginLeft: '15%' }}>
 								{service.location.city}
 							</Text>
 						</Body>
@@ -85,7 +85,7 @@ class ServicesListScreen extends Component {
 					</CardItem>
 					<CardItem style={cardItemStyle}>
 						<Body>
-							<Text style={grayStyle}>{displayDescription}</Text>
+							<Text>{displayDescription}</Text>
 						</Body>
 					</CardItem>
 				</Card>
@@ -152,9 +152,6 @@ const styles = {
         marginTop: '2.5%'
     },
     contentStyle: {},
-    grayStyle: {
-        color: 'gray'
-    },
     titleStyle: {
         fontSize: 18
     },

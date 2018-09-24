@@ -150,8 +150,7 @@ class FeedbackScreen extends Component {
 					<Text style={titleStyle}>How can we improve?</Text>
 					<Text style={DescriptionStyle}>
 						We are always looking for ways to improve, so we listen very close
-						to every feedback. Please tell of what you love or what need some
-						word so we can get to work.
+						to every feedback. Please tell us what you love or where to improve.
 					</Text>
 					<View style={{ flex: 1, alignItems: 'center' }}>
 						<Form style={formStyle}>
