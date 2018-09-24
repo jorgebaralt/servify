@@ -4,8 +4,6 @@ import {
 	Content,
 	Header,
 	Text,
-	Card,
-	CardItem,
 	Body,
 	Title,
 	Container,
@@ -18,7 +16,7 @@ import {
 	Item,
 	Picker,
 	Textarea,
-	Toast
+	Toast,
 } from 'native-base';
 import { connect } from 'react-redux';
 import { submitFeedback, resetFeedbackMessage } from '../actions';
@@ -113,6 +111,7 @@ class FeedbackScreen extends Component {
 						value={this.state.description}
 						onChangeText={(text) => this.setState({ description: text })}
 					/>
+					{this.renderSpinner()}
 					<Button
 						bordered
 						dark

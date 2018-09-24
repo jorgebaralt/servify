@@ -185,14 +185,14 @@ class PostServiceScreen extends Component {
 						<Picker
 							mode="dropdown"
 							iosIcon={(
-<Icon
+								<Icon
 									name={
 										this.state.selectedSubcategory
 											? undefined
 											: 'ios-arrow-down-outline'
 									}
-/>
-)}
+								/>
+							)}
 							placeholder="Pick a Subcategory"
 							placeholderStyle={{ color: '#bfc6ea', left: -15 }}
 							selectedValue={this.state.selectedSubcategory}
@@ -234,6 +234,7 @@ class PostServiceScreen extends Component {
 				>
 					<Content>
 						<Text style={titleStyle}>Post a New Service</Text>
+						{this.renderSpinner()}
 						<View style={{ flex: 1, alignItems: 'center' }}>
 							<Form style={formStyle}>
 								<Item
@@ -311,7 +312,6 @@ class PostServiceScreen extends Component {
 							<Text style={charCountStyle}>
 								{this.state.descriptionCharCount}
 							</Text>
-							{this.renderSpinner()}
 							<View>
 								<Button
 									bordered
