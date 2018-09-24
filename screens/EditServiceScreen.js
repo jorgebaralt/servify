@@ -13,11 +13,12 @@ import {
 	Input,
 	Item,
 	Textarea,
-	Toast
+	Toast,
+	Spinner
 } from 'native-base';
-import { Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform, View } from 'react-native';
 import { connect } from 'react-redux';
-import { deleteService, resetMessageService } from '../actions';
+import { deleteService, resetMessageService, updateService } from '../actions';
 
 class EditServiceScreen extends Component {
 	state = {
@@ -30,7 +31,8 @@ class EditServiceScreen extends Component {
 			+ this.props.service.location.region
 			+ ' '
 			+ this.props.service.zipCode,
-		miles: this.props.service.miles
+		miles: this.props.service.miles,
+		loading: false
 	};
 
 	componentWillUpdate = (nextProps) => {
@@ -55,8 +57,10 @@ class EditServiceScreen extends Component {
 		}
 	};
 
-	deleteService = () => {
+	deleteService = async () => {
+		this.setState({ loading: true });
 		this.props.deleteService(this.props.service);
+		this.setState({ loading: false });
 	};
 
 	openAlert = () => {
@@ -71,9 +75,28 @@ class EditServiceScreen extends Component {
 		]);
 	};
 
-	updateService = () => {
-		console.log('update service');
+	updateService = async () => {
+		this.setState({ loading: true });
+		const updatedService = {
+			category: this.props.service.category,
+			subcategory: this.props.service.subcategory,
+			title: this.state.title,
+			phone: this.state.phone,
+			location: this.state.location,
+			miles: this.props.miles,
+			description: this.state.description,
+			displayName: this.props.displayName
+		};
+		await this.props.updateService(updatedService);
+		this.setState({ loading: false });
 	};
+
+	renderSpinner() {
+		if (this.state.loading) {
+			return <Spinner color="orange" />;
+		}
+		return <View />;
+	}
 
 	render() {
 		const {
@@ -89,6 +112,7 @@ class EditServiceScreen extends Component {
 					<Left>
 						<Button
 							transparent
+							disabled={this.state.loading}
 							onPress={() => {
 								this.props.navigation.goBack();
 							}}
@@ -104,6 +128,7 @@ class EditServiceScreen extends Component {
 							transparent
 							title="Settings"
 							onPress={() => this.openAlert()}
+							disabled={this.state.loading}
 						>
 							<Icon
 								type="MaterialIcons"
@@ -166,11 +191,13 @@ class EditServiceScreen extends Component {
 						<Button
 							bordered
 							dark
+							disabled={this.state.loading}
 							style={buttonStyle}
 							onPress={() => this.updateService()}
 						>
 							<Text style={{ color: '#FF7043' }}>Update Service</Text>
 						</Button>
+						{this.renderSpinner()}
 					</Content>
 				</KeyboardAvoidingView>
 			</Container>
@@ -206,10 +233,11 @@ const styles = {
 
 const mapStateToProps = (state) => ({
 	service: state.selectedService.service,
-	result: state.serviceResult
+	result: state.serviceResult,
+	displayName: state.auth.displayName
 });
 
 export default connect(
 	mapStateToProps,
-	{ deleteService, resetMessageService }
+	{ deleteService, resetMessageService, updateService }
 )(EditServiceScreen);

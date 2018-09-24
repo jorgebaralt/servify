@@ -63,7 +63,7 @@ class PostServiceScreen extends Component {
 			Toast.show({
 				text: error,
 				buttonText: 'OK',
-				duration: 5000,
+				duration: 8000,
 				type: 'warning'
 			});
 			this.props.resetMessageService();

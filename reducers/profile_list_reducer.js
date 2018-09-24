@@ -16,8 +16,8 @@ export default () => [
 	{
 		id: 'invite',
 		title: 'Invite a Friend',
-		iconType: 'MaterialIcons',
-		iconName: 'card-giftcard',
+		iconType: 'MaterialCommunityIcons',
+		iconName: 'gift',
 		isList: false
 	},
 	{
@@ -30,15 +30,15 @@ export default () => [
 	{
 		id: 'feedback',
 		title: 'Give some Feedback',
-		iconType: 'MaterialIcons',
-		iconName: 'send',
+		iconType: 'FontAwesome',
+		iconName: 'send-o',
 		isList: false
 	},
 	{
 		id: 'contactUs',
 		title: 'Contact us',
-		iconType: 'MaterialIcons',
-		iconName: 'email',
+		iconType: 'MaterialCommunityIcons',
+		iconName: 'email-outline',
 		isList: false
 	}
 ];

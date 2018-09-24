@@ -5,7 +5,9 @@ import {
 	GET_SERVICES_FAIL,
 	GET_SERVICES_SUCCESS,
 	DELETE_SERVICE_SUCCESS,
-	DELETE_SERVICE_FAIL
+	DELETE_SERVICE_FAIL,
+	UPDATE_SERVICE_SUCCESS,
+	UPDATE_SERVICE_FAIL
 } from '../actions/types';
 
 export default (state = {}, action) => {
@@ -18,12 +20,16 @@ export default (state = {}, action) => {
 			return state;
 		case GET_SERVICES_SUCCESS:
 			return { servicesList: action.payload };
-		case RESET_MESSAGE_POST:
-			return { ...state, error: undefined, success: undefined };
 		case DELETE_SERVICE_SUCCESS:
 			return { success: action.payload };
 		case DELETE_SERVICE_FAIL:
 			return { error: action.payload };
+		case UPDATE_SERVICE_SUCCESS:
+			return { success: action.payload };
+		case UPDATE_SERVICE_FAIL:
+			return { error: action.payload };
+		case RESET_MESSAGE_POST:
+			return { ...state, error: undefined, success: undefined };
 		default:
 			return state;
 	}

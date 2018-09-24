@@ -129,7 +129,7 @@ class SpecificServiceScreen extends Component {
 			latitudeDelta = 0.45;
 		} else if (service.miles <= 30 && service.miles > 20) {
 			latitudeDelta = 0.8;
-		} else if (service.miles <= 50 && service.miles > 30) {
+		} else if (service.miles <= 60 && service.miles > 30) {
 			latitudeDelta = 1.5;
 		}
 

@@ -115,6 +115,7 @@ class FeedbackScreen extends Component {
 					<Button
 						bordered
 						dark
+						disabled={this.state.loading}
 						style={buttonStyle}
 						onPress={() => this.sendFeedback()}
 					>

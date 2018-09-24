@@ -7,12 +7,14 @@ import {
 	GET_SERVICES_FAIL,
 	GET_SERVICES_SUCCESS,
 	DELETE_SERVICE_SUCCESS,
-	DELETE_SERVICE_FAIL
+	DELETE_SERVICE_FAIL,
+	UPDATE_SERVICE_FAIL,
+	UPDATE_SERVICE_SUCCESS
 } from './types';
 
 const GET_URL =	'https://us-central1-servify-716c6.cloudfunctions.net/getServices';
 
-// POST-Service
+// POST-SERVICE
 export const createService = (servicePost, email) => async (dispatch) => {
 	let isEmpty;
 	const url =		'https://us-central1-servify-716c6.cloudfunctions.net/postService';
@@ -59,6 +61,13 @@ export const createService = (servicePost, email) => async (dispatch) => {
 			email,
 			displayName
 		};
+
+		if (miles > 60) {
+			return dispatch({
+				type: POST_SERVICE_FAIL,
+				payload: 'No more than 60 miles for local services, we are working on services across states'
+			});
+		}
 
 		// if there is subcategory option, and didnt pick one
 		if (selectedCategory.subcategories && !selectedSubcategory) {
@@ -138,7 +147,6 @@ export const resetMessageService = () => async (dispatch) => {
 };
 
 // GET-SERVICE
-// if it has subcategory look for subcategory. else only category
 export const getServicesCategory = (category) => async (dispatch) => {
 	const url = GET_URL + '/?category=' + category;
 	try {
@@ -177,9 +185,9 @@ export const getServicesByEmail = (email) => async (dispatch) => {
 };
 
 // DELETE-SERVICE
-
 export const deleteService = (service) => async (dispatch) => {
-	const deleteUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/deleteService/?email=' + service.email;
+	const deleteUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/deleteService/?email='
+		+ service.email;
 	let url;
 	if (service.subcategory) {
 		url = deleteUrl + '&subcategory=' + service.subcategory;
@@ -198,5 +206,12 @@ export const deleteService = (service) => async (dispatch) => {
 			payload: 'Error deleting the service'
 		});
 	}
-	
+};
+
+// UPDATE-SERVICE
+export const updateService = (service) => async (dispatch) => {
+	return dispatch({
+		type: UPDATE_SERVICE_SUCCESS,
+		payload: 'Your service has been updated'
+	});
 };
