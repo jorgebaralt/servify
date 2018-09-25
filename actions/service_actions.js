@@ -54,7 +54,6 @@ export const createService = (servicePost, email) => async (dispatch) => {
 			phone,
 			description,
 			title,
-			zipCode,
 			geolocation,
 			location,
 			miles,
@@ -65,7 +64,8 @@ export const createService = (servicePost, email) => async (dispatch) => {
 		if (miles > 60) {
 			return dispatch({
 				type: POST_SERVICE_FAIL,
-				payload: 'No more than 60 miles for local services, we are working on services across states'
+				payload:
+					'No more than 60 miles for local services, we are working on services across states'
 			});
 		}
 
@@ -210,8 +210,36 @@ export const deleteService = (service) => async (dispatch) => {
 
 // UPDATE-SERVICE
 export const updateService = (service) => async (dispatch) => {
-	return dispatch({
-		type: UPDATE_SERVICE_SUCCESS,
-		payload: 'Your service has been updated'
-	});
+	const updateUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/updateService';
+	const newService = service;
+	let location;
+	try {
+		const geolocationData = await Location.geocodeAsync(service.location);
+		const geolocation = geolocationData[0];
+		const locationData = await Location.reverseGeocodeAsync({
+			latitude: geolocation.latitude,
+			longitude: geolocation.longitude
+		});
+		[location] = locationData;
+		newService.location = location;
+		newService.geolocation = geolocation;
+	} catch (e) {
+		return dispatch({
+			type: POST_SERVICE_FAIL,
+			payload:
+				'We could not find your address, please provide a correct address'
+		});
+	}
+	try {
+		await axios.post(updateUrl, newService);
+		return dispatch({
+			type: UPDATE_SERVICE_SUCCESS,
+			payload: 'Your service has been updated'
+		});
+	} catch (e) {
+		return dispatch({
+			type: UPDATE_SERVICE_FAIL,
+			payload: 'Error updating your service. Try later'
+		});
+	}
 };

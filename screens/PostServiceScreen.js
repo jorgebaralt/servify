@@ -28,7 +28,6 @@ const initialState = {
 	selectedCategory: undefined,
 	selectedSubcategory: undefined,
 	title: '',
-	email: '',
 	phone: '',
 	zipCode: '',
 	miles: '',

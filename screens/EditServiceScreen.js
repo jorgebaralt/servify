@@ -30,7 +30,7 @@ class EditServiceScreen extends Component {
 			+ ', '
 			+ this.props.service.location.region
 			+ ' '
-			+ this.props.service.zipCode,
+			+ this.props.service.location.postalCode,
 		miles: this.props.service.miles,
 		loading: false
 	};
@@ -60,7 +60,14 @@ class EditServiceScreen extends Component {
 	deleteService = async () => {
 		this.setState({ loading: true });
 		this.props.deleteService(this.props.service);
-		this.setState({ loading: false });
+		this.setState({
+			title: '',
+			description: '',
+			phone: '',
+			location: '',
+			miles: '',
+			loading: false
+		});
 	};
 
 	openAlert = () => {
@@ -83,12 +90,28 @@ class EditServiceScreen extends Component {
 			title: this.state.title,
 			phone: this.state.phone,
 			location: this.state.location,
-			miles: this.props.miles,
+			miles: this.state.miles,
 			description: this.state.description,
-			displayName: this.props.displayName
+			displayName: this.props.displayName,
+			email: this.props.email
 		};
 		await this.props.updateService(updatedService);
 		this.setState({ loading: false });
+	};
+
+	phoneChangeText = (text) => {
+		const input = text.replace(/\D/g, '').substring(0, 10);
+		const left = input.substring(0, 3);
+		const middle = input.substring(3, 6);
+		const right = input.substring(6, 10);
+
+		if (input.length > 6) {
+			this.setState({ phone: `(${left}) ${middle} - ${right}` });
+		} else if (input.length > 3) {
+			this.setState({ phone: `(${left}) ${middle}` });
+		} else if (input.length > 0) {
+			this.setState({ phone: `(${left}` });
+		}
 	};
 
 	renderSpinner() {
@@ -114,7 +137,7 @@ class EditServiceScreen extends Component {
 							transparent
 							disabled={this.state.loading}
 							onPress={() => {
-								this.props.navigation.goBack();
+								this.props.navigation.pop(3);
 							}}
 						>
 							<Icon name="arrow-back" style={{ color: 'black' }} />
@@ -158,7 +181,7 @@ class EditServiceScreen extends Component {
 								style={editingTextStyle}
 								value={this.state.description}
 								rowSpan={3}
-								onChangeText={(text) => this.setState({ title: text })}
+								onChangeText={(text) => this.setState({ description: text })}
 								maxLength={120}
 							/>
 						</Item>
@@ -168,7 +191,8 @@ class EditServiceScreen extends Component {
 								style={editingTextStyle}
 								value={this.state.phone}
 								keyboardType="phone-pad"
-								onChangeText={(text) => this.setState({ title: text })}
+								onChangeText={(text) => this.phoneChangeText(text)}
+								maxLength={16}
 							/>
 						</Item>
 						<Text style={subtitleStyle}>Location</Text>
@@ -176,7 +200,7 @@ class EditServiceScreen extends Component {
 							<Input
 								style={editingTextStyle}
 								value={this.state.location}
-								onChangeText={(text) => this.setState({ title: text })}
+								onChangeText={(text) => this.setState({ location: text })}
 							/>
 						</Item>
 						<Text style={subtitleStyle}>Miles</Text>
@@ -185,7 +209,7 @@ class EditServiceScreen extends Component {
 								style={editingTextStyle}
 								value={this.state.miles}
 								keyboardType="numeric"
-								onChangeText={(text) => this.setState({ title: text })}
+								onChangeText={(text) => this.setState({ miles: text })}
 							/>
 						</Item>
 						<Button
@@ -234,7 +258,8 @@ const styles = {
 const mapStateToProps = (state) => ({
 	service: state.selectedService.service,
 	result: state.serviceResult,
-	displayName: state.auth.displayName
+	displayName: state.auth.displayName,
+	email: state.auth.email
 });
 
 export default connect(
