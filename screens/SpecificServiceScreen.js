@@ -106,6 +106,22 @@ class SpecificServiceScreen extends Component {
 		);
 	};
 
+	renderSubcategoryName = () => {
+		const { service } = this.props;
+		const { descriptionStyle, cardStyle, subtitleStyle } = styles;
+		if (service.subcategory) {
+			let subcategoryName = service.subcategory.split('_');
+			for (let i = 0; i < subcategoryName.length; i++) {
+				subcategoryName[i] = subcategoryName[i].charAt(0).toUpperCase()
+					+ subcategoryName[i].substring(1);
+			}
+			subcategoryName = subcategoryName.join(' ');
+			return (
+				<Text style={descriptionStyle}> - {subcategoryName}</Text>
+			);
+		}
+	};
+
 	render() {
 		const { service } = this.props;
 		const {
@@ -132,6 +148,12 @@ class SpecificServiceScreen extends Component {
 		} else if (service.miles <= 60 && service.miles > 30) {
 			latitudeDelta = 1.5;
 		}
+
+		let categoryName = service.category.split('_');
+		for (let i = 0; i < categoryName.length; i++) {
+			categoryName[i] = categoryName[i].charAt(0).toUpperCase() + categoryName[i].substring(1);
+		}
+		categoryName = categoryName.join(' ');
 
 		return (
 			<Container style={{ flex: 1 }}>
@@ -164,7 +186,16 @@ class SpecificServiceScreen extends Component {
 					{/* <View style={rowDirectionStyle}>
                         <Text style={subtitleStyle}>Category</Text>
                         <Text style={regularTextStyle}>{service.title}</Text>
-                    </View> */}
+					</View> */}
+					<Text style={subtitleStyle}>Category</Text>
+					<Card style={cardStyle}>
+						<CardItem>
+							<Body style={{ flexDirection: 'row' }}>
+								<Text style={descriptionStyle}>{categoryName}</Text>
+								{this.renderSubcategoryName()}
+							</Body>
+						</CardItem>
+					</Card>
 
 					<Text style={subtitleStyle}>Service Description </Text>
 					<Card style={cardStyle}>
@@ -259,7 +290,7 @@ const styles = {
 		fontSize: 14
 	},
 	subtitleStyle: {
-		marginTop: 12,
+		marginTop: 10,
 		fontWeight: 'bold',
 		color: '#4DB6AC',
 		fontSize: 16
@@ -282,7 +313,6 @@ const styles = {
 		fontSize: 14
 	},
 	buttonViewStyle: {
-		top: 12,
 		flexDirection: 'row',
 		width: '80%',
 		alignItems: 'center',
