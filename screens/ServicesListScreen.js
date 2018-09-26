@@ -29,16 +29,7 @@ class ServicesListScreen extends Component {
 	state = { dataLoaded: false };
 
 	componentWillMount = async () => {
-		const { category, subcategory } = this.props;
-		const categoryRef = category.dbReference;
-
-		if (subcategory) {
-			const subcategoryRef = subcategory.dbReference;
-			await this.props.getServicesSubcategory(categoryRef, subcategoryRef);
-		} else {
-			await this.props.getServicesCategory(categoryRef);
-		}
-
+		await this.decideGetService();
 		const { servicesList } = this.props;
 		const ds = new ListView.DataSource({
 			rowHasChanged: (r1, r2) => r1 !== r2
@@ -53,8 +44,27 @@ class ServicesListScreen extends Component {
 		this.props.navigation.goBack(null);
 	};
 
+	decideGetService = async () => {
+		const { category, subcategory } = this.props;
+		const categoryRef = category.dbReference;
+
+		if (subcategory) {
+			const subcategoryRef = subcategory.dbReference;
+			await this.props.getServicesSubcategory(categoryRef, subcategoryRef);
+		} else {
+			await this.props.getServicesCategory(categoryRef);
+		}
+	};
+
 	renderServices = (service) => {
-        const { cardStyle, titleStyle, phoneLocationStyle, displayNameStyle, cardHeaderStyle, cardItemStyle } = styles;
+		const {
+			cardStyle,
+			titleStyle,
+			phoneLocationStyle,
+			displayNameStyle,
+			cardHeaderStyle,
+			cardItemStyle
+		} = styles;
 		const displayDescription = service.description.substring(0, 30) + '...';
 		return (
 			<TouchableOpacity
@@ -67,14 +77,12 @@ class ServicesListScreen extends Component {
 				<Card style={cardStyle}>
 					<CardItem header style={cardHeaderStyle}>
 						<Text style={titleStyle}>{service.title}</Text>
-                        <Text style={displayNameStyle}>by: {service.displayName}</Text>
+						<Text style={displayNameStyle}>by: {service.displayName}</Text>
 					</CardItem>
 					<CardItem style={cardItemStyle}>
 						<Body style={phoneLocationStyle}>
 							<Text>{service.phone}</Text>
-							<Text style={{ marginLeft: '15%' }}>
-								{service.location.city}
-							</Text>
+							<Text style={{ marginLeft: '15%' }}>{service.location.city}</Text>
 						</Body>
 						<Right>
 							<Icon
@@ -145,35 +153,35 @@ class ServicesListScreen extends Component {
 }
 
 const styles = {
-    headerStyle: {},
-    cardStyle: {
-        width: '80%',
-        marginLeft: '10%',
-        marginTop: '2.5%'
-    },
-    contentStyle: {},
-    titleStyle: {
-        fontSize: 18
-    },
-    phoneLocationStyle: {
-        flexDirection: 'row',
-        flex: 1
-    },
-    headerTitleStyle: {
-        color: 'white'
-    },
-    cardHeaderStyle: {
-        flexDirection: 'column',
-        display: 'flex',
-        alignItems: 'flex-start'
-    },
-    displayNameStyle: {
-        fontSize: 14,
-        fontWeight: undefined
-    },
-    cardItemStyle: {
-        marginTop: -10
-    }
+	headerStyle: {},
+	cardStyle: {
+		width: '80%',
+		marginLeft: '10%',
+		marginTop: '2.5%'
+	},
+	contentStyle: {},
+	titleStyle: {
+		fontSize: 18
+	},
+	phoneLocationStyle: {
+		flexDirection: 'row',
+		flex: 1
+	},
+	headerTitleStyle: {
+		color: 'white'
+	},
+	cardHeaderStyle: {
+		flexDirection: 'column',
+		display: 'flex',
+		alignItems: 'flex-start'
+	},
+	displayNameStyle: {
+		fontSize: 14,
+		fontWeight: undefined
+	},
+	cardItemStyle: {
+		marginTop: -10
+	}
 };
 
 const mapStateToProps = (state) => ({
