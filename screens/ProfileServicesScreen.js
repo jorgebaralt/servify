@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { View, ListView, TouchableOpacity, Dimensions } from 'react-native';
+import {
+	View,
+	ListView,
+	TouchableOpacity,
+	Dimensions
+} from 'react-native';
 import {
 	Header,
 	Text,
@@ -43,12 +48,19 @@ class ProfileServicesScreen extends Component {
 		}
 	}
 
-	onBackPress = () => {
-		this.props.navigation.goBack();
+	onBackPress = async () => {
+		await this.props.navigation.goBack();
 	};
 
 	renderServices = (service) => {
-		const { cardStyle, titleStyle, phoneLocationStyle, displayNameStyle, cardHeaderStyle, cardItemStyle } = styles;
+		const {
+			cardStyle,
+			titleStyle,
+			phoneLocationStyle,
+			displayNameStyle,
+			cardHeaderStyle,
+			cardItemStyle
+		} = styles;
 		const displayDescription = service.description.substring(0, 30) + '...';
 		return (
 			<TouchableOpacity
@@ -59,26 +71,24 @@ class ProfileServicesScreen extends Component {
 				}}
 			>
 				<Card style={cardStyle}>
-                    <CardItem header style={cardHeaderStyle}>
-                        <Text style={titleStyle}>{service.title}</Text>
-                        <Text style={displayNameStyle}>by: {service.displayName}</Text>
-                    </CardItem>
-                    <CardItem style={cardItemStyle}>
+					<CardItem header style={cardHeaderStyle}>
+						<Text style={titleStyle}>{service.title}</Text>
+						<Text style={displayNameStyle}>by: {service.displayName}</Text>
+					</CardItem>
+					<CardItem style={cardItemStyle}>
 						<Body style={phoneLocationStyle}>
 							<Text>{service.phone}</Text>
-							<Text style={{ marginLeft: '15%' }}>
-								{service.location.city}
-							</Text>
+							<Text style={{ marginLeft: '15%' }}>{service.location.city}</Text>
 						</Body>
 						<Right>
 							<Icon name="arrow-forward" style={{ color: '#FF7043' }} />
 						</Right>
-                    </CardItem>
-                    <CardItem style={cardItemStyle}>
+					</CardItem>
+					<CardItem style={cardItemStyle}>
 						<Body>
 							<Text>{displayDescription}</Text>
 						</Body>
-                    </CardItem>
+					</CardItem>
 				</Card>
 			</TouchableOpacity>
 		);
@@ -147,19 +157,19 @@ const styles = {
 	},
 	headerTitleStyle: {
 		color: 'white'
-    },
-    cardHeaderStyle: {
-        flexDirection: 'column',
-        display: 'flex',
-        alignItems: 'flex-start'
-    },
-    displayNameStyle: {
-        fontSize: 14,
-        fontWeight: undefined
-    },
-    cardItemStyle: {
-        marginTop: -10
-    }
+	},
+	cardHeaderStyle: {
+		flexDirection: 'column',
+		display: 'flex',
+		alignItems: 'flex-start'
+	},
+	displayNameStyle: {
+		fontSize: 14,
+		fontWeight: undefined
+	},
+	cardItemStyle: {
+		marginTop: -10
+	}
 };
 
 function mapStateToProps(state) {

@@ -313,6 +313,7 @@ const styles = {
 		fontSize: 14
 	},
 	buttonViewStyle: {
+		marginTop: 10,
 		flexDirection: 'row',
 		width: '80%',
 		alignItems: 'center',
