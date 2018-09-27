@@ -187,7 +187,7 @@ class SpecificServiceScreen extends Component {
                         <Text style={subtitleStyle}>Category</Text>
                         <Text style={regularTextStyle}>{service.title}</Text>
 					</View> */}
-					<Text style={subtitleStyle}>Category</Text>
+					<Text style={[subtitleStyle, { marginTop: 0 }]}>Category</Text>
 					<Card style={cardStyle}>
 						<CardItem>
 							<Body style={{ flexDirection: 'row' }}>

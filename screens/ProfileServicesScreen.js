@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-import {
-	View,
-	ListView,
-	TouchableOpacity,
-	Dimensions
-} from 'react-native';
+import { View, ListView, TouchableOpacity, Dimensions } from 'react-native';
 import {
 	Header,
 	Text,
@@ -25,12 +20,33 @@ import EmptyListMessage from '../components/EmptyListMessage';
 
 let item;
 let errorMessage;
+let willFocusSubscription;
+
 class ProfileServicesScreen extends Component {
-	state = { dataLoaded: false };
+	state = {
+		dataLoaded: false,
+		loading: false
+	};
 
 	async componentWillMount() {
 		let data;
 		item = this.props.navigation.getParam('item');
+		willFocusSubscription = this.props.navigation.addListener(
+			'willFocus',
+			async () => {
+				if (item.id === 'favorites') {
+					const newdata = this.props.favorites;
+					if (newdata !== data) {
+						this.setState({ dataLoaded: false, loading: true });
+						this.dataSource = ds.cloneWithRows(newdata);
+						if (this.dataSource) {
+							this.setState({ dataLoaded: true, loading: false });
+						}
+					}
+				}
+			}
+		);
+
 		if (item.id === 'favorites') {
 			data = this.props.favorites;
 			errorMessage =	'There is nothing in this list, Make sure that you add Services to Favorite by cliking on the top right icon, when looking at services.';
@@ -44,8 +60,12 @@ class ProfileServicesScreen extends Component {
 		});
 		this.dataSource = ds.cloneWithRows(data);
 		if (this.dataSource) {
-			this.setState({ dataLoaded: true });
+			this.setState({ dataLoaded: true, loading: false });
 		}
+	}
+
+	componentWillUnmount() {
+		willFocusSubscription.remove();
 	}
 
 	onBackPress = async () => {
@@ -53,48 +73,65 @@ class ProfileServicesScreen extends Component {
 	};
 
 	renderServices = (service) => {
-		const {
-			cardStyle,
-			titleStyle,
-			phoneLocationStyle,
-			displayNameStyle,
-			cardHeaderStyle,
-			cardItemStyle
-		} = styles;
-		const displayDescription = service.description.substring(0, 30) + '...';
+		if (service) {
+			const {
+				cardStyle,
+				titleStyle,
+				phoneLocationStyle,
+				displayNameStyle,
+				cardHeaderStyle,
+				cardItemStyle
+			} = styles;
+			const displayDescription = service.description.substring(0, 30) + '...';
+			return (
+				<TouchableOpacity
+					key={service.id}
+					onPress={() => {
+						this.props.selectService(service);
+						this.props.navigation.navigate('service');
+					}}
+				>
+					<Card style={cardStyle}>
+						<CardItem header style={cardHeaderStyle}>
+							<Text style={titleStyle}>{service.title}</Text>
+							<Text style={displayNameStyle}>by: {service.displayName}</Text>
+						</CardItem>
+						<CardItem style={cardItemStyle}>
+							<Body style={phoneLocationStyle}>
+								<Text>{service.phone}</Text>
+								<Text style={{ marginLeft: '15%' }}>{service.location.city}</Text>
+							</Body>
+							<Right>
+								<Icon name="arrow-forward" style={{ color: '#FF7043' }} />
+							</Right>
+						</CardItem>
+						<CardItem style={cardItemStyle}>
+							<Body>
+								<Text>{displayDescription}</Text>
+							</Body>
+						</CardItem>
+					</Card>
+				</TouchableOpacity>
+			);
+		}
 		return (
-			<TouchableOpacity
-				key={service.id}
-				onPress={() => {
-					this.props.selectService(service);
-					this.props.navigation.navigate('service');
-				}}
-			>
-				<Card style={cardStyle}>
-					<CardItem header style={cardHeaderStyle}>
-						<Text style={titleStyle}>{service.title}</Text>
-						<Text style={displayNameStyle}>by: {service.displayName}</Text>
-					</CardItem>
-					<CardItem style={cardItemStyle}>
-						<Body style={phoneLocationStyle}>
-							<Text>{service.phone}</Text>
-							<Text style={{ marginLeft: '15%' }}>{service.location.city}</Text>
-						</Body>
-						<Right>
-							<Icon name="arrow-forward" style={{ color: '#FF7043' }} />
-						</Right>
-					</CardItem>
-					<CardItem style={cardItemStyle}>
-						<Body>
-							<Text>{displayDescription}</Text>
-						</Body>
-					</CardItem>
-				</Card>
-			</TouchableOpacity>
+			<EmptyListMessage buttonPress={this.onBackPress}>
+				{errorMessage}
+			</EmptyListMessage>
 		);
 	};
 
+	renderSpinner() {
+		if (this.state.loading) {
+			return <Spinner color="orange" />;
+		}
+		return <View />;
+	}
+
 	renderListView = () => {
+		if (this.state.loading) {
+			return this.renderSpinner();
+		}
 		if (this.state.dataLoaded) {
 			if (this.dataSource._cachedRowCount > 0) {
 				return (
