@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Platform } from 'react-native';
+import { View, Platform, DeviceEventEmitter } from 'react-native';
 import {
 	Content,
 	Header,
@@ -16,10 +16,13 @@ import {
 	Item,
 	Picker,
 	Textarea,
-	Toast,
+	Toast
 } from 'native-base';
 import { connect } from 'react-redux';
 import { submitFeedback, resetFeedbackMessage } from '../actions';
+
+let willFocusSubscription;
+let backPressSubscriptions;
 
 const initialState = {
 	selectedOption: undefined,
@@ -28,6 +31,13 @@ const initialState = {
 };
 class FeedbackScreen extends Component {
 	state = initialState;
+
+	componentWillMount() {
+		willFocusSubscription = this.props.navigation.addListener(
+			'willFocus',
+			this.handleAndroidBack
+		);
+	}
 
 	componentWillUpdate(nextProps) {
 		const { result } = nextProps;
@@ -51,6 +61,26 @@ class FeedbackScreen extends Component {
 			this.props.resetFeedbackMessage();
 		}
 	}
+
+	componentWillUnmount() {
+		willFocusSubscription.remove();
+	}
+
+	handleAndroidBack = () => {
+		backPressSubscriptions = new Set();
+		DeviceEventEmitter.removeAllListeners('hardwareBackPress');
+		DeviceEventEmitter.addListener('hardwareBackPress', () => {
+			const subscriptions = [];
+
+			backPressSubscriptions.forEach((sub) => subscriptions.push(sub));
+			for (let i = 0; i < subscriptions.reverse().length; i += 1) {
+				if (subscriptions[i]()) {
+					break;
+				}
+			}
+		});
+		backPressSubscriptions.add(() => this.props.navigation.pop());
+	};
 
 	onBackPress = () => {
 		this.props.navigation.goBack(null);
@@ -81,15 +111,10 @@ class FeedbackScreen extends Component {
 				{ label: 'Report a bug', value: 'bug' }
 			];
 		}
-			return pickerArr.map((picker, i) => (
-				<Picker.Item
-					key={i}
-					label={picker.label}
-					value={picker.value}
-				/>
-			));
-		}
-	
+		return pickerArr.map((picker, i) => (
+			<Picker.Item key={i} label={picker.label} value={picker.value} />
+		));
+	};
 
 	renderSpinner() {
 		if (this.state.loading) {

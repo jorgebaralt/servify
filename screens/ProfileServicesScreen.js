@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { View, ListView, TouchableOpacity, Dimensions } from 'react-native';
+import {
+	View,
+	ListView,
+	TouchableOpacity,
+	DeviceEventEmitter
+} from 'react-native';
 import {
 	Header,
 	Text,
@@ -21,6 +26,7 @@ import EmptyListMessage from '../components/EmptyListMessage';
 let item;
 let errorMessage;
 let willFocusSubscription;
+let backPressSubscriptions;
 
 class ProfileServicesScreen extends Component {
 	state = {
@@ -34,6 +40,7 @@ class ProfileServicesScreen extends Component {
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			async () => {
+				this.handleAndroidBack();
 				if (item.id === 'favorites') {
 					const newdata = this.props.favorites;
 					if (newdata !== data) {
@@ -49,11 +56,11 @@ class ProfileServicesScreen extends Component {
 
 		if (item.id === 'favorites') {
 			data = this.props.favorites;
-			errorMessage =	'There is nothing in this list, Make sure that you add Services to Favorite by cliking on the top right icon, when looking at services.';
+			errorMessage =				'There is nothing in this list, Make sure that you add Services to Favorite by cliking on the top right icon, when looking at services.';
 		} else if (item.id === 'my_services') {
 			await this.props.getServicesByEmail(this.props.email);
 			data = this.props.servicesList;
-			errorMessage =	'There is nothing in this list, Make sure that you create a Service from our Post screen, then you will be able to modify it here';
+			errorMessage =				'There is nothing in this list, Make sure that you create a Service from our Post screen, then you will be able to modify it here';
 		}
 		const ds = new ListView.DataSource({
 			rowHasChanged: (r1, r2) => r1 !== r2
@@ -67,6 +74,22 @@ class ProfileServicesScreen extends Component {
 	componentWillUnmount() {
 		willFocusSubscription.remove();
 	}
+
+	handleAndroidBack = () => {
+		backPressSubscriptions = new Set();
+		DeviceEventEmitter.removeAllListeners('hardwareBackPress');
+		DeviceEventEmitter.addListener('hardwareBackPress', () => {
+			const subscriptions = [];
+
+			backPressSubscriptions.forEach((sub) => subscriptions.push(sub));
+			for (let i = 0; i < subscriptions.reverse().length; i += 1) {
+				if (subscriptions[i]()) {
+					break;
+				}
+			}
+		});
+		backPressSubscriptions.add(() => this.props.navigation.pop());
+	};
 
 	onBackPress = async () => {
 		await this.props.navigation.goBack();
@@ -99,7 +122,9 @@ class ProfileServicesScreen extends Component {
 						<CardItem style={cardItemStyle}>
 							<Body style={phoneLocationStyle}>
 								<Text>{service.phone}</Text>
-								<Text style={{ marginLeft: '15%' }}>{service.location.city}</Text>
+								<Text style={{ marginLeft: '15%' }}>
+									{service.location.city}
+								</Text>
 							</Body>
 							<Right>
 								<Icon name="arrow-forward" style={{ color: '#FF7043' }} />

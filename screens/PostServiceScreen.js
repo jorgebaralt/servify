@@ -4,7 +4,8 @@ import {
 	SafeAreaView,
 	KeyboardAvoidingView,
 	Keyboard,
-	Platform
+	Platform,
+	DeviceEventEmitter
 } from 'react-native';
 import {
 	Text,
@@ -36,6 +37,9 @@ const initialState = {
 	descriptionCharCount: maxCharCount
 };
 
+let willFocusSubscription;
+let backPressSubscriptions;
+
 class PostServiceScreen extends Component {
 	static navigationOptions = {
 		title: 'Post',
@@ -45,6 +49,13 @@ class PostServiceScreen extends Component {
 	};
 
 	state = initialState;
+
+	componentWillMount() {
+		willFocusSubscription = this.props.navigation.addListener(
+			'willFocus',
+			this.handleAndroidBack
+		);
+	}
 
 	componentWillUpdate(nextProps) {
 		const { result } = nextProps;
@@ -68,6 +79,26 @@ class PostServiceScreen extends Component {
 			this.props.resetMessageService();
 		}
 	}
+
+	componentWillUnmount() {
+		willFocusSubscription.remove();
+	}
+
+	handleAndroidBack = () => {
+		backPressSubscriptions = new Set();
+		DeviceEventEmitter.removeAllListeners('hardwareBackPress');
+		DeviceEventEmitter.addListener('hardwareBackPress', () => {
+			const subscriptions = [];
+
+			backPressSubscriptions.forEach((sub) => subscriptions.push(sub));
+			for (let i = 0; i < subscriptions.reverse().length; i += 1) {
+				if (subscriptions[i]()) {
+					break;
+				}
+			}
+		});
+		backPressSubscriptions.add(() => this.props.navigation.navigate('home'));
+	};
 
 	doPostService = async () => {
 		Keyboard.dismiss();
@@ -184,14 +215,14 @@ class PostServiceScreen extends Component {
 						<Picker
 							mode="dropdown"
 							iosIcon={(
-								<Icon
+<Icon
 									name={
 										this.state.selectedSubcategory
 											? undefined
 											: 'ios-arrow-down-outline'
 									}
-								/>
-							)}
+/>
+)}
 							placeholder="Pick a Subcategory"
 							placeholderStyle={{ color: '#bfc6ea', left: -15 }}
 							selectedValue={this.state.selectedSubcategory}
@@ -246,14 +277,14 @@ class PostServiceScreen extends Component {
 										placeholder="Pick a Category"
 										placeholderStyle={{ color: '#bfc6ea', left: -15 }}
 										iosIcon={(
-											<Icon
+<Icon
 												name={
 													this.state.selectedCategory
 														? undefined
 														: 'ios-arrow-down-outline'
 												}
-											/>
-										)}
+/>
+)}
 										selectedValue={this.state.selectedCategory}
 										onValueChange={(value) => this.setState({ selectedCategory: value })
 										}

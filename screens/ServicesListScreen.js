@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { View, ListView, TouchableOpacity, Dimensions } from 'react-native';
+import {
+	View,
+	ListView,
+	TouchableOpacity,
+	Dimensions,
+	DeviceEventEmitter
+} from 'react-native';
 import {
 	Header,
 	Text,
@@ -23,12 +29,18 @@ import {
 } from '../actions';
 import EmptyListMessage from '../components/EmptyListMessage';
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
+let willFocusSubscription;
+let backPressSubscriptions;
 
 class ServicesListScreen extends Component {
 	state = { dataLoaded: false };
 
 	componentWillMount = async () => {
+		willFocusSubscription = this.props.navigation.addListener(
+			'willFocus',
+			this.handleAndroidBack
+		);
+		
 		await this.decideGetService();
 		const { servicesList } = this.props;
 		const ds = new ListView.DataSource({
@@ -38,6 +50,26 @@ class ServicesListScreen extends Component {
 		if (this.dataSource) {
 			this.setState({ dataLoaded: true });
 		}
+	};
+
+	componentWillUnmount() {
+		willFocusSubscription.remove();
+	}
+
+	handleAndroidBack = () => {
+		backPressSubscriptions = new Set();
+		DeviceEventEmitter.removeAllListeners('hardwareBackPress');
+		DeviceEventEmitter.addListener('hardwareBackPress', () => {
+			const subscriptions = [];
+
+			backPressSubscriptions.forEach((sub) => subscriptions.push(sub));
+			for (let i = 0; i < subscriptions.reverse().length; i += 1) {
+				if (subscriptions[i]()) {
+					break;
+				}
+			}
+		});
+		backPressSubscriptions.add(() => this.props.navigation.pop());
 	};
 
 	onBackPress = () => {
