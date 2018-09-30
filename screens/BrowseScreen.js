@@ -26,7 +26,7 @@ import { selectCategory, filterCategories, filterEmpty } from '../actions';
 
 let willFocusSubscription;
 let backPressSubscriptions;
-
+let allCategories;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 class BrowseScreen extends Component {
 	static navigationOptions = {
@@ -45,6 +45,7 @@ class BrowseScreen extends Component {
 	};
 
 	async componentWillMount() {
+		allCategories = this.props.categories;
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			this.handleAndroidBack
@@ -106,17 +107,20 @@ class BrowseScreen extends Component {
 	};
 
 	handleSearch = () => {
-		const prevCategories = this.props.categories;
 		const filterWords = this.state.filter.toLowerCase().split(' ');
 		const filteredCategories = [];
+		const categoriesFiltered = [];
+		
 		filterWords.forEach((word) => {
-			prevCategories.forEach((category) => {
+			allCategories.forEach((category) => {
 				if (category.keyWords.includes(word)) {
-					filteredCategories.push(category);
+					if (!categoriesFiltered.includes(category.title)) {
+						filteredCategories.push(category);
+						categoriesFiltered.push(category.title);
+					}
 				}
 			});
 		});
-
 		if (filteredCategories.length < 1 || this.state.filter === '') {
 			this.props.filterEmpty();
 		} else {
