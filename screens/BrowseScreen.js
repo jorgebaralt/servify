@@ -5,10 +5,21 @@ import {
 	Dimensions,
 	TouchableOpacity,
 	ListView,
-	BackHandler,
-	DeviceEventEmitter
+	DeviceEventEmitter,
+	Platform
 } from 'react-native';
-import { Text, Card, CardItem, Icon } from 'native-base';
+import {
+	Text,
+	Card,
+	CardItem,
+	Icon,
+	Header,
+	Item,
+	Button,
+	Input,
+	Container,
+	Content
+} from 'native-base';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo';
 import { selectCategory } from '../actions';
@@ -29,11 +40,15 @@ class BrowseScreen extends Component {
 		)
 	};
 
+	state = {
+		dataSource: undefined
+	};
+
 	async componentWillMount() {
 		const ds = new ListView.DataSource({
 			rowHasChanged: (r1, r2) => r1 !== r2
 		});
-		this.dataSource = ds.cloneWithRows(this.props.categories);
+		this.setState({ dataSource: ds.cloneWithRows(this.props.categories) });
 
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
@@ -96,23 +111,40 @@ class BrowseScreen extends Component {
 	}
 
 	render() {
-		const { titleStyle } = styles;
+		const { titleStyle, androidHeader, iosHeader } = styles;
 		return (
-			<SafeAreaView style={{ flex: 1 }}>
-				<View>
-					<Text style={titleStyle}>Where do you need assistance?</Text>
-				</View>
-				<ListView
-					contentContainerStyle={styles.contentStyle}
-					dataSource={this.dataSource}
-					renderRow={(category) => this.renderCategories(category)}
-				/>
-			</SafeAreaView>
+			<Container style={{ flex: 1 }}>
+				<Header
+					searchBar
+					rounded
+					style={Platform.OS === 'android' ? androidHeader : iosHeader}
+				>
+					<Item>
+						<Icon name="ios-search" />
+						<Input placeholder="Where you need help?" />
+					</Item>
+					<Button transparent>
+						<Text>Search</Text>
+					</Button>
+				</Header>
+				<Content>
+					<ListView
+						contentContainerStyle={styles.contentStyle}
+						dataSource={this.state.dataSource}
+						renderRow={(category) => this.renderCategories(category)}
+					/>
+				</Content>
+				
+			</Container>
 		);
 	}
 }
 
 const styles = {
+	androidHeader: {
+		backgroundColor: '#F5F5F5'
+	},
+	iosHeader: {},
 	titleStyle: {
 		textAlign: 'center',
 		color: 'black',

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Dimensions } from 'react-native';
+import { View, Dimensions, Platform } from 'react-native';
 import {
 	Container,
 	Header,
@@ -112,19 +112,19 @@ class SpecificServiceScreen extends Component {
 		if (service.subcategory) {
 			let subcategoryName = service.subcategory.split('_');
 			for (let i = 0; i < subcategoryName.length; i++) {
-				subcategoryName[i] = subcategoryName[i].charAt(0).toUpperCase()
+				subcategoryName[i] =					subcategoryName[i].charAt(0).toUpperCase()
 					+ subcategoryName[i].substring(1);
 			}
 			subcategoryName = subcategoryName.join(' ');
-			return (
-				<Text style={descriptionStyle}> - {subcategoryName}</Text>
-			);
+			return <Text style={descriptionStyle}> - {subcategoryName}</Text>;
 		}
 	};
 
 	render() {
 		const { service } = this.props;
 		const {
+			androidHeader,
+			iosHeader,
 			descriptionStyle,
 			cardStyle,
 			mapStyle,
@@ -151,13 +151,13 @@ class SpecificServiceScreen extends Component {
 
 		let categoryName = service.category.split('_');
 		for (let i = 0; i < categoryName.length; i++) {
-			categoryName[i] = categoryName[i].charAt(0).toUpperCase() + categoryName[i].substring(1);
+			categoryName[i] =				categoryName[i].charAt(0).toUpperCase() + categoryName[i].substring(1);
 		}
 		categoryName = categoryName.join(' ');
 
 		return (
 			<Container style={{ flex: 1 }}>
-				<Header>
+				<Header style={Platform.OS === 'android' ? androidHeader : iosHeader}>
 					<Left>
 						<Button
 							transparent
@@ -169,7 +169,7 @@ class SpecificServiceScreen extends Component {
 						</Button>
 					</Left>
 					<Body style={styles.titleStyle}>
-						<Title>{service.title}</Title>
+						<Title style={{ color: 'black', marginLeft: 10 }}>{service.title}</Title>
 					</Body>
 
 					<Right>
@@ -273,6 +273,10 @@ class SpecificServiceScreen extends Component {
 	}
 }
 const styles = {
+	androidHeader: {
+		backgroundColor: '#F5F5F5',
+	},
+	iosHeader: {},
 	titleStyle: {
 		flex: 4
 	},

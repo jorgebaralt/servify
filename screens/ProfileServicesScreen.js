@@ -3,7 +3,8 @@ import {
 	View,
 	ListView,
 	TouchableOpacity,
-	DeviceEventEmitter
+	DeviceEventEmitter,
+	Platform
 } from 'react-native';
 import {
 	Header,
@@ -178,9 +179,10 @@ class ProfileServicesScreen extends Component {
 	};
 
 	render() {
+		const { androidHeader, iosHeader } = styles;
 		return (
 			<Container>
-				<Header>
+				<Header style={Platform.OS === 'android' ? androidHeader : iosHeader}>
 					<Left>
 						<Button
 							transparent
@@ -192,7 +194,7 @@ class ProfileServicesScreen extends Component {
 						</Button>
 					</Left>
 					<Body style={{ flex: 3 }}>
-						<Title> {item.title} </Title>
+						<Title style={{ color: 'black' }}> {item.title} </Title>
 					</Body>
 					<Right />
 				</Header>
@@ -203,7 +205,10 @@ class ProfileServicesScreen extends Component {
 }
 
 const styles = {
-	headerStyle: {},
+	androidHeader: {
+		backgroundColor: '#F5F5F5',
+	},
+	iosHeader: {},
 	cardStyle: {
 		width: '80%',
 		marginLeft: '10%',

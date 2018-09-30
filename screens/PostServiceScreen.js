@@ -257,7 +257,7 @@ class PostServiceScreen extends Component {
 			charCountStyle
 		} = styles;
 		return (
-			<SafeAreaView style={{ flex: 1 }}>
+			<SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
 				<KeyboardAvoidingView
 					behavior={Platform.OS === 'android' ? 'padding' : null}
 					style={{ flex: 1, justifyContent: 'center' }}

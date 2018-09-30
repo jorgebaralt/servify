@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, DeviceEventEmitter } from 'react-native';
+import { FlatList, DeviceEventEmitter, Platform } from 'react-native';
 import {
 	Container,
 	Header,
@@ -82,11 +82,14 @@ class ProfileScreen extends Component {
 	);
 
 	render() {
+		const { androidHeader, iosHeader } = styles;
 		return (
 			<Container>
-				<Header>
+				<Header style={Platform.OS === 'android' ? androidHeader : iosHeader}>
 					<Left style={{ flex: 4 }}>
-						<Title>{this.props.displayName}</Title>
+						<Title style={{ color: 'black', marginLeft: 10 }}>
+							{this.props.displayName}
+						</Title>
 					</Left>
 					<Right>
 						<Button
@@ -120,6 +123,12 @@ function mapStateToProps(state) {
 		profileList: state.profileList
 	};
 }
+const styles = {
+	androidHeader: {
+		backgroundColor: '#F5F5F5'
+	},
+	iosHeader: {}
+};
 
 export default connect(
 	mapStateToProps,

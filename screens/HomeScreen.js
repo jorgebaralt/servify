@@ -30,12 +30,13 @@ class HomeScreen extends Component {
 		this.getLocationAsync();
 
 		willFocusSubscription = this.props.navigation.addListener(
-			'willFocus', this.handleAndroidBack
+			'willFocus',
+			this.handleAndroidBack
 		);
 	}
 
-	componentWillUpdate(nextProps) { }
-	
+	componentWillUpdate(nextProps) {}
+
 	componentWillUnmount() {
 		willFocusSubscription.remove();
 	}
@@ -66,7 +67,10 @@ class HomeScreen extends Component {
 
 	render() {
 		return (
-			<SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: 'always' }}>
+			<SafeAreaView
+				style={{ flex: 1, backgroundColor: '#FFFFFF' }}
+				forceInset={{ bottom: 'always' }}
+			>
 				<Content>
 					<Text>Home Screen</Text>
 					<Text>Home Screen</Text>

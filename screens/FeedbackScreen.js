@@ -152,10 +152,16 @@ class FeedbackScreen extends Component {
 	}
 
 	render() {
-		const { formStyle, DescriptionStyle, titleStyle } = styles;
+		const {
+			formStyle,
+			DescriptionStyle,
+			titleStyle,
+			androidHeader,
+			iosHeader
+		} = styles;
 		return (
 			<Container style={{ flex: 1 }}>
-				<Header>
+				<Header style={Platform.OS === 'android' ? androidHeader : iosHeader}>
 					<Left>
 						<Button
 							transparent
@@ -167,7 +173,7 @@ class FeedbackScreen extends Component {
 						</Button>
 					</Left>
 					<Body>
-						<Title>Feedback</Title>
+						<Title style={{ color: 'black', marginLeft: 10 }}>Feedback</Title>
 					</Body>
 					<Right />
 				</Header>
@@ -212,6 +218,10 @@ class FeedbackScreen extends Component {
 }
 
 const styles = {
+	androidHeader: {
+		backgroundColor: '#F5F5F5'
+	},
+	iosHeader: {},
 	formStyle: {
 		width: '80%'
 	},
