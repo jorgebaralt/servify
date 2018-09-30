@@ -59,7 +59,7 @@ class EditServiceScreen extends Component {
 
 	deleteService = async () => {
 		this.setState({ loading: true });
-		this.props.deleteService(this.props.service);
+		await this.props.deleteService(this.props.service);
 		this.setState({
 			title: '',
 			description: '',
@@ -68,6 +68,7 @@ class EditServiceScreen extends Component {
 			miles: '',
 			loading: false
 		});
+		this.props.navigation.pop(3);
 	};
 
 	openAlert = () => {
@@ -97,6 +98,7 @@ class EditServiceScreen extends Component {
 		};
 		await this.props.updateService(updatedService);
 		this.setState({ loading: false });
+		this.props.navigation.pop(3);
 	};
 
 	phoneChangeText = (text) => {
