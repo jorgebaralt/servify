@@ -3,7 +3,7 @@ import {
 	View,
 	SafeAreaView,
 	DeviceEventEmitter,
-	BackHandler
+	BackHandler,
 } from 'react-native';
 import { Text, Container, Content, Icon } from 'native-base';
 import { connect } from 'react-redux';
@@ -30,16 +30,12 @@ class HomeScreen extends Component {
 		this.getLocationAsync();
 
 		willFocusSubscription = this.props.navigation.addListener(
-			'willFocus',
+			'didFocus',
 			this.handleAndroidBack
 		);
 	}
 
 	componentWillUpdate(nextProps) {}
-
-	componentWillUnmount() {
-		willFocusSubscription.remove();
-	}
 
 	handleAndroidBack = () => {
 		backPressSubscriptions = new Set();

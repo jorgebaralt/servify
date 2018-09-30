@@ -19,6 +19,7 @@ import { getCurrentUserDisplayName } from '../actions';
 
 let willFocusSubscription;
 let backPressSubscriptions;
+let willBlurSubscriptions;
 
 class ProfileScreen extends Component {
 	static navigationOptions = {
@@ -38,8 +39,16 @@ class ProfileScreen extends Component {
 		);
 	}
 
+	componentDidMount() {
+		willBlurSubscriptions = this.props.navigation.addListener(
+			'willBlur',
+			() => DeviceEventEmitter.removeAllListeners('hardwareBackPress')
+		);
+	}
+
 	componentWillUnmount() {
 		willFocusSubscription.remove();
+		willBlurSubscriptions.remove();
 	}
 
 	handleAndroidBack = () => {

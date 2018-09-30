@@ -86,13 +86,8 @@ export const createEmailAccount = (newUser) => async (dispatch) => {
     }
   };
 
-export const logOut = (callback1, callback2, callback3) => async (dispatch) => {
+export const logOut = () => async (dispatch) => {
     await firebase.auth().signOut();
-
-    await callback1();
-    await callback2();
-    await callback3();
-
     return dispatch({ type: LOG_OUT });
 };
 
