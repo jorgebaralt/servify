@@ -139,7 +139,7 @@ class EditServiceScreen extends Component {
 							transparent
 							disabled={this.state.loading}
 							onPress={() => {
-								this.props.navigation.pop(3);
+								this.props.navigation.goBack();
 							}}
 						>
 							<Icon name="arrow-back" style={{ color: 'black' }} />

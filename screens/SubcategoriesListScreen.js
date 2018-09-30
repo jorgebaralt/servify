@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, ListView, DeviceEventEmitter } from 'react-native';
+import { TouchableOpacity, ListView, DeviceEventEmitter, FlatList } from 'react-native';
 import {
 	Text,
 	Card,
@@ -23,12 +23,6 @@ let backPressSubscriptions;
 class SubcategoriesListScreen extends Component {
 
 	componentWillMount() {
-		const { subcategories } = this.props.category;
-		const ds = new ListView.DataSource({
-			rowHasChanged: (r1, r2) => r1 !== r2
-		});
-		this.dataSource = ds.cloneWithRows(subcategories);
-
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			this.handleAndroidBack
@@ -111,11 +105,11 @@ class SubcategoriesListScreen extends Component {
 					</Body>
 					<Right />
 				</Header>
-				<ListView
-					style={{ marginTop: 10 }}
-					contentContainerStyle={styles.contentStyle}
-					dataSource={this.dataSource}
-					renderRow={(subcategory) => this.renderSubcategories(subcategory)}
+
+				<FlatList
+					data={this.props.category.subcategories}
+					renderItem={({ item }) => this.renderSubcategories(item)}
+					keyExtractor={(item) => item.title}
 				/>
 			</Container>
 		);

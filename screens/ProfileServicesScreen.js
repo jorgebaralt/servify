@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import {
 	View,
-	ListView,
+
 	TouchableOpacity,
 	DeviceEventEmitter,
-	Platform
+	Platform,
+	FlatList
 } from 'react-native';
 import {
 	Header,
@@ -24,51 +25,32 @@ import { connect } from 'react-redux';
 import { getServicesByEmail, selectService } from '../actions';
 import EmptyListMessage from '../components/EmptyListMessage';
 
-let item;
+let currentItem;
 let errorMessage;
 let willFocusSubscription;
 let backPressSubscriptions;
 
 class ProfileServicesScreen extends Component {
 	state = {
-		dataLoaded: false,
 		loading: false
 	};
 
 	async componentWillMount() {
-		let data;
-		item = this.props.navigation.getParam('item');
+		currentItem = this.props.navigation.getParam('item');
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			async () => {
 				this.handleAndroidBack();
-				if (item.id === 'favorites') {
-					const newdata = this.props.favorites;
-					if (newdata !== data) {
-						this.setState({ dataLoaded: false, loading: true });
-						this.dataSource = ds.cloneWithRows(newdata);
-						if (this.dataSource) {
-							this.setState({ dataLoaded: true, loading: false });
-						}
-					}
-				}
 			}
 		);
 
-		if (item.id === 'favorites') {
-			data = this.props.favorites;
+		if (currentItem.id === 'favorites') {
 			errorMessage =				'There is nothing in this list, Make sure that you add Services to Favorite by cliking on the top right icon, when looking at services.';
-		} else if (item.id === 'my_services') {
+		} else if (currentItem.id === 'my_services') {
+			this.setState({ loading: true });
 			await this.props.getServicesByEmail(this.props.email);
-			data = this.props.servicesList;
+			this.setState({ loading: false });
 			errorMessage =				'There is nothing in this list, Make sure that you create a Service from our Post screen, then you will be able to modify it here';
-		}
-		const ds = new ListView.DataSource({
-			rowHasChanged: (r1, r2) => r1 !== r2
-		});
-		this.dataSource = ds.cloneWithRows(data);
-		if (this.dataSource) {
-			this.setState({ dataLoaded: true, loading: false });
 		}
 	}
 
@@ -158,24 +140,30 @@ class ProfileServicesScreen extends Component {
 		if (this.state.loading) {
 			return this.renderSpinner();
 		}
-		if (this.state.dataLoaded) {
-			if (this.dataSource._cachedRowCount > 0) {
-				return (
-					<ListView
-						style={{ marginTop: 10 }}
-						dataSource={this.dataSource}
-						renderRow={(service) => this.renderServices(service)}
-						enableEmptySections
-					/>
-				);
-			}
+		if (currentItem.id === 'favorites' && this.props.favorites.length > 0) {
 			return (
-				<EmptyListMessage buttonPress={this.onBackPress}>
-					{errorMessage}
-				</EmptyListMessage>
+				<FlatList
+					data={this.props.favorites}
+					renderItem={({ item }) => this.renderServices(item)}
+					keyExtractor={(item) => item.title}
+				/>
 			);
 		}
-		return <Spinner color="#FF7043" />;
+		if (currentItem.id === 'my_services') {
+			return (
+				<FlatList
+					data={this.props.servicesList}
+					renderItem={({ item }) => this.renderServices(item)}
+					keyExtractor={(item) => item.title}
+				/>
+			);
+		}
+
+		return (
+			<EmptyListMessage buttonPress={this.onBackPress}>
+				{errorMessage}
+			</EmptyListMessage>
+		);
 	};
 
 	render() {
@@ -194,7 +182,7 @@ class ProfileServicesScreen extends Component {
 						</Button>
 					</Left>
 					<Body style={{ flex: 3 }}>
-						<Title style={{ color: 'black' }}> {item.title} </Title>
+						<Title style={{ color: 'black' }}> {currentItem.title} </Title>
 					</Body>
 					<Right />
 				</Header>
@@ -206,7 +194,7 @@ class ProfileServicesScreen extends Component {
 
 const styles = {
 	androidHeader: {
-		backgroundColor: '#F5F5F5',
+		backgroundColor: '#F5F5F5'
 	},
 	iosHeader: {},
 	cardStyle: {

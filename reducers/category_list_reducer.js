@@ -98,6 +98,5 @@ export default () => [
         dbReference: 'other',
         keyWords: [],
 		color: ['#FF8F00', '#FFF176']
-    },
-    
+    },  
 ];

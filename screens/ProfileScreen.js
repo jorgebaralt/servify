@@ -40,10 +40,7 @@ class ProfileScreen extends Component {
 	}
 
 	componentDidMount() {
-		willBlurSubscriptions = this.props.navigation.addListener(
-			'willBlur',
-			() => DeviceEventEmitter.removeAllListeners('hardwareBackPress')
-		);
+		willBlurSubscriptions = this.props.navigation.addListener('willBlur', () => DeviceEventEmitter.removeAllListeners('hardwareBackPress'));
 	}
 
 	componentWillUnmount() {
@@ -126,18 +123,19 @@ class ProfileScreen extends Component {
 	}
 }
 
-function mapStateToProps(state) {
-	return {
-		displayName: state.auth.displayName,
-		profileList: state.profileList
-	};
-}
 const styles = {
 	androidHeader: {
 		backgroundColor: '#F5F5F5'
 	},
 	iosHeader: {}
 };
+
+function mapStateToProps(state) {
+	return {
+		displayName: state.auth.displayName,
+		profileList: state.profileList
+	};
+}
 
 export default connect(
 	mapStateToProps,

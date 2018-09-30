@@ -4,9 +4,9 @@ import {
 	SafeAreaView,
 	Dimensions,
 	TouchableOpacity,
-	ListView,
 	DeviceEventEmitter,
-	Platform
+	Platform,
+	FlatList
 } from 'react-native';
 import {
 	Text,
@@ -40,16 +40,11 @@ class BrowseScreen extends Component {
 		)
 	};
 
-	state = {
-		dataSource: undefined
-	};
+	// state = {
+	// 	dataSource: undefined
+	// };
 
 	async componentWillMount() {
-		const ds = new ListView.DataSource({
-			rowHasChanged: (r1, r2) => r1 !== r2
-		});
-		this.setState({ dataSource: ds.cloneWithRows(this.props.categories) });
-
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			this.handleAndroidBack
@@ -86,7 +81,7 @@ class BrowseScreen extends Component {
 		}
 	};
 
-	renderCategories(category) {
+	renderCategories = (category) => {
 		const { color } = category;
 		return (
 			<TouchableOpacity
@@ -111,7 +106,7 @@ class BrowseScreen extends Component {
 	}
 
 	render() {
-		const { titleStyle, androidHeader, iosHeader } = styles;
+		const { androidHeader, iosHeader } = styles;
 		return (
 			<Container style={{ flex: 1 }}>
 				<Header
@@ -128,10 +123,11 @@ class BrowseScreen extends Component {
 					</Button>
 				</Header>
 				<Content>
-					<ListView
-						contentContainerStyle={styles.contentStyle}
-						dataSource={this.state.dataSource}
-						renderRow={(category) => this.renderCategories(category)}
+					<FlatList
+						data={this.props.categories}
+						renderItem={({ item }) => this.renderCategories(item)}
+						keyExtractor={(category) => category.title}
+						numColumns={2}
 					/>
 				</Content>
 				
@@ -152,17 +148,12 @@ const styles = {
 		fontSize: 26,
 		margin: 20
 	},
-	contentStyle: {
-		flexDirection: 'row',
-		flexWrap: 'wrap',
-		flex: 1
-	},
 	cardStyle: {
 		height: 100
 	},
 	gridItem: {
 		marginLeft: 10,
-		marginTop: 10,
+		marginTop: 5,
 		width: SCREEN_WIDTH / 2 - 15
 	}
 };

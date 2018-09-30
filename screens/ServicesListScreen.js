@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import {
-	View,
 	ListView,
 	TouchableOpacity,
-	Dimensions,
-	DeviceEventEmitter
+	DeviceEventEmitter,
+	FlatList
 } from 'react-native';
 import {
 	Header,
@@ -137,10 +136,11 @@ class ServicesListScreen extends Component {
 		if (this.state.dataLoaded) {
 			if (this.dataSource._cachedRowCount > 0) {
 				return (
-					<ListView
+					<FlatList
 						style={{ marginTop: 10 }}
-						dataSource={this.dataSource}
-						renderRow={(service) => this.renderServices(service)}
+						data={this.props.servicesList}
+						renderItem={({ item }) => this.renderServices(item)}
+						keyExtractor={(item) => item.title}
 						enableEmptySections
 					/>
 				);
