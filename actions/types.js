@@ -29,3 +29,5 @@ export const DELETE_SERVICE_SUCCESS = 'delete_feedback_success';
 export const DELETE_SERVICE_FAIL = 'delete_feedback_fail';
 export const UPDATE_SERVICE_SUCCESS = 'update_service_success';
 export const UPDATE_SERVICE_FAIL = 'update_service_fail';
+export const NEW_FILTER_SUCCESS = 'new_filter_success';
+export const NEW_FILTER_EMPTY = 'new_filter_empty';

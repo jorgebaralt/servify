@@ -22,7 +22,7 @@ import {
 } from 'native-base';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo';
-import { selectCategory } from '../actions';
+import { selectCategory, filterCategories, filterEmpty } from '../actions';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -40,9 +40,9 @@ class BrowseScreen extends Component {
 		)
 	};
 
-	// state = {
-	// 	dataSource: undefined
-	// };
+	state = {
+		filter: ''
+	};
 
 	async componentWillMount() {
 		willFocusSubscription = this.props.navigation.addListener(
@@ -103,7 +103,26 @@ class BrowseScreen extends Component {
 				</Card>
 			</TouchableOpacity>
 		);
-	}
+	};
+
+	handleSearch = () => {
+		const prevCategories = this.props.categories;
+		const filterWords = this.state.filter.toLowerCase().split(' ');
+		const filteredCategories = [];
+		filterWords.forEach((word) => {
+			prevCategories.forEach((category) => {
+				if (category.keyWords.includes(word)) {
+					filteredCategories.push(category);
+				}
+			});
+		});
+
+		if (filteredCategories.length < 1 || this.state.filter === '') {
+			this.props.filterEmpty();
+		} else {
+			this.props.filterCategories(filteredCategories);
+		}
+	};
 
 	render() {
 		const { androidHeader, iosHeader } = styles;
@@ -116,9 +135,18 @@ class BrowseScreen extends Component {
 				>
 					<Item>
 						<Icon name="ios-search" />
-						<Input placeholder="Where you need help?" />
+						<Input
+							placeholder="Where you need help?"
+							value={this.state.filter}
+							onChangeText={(text) => {
+								this.setState({
+									filter: text
+								});
+								this.handleSearch();
+							}}
+						/>
 					</Item>
-					<Button transparent>
+					<Button transparent onPress={() => this.handleSearch()}>
 						<Text>Search</Text>
 					</Button>
 				</Header>
@@ -130,7 +158,6 @@ class BrowseScreen extends Component {
 						numColumns={2}
 					/>
 				</Content>
-				
 			</Container>
 		);
 	}
@@ -164,5 +191,5 @@ function mapStateToProps(state) {
 
 export default connect(
 	mapStateToProps,
-	{ selectCategory }
+	{ selectCategory, filterCategories, filterEmpty }
 )(BrowseScreen);

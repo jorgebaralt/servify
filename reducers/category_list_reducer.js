@@ -1,4 +1,6 @@
-export default () => [
+import { NEW_FILTER_EMPTY, NEW_FILTER_SUCCESS } from '../actions/types';
+
+const initialState = [
 	{
 		id: '0',
 		title: 'Home Services',
@@ -60,8 +62,8 @@ export default () => [
 		title: 'Handyman',
 		description: 'Handyman Description',
 		dbReference: 'handyman',
-        color: ['#00695C', '#4DB6AC'],
-        keyWords: ['fix', 'ac', 'a/c', 'furniture', 'assembly', 'moving', 'help', 'house', 'home', 'repair', 'installation', 'electric'],
+		color: ['#00695C', '#4DB6AC'],
+		keyWords: ['fix', 'ac', 'a/c', 'furniture', 'assembly', 'moving', 'help', 'house', 'home', 'repair', 'installation', 'electric'],
 		subcategories: [
 			{
 				id: '2.1',
@@ -87,16 +89,27 @@ export default () => [
 		id: '3',
 		title: 'Baby Sitting',
 		description: 'Baby Sitting Description',
-        dbReference: 'baby_sitting',
-        keyWords: ['home', 'house', 'baby', 'sitting', 'care', 'kid', 'kids', 'boy', 'girl'],
+		dbReference: 'baby_sitting',
+		keyWords: ['home', 'house', 'baby', 'sitting', 'care', 'kid', 'kids', 'boy', 'girl', 'children'],
 		color: ['#AD1457', '#F06292']
 	},
 	{
 		id: '4',
 		title: 'Other',
 		description: 'Other Description',
-        dbReference: 'other',
-        keyWords: [],
+		dbReference: 'other',
+		keyWords: ['other'],
 		color: ['#FF8F00', '#FFF176']
-    },  
+	},
 ];
+
+export default (state = initialState, action) => {
+	switch (action.type) {
+		case NEW_FILTER_SUCCESS:
+			return action.payload;
+		case NEW_FILTER_EMPTY:
+			return initialState;
+		default:
+			return state;
+	}
+};
