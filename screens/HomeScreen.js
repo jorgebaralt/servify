@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
+import { View, DeviceEventEmitter, BackHandler, Platform } from 'react-native';
 import {
-	View,
-	SafeAreaView,
-	DeviceEventEmitter,
-	BackHandler,
-} from 'react-native';
-import { Text, Container, Content, Icon } from 'native-base';
+	Text,
+	Container,
+	Content,
+	Icon,
+	Header,
+	Left,
+	Right,
+	Button,
+	Title,
+	Body
+} from 'native-base';
 import { connect } from 'react-redux';
 import { Location, Permissions } from 'expo';
 import { getCurrentUserDisplayName } from '../actions';
@@ -61,26 +67,45 @@ class HomeScreen extends Component {
 		throw new Error('Location permission not granted');
 	};
 
-	render() {
+	newServicesNear = () => {
 		return (
-			<SafeAreaView
-				style={{ flex: 1, backgroundColor: '#FFFFFF' }}
+			<View>
+				<Text style={styles.titleStyle}>New services near you</Text>
+			</View>
+		);
+	}
+
+	render() {
+		const { androidHeader, iosHeader } = styles;
+		return (
+			<Container
+				style={{ flex: 1, backgroundColor: '#FFFFFF', }}
 				forceInset={{ bottom: 'always' }}
 			>
-				<Content>
-					<Text>Home Screen</Text>
-					<Text>Home Screen</Text>
-					<Text>Home Screen</Text>
-					<Text>Home Screen</Text>
-					<Text>Home Screen</Text>
-					<Text>Home Screen</Text>
-					<Text>Home Screen</Text>
-					<Text>Home Screen</Text>
+				<Header style={Platform.OS === 'android' ? androidHeader : iosHeader}>
+					<Left />
+					<Body style={{ flex: 3 }}>
+						<Title style={{ color: 'black', fontSize: 22 }}>Servify</Title>
+					</Body>
+					<Right />
+				</Header>
+				<Content style={{ margin: 10 }}>
+					{this.newServicesNear()}
 				</Content>
-			</SafeAreaView>
+			</Container>
 		);
 	}
 }
+
+const styles = {
+	androidHeader: {
+		backgroundColor: '#F5F5F5'
+	},
+	iosHeader: {},
+	titleStyle: {
+		fontSize: 26
+	}
+};
 
 function mapStateToProps(state) {
 	return {};

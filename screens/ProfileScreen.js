@@ -73,7 +73,7 @@ class ProfileScreen extends Component {
 	};
 
 	renderListItems = (item) => (
-		<ListItem onPress={() => this.goSelectedScreen(item)}>
+		<ListItem onPress={() => this.goSelectedScreen(item)} style={{ marginTop: 15 }}>
 			<Left>
 				<Text>{item.title}</Text>
 			</Left>

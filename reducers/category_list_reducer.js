@@ -35,7 +35,7 @@ const initialState = [
 		description: 'Car Wash and Repair Description',
 		dbReference: 'car_services',
 		color: ['#37474F', '#90A4AE'],
-		keyWords: ['car', 'auto', 'truck', 'wash', 'tire', 'mechanic', 'air', 'ac', 'a/c', 'wheel'],
+		keyWords: ['car', 'auto', 'truck', 'wash', 'tire', 'mechanic', 'air', 'ac', 'a/c', 'wheel', 'vehicle'],
 		subcategories: [
 			{
 				id: '1.1',

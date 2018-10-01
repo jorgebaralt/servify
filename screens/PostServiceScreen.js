@@ -364,14 +364,13 @@ class PostServiceScreen extends Component {
 }
 const styles = {
 	titleStyle: {
-		textAlign: 'center',
 		color: 'black',
-		fontWeight: 'bold',
 		fontSize: 26,
-		margin: 25
+		margin: 25,
+		marginLeft: '10%'
 	},
 	formStyle: {
-		width: '80%'
+		width: '90%'
 	},
 	itemStyle: {
 		margin: 10

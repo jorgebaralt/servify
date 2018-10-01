@@ -151,7 +151,7 @@ class SpecificServiceScreen extends Component {
 
 		let categoryName = service.category.split('_');
 		for (let i = 0; i < categoryName.length; i++) {
-			categoryName[i] =				categoryName[i].charAt(0).toUpperCase() + categoryName[i].substring(1);
+			categoryName[i] = categoryName[i].charAt(0).toUpperCase() + categoryName[i].substring(1);
 		}
 		categoryName = categoryName.join(' ');
 

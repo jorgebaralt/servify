@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {
 	View,
-
 	TouchableOpacity,
 	DeviceEventEmitter,
 	Platform,
@@ -89,6 +88,12 @@ class ProfileServicesScreen extends Component {
 				cardItemStyle
 			} = styles;
 			const displayDescription = service.description.substring(0, 30) + '...';
+
+			let categoryName = service.category.split('_');
+			for (let i = 0; i < categoryName.length; i++) {
+				categoryName[i] = categoryName[i].charAt(0).toUpperCase() + categoryName[i].substring(1);
+			}
+			categoryName = categoryName.join(' ');
 			return (
 				<TouchableOpacity
 					key={service.id}
@@ -101,6 +106,7 @@ class ProfileServicesScreen extends Component {
 						<CardItem header style={cardHeaderStyle}>
 							<Text style={titleStyle}>{service.title}</Text>
 							<Text style={displayNameStyle}>by: {service.displayName}</Text>
+							<Text style={displayNameStyle}>Category: {categoryName}</Text>
 						</CardItem>
 						<CardItem style={cardItemStyle}>
 							<Body style={phoneLocationStyle}>

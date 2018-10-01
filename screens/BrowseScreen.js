@@ -140,7 +140,7 @@ class BrowseScreen extends Component {
 					<Item>
 						<Icon name="ios-search" />
 						<Input
-							placeholder="Where you need help?"
+							placeholder="Where do you need help?"
 							value={this.state.filter}
 							onChangeText={(text) => {
 								this.setState({

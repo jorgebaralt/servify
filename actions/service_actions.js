@@ -58,7 +58,8 @@ export const createService = (servicePost, email) => async (dispatch) => {
 			location,
 			miles,
 			email,
-			displayName
+			displayName,
+			zipCode: location.postalCode
 		};
 
 		if (miles > 60) {
@@ -223,6 +224,7 @@ export const updateService = (service) => async (dispatch) => {
 		[location] = locationData;
 		newService.location = location;
 		newService.geolocation = geolocation;
+		newService.zipCode = location.postalCode;
 	} catch (e) {
 		return dispatch({
 			type: POST_SERVICE_FAIL,
