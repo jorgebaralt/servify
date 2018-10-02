@@ -366,11 +366,10 @@ const styles = {
 	titleStyle: {
 		color: 'black',
 		fontSize: 26,
-		margin: 25,
-		marginLeft: '10%'
+		margin: 20
 	},
 	formStyle: {
-		width: '90%'
+		width: '95%',
 	},
 	itemStyle: {
 		margin: 10

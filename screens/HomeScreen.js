@@ -74,7 +74,6 @@ class HomeScreen extends Component {
 	};
 
 	getLocationAsync = async () => {
-
 		const { status } = await Permissions.askAsync(Permissions.LOCATION);
 		if (status === 'granted') {
 			const location = await Location.getCurrentPositionAsync({
@@ -90,10 +89,8 @@ class HomeScreen extends Component {
 		const {
 			cardStyle,
 			titleStyleCard,
-			phoneLocationStyle,
 			displayNameStyle,
 			cardHeaderStyle,
-			cardItemStyle
 		} = styles;
 		return (
 			<TouchableOpacity
@@ -107,17 +104,9 @@ class HomeScreen extends Component {
 						<Text style={titleStyleCard}>{service.title}</Text>
 						<Text style={displayNameStyle}>by: {service.displayName}</Text>
 					</CardItem>
-					<CardItem style={cardItemStyle}>
-						<Body style={phoneLocationStyle}>
-							<Text>{service.phone}</Text>
-							<Text style={{ marginLeft: '15%' }}>{service.location.city}</Text>
-						</Body>
-						<Right>
-							<Icon
-								name="arrow-forward"
-								style={{ color: this.props.category.color[0] }}
-							/>
-						</Right>
+					<CardItem style={cardHeaderStyle}>
+						<Text style={displayNameStyle}>{service.phone}</Text>
+						<Text style={displayNameStyle}>{service.location.city}</Text>
 					</CardItem>
 				</Card>
 			</TouchableOpacity>
@@ -127,12 +116,12 @@ class HomeScreen extends Component {
 	newServicesNear = () => (
 		<View style={{ marginTop: 25 }}>
 			<Text style={styles.titleStyle}>New services near you</Text>
-			{/* <FlatList
-				data={[1, 2, 3]}
+			<FlatList
+				data={this.props.servicesList}
 				renderItem={({ item }) => this.renderNearServicesList(item)}
-				keyExtractor={(item, i) => i + '1'}
+				keyExtractor={(item) => item.title}
 				horizontal
-			/> */}
+			/>
 		</View>
 	);
 
@@ -142,7 +131,7 @@ class HomeScreen extends Component {
 				style={{ flex: 1, backgroundColor: '#FFFFFF' }}
 				forceInset={{ bottom: 'always' }}
 			>
-				<SafeAreaView style={{ margin: 10, flex: 1 }}>
+				<SafeAreaView style={{ flex: 1 }}>
 					<Content style={{ flex: 1 }}>{this.newServicesNear()}</Content>
 				</SafeAreaView>
 			</Container>
@@ -156,24 +145,24 @@ const styles = {
 	},
 	iosHeader: {},
 	titleStyle: {
-		fontSize: 26
+		fontSize: 26,
+		marginLeft: 20,
+		marginRight: 20
 	},
 	cardStyle: {
-		width: '80%',
-		marginLeft: '10%',
-		marginTop: '2.5%',
+		width: 150,
+		height: 150,
 		shadowOffset: { width: 0, height: 0 },
 		shadowColor: 'black',
 		shadowOpacity: 0.2,
-		elevation: 1
+		elevation: 1,
+		marginLeft: 20,
+		marginBottom: 20,
+		marginTop: 20
 	},
 	contentStyle: {},
 	titleStyleCard: {
-		fontSize: 18
-	},
-	phoneLocationStyle: {
-		flexDirection: 'row',
-		flex: 1
+		fontSize: 15
 	},
 	headerTitleStyle: {
 		color: 'white'
@@ -184,16 +173,15 @@ const styles = {
 		alignItems: 'flex-start'
 	},
 	displayNameStyle: {
-		fontSize: 14,
+		fontSize: 13,
 		fontWeight: undefined
-	},
-	cardItemStyle: {
-		marginTop: -10
 	}
 };
 
 function mapStateToProps(state) {
-	return {};
+	return {
+		servicesList: state.serviceResult.servicesList
+	};
 }
 
 export default connect(
