@@ -222,7 +222,7 @@ class SpecificServiceScreen extends Component {
 						</CardItem>
 					</Card>
 					<Text style={subtitleStyle}>
-						{service.location.city}, {service.location.region}
+						{service.locationData.city}, {service.locationData.region}
 					</Text>
 					<Card style={cardStyle}>
 						<CardItem>

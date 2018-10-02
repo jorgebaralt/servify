@@ -112,7 +112,7 @@ class ProfileServicesScreen extends Component {
 							<Body style={phoneLocationStyle}>
 								<Text>{service.phone}</Text>
 								<Text style={{ marginLeft: '15%' }}>
-									{service.location.city}
+									{/* {service.locationData.city} */}
 								</Text>
 							</Body>
 							<Right>

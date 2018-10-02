@@ -112,7 +112,7 @@ class ServicesListScreen extends Component {
 					<CardItem style={cardItemStyle}>
 						<Body style={phoneLocationStyle}>
 							<Text>{service.phone}</Text>
-							<Text style={{ marginLeft: '15%' }}>{service.location.city}</Text>
+							<Text style={{ marginLeft: '15%' }}>{service.locationData.city}</Text>
 						</Body>
 						<Right>
 							<Icon

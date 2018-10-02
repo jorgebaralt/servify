@@ -23,7 +23,8 @@ import { Location, Permissions } from 'expo';
 import {
 	getCurrentUserDisplayName,
 	selectService,
-	getServicesByZipcode
+	getServicesByZipcode,
+	getNearServices
 } from '../actions';
 
 let backPressSubscriptions;
@@ -75,11 +76,13 @@ class HomeScreen extends Component {
 
 	getLocationAsync = async () => {
 		const { status } = await Permissions.askAsync(Permissions.LOCATION);
+		const distance = 30;
 		if (status === 'granted') {
 			const location = await Location.getCurrentPositionAsync({
 				enableHighAccuracy: true
 			});
-			this.props.getServicesByZipcode(location.coords);
+			// this.props.getServicesByZipcode(location.coords);
+			this.props.getNearServices(location.coords, distance);
 		} else {
 			throw new Error('Location permission not granted');
 		}
@@ -90,7 +93,7 @@ class HomeScreen extends Component {
 			cardStyle,
 			titleStyleCard,
 			displayNameStyle,
-			cardHeaderStyle,
+			cardHeaderStyle
 		} = styles;
 		return (
 			<TouchableOpacity
@@ -186,5 +189,10 @@ function mapStateToProps(state) {
 
 export default connect(
 	mapStateToProps,
-	{ getCurrentUserDisplayName, selectService, getServicesByZipcode }
+	{
+		getCurrentUserDisplayName,
+		selectService,
+		getServicesByZipcode,
+		getNearServices
+	}
 )(HomeScreen);

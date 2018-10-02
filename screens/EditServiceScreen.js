@@ -26,11 +26,11 @@ class EditServiceScreen extends Component {
 		description: this.props.service.description,
 		phone: this.props.service.phone,
 		location:
-			this.props.service.location.city
+			this.props.service.locationData.city
 			+ ', '
-			+ this.props.service.location.region
+			+ this.props.service.locationData.region
 			+ ' '
-			+ this.props.service.location.postalCode,
+			+ this.props.service.locationData.postalCode,
 		miles: this.props.service.miles,
 		loading: false
 	};

@@ -17,8 +17,8 @@ const GET_URL =	'https://us-central1-servify-716c6.cloudfunctions.net/getService
 // POST-SERVICE
 export const createService = (servicePost, email) => async (dispatch) => {
 	let isEmpty;
-	const url =		'https://us-central1-servify-716c6.cloudfunctions.net/postService';
-	const checkDuplicateBaseUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getServicesCount/';
+	const url =	'https://us-central1-servify-716c6.cloudfunctions.net/postService';
+	const checkDuplicateBaseUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/getServicesCount/';
 	const {
 		selectedCategory,
 		selectedSubcategory,
@@ -34,13 +34,15 @@ export const createService = (servicePost, email) => async (dispatch) => {
 		const category = selectedCategory.dbReference;
 		const geolocationData = await Location.geocodeAsync(zipCode);
 		const geolocation = geolocationData[0];
-		let location;
+		let locationData;
 		try {
-			const locationData = await Location.reverseGeocodeAsync({
+			const locationInfo = await Location.reverseGeocodeAsync({
 				latitude: geolocation.latitude,
 				longitude: geolocation.longitude
 			});
-			[location] = locationData;
+			[locationData] = locationInfo;
+			delete geolocation.accuracy;
+			delete geolocation.altitude;
 		} catch (e) {
 			return dispatch({
 				type: POST_SERVICE_FAIL,
@@ -55,11 +57,11 @@ export const createService = (servicePost, email) => async (dispatch) => {
 			description,
 			title,
 			geolocation,
-			location,
+			locationData,
 			miles,
 			email,
 			displayName,
-			zipCode: location.postalCode
+			zipCode: locationData.postalCode
 		};
 
 		if (miles > 60) {
@@ -203,6 +205,23 @@ export const getServicesByZipcode = (currentLocation) => async (dispatch) => {
 	}
 };
 
+export const getNearServices = (currentLocation, distance) => async (dispatch) => {
+	console.log(currentLocation);
+	console.log(distance);
+
+	// 1 mile of lat and log in degrees
+	let lat = 0.0144927536231884;
+	let lon = 0.0181818181818182;
+
+	let lowerLat = currentLocation.latitude - (lat * distance);
+	let lowerLon = currentLocation.longitude - (lon * distance);
+
+	let greaterLat = currentLocation.latitude + (lat * distance);
+	let greaterLon = currentLocation.longitude + (lon * distance);
+
+
+};
+
 // DELETE-SERVICE
 export const deleteService = (service) => async (dispatch) => {
 	const deleteUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/deleteService/?email='
@@ -231,18 +250,22 @@ export const deleteService = (service) => async (dispatch) => {
 export const updateService = (service) => async (dispatch) => {
 	const updateUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/updateService';
 	const newService = service;
-	let location;
+	let locationData;
 	try {
 		const geolocationData = await Location.geocodeAsync(service.location);
 		const geolocation = geolocationData[0];
-		const locationData = await Location.reverseGeocodeAsync({
+		const locationInfo = await Location.reverseGeocodeAsync({
 			latitude: geolocation.latitude,
 			longitude: geolocation.longitude
 		});
-		[location] = locationData;
-		newService.location = location;
+		[locationData] = locationInfo;
+
+		delete geolocation.altitude;
+		delete geolocation.accuracy;
+
+		newService.locationData = locationData;
 		newService.geolocation = geolocation;
-		newService.zipCode = location.postalCode;
+		newService.zipCode = locationData.postalCode;
 	} catch (e) {
 		return dispatch({
 			type: POST_SERVICE_FAIL,
