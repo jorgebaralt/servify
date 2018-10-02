@@ -99,7 +99,6 @@ class ServicesListScreen extends Component {
 		const displayDescription = service.description.substring(0, 30) + '...';
 		return (
 			<TouchableOpacity
-				key={service.id}
 				onPress={() => {
 					this.props.selectService(service);
 					this.props.navigation.navigate('service');
@@ -189,7 +188,11 @@ const styles = {
 	cardStyle: {
 		width: '80%',
 		marginLeft: '10%',
-		marginTop: '2.5%'
+		marginTop: '2.5%',
+		shadowOffset: { width: 0, height: 0 },
+		shadowColor: 'black',
+		shadowOpacity: 0.2,
+		elevation: 1
 	},
 	contentStyle: {},
 	titleStyle: {

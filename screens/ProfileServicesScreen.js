@@ -206,7 +206,11 @@ const styles = {
 	cardStyle: {
 		width: '80%',
 		marginLeft: '10%',
-		marginTop: '2.5%'
+		marginTop: '2.5%',
+		shadowOffset: { width: 0, height: 0 },
+		shadowColor: 'black',
+		shadowOpacity: 0.2,
+		elevation: 1
 	},
 	contentStyle: {},
 	titleStyle: {

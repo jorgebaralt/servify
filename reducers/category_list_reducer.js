@@ -7,7 +7,7 @@ const initialState = [
 		description: 'Home Services Description',
 		dbReference: 'home_services',
 		color: ['#0288D1', '#90CAF9'],
-		keyWords: ['home', 'cleaning', 'clean', 'cainting', 'crganize', 'house', 'kitchen'],
+		keyWords: ['home', 'cleaning', 'clean', 'cainting', 'organize', 'house', 'kitchen', 'paint', 'paiting', 'fix', 'cleaning', 'garage'],
 		subcategories: [
 			{
 				id: '0.1',
@@ -35,7 +35,7 @@ const initialState = [
 		description: 'Car Wash and Repair Description',
 		dbReference: 'car_services',
 		color: ['#37474F', '#90A4AE'],
-		keyWords: ['car', 'auto', 'truck', 'wash', 'tire', 'mechanic', 'air', 'ac', 'a/c', 'wheel', 'vehicle'],
+		keyWords: ['car', 'auto', 'truck', 'wash', 'tire', 'mechanic', 'air', 'ac', 'a/c', 'wheel', 'vehicle', 'autos', 'cars'],
 		subcategories: [
 			{
 				id: '1.1',

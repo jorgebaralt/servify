@@ -6,7 +6,7 @@ import {
 	TouchableOpacity,
 	DeviceEventEmitter,
 	Platform,
-	FlatList
+	FlatList,
 } from 'react-native';
 import {
 	Text,
@@ -171,7 +171,8 @@ const styles = {
 	androidHeader: {
 		backgroundColor: '#F5F5F5'
 	},
-	iosHeader: {},
+	iosHeader: {
+	},
 	titleStyle: {
 		textAlign: 'center',
 		color: 'black',
@@ -180,12 +181,16 @@ const styles = {
 		margin: 20
 	},
 	cardStyle: {
-		height: 100
+		height: 100,
 	},
 	gridItem: {
 		marginLeft: 10,
 		marginTop: 5,
-		width: SCREEN_WIDTH / 2 - 15
+		width: SCREEN_WIDTH / 2 - 15,
+		shadowOffset: { width: 0, height: 0 },
+		shadowColor: 'black',
+		shadowOpacity: 0.2,
+		elevation: 1
 	}
 };
 

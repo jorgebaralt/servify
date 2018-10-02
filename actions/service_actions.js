@@ -185,6 +185,24 @@ export const getServicesByEmail = (email) => async (dispatch) => {
 	}
 };
 
+export const getServicesByZipcode = (currentLocation) => async (dispatch) => {
+	let zipCode;
+	try {
+		const locationData = await Location.reverseGeocodeAsync({
+			latitude: currentLocation.latitude,
+			longitude: currentLocation.longitude
+		});
+		const [location] = locationData;
+		zipCode = location.postalCode;
+		const url = GET_URL + '?zipCode=' + zipCode;
+		const { data } = await axios.get(url);
+		return dispatch({ type: GET_SERVICES_SUCCESS, payload: data });
+	} catch (e) {
+		console.log(e);
+		return dispatch({ type: GET_SERVICES_FAIL });
+	}
+};
+
 // DELETE-SERVICE
 export const deleteService = (service) => async (dispatch) => {
 	const deleteUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/deleteService/?email='
@@ -211,7 +229,7 @@ export const deleteService = (service) => async (dispatch) => {
 
 // UPDATE-SERVICE
 export const updateService = (service) => async (dispatch) => {
-	const updateUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/updateService';
+	const updateUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/updateService';
 	const newService = service;
 	let location;
 	try {

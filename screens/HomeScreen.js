@@ -1,20 +1,30 @@
 import React, { Component } from 'react';
-import { View, DeviceEventEmitter, BackHandler, Platform } from 'react-native';
+import {
+	View,
+	DeviceEventEmitter,
+	BackHandler,
+	Platform,
+	SafeAreaView,
+	FlatList,
+	TouchableOpacity
+} from 'react-native';
 import {
 	Text,
 	Container,
 	Content,
 	Icon,
-	Header,
-	Left,
-	Right,
-	Button,
-	Title,
-	Body
+	Card,
+	CardItem,
+	Body,
+	Right
 } from 'native-base';
 import { connect } from 'react-redux';
 import { Location, Permissions } from 'expo';
-import { getCurrentUserDisplayName } from '../actions';
+import {
+	getCurrentUserDisplayName,
+	selectService,
+	getServicesByZipcode
+} from '../actions';
 
 let backPressSubscriptions;
 let willFocusSubscription;
@@ -43,6 +53,10 @@ class HomeScreen extends Component {
 
 	componentWillUpdate(nextProps) {}
 
+	componentWillUnmount() {
+		willFocusSubscription.remove();
+	}
+
 	handleAndroidBack = () => {
 		backPressSubscriptions = new Set();
 		DeviceEventEmitter.removeAllListeners('hardwareBackPress');
@@ -60,38 +74,77 @@ class HomeScreen extends Component {
 	};
 
 	getLocationAsync = async () => {
+
 		const { status } = await Permissions.askAsync(Permissions.LOCATION);
 		if (status === 'granted') {
-			return Location.getCurrentPositionAsync({ enableHighAccuracy: true });
+			const location = await Location.getCurrentPositionAsync({
+				enableHighAccuracy: true
+			});
+			this.props.getServicesByZipcode(location.coords);
+		} else {
+			throw new Error('Location permission not granted');
 		}
-		throw new Error('Location permission not granted');
 	};
 
-	newServicesNear = () => {
+	renderNearServicesList = (service) => {
+		const {
+			cardStyle,
+			titleStyleCard,
+			phoneLocationStyle,
+			displayNameStyle,
+			cardHeaderStyle,
+			cardItemStyle
+		} = styles;
 		return (
-			<View>
-				<Text style={styles.titleStyle}>New services near you</Text>
-			</View>
+			<TouchableOpacity
+				onPress={() => {
+					this.props.selectService(service);
+					this.props.navigation.navigate('service');
+				}}
+			>
+				<Card style={cardStyle}>
+					<CardItem header style={cardHeaderStyle}>
+						<Text style={titleStyleCard}>{service.title}</Text>
+						<Text style={displayNameStyle}>by: {service.displayName}</Text>
+					</CardItem>
+					<CardItem style={cardItemStyle}>
+						<Body style={phoneLocationStyle}>
+							<Text>{service.phone}</Text>
+							<Text style={{ marginLeft: '15%' }}>{service.location.city}</Text>
+						</Body>
+						<Right>
+							<Icon
+								name="arrow-forward"
+								style={{ color: this.props.category.color[0] }}
+							/>
+						</Right>
+					</CardItem>
+				</Card>
+			</TouchableOpacity>
 		);
-	}
+	};
+
+	newServicesNear = () => (
+		<View style={{ marginTop: 25 }}>
+			<Text style={styles.titleStyle}>New services near you</Text>
+			{/* <FlatList
+				data={[1, 2, 3]}
+				renderItem={({ item }) => this.renderNearServicesList(item)}
+				keyExtractor={(item, i) => i + '1'}
+				horizontal
+			/> */}
+		</View>
+	);
 
 	render() {
-		const { androidHeader, iosHeader } = styles;
 		return (
 			<Container
-				style={{ flex: 1, backgroundColor: '#FFFFFF', }}
+				style={{ flex: 1, backgroundColor: '#FFFFFF' }}
 				forceInset={{ bottom: 'always' }}
 			>
-				<Header style={Platform.OS === 'android' ? androidHeader : iosHeader}>
-					<Left />
-					<Body style={{ flex: 3 }}>
-						<Title style={{ color: 'black', fontSize: 22 }}>Servify</Title>
-					</Body>
-					<Right />
-				</Header>
-				<Content style={{ margin: 10 }}>
-					{this.newServicesNear()}
-				</Content>
+				<SafeAreaView style={{ margin: 10, flex: 1 }}>
+					<Content style={{ flex: 1 }}>{this.newServicesNear()}</Content>
+				</SafeAreaView>
 			</Container>
 		);
 	}
@@ -104,6 +157,38 @@ const styles = {
 	iosHeader: {},
 	titleStyle: {
 		fontSize: 26
+	},
+	cardStyle: {
+		width: '80%',
+		marginLeft: '10%',
+		marginTop: '2.5%',
+		shadowOffset: { width: 0, height: 0 },
+		shadowColor: 'black',
+		shadowOpacity: 0.2,
+		elevation: 1
+	},
+	contentStyle: {},
+	titleStyleCard: {
+		fontSize: 18
+	},
+	phoneLocationStyle: {
+		flexDirection: 'row',
+		flex: 1
+	},
+	headerTitleStyle: {
+		color: 'white'
+	},
+	cardHeaderStyle: {
+		flexDirection: 'column',
+		display: 'flex',
+		alignItems: 'flex-start'
+	},
+	displayNameStyle: {
+		fontSize: 14,
+		fontWeight: undefined
+	},
+	cardItemStyle: {
+		marginTop: -10
 	}
 };
 
@@ -113,5 +198,5 @@ function mapStateToProps(state) {
 
 export default connect(
 	mapStateToProps,
-	{ getCurrentUserDisplayName }
+	{ getCurrentUserDisplayName, selectService, getServicesByZipcode }
 )(HomeScreen);
