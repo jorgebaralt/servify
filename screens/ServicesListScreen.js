@@ -81,7 +81,7 @@ class ServicesListScreen extends Component {
 
 		if (subcategory) {
 			const subcategoryRef = subcategory.dbReference;
-			await this.props.getServicesSubcategory(categoryRef, subcategoryRef);
+			await this.props.getServicesSubcategory(subcategoryRef);
 		} else {
 			await this.props.getServicesCategory(categoryRef);
 		}

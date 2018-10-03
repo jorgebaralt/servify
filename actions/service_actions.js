@@ -9,7 +9,9 @@ import {
 	DELETE_SERVICE_SUCCESS,
 	DELETE_SERVICE_FAIL,
 	UPDATE_SERVICE_FAIL,
-	UPDATE_SERVICE_SUCCESS
+	UPDATE_SERVICE_SUCCESS,
+	GET_NEAR_SERVICES_FAIL,
+	GET_NEAR_SERVICES_SUCCESS
 } from './types';
 
 const GET_URL =	'https://us-central1-servify-716c6.cloudfunctions.net/getServices';
@@ -17,8 +19,8 @@ const GET_URL =	'https://us-central1-servify-716c6.cloudfunctions.net/getService
 // POST-SERVICE
 export const createService = (servicePost, email) => async (dispatch) => {
 	let isEmpty;
-	const url =	'https://us-central1-servify-716c6.cloudfunctions.net/postService';
-	const checkDuplicateBaseUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/getServicesCount/';
+	const url =		'https://us-central1-servify-716c6.cloudfunctions.net/postService';
+	const checkDuplicateBaseUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getServicesCount/';
 	const {
 		selectedCategory,
 		selectedSubcategory,
@@ -163,9 +165,7 @@ export const getServicesCategory = (category) => async (dispatch) => {
 	}
 };
 
-export const getServicesSubcategory = (category, subcategory) => async (
-	dispatch
-) => {
+export const getServicesSubcategory = (subcategory) => async (dispatch) => {
 	const url = GET_URL + '/?subcategory=' + subcategory;
 	try {
 		const { data } = await axios.get(url);
@@ -205,21 +205,20 @@ export const getServicesByZipcode = (currentLocation) => async (dispatch) => {
 	}
 };
 
-export const getNearServices = (currentLocation, distance) => async (dispatch) => {
-	console.log(currentLocation);
-	console.log(distance);
-
-	// 1 mile of lat and log in degrees
-	let lat = 0.0144927536231884;
-	let lon = 0.0181818181818182;
-
-	let lowerLat = currentLocation.latitude - (lat * distance);
-	let lowerLon = currentLocation.longitude - (lon * distance);
-
-	let greaterLat = currentLocation.latitude + (lat * distance);
-	let greaterLon = currentLocation.longitude + (lon * distance);
-
-
+export const getNearServices = (currentLocation, distance) => async (
+	dispatch
+) => {
+	const getNearUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getNearService';
+	try {
+		const { data } = await axios.post(getNearUrl, {
+			currentLocation,
+			distance
+		});
+		return dispatch({ type: GET_NEAR_SERVICES_SUCCESS, payload: data });
+	} catch (e) {
+		console.log(e);
+		return dispatch({ type: GET_NEAR_SERVICES_FAIL });
+	}
 };
 
 // DELETE-SERVICE

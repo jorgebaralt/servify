@@ -31,3 +31,5 @@ export const UPDATE_SERVICE_SUCCESS = 'update_service_success';
 export const UPDATE_SERVICE_FAIL = 'update_service_fail';
 export const NEW_FILTER_SUCCESS = 'new_filter_success';
 export const NEW_FILTER_EMPTY = 'new_filter_empty';
+export const GET_NEAR_SERVICES_SUCCESS = 'get_near_services_success';
+export const GET_NEAR_SERVICES_FAIL = 'get_near_services_fail';

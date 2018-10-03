@@ -8,16 +8,7 @@ import {
 	FlatList,
 	TouchableOpacity
 } from 'react-native';
-import {
-	Text,
-	Container,
-	Content,
-	Icon,
-	Card,
-	CardItem,
-	Body,
-	Right
-} from 'native-base';
+import { Text, Container, Content, Icon, Card, CardItem } from 'native-base';
 import { connect } from 'react-redux';
 import { Location, Permissions } from 'expo';
 import {
@@ -97,6 +88,7 @@ class HomeScreen extends Component {
 		} = styles;
 		return (
 			<TouchableOpacity
+				style={{ marginBottom: 10 }}
 				onPress={() => {
 					this.props.selectService(service);
 					this.props.navigation.navigate('service');
@@ -105,11 +97,12 @@ class HomeScreen extends Component {
 				<Card style={cardStyle}>
 					<CardItem header style={cardHeaderStyle}>
 						<Text style={titleStyleCard}>{service.title}</Text>
-						<Text style={displayNameStyle}>by: {service.displayName}</Text>
-					</CardItem>
-					<CardItem style={cardHeaderStyle}>
+						<Text style={[displayNameStyle, { marginTop: 10 }]}>
+							by: {service.displayName}
+						</Text>
 						<Text style={displayNameStyle}>{service.phone}</Text>
 						<Text style={displayNameStyle}>{service.location.city}</Text>
+						<Text style={displayNameStyle}>{service.zipCode}</Text>
 					</CardItem>
 				</Card>
 			</TouchableOpacity>
@@ -120,7 +113,7 @@ class HomeScreen extends Component {
 		<View style={{ marginTop: 25 }}>
 			<Text style={styles.titleStyle}>New services near you</Text>
 			<FlatList
-				data={this.props.servicesList}
+				data={this.props.nearServicesList}
 				renderItem={({ item }) => this.renderNearServicesList(item)}
 				keyExtractor={(item) => item.title}
 				horizontal
@@ -153,14 +146,13 @@ const styles = {
 		marginRight: 20
 	},
 	cardStyle: {
-		width: 150,
-		height: 150,
+		width: 140,
+		height: 140,
 		shadowOffset: { width: 0, height: 0 },
 		shadowColor: 'black',
 		shadowOpacity: 0.2,
 		elevation: 1,
 		marginLeft: 20,
-		marginBottom: 20,
 		marginTop: 20
 	},
 	contentStyle: {},
@@ -183,7 +175,7 @@ const styles = {
 
 function mapStateToProps(state) {
 	return {
-		servicesList: state.serviceResult.servicesList
+		nearServicesList: state.serviceResult.nearServicesList
 	};
 }
 
