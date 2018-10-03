@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Location } from 'expo';
+import _ from 'lodash';
 import {
 	POST_SERVICE_SUCCESS,
 	POST_SERVICE_FAIL,
@@ -86,7 +87,7 @@ export const createService = (servicePost, email) => async (dispatch) => {
 		if (selectedSubcategory) {
 			newServicePost.subcategory = selectedSubcategory.dbReference;
 			// check duplicate post by same user. under subcategory
-			const checkURL =				checkDuplicateBaseUrl
+			const checkURL = checkDuplicateBaseUrl
 				+ '/?email='
 				+ email
 				+ '&subcategory='
@@ -97,8 +98,7 @@ export const createService = (servicePost, email) => async (dispatch) => {
 				if (!isEmpty) {
 					return dispatch({
 						type: POST_SERVICE_FAIL,
-						payload:
-							'This email already have a Service under this Subcategory, Only 1 service per subcategory is allowed'
+						payload: 'This email already have a Service under this Subcategory, Only 1 service per subcategory is allowed'
 					});
 				}
 			} catch (e) {
@@ -208,12 +208,15 @@ export const getServicesByZipcode = (currentLocation) => async (dispatch) => {
 export const getNearServices = (currentLocation, distance) => async (
 	dispatch
 ) => {
-	const getNearUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getNearService';
+	const getNearUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/getNearService';
 	try {
-		const { data } = await axios.post(getNearUrl, {
+		let { data } = await axios.post(getNearUrl, {
 			currentLocation,
 			distance
 		});
+		data = _.sortBy(data, 'timestamp');
+		data = data.reverse();
+		data = data.slice(0, 10);
 		return dispatch({ type: GET_NEAR_SERVICES_SUCCESS, payload: data });
 	} catch (e) {
 		console.log(e);
@@ -223,7 +226,7 @@ export const getNearServices = (currentLocation, distance) => async (
 
 // DELETE-SERVICE
 export const deleteService = (service) => async (dispatch) => {
-	const deleteUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/deleteService/?email='
+	const deleteUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/deleteService/?email='
 		+ service.email;
 	let url;
 	if (service.subcategory) {
@@ -247,7 +250,7 @@ export const deleteService = (service) => async (dispatch) => {
 
 // UPDATE-SERVICE
 export const updateService = (service) => async (dispatch) => {
-	const updateUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/updateService';
+	const updateUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/updateService';
 	const newService = service;
 	let locationData;
 	try {
@@ -268,8 +271,7 @@ export const updateService = (service) => async (dispatch) => {
 	} catch (e) {
 		return dispatch({
 			type: POST_SERVICE_FAIL,
-			payload:
-				'We could not find your address, please provide a correct address'
+			payload: 'We could not find your address, please provide a correct address'
 		});
 	}
 	try {

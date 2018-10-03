@@ -98,11 +98,11 @@ class HomeScreen extends Component {
 					<CardItem header style={cardHeaderStyle}>
 						<Text style={titleStyleCard}>{service.title}</Text>
 						<Text style={[displayNameStyle, { marginTop: 10 }]}>
-							by: {service.displayName}
+							{service.displayName}
 						</Text>
 						<Text style={displayNameStyle}>{service.phone}</Text>
 						<Text style={displayNameStyle}>{service.location.city}</Text>
-						<Text style={displayNameStyle}>{service.zipCode}</Text>
+						<Text style={displayNameStyle}>zip code: {service.zipCode}</Text>
 					</CardItem>
 				</Card>
 			</TouchableOpacity>
@@ -157,7 +157,8 @@ const styles = {
 	},
 	contentStyle: {},
 	titleStyleCard: {
-		fontSize: 15
+		fontSize: 15,
+		height: 38
 	},
 	headerTitleStyle: {
 		color: 'white'
