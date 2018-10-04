@@ -149,13 +149,13 @@ class ServicesListScreen extends Component {
 						keyExtractor={(item) => item.title}
 						enableEmptySections
 						refreshControl={(
-<RefreshControl
+							<RefreshControl
 								refreshing={this.state.refreshing}
 								onRefresh={() => this.decideGetService()}
 								tintColor={this.props.category.color[0]}
 								colors={[this.props.category.color[0]]}
-/>
-)}
+							/>
+						)}
 					/>
 				);
 			}
