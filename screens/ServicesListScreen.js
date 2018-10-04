@@ -132,6 +132,9 @@ class ServicesListScreen extends Component {
 						<Body>
 							<Text>{displayDescription}</Text>
 						</Body>
+						<Right>
+							<Text style={{ color: 'gray' }}>{Math.floor(service.distance)} miles</Text>
+						</Right>
 					</CardItem>
 				</Card>
 			</TouchableOpacity>

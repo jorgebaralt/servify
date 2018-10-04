@@ -15,9 +15,9 @@ import {
 export default (state = {}, action) => {
 	switch (action.type) {
 		case POST_SERVICE_FAIL:
-			return { error: action.payload };
+			return { ...state, error: action.payload };
 		case POST_SERVICE_SUCCESS:
-			return { success: action.payload };
+			return { ...state, success: action.payload };
 		case GET_SERVICES_FAIL:
 			return { ...state, serviceList: undefined };
 		case GET_SERVICES_SUCCESS:

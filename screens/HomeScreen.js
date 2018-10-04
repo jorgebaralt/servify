@@ -6,11 +6,21 @@ import {
 	Platform,
 	SafeAreaView,
 	FlatList,
-	TouchableOpacity
+	TouchableOpacity,
+	RefreshControl,
+	LayoutAnimation
 } from 'react-native';
-import { Text, Container, Content, Icon, Card, CardItem } from 'native-base';
+import {
+	Text,
+	Container,
+	Content,
+	Icon,
+	Card,
+	CardItem,
+	Spinner
+} from 'native-base';
 import { connect } from 'react-redux';
-import { Location, Permissions } from 'expo';
+import { Permissions } from 'expo';
 import {
 	getCurrentUserDisplayName,
 	selectService,
@@ -21,6 +31,7 @@ import {
 
 let backPressSubscriptions;
 let willFocusSubscription;
+const DISTANCE = 30;
 
 class HomeScreen extends Component {
 	static navigationOptions = {
@@ -34,17 +45,26 @@ class HomeScreen extends Component {
 		)
 	};
 
+	state = {
+		refreshing: false,
+		loading: false
+	};
+
 	async componentWillMount() {
+		this.setState({ loading: true });
 		await this.props.getCurrentUserDisplayName();
-		this.getLocationAsync();
+		await this.getLocationAsync();
 
 		willFocusSubscription = this.props.navigation.addListener(
 			'didFocus',
 			this.handleAndroidBack
 		);
+		this.setState({ loading: false });
 	}
 
-	componentWillUpdate(nextProps) {}
+	componentWillUpdate(nextProps) {
+		LayoutAnimation.easeInEaseOut();
+	}
 
 	componentWillUnmount() {
 		willFocusSubscription.remove();
@@ -67,15 +87,23 @@ class HomeScreen extends Component {
 	};
 
 	getLocationAsync = async () => {
+		this.setState({ refreshing: true });
 		const { status } = await Permissions.askAsync(Permissions.LOCATION);
-		const distance = 30;
+
 		if (status === 'granted') {
 			await this.props.getUserLocation();
-			// this.props.getServicesByZipcode(location.coords);
-			await this.props.getNearServices(this.props.userLocation.coords, distance);
+			await this.props.getNearServices(
+				this.props.userLocation.coords,
+				DISTANCE
+			);
 		} else {
 			throw new Error('Location permission not granted');
 		}
+		this.setState({ refreshing: false });
+	};
+
+	onRefresh = async () => {
+		await this.props.getNearServices(this.props.userLocation.coords, DISTANCE);
 	};
 
 	renderNearServicesList = (service) => {
@@ -108,17 +136,28 @@ class HomeScreen extends Component {
 		);
 	};
 
-	newServicesNear = () => (
-		<View style={{ marginTop: 25 }}>
-			<Text style={styles.titleStyle}>New services near you</Text>
-			<FlatList
-				data={this.props.nearServicesList}
-				renderItem={({ item }) => this.renderNearServicesList(item)}
-				keyExtractor={(item) => item.title}
-				horizontal
-			/>
-		</View>
-	);
+	renderSpinner() {
+		if (this.state.loading) {
+			return <Spinner style={{ marginTop: '50%' }} color="orange" />;
+		}
+		return <View />;
+	}
+
+	renderNewServicesNear = () => {
+		if (this.props.nearServicesList) {
+			return (
+				<View style={{ marginTop: 25 }}>
+					<Text style={styles.titleStyle}>New services near you</Text>
+					<FlatList
+						data={this.props.nearServicesList}
+						renderItem={({ item }) => this.renderNearServicesList(item)}
+						keyExtractor={(item) => item.title}
+						horizontal
+					/>
+				</View>
+			);
+		}
+	};
 
 	render() {
 		return (
@@ -127,7 +166,20 @@ class HomeScreen extends Component {
 				forceInset={{ bottom: 'always' }}
 			>
 				<SafeAreaView style={{ flex: 1 }}>
-					<Content style={{ flex: 1 }}>{this.newServicesNear()}</Content>
+					<Content
+						style={{ flex: 1 }}
+						refreshControl={(
+<RefreshControl
+								refreshing={this.state.refreshing}
+								onRefresh={() => this.onRefresh()}
+								tintColor="orange"
+								colors={['orange']}
+/>
+)}
+					>
+						{/* {this.renderSpinner()} */}
+						{this.renderNewServicesNear()}
+					</Content>
 				</SafeAreaView>
 			</Container>
 		);

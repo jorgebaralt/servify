@@ -23,7 +23,10 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 let currentFavorite = [];
 
 class SpecificServiceScreen extends Component {
-	state = { isFav: false };
+	state = {
+		isFav: false,
+		favLoading: false
+	};
 
 	componentWillMount = async () => {
 		const { service } = this.props;
@@ -67,13 +70,15 @@ class SpecificServiceScreen extends Component {
 		await this.props.updateFavorite(email, currentFavorite);
 	};
 
-	favPressed = () => {
+	favPressed = async () => {
+		this.setState({ favLoading: true });
 		const { email } = this.props;
 		if (this.state.isFav) {
-			this.removeFavorite(email);
+			await this.removeFavorite(email);
 		} else {
-			this.addFavorite(email);
+			await this.addFavorite(email);
 		}
+		this.setState({ favLoading: false });
 	};
 
 	callPressed = async () => {
@@ -102,6 +107,7 @@ class SpecificServiceScreen extends Component {
 				name={this.state.isFav ? 'favorite' : 'favorite-border'}
 				style={{ color: '#D84315' }}
 				onPress={() => this.favPressed()}
+				disabled={this.state.favLoading}
 			/>
 		);
 	};
@@ -151,7 +157,7 @@ class SpecificServiceScreen extends Component {
 
 		let categoryName = service.category.split('_');
 		for (let i = 0; i < categoryName.length; i++) {
-			categoryName[i] = categoryName[i].charAt(0).toUpperCase() + categoryName[i].substring(1);
+			categoryName[i] =				categoryName[i].charAt(0).toUpperCase() + categoryName[i].substring(1);
 		}
 		categoryName = categoryName.join(' ');
 
@@ -164,12 +170,15 @@ class SpecificServiceScreen extends Component {
 							onPress={() => {
 								this.onBackPress();
 							}}
+							disabled={this.state.favLoading}
 						>
 							<Icon name="arrow-back" style={{ color: 'black' }} />
 						</Button>
 					</Left>
 					<Body style={styles.titleStyle}>
-						<Title style={{ color: 'black', marginLeft: 10 }}>{service.title}</Title>
+						<Title style={{ color: 'black', marginLeft: 10 }}>
+							{service.title}
+						</Title>
 					</Body>
 
 					<Right>
@@ -274,7 +283,7 @@ class SpecificServiceScreen extends Component {
 }
 const styles = {
 	androidHeader: {
-		backgroundColor: '#F5F5F5',
+		backgroundColor: '#F5F5F5'
 	},
 	iosHeader: {},
 	titleStyle: {
@@ -285,10 +294,10 @@ const styles = {
 		marginTop: 10
 	},
 	cardStyle: {
-		// shadowColor: null,
-		// shadowOffset: null,
-		// shadowOpacity: null,
-		// elevation: null
+		shadowColor: null,
+		shadowOffset: null,
+		shadowOpacity: null,
+		elevation: null
 	},
 	descriptionStyle: {
 		fontSize: 14

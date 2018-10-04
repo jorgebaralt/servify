@@ -38,8 +38,9 @@ const initialState = {
 };
 
 let willFocusSubscription;
+let willBlurSubscription;
 let backPressSubscriptions;
-
+const scrollRef = React.createRef();
 class PostServiceScreen extends Component {
 	static navigationOptions = {
 		title: 'Post',
@@ -54,6 +55,9 @@ class PostServiceScreen extends Component {
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			this.handleAndroidBack
+		);
+		willBlurSubscription = this.props.navigation.addListener(
+			'willBlur', () => { this.setState(initialState); }
 		);
 	}
 
@@ -82,6 +86,7 @@ class PostServiceScreen extends Component {
 
 	componentWillUnmount() {
 		willFocusSubscription.remove();
+		willBlurSubscription.remove();
 	}
 
 	handleAndroidBack = () => {
@@ -264,7 +269,6 @@ class PostServiceScreen extends Component {
 				>
 					<Content>
 						<Text style={titleStyle}>Post a New Service</Text>
-						{this.renderSpinner()}
 						<View style={{ flex: 1, alignItems: 'center' }}>
 							<Form style={formStyle}>
 								<Item
@@ -342,6 +346,7 @@ class PostServiceScreen extends Component {
 							<Text style={charCountStyle}>
 								{this.state.descriptionCharCount}
 							</Text>
+							{this.renderSpinner()}
 							<View>
 								<Button
 									bordered
@@ -369,7 +374,7 @@ const styles = {
 		margin: 20
 	},
 	formStyle: {
-		width: '95%',
+		width: '95%'
 	},
 	itemStyle: {
 		margin: 10
