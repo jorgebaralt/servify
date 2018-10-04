@@ -87,7 +87,7 @@ export const createService = (servicePost, email) => async (dispatch) => {
 		if (selectedSubcategory) {
 			newServicePost.subcategory = selectedSubcategory.dbReference;
 			// check duplicate post by same user. under subcategory
-			const checkURL = checkDuplicateBaseUrl
+			const checkURL =				checkDuplicateBaseUrl
 				+ '/?email='
 				+ email
 				+ '&subcategory='
@@ -98,7 +98,8 @@ export const createService = (servicePost, email) => async (dispatch) => {
 				if (!isEmpty) {
 					return dispatch({
 						type: POST_SERVICE_FAIL,
-						payload: 'This email already have a Service under this Subcategory, Only 1 service per subcategory is allowed'
+						payload:
+							'This email already have a Service under this Subcategory, Only 1 service per subcategory is allowed'
 					});
 				}
 			} catch (e) {
@@ -152,10 +153,13 @@ export const resetMessageService = () => async (dispatch) => {
 };
 
 // GET-SERVICE
-export const getServicesCategory = (category) => async (dispatch) => {
+export const getServicesCategory = (category, userLocation) => async (
+	dispatch
+) => {
 	const url = GET_URL + '/?category=' + category;
 	try {
-		const { data } = await axios.get(url);
+		let { data } = await axios.get(url);
+		data = sortByDistance(data, userLocation);
 		return dispatch({ type: GET_SERVICES_SUCCESS, payload: data });
 	} catch (e) {
 		return dispatch({
@@ -165,10 +169,13 @@ export const getServicesCategory = (category) => async (dispatch) => {
 	}
 };
 
-export const getServicesSubcategory = (subcategory) => async (dispatch) => {
+export const getServicesSubcategory = (subcategory, userLocation) => async (
+	dispatch
+) => {
 	const url = GET_URL + '/?subcategory=' + subcategory;
 	try {
-		const { data } = await axios.get(url);
+		let { data } = await axios.get(url);
+		data = sortByDistance(data, userLocation);
 		return dispatch({ type: GET_SERVICES_SUCCESS, payload: data });
 	} catch (e) {
 		return dispatch({ type: GET_SERVICES_FAIL });
@@ -208,7 +215,7 @@ export const getServicesByZipcode = (currentLocation) => async (dispatch) => {
 export const getNearServices = (currentLocation, distance) => async (
 	dispatch
 ) => {
-	const getNearUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/getNearService';
+	const getNearUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getNearService';
 	try {
 		let { data } = await axios.post(getNearUrl, {
 			currentLocation,
@@ -226,7 +233,7 @@ export const getNearServices = (currentLocation, distance) => async (
 
 // DELETE-SERVICE
 export const deleteService = (service) => async (dispatch) => {
-	const deleteUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/deleteService/?email='
+	const deleteUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/deleteService/?email='
 		+ service.email;
 	let url;
 	if (service.subcategory) {
@@ -250,7 +257,7 @@ export const deleteService = (service) => async (dispatch) => {
 
 // UPDATE-SERVICE
 export const updateService = (service) => async (dispatch) => {
-	const updateUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/updateService';
+	const updateUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/updateService';
 	const newService = service;
 	let locationData;
 	try {
@@ -271,7 +278,8 @@ export const updateService = (service) => async (dispatch) => {
 	} catch (e) {
 		return dispatch({
 			type: POST_SERVICE_FAIL,
-			payload: 'We could not find your address, please provide a correct address'
+			payload:
+				'We could not find your address, please provide a correct address'
 		});
 	}
 	try {
@@ -286,4 +294,40 @@ export const updateService = (service) => async (dispatch) => {
 			payload: 'Error updating your service. Try later'
 		});
 	}
+};
+
+// Helper Functions
+// sort array by distance
+const sortByDistance = (data, userLocation) => {
+	let newData = [];
+	data.forEach((service) => {
+		const newService = service;
+		const distance = calculateDistance(
+			userLocation.coords.latitude,
+			userLocation.coords.longitude,
+			newService.geolocation.latitude,
+			newService.geolocation.longitude
+		);
+		newService.distance = distance;
+		newData.push(newService);
+	});
+	newData = _.sortBy(newData, 'distance');
+	return newData;
+};
+
+// calculate distance of 2 geopoints
+const calculateDistance = (lat1, lon1, lat2, lon2) => {
+	const radlat1 = (Math.PI * lat1) / 180;
+	const radlat2 = (Math.PI * lat2) / 180;
+	const theta = lon1 - lon2;
+	const radtheta = (Math.PI * theta) / 180;
+	let dist = Math.sin(radlat1) * Math.sin(radlat2)
+		+ Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+	if (dist > 1) {
+		dist = 1;
+	}
+	dist = Math.acos(dist);
+	dist = (dist * 180) / Math.PI;
+	dist = dist * 60 * 1.1515;
+	return dist;
 };

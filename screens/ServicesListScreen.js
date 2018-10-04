@@ -3,7 +3,8 @@ import {
 	ListView,
 	TouchableOpacity,
 	DeviceEventEmitter,
-	FlatList
+	FlatList,
+	RefreshControl
 } from 'react-native';
 import {
 	Header,
@@ -32,23 +33,19 @@ let willFocusSubscription;
 let backPressSubscriptions;
 
 class ServicesListScreen extends Component {
-	state = { dataLoaded: false };
+	state = {
+		dataLoaded: undefined,
+		refreshing: false
+	};
 
 	componentWillMount = async () => {
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			this.handleAndroidBack
 		);
-		
+
+		this.setState({ dataLoaded: false });
 		await this.decideGetService();
-		const { servicesList } = this.props;
-		const ds = new ListView.DataSource({
-			rowHasChanged: (r1, r2) => r1 !== r2
-		});
-		this.dataSource = ds.cloneWithRows(servicesList);
-		if (this.dataSource) {
-			this.setState({ dataLoaded: true });
-		}
 	};
 
 	componentWillUnmount() {
@@ -76,15 +73,23 @@ class ServicesListScreen extends Component {
 	};
 
 	decideGetService = async () => {
+		this.setState({ refreshing: true });
 		const { category, subcategory } = this.props;
 		const categoryRef = category.dbReference;
 
 		if (subcategory) {
 			const subcategoryRef = subcategory.dbReference;
-			await this.props.getServicesSubcategory(subcategoryRef);
+			await this.props.getServicesSubcategory(
+				subcategoryRef,
+				this.props.userLocation
+			);
 		} else {
-			await this.props.getServicesCategory(categoryRef);
+			await this.props.getServicesCategory(
+				categoryRef,
+				this.props.userLocation
+			);
 		}
+		this.setState({ dataLoaded: true, refreshing: false });
 	};
 
 	renderServices = (service) => {
@@ -112,7 +117,9 @@ class ServicesListScreen extends Component {
 					<CardItem style={cardItemStyle}>
 						<Body style={phoneLocationStyle}>
 							<Text>{service.phone}</Text>
-							<Text style={{ marginLeft: '15%' }}>{service.locationData.city}</Text>
+							<Text style={{ marginLeft: '15%' }}>
+								{service.locationData.city}
+							</Text>
 						</Body>
 						<Right>
 							<Icon
@@ -133,7 +140,7 @@ class ServicesListScreen extends Component {
 
 	renderListView() {
 		if (this.state.dataLoaded) {
-			if (this.dataSource._cachedRowCount > 0) {
+			if (this.props.servicesList.length !== 0) {
 				return (
 					<FlatList
 						style={{ marginTop: 10 }}
@@ -141,13 +148,21 @@ class ServicesListScreen extends Component {
 						renderItem={({ item }) => this.renderServices(item)}
 						keyExtractor={(item) => item.title}
 						enableEmptySections
+						refreshControl={(
+<RefreshControl
+								refreshing={this.state.refreshing}
+								onRefresh={() => this.decideGetService()}
+								tintColor={this.props.category.color[0]}
+								colors={[this.props.category.color[0]]}
+/>
+)}
 					/>
 				);
 			}
 			return (
 				<EmptyListMessage buttonPress={this.onBackPress}>
 					Unfortunetly there are no services posted for this category, we are
-					working on getting more people to Post Services!
+					working on getting more people to post services!
 				</EmptyListMessage>
 			);
 		}
@@ -222,7 +237,8 @@ const styles = {
 const mapStateToProps = (state) => ({
 	subcategory: state.selectedCategory.subcategory,
 	category: state.selectedCategory.category,
-	servicesList: state.serviceResult.servicesList
+	servicesList: state.serviceResult.servicesList,
+	userLocation: state.auth.location
 });
 
 export default connect(

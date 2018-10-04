@@ -6,7 +6,7 @@ import {
 	TouchableOpacity,
 	DeviceEventEmitter,
 	Platform,
-	FlatList,
+	FlatList
 } from 'react-native';
 import {
 	Text,
@@ -110,7 +110,7 @@ class BrowseScreen extends Component {
 		const filterWords = this.state.filter.toLowerCase().split(' ');
 		const filteredCategories = [];
 		const categoriesFiltered = [];
-		
+
 		filterWords.forEach((word) => {
 			allCategories.forEach((category) => {
 				if (category.keyWords.includes(word)) {
@@ -171,8 +171,7 @@ const styles = {
 	androidHeader: {
 		backgroundColor: '#F5F5F5'
 	},
-	iosHeader: {
-	},
+	iosHeader: {},
 	titleStyle: {
 		textAlign: 'center',
 		color: 'black',
@@ -181,7 +180,7 @@ const styles = {
 		margin: 20
 	},
 	cardStyle: {
-		height: 100,
+		height: 100
 	},
 	gridItem: {
 		marginLeft: 10,
@@ -195,7 +194,10 @@ const styles = {
 };
 
 function mapStateToProps(state) {
-	return { categories: state.categories };
+	return {
+		categories: state.categories,
+		userLocation: state.auth.location
+	};
 }
 
 export default connect(

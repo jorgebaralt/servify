@@ -33,3 +33,5 @@ export const NEW_FILTER_SUCCESS = 'new_filter_success';
 export const NEW_FILTER_EMPTY = 'new_filter_empty';
 export const GET_NEAR_SERVICES_SUCCESS = 'get_near_services_success';
 export const GET_NEAR_SERVICES_FAIL = 'get_near_services_fail';
+export const GET_USER_LOCATION_SUCCESS = 'get_user_location_success';
+export const GET_USER_LOCATION_FAIL = 'get_user_location_fail';

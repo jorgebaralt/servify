@@ -5,7 +5,9 @@ import {
     LOGIN_SUCCESS,
     RESET_MESSAGE_CREATE,
     GET_EMAIL_SUCCESS,
-    GET_EMAIL_FAIL
+    GET_EMAIL_FAIL,
+    GET_USER_LOCATION_FAIL,
+    GET_USER_LOCATION_SUCCESS
 } from '../actions/types';
 
 export default (state = {}, action) => {
@@ -24,6 +26,10 @@ export default (state = {}, action) => {
             return { ...state };
         case RESET_MESSAGE_CREATE:
             return { ...state, message: undefined };
+        case GET_USER_LOCATION_SUCCESS:
+            return { ...state, location: action.payload };
+        case GET_USER_LOCATION_FAIL:
+            return { ...state, location: undefined };
         default:
             return state;
     }

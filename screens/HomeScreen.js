@@ -15,7 +15,8 @@ import {
 	getCurrentUserDisplayName,
 	selectService,
 	getServicesByZipcode,
-	getNearServices
+	getNearServices,
+	getUserLocation
 } from '../actions';
 
 let backPressSubscriptions;
@@ -69,11 +70,9 @@ class HomeScreen extends Component {
 		const { status } = await Permissions.askAsync(Permissions.LOCATION);
 		const distance = 30;
 		if (status === 'granted') {
-			const location = await Location.getCurrentPositionAsync({
-				enableHighAccuracy: true
-			});
+			await this.props.getUserLocation();
 			// this.props.getServicesByZipcode(location.coords);
-			this.props.getNearServices(location.coords, distance);
+			await this.props.getNearServices(this.props.userLocation.coords, distance);
 		} else {
 			throw new Error('Location permission not granted');
 		}
@@ -176,7 +175,8 @@ const styles = {
 
 function mapStateToProps(state) {
 	return {
-		nearServicesList: state.serviceResult.nearServicesList
+		nearServicesList: state.serviceResult.nearServicesList,
+		userLocation: state.auth.location
 	};
 }
 
@@ -186,6 +186,7 @@ export default connect(
 		getCurrentUserDisplayName,
 		selectService,
 		getServicesByZipcode,
-		getNearServices
+		getNearServices,
+		getUserLocation
 	}
 )(HomeScreen);

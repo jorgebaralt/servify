@@ -1,4 +1,4 @@
-import { Facebook } from 'expo';
+import { Facebook, Location } from 'expo';
 import firebase from 'firebase';
 import axios from 'axios';
 import {
@@ -8,7 +8,9 @@ import {
   LOGIN_SUCCESS,
   RESET_MESSAGE_CREATE,
   GET_EMAIL_FAIL,
-  GET_EMAIL_SUCCESS
+  GET_EMAIL_SUCCESS,
+  GET_USER_LOCATION_SUCCESS,
+  GET_USER_LOCATION_FAIL
 } from './types';
 import { getFavorites } from './favorite_actions';
 
@@ -102,5 +104,17 @@ export const getEmail = () => async (dispatch) => {
     } catch(e) {
         console.log(e);
         return dispatch({ type: GET_EMAIL_FAIL });
+    }
+};
+
+export const getUserLocation = () => async (dispatch) => {
+    try{
+        const location = await Location.getCurrentPositionAsync({
+            enableHighAccuracy: true
+        });
+        dispatch({ type: GET_USER_LOCATION_SUCCESS, payload: location });
+    }catch(e){
+        console.log(e);
+        dispatch({ type: GET_USER_LOCATION_FAIL });
     }
 };
