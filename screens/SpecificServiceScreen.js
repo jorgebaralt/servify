@@ -46,7 +46,7 @@ class SpecificServiceScreen extends Component {
 	};
 
 	onBackPress = () => {
-		this.props.navigation.goBack(null);
+		this.props.navigation.goBack();
 	};
 
 	addFavorite = async (email) => {

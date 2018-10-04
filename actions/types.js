@@ -35,3 +35,5 @@ export const GET_NEAR_SERVICES_SUCCESS = 'get_near_services_success';
 export const GET_NEAR_SERVICES_FAIL = 'get_near_services_fail';
 export const GET_USER_LOCATION_SUCCESS = 'get_user_location_success';
 export const GET_USER_LOCATION_FAIL = 'get_user_location_fail';
+export const PASSWORD_RESET_SUCCESS = 'password_reset_success';
+export const PASSWORD_RESET_FAIL = 'password_reset_fail';

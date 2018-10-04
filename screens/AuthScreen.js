@@ -3,7 +3,8 @@ import {
 	View,
 	TouchableOpacity,
 	DeviceEventEmitter,
-	BackHandler
+	BackHandler,
+	SafeAreaView
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Button, Text, Icon } from 'native-base';
@@ -67,7 +68,7 @@ class AuthScreen extends Component {
 				colors={['#FF7043', '#F4511E', '#BF360C']}
 				style={{ flex: 1 }}
 			>
-				<View style={styles.authStyle}>
+				<SafeAreaView style={styles.authStyle}>
 					<Text style={styles.titleStyle}> Servify </Text>
 					{/* //log in with facebook */}
 					<View style={styles.buttonStyle}>
@@ -104,33 +105,33 @@ class AuthScreen extends Component {
 							<Text style={styles.textStyle}>Create account with Email</Text>
 						</Button>
 					</View>
-				</View>
-				{/* //go to login screen */}
-				<TouchableOpacity
-					style={{ position: 'absolute', bottom: 30, right: 30 }}
-				>
-					<Text
-						style={{ fontSize: 16, color: 'white' }}
-						onPress={() => {
-							this.props.navigation.navigate('login');
-						}}
+					{/* // go to login screen */}
+					<TouchableOpacity
+						style={{ position: 'absolute', bottom: 50, right: 30 }}
 					>
-						Login
-					</Text>
-				</TouchableOpacity>
-				{/* //go to welcome screen (tutorial) */}
-				<TouchableOpacity
-					style={{ position: 'absolute', bottom: 30, left: 30 }}
-				>
-					<Text
-						style={{ fontSize: 16, color: 'white' }}
-						onPress={() => {
-							this.props.navigation.navigate('welcome');
-						}}
+						<Text
+							style={{ fontSize: 16, color: 'white' }}
+							onPress={() => {
+								this.props.navigation.navigate('login');
+							}}
+						>
+							Login
+						</Text>
+					</TouchableOpacity>
+					{/* //go to welcome screen (tutorial) */}
+					<TouchableOpacity
+						style={{ position: 'absolute', bottom: 50, left: 30 }}
 					>
-						Tutorial
-					</Text>
-				</TouchableOpacity>
+						<Text
+							style={{ fontSize: 16, color: 'white' }}
+							onPress={() => {
+								this.props.navigation.navigate('welcome');
+							}}
+						>
+							Tutorial
+						</Text>
+					</TouchableOpacity>
+				</SafeAreaView>
 			</LinearGradient>
 		);
 	}

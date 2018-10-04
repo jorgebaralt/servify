@@ -23,6 +23,7 @@ import SpecificServiceScreen from './screens/SpecificServiceScreen';
 import ProfileServicesScreen from './screens/ProfileServicesScreen';
 import FeedbackScreen from './screens/FeedbackScreen';
 import EditServiceScreen from './screens/EditServiceScreen';
+import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 
 const store = createStore(reducers, {}, compose(applyMiddleware(thunk)));
 export default class App extends React.Component {
@@ -66,6 +67,7 @@ export default class App extends React.Component {
             auth: { screen: AuthScreen },
             createAccount: { screen: CreateAccountScreen },
             login: { screen: LoginScreen },
+            forgotPassword: { screen: ForgotPasswordScreen },
             main: { screen: Main }
         }, {
                 navigationOptions: {

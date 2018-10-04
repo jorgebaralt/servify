@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Expo, { AppLoading } from 'expo';
-import { View } from 'react-native';
+import { View, UIManager, Platform } from 'react-native';
 import _ from 'lodash';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
@@ -19,7 +19,10 @@ class WelcomeScreen extends Component{
         authenticated: null
     };
 
-    async componentWillMount(){
+    async componentWillMount() {
+        if (Platform.OS === 'android') {
+            UIManager.setLayoutAnimationEnabledExperimental(true);
+        }
         // check if there is a user logged in already
          await this.checkForUser();
          // Make sure to load the Native Base Fonts

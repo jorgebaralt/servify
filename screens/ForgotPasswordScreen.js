@@ -11,19 +11,24 @@ import {
 	Spinner
 } from 'native-base';
 import { LinearGradient } from 'expo';
-import { View, SafeAreaView, Keyboard, DeviceEventEmitter, TouchableOpacity } from 'react-native';
+import {
+	View,
+	SafeAreaView,
+	Keyboard,
+	DeviceEventEmitter,
+	TouchableOpacity
+} from 'react-native';
 import { connect } from 'react-redux';
-import { emailAndPasswordLogin, resetMessage } from '../actions';
+import { resetMessage, passwordReset } from '../actions';
 
 let backPressSubscriptions;
 let willFocusSubscription;
+
 const initialState = {
 	email: '',
-	password: '',
-	showToast: false,
 	loading: false
 };
-class LoginScreen extends Component {
+class forgotPassword extends Component {
 	state = initialState;
 
 	async componentWillMount() {
@@ -34,18 +39,19 @@ class LoginScreen extends Component {
 	}
 
 	componentWillUpdate(nextProps) {
-		const { displayName, message } = nextProps;
-		if (displayName) {
-			this.props.navigation.navigate('main');
+		const { passwordMessage, passwordMessageFail } = nextProps;
+
+		if (passwordMessage) {
 			Toast.show({
-				text: 'Welcome ' + displayName,
-				duration: 2000,
+				text: passwordMessage,
+				buttonText: 'Okay',
+				duration: 5000,
 				type: 'success'
 			});
 		}
-		if (message) {
+		if (passwordMessageFail) {
 			Toast.show({
-				text: message,
+				text: passwordMessageFail,
 				buttonText: 'Okay',
 				duration: 5000,
 				type: 'warning'
@@ -70,11 +76,11 @@ class LoginScreen extends Component {
 		backPressSubscriptions.add(() => this.props.navigation.navigate('auth'));
 	};
 
-	loginUser = async () => {
+	resetPassword = async () => {
 		Keyboard.dismiss();
 		this.setState({ loading: true });
-		const { email, password } = this.state;
-		await this.props.emailAndPasswordLogin(email, password);
+		const { email } = this.state;
+		await this.props.passwordReset(email);
 		this.clearState();
 	};
 
@@ -110,13 +116,13 @@ class LoginScreen extends Component {
 						type="Entypo"
 						name="chevron-thin-left"
 						onPress={() => {
-							this.props.navigation.navigate('auth');
+							this.props.navigation.navigate('login');
 						}}
 					/>
 
 					{/* Login Form */}
-					<View style={{ flex: 1, alignItems: 'center' }}>
-						<Text style={titleStyle}>Sign in</Text>
+					<View style={{ flex: 1, marginLeft: 20 }}>
+						<Text style={titleStyle}>Forgot Password</Text>
 						<Form style={formStyle}>
 							<Item floatingLabel style={itemStyle}>
 								<Label style={labelStyle}>Email</Label>
@@ -129,42 +135,18 @@ class LoginScreen extends Component {
 									}}
 								/>
 							</Item>
-							<Item floatingLabel style={itemStyle}>
-								<Label style={labelStyle}>Password</Label>
-								<Input
-									style={inputStyle}
-									value={this.state.password}
-									secureTextEntry
-									onChangeText={(password) => {
-										this.setState({ password });
-									}}
-								/>
-							</Item>
 						</Form>
 						{this.renderSpinner()}
 						<View>
 							<Button
-								title="Login User"
 								bordered
 								light
-								style={{ marginTop: 40 }}
-								onPress={this.loginUser}
+								style={{ marginTop: 40, marginLeft: 15 }}
+								onPress={() => this.resetPassword()}
 							>
-								<Text>Log in</Text>
+								<Text>Get reset link</Text>
 							</Button>
 						</View>
-						<TouchableOpacity
-							style={{ position: 'absolute', bottom: 20, right: 30 }}
-						>
-							<Text
-								style={{ fontSize: 16, color: 'white' }}
-								onPress={() => {
-									this.props.navigation.navigate('forgotPassword');
-								}}
-							>
-								Forgot password
-							</Text>
-						</TouchableOpacity>
 					</View>
 				</SafeAreaView>
 			</LinearGradient>
@@ -202,12 +184,12 @@ const styles = {
 
 function mapStateToProps(state) {
 	return {
-		displayName: state.auth.displayName,
-		message: state.auth.message
+		passwordMessage: state.auth.passwordMessage,
+		passwordMessageFail: state.auth.passwordMessageFail
 	};
 }
 
 export default connect(
 	mapStateToProps,
-	{ emailAndPasswordLogin, resetMessage }
-)(LoginScreen);
+	{ resetMessage, passwordReset }
+)(forgotPassword);
