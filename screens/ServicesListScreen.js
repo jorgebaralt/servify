@@ -146,7 +146,7 @@ class ServicesListScreen extends Component {
 			if (this.props.servicesList.length !== 0) {
 				return (
 					<FlatList
-						style={{ marginTop: 10 }}
+						style={{ marginTop: 10, marginBottom: 40 }}
 						data={this.props.servicesList}
 						renderItem={({ item }) => this.renderServices(item)}
 						keyExtractor={(item) => item.title}

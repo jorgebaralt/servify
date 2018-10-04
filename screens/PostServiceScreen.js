@@ -40,7 +40,7 @@ const initialState = {
 let willFocusSubscription;
 let willBlurSubscription;
 let backPressSubscriptions;
-const scrollRef = React.createRef();
+
 class PostServiceScreen extends Component {
 	static navigationOptions = {
 		title: 'Post',

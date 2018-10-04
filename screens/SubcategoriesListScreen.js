@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, ListView, DeviceEventEmitter, FlatList } from 'react-native';
+import {
+	TouchableOpacity,
+	ListView,
+	DeviceEventEmitter,
+	FlatList
+} from 'react-native';
 import {
 	Text,
 	Card,
@@ -21,34 +26,32 @@ let willFocusSubscription;
 let backPressSubscriptions;
 
 class SubcategoriesListScreen extends Component {
-
 	componentWillMount() {
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			this.handleAndroidBack
 		);
-    }
-    
-    componentWillUnmount() {
-        willFocusSubscription.remove();
-    }
+	}
 
-    handleAndroidBack = () => {
-        backPressSubscriptions = new Set();
-        DeviceEventEmitter.removeAllListeners('hardwareBackPress');
-        DeviceEventEmitter.addListener('hardwareBackPress', () => {
-            const subscriptions = [];
+	componentWillUnmount() {
+		willFocusSubscription.remove();
+	}
 
-            backPressSubscriptions.forEach((sub) => subscriptions.push(sub));
-            for (let i = 0; i < subscriptions.reverse().length; i += 1) {
-                if (subscriptions[i]()) {
-                    break;
-                }
-            }
-        });
-        backPressSubscriptions.add(() => this.props.navigation.pop());
-    };
+	handleAndroidBack = () => {
+		backPressSubscriptions = new Set();
+		DeviceEventEmitter.removeAllListeners('hardwareBackPress');
+		DeviceEventEmitter.addListener('hardwareBackPress', () => {
+			const subscriptions = [];
 
+			backPressSubscriptions.forEach((sub) => subscriptions.push(sub));
+			for (let i = 0; i < subscriptions.reverse().length; i += 1) {
+				if (subscriptions[i]()) {
+					break;
+				}
+			}
+		});
+		backPressSubscriptions.add(() => this.props.navigation.pop());
+	};
 
 	onBackPressed = () => {
 		this.props.deselectCategory();
@@ -107,6 +110,7 @@ class SubcategoriesListScreen extends Component {
 				</Header>
 
 				<FlatList
+					style={{ marginBottom: 40 }}
 					data={this.props.category.subcategories}
 					renderItem={({ item }) => this.renderSubcategories(item)}
 					keyExtractor={(item) => item.title}

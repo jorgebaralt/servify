@@ -158,6 +158,7 @@ class ProfileServicesScreen extends Component {
 		if (currentItem.id === 'my_services') {
 			return (
 				<FlatList
+					style={{ marginBottom: 40 }}
 					data={this.props.servicesList}
 					renderItem={({ item }) => this.renderServices(item)}
 					keyExtractor={(item) => item.title}

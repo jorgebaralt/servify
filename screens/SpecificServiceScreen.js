@@ -189,7 +189,7 @@ class SpecificServiceScreen extends Component {
 				</Header>
 
 				<Content style={contentStyle} padder>
-					{/* TODO: Add Ratings */}
+					{/* TODO: Add Rating average here */}
 					{/* <Text style={subtitleStyle}>Rating </Text> */}
 
 					{/* <View style={rowDirectionStyle}>

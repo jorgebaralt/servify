@@ -6,7 +6,8 @@ import {
 	TouchableOpacity,
 	DeviceEventEmitter,
 	Platform,
-	FlatList
+	FlatList,
+	LayoutAnimation
 } from 'react-native';
 import {
 	Text,
@@ -18,7 +19,7 @@ import {
 	Button,
 	Input,
 	Container,
-	Content
+	Content,
 } from 'native-base';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo';
@@ -50,6 +51,10 @@ class BrowseScreen extends Component {
 			'willFocus',
 			this.handleAndroidBack
 		);
+	}
+
+	componentWillUpdate(nextProps) {
+		LayoutAnimation.easeInEaseOut();
 	}
 
 	componentWillUnmount() {
