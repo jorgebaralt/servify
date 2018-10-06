@@ -5,15 +5,9 @@ import {
 	BackHandler,
 	SafeAreaView,
 	FlatList,
-	RefreshControl,
+	RefreshControl
 } from 'react-native';
-import {
-	Text,
-	Container,
-	Content,
-	Icon,
-	Spinner
-} from 'native-base';
+import { Text, Container, Content, Icon, Spinner } from 'native-base';
 import { connect } from 'react-redux';
 import { Permissions } from 'expo';
 import {
@@ -86,7 +80,6 @@ class HomeScreen extends Component {
 	};
 
 	getLocationAsync = async () => {
-		this.setState({ refreshing: true });
 		const { status } = await Permissions.askAsync(Permissions.LOCATION);
 
 		if (status === 'granted') {
@@ -98,24 +91,21 @@ class HomeScreen extends Component {
 		} else {
 			throw new Error('Location permission not granted');
 		}
-		this.setState({ refreshing: false });
 	};
 
 	onRefresh = async () => {
 		await this.props.getNearServices(this.props.userLocation.coords, DISTANCE);
 	};
 
-	renderNearServicesList = (service) => {
-		return (
+	renderNearServicesList = (service) => (
 			<SpecificServiceCard
 				service={service}
 				onPress={() => {
-				this.props.selectService(service);
-				this.props.navigation.navigate('service');
+					this.props.selectService(service);
+					this.props.navigation.navigate('service');
 				}}
 			/>
 		);
-	};
 
 	renderSpinner() {
 		if (this.state.loading) {
@@ -124,21 +114,17 @@ class HomeScreen extends Component {
 		return <View />;
 	}
 
-	renderNewServicesNear = () => {
-		if (this.props.nearServicesList) {
-			return (
-				<View style={{ marginTop: 25 }}>
-					<Text style={styles.titleStyle}>New services near you</Text>
-					<FlatList
-						data={this.props.nearServicesList}
-						renderItem={({ item }) => this.renderNearServicesList(item)}
-						keyExtractor={(item) => item.title}
-						horizontal
-					/>
-				</View>
-			);
-		}
-	};
+	renderNewServicesNear = () => (
+			<View style={{ marginTop: 25 }}>
+				<Text style={styles.titleStyle}>New services near you</Text>
+				<FlatList
+					data={this.props.nearServicesList}
+					renderItem={({ item }) => this.renderNearServicesList(item)}
+					keyExtractor={(item) => item.title}
+					horizontal
+				/>
+			</View>
+		);
 
 	render() {
 		return (
@@ -150,15 +136,14 @@ class HomeScreen extends Component {
 					<Content
 						style={{ flex: 1 }}
 						refreshControl={(
-							<RefreshControl
+<RefreshControl
 								refreshing={this.state.refreshing}
 								onRefresh={() => this.onRefresh()}
 								tintColor="orange"
 								colors={['orange']}
-							/>
-						)}
+/>
+)}
 					>
-						{/* {this.renderSpinner()} */}
 						{this.renderNewServicesNear()}
 					</Content>
 				</SafeAreaView>
@@ -176,7 +161,7 @@ const styles = {
 		fontSize: 26,
 		marginLeft: 20,
 		marginRight: 20
-	},
+	}
 };
 
 function mapStateToProps(state) {
