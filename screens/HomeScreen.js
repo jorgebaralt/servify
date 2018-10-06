@@ -31,6 +31,7 @@ import {
 
 let backPressSubscriptions;
 let willFocusSubscription;
+let didFocusSubscription;
 const DISTANCE = 30;
 
 class HomeScreen extends Component {
@@ -55,10 +56,15 @@ class HomeScreen extends Component {
 		await this.props.getCurrentUserDisplayName();
 		await this.getLocationAsync();
 
-		willFocusSubscription = this.props.navigation.addListener(
+		didFocusSubscription = this.props.navigation.addListener(
 			'didFocus',
 			this.handleAndroidBack
 		);
+		willFocusSubscription = this.props.navigation.addListener(
+			'willFocus',
+			this.onRefresh
+		);
+		
 		this.setState({ loading: false });
 	}
 
@@ -68,6 +74,7 @@ class HomeScreen extends Component {
 
 	componentWillUnmount() {
 		willFocusSubscription.remove();
+		didFocusSubscription.remove();
 	}
 
 	handleAndroidBack = () => {

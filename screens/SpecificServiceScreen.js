@@ -149,10 +149,10 @@ class SpecificServiceScreen extends Component {
 			latitudeDelta = 0.0799;
 		} else if (service.miles <= 10 && service.miles > 3) {
 			latitudeDelta = 0.45;
-		} else if (service.miles <= 30 && service.miles > 20) {
+		} else if (service.miles <= 30 && service.miles > 10) {
 			latitudeDelta = 0.8;
 		} else if (service.miles <= 60 && service.miles > 30) {
-			latitudeDelta = 1.5;
+			latitudeDelta = 2;
 		}
 
 		let categoryName = service.category.split('_');

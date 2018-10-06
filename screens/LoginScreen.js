@@ -147,14 +147,14 @@ class LoginScreen extends Component {
 								title="Login User"
 								bordered
 								light
-								style={{ marginTop: 40 }}
+								style={{ marginTop: 10 }}
 								onPress={this.loginUser}
 							>
 								<Text>Log in</Text>
 							</Button>
 						</View>
 						<TouchableOpacity
-							style={{ position: 'absolute', bottom: 20, right: 30 }}
+							style={{ position: 'absolute', bottom: 20, right: 20 }}
 						>
 							<Text
 								style={{ fontSize: 16, color: 'white' }}

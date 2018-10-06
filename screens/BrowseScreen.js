@@ -17,13 +17,14 @@ import {
 	Button,
 	Input,
 	Container,
-	Content,
+	Content
 } from 'native-base';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo';
 import { selectCategory, filterCategories, filterEmpty } from '../actions';
 
 let willFocusSubscription;
+let willBlurSubscription;
 let backPressSubscriptions;
 let allCategories;
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -47,8 +48,15 @@ class BrowseScreen extends Component {
 		allCategories = this.props.categories;
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
-			this.handleAndroidBack
+			() => {
+				this.handleAndroidBack();
+				this.handleSearch();
+			}
 		);
+		willBlurSubscription = this.props.navigation.addListener('willBlur', () => {
+			this.setState({ filter: '' });
+			this.handleSearch();
+		});
 	}
 
 	componentWillUpdate(nextProps) {
@@ -57,6 +65,7 @@ class BrowseScreen extends Component {
 
 	componentWillUnmount() {
 		willFocusSubscription.remove();
+		willBlurSubscription.remove();
 	}
 
 	handleAndroidBack = () => {

@@ -34,7 +34,8 @@ const initialState = {
 	miles: '',
 	description: '',
 	loading: false,
-	descriptionCharCount: maxCharCount
+	descriptionCharCount: maxCharCount,
+	milesPlaceHolder: ''
 };
 
 let willFocusSubscription;
@@ -331,6 +332,9 @@ class PostServiceScreen extends Component {
 										value={this.state.miles}
 										onChangeText={(text) => this.setState({ miles: text })}
 										keyboardType="numeric"
+										placeholder={this.state.milesPlaceHolder}
+										onFocus={() => this.setState({ milesPlaceHolder: 'Up to 60 miles' })}
+										onBlur={() => this.setState({ milesPlaceHolder: '' })}
 									/>
 								</Item>
 								<Textarea

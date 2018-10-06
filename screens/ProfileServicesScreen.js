@@ -38,9 +38,7 @@ class ProfileServicesScreen extends Component {
 		currentItem = this.props.navigation.getParam('item');
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
-			async () => {
-				this.handleAndroidBack();
-			}
+			this.handleAndroidBack
 		);
 
 		if (currentItem.id === 'favorites') {
