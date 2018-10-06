@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 import {
 	Dimensions,
-	TouchableOpacity,
 	DeviceEventEmitter,
 	Platform,
 	FlatList,
-	LayoutAnimation
 } from 'react-native';
 import {
 	Text,
-	Card,
-	CardItem,
 	Icon,
 	Header,
 	Item,
@@ -20,8 +16,8 @@ import {
 	Content
 } from 'native-base';
 import { connect } from 'react-redux';
-import { LinearGradient } from 'expo';
 import { selectCategory, filterCategories, filterEmpty } from '../actions';
+import CategoryCard from '../components/CategoryCard';
 
 let willFocusSubscription;
 let willBlurSubscription;
@@ -59,10 +55,6 @@ class BrowseScreen extends Component {
 		});
 	}
 
-	componentWillUpdate(nextProps) {
-		LayoutAnimation.easeInEaseOut();
-	}
-
 	componentWillUnmount() {
 		willFocusSubscription.remove();
 		willBlurSubscription.remove();
@@ -95,26 +87,11 @@ class BrowseScreen extends Component {
 	};
 
 	renderCategories = (category) => {
-		const { color } = category;
 		return (
-			<TouchableOpacity
-				style={styles.gridItem}
+			<CategoryCard
+				category={category}
 				onPress={() => this.doSelectCategory(category)}
-			>
-				<Card style={styles.cardStyle}>
-					{/* TODO: grab specific color from each category, ADD: An array of [x, y] where x and y are floats */}
-					<LinearGradient
-						colors={color}
-						start={{ x: 0, y: 0 }}
-						end={{ x: 1, y: 1 }}
-						style={{ flex: 1 }}
-					>
-						<CardItem header style={{ backgroundColor: 'transparent' }}>
-							<Text style={{ color: 'white' }}>{category.title}</Text>
-						</CardItem>
-					</LinearGradient>
-				</Card>
-			</TouchableOpacity>
+			/>
 		);
 	};
 
@@ -138,6 +115,7 @@ class BrowseScreen extends Component {
 		} else {
 			this.props.filterCategories(filteredCategories);
 		}
+		// LayoutAnimation.easeInEaseOut();
 	};
 
 	render() {

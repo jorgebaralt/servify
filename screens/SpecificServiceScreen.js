@@ -21,11 +21,16 @@ import { updateFavorite } from '../actions';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 let currentFavorite = [];
+let coords;
+let meters;
+let latitudeDelta;
+let fixedRegion;
 
 class SpecificServiceScreen extends Component {
 	state = {
 		isFav: false,
-		favLoading: false
+		favLoading: false,
+		region: undefined
 	};
 
 	componentWillMount = async () => {
@@ -43,6 +48,30 @@ class SpecificServiceScreen extends Component {
 				}
 			});
 		}
+		const { latitude, longitude } = service.geolocation;
+		coords = { latitude, longitude };
+		meters = service.miles * 1609.34;
+		latitudeDelta = 0.0922;
+
+		if (service.miles <= 3) {
+			latitudeDelta = 0.0799;
+		} else if (service.miles <= 10 && service.miles > 3) {
+			latitudeDelta = 0.45;
+		} else if (service.miles <= 30 && service.miles > 10) {
+			latitudeDelta = 0.8;
+		} else if (service.miles <= 60 && service.miles > 30) {
+			latitudeDelta = 2;
+		}
+		fixedRegion = {
+			latitude,
+			longitude,
+			latitudeDelta,
+			longitudeDelta: 0.0421
+		};
+
+		this.setState({
+			region: fixedRegion
+		});
 	};
 
 	onBackPress = () => {
@@ -140,20 +169,6 @@ class SpecificServiceScreen extends Component {
 			buttonStyle,
 			buttonViewStyle
 		} = styles;
-		const { latitude, longitude } = service.geolocation;
-		const coords = { latitude, longitude };
-		const meters = service.miles * 1609.34;
-		let latitudeDelta = 0.0922;
-
-		if (service.miles <= 3) {
-			latitudeDelta = 0.0799;
-		} else if (service.miles <= 10 && service.miles > 3) {
-			latitudeDelta = 0.45;
-		} else if (service.miles <= 30 && service.miles > 10) {
-			latitudeDelta = 0.8;
-		} else if (service.miles <= 60 && service.miles > 30) {
-			latitudeDelta = 2;
-		}
 
 		let categoryName = service.category.split('_');
 		for (let i = 0; i < categoryName.length; i++) {
@@ -241,12 +256,7 @@ class SpecificServiceScreen extends Component {
 								</Text>
 								<MapView
 									style={mapStyle}
-									initialRegion={{
-										latitude,
-										longitude,
-										latitudeDelta,
-										longitudeDelta: 0.0421
-									}}
+									region={this.state.region}
 								>
 									<MapView.Circle
 										center={coords}
@@ -254,6 +264,19 @@ class SpecificServiceScreen extends Component {
 										strokeColor="#FF7043"
 									/>
 								</MapView>
+								<Button
+									transparent
+									style={{ position: 'absolute', marginTop: 20, marginLeft: 5 }}
+								>
+									<Icon
+										type="MaterialIcons"
+										name="my-location"
+										style={{ color: 'black' }}
+										onPress={() => {
+											this.setState({ region: fixedRegion });
+										}}
+									/>
+								</Button>
 							</Body>
 						</CardItem>
 					</Card>

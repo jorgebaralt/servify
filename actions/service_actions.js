@@ -99,7 +99,7 @@ export const createService = (servicePost, email) => async (dispatch) => {
 					return dispatch({
 						type: POST_SERVICE_FAIL,
 						payload:
-							'This email already have a Service under this Subcategory, Only 1 service per subcategory is allowed'
+							'This account already have a Service under this Subcategory, Only 1 service per subcategory is allowed'
 					});
 				}
 			} catch (e) {
@@ -117,7 +117,7 @@ export const createService = (servicePost, email) => async (dispatch) => {
 					return dispatch({
 						type: POST_SERVICE_FAIL,
 						payload:
-							'This email already have a Service under this category, Only 1 service per category is allowed'
+							'This account already have a Service under this category, Only 1 service per category is allowed'
 					});
 				}
 			} catch (error) {
