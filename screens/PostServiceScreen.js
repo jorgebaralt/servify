@@ -158,6 +158,10 @@ class PostServiceScreen extends Component {
 		this.setState({ descriptionCharCount: maxCharCount - text.length });
 	};
 
+	setReference = (scroll) => {
+		this.component = scroll;
+	};
+
 	renderPickerItemsCategories() {
 		const arr = [
 			{
@@ -253,10 +257,6 @@ class PostServiceScreen extends Component {
 		return <View />;
 	}
 
-	setReference = (scroll) => {
-		this.component = scroll;
-	}
-
 	render() {
 		const {
 			titleStyle,
@@ -272,7 +272,11 @@ class PostServiceScreen extends Component {
 					behavior={Platform.OS === 'android' ? 'padding' : null}
 					style={{ flex: 1, justifyContent: 'center' }}
 				>
-					<Content ref={(scroll) => { this.setReference(scroll); }}>
+					<Content
+						ref={(scroll) => {
+							this.setReference(scroll);
+						}}
+					>
 						<Text style={titleStyle}>Post a New Service</Text>
 						<View style={{ flex: 1, alignItems: 'center' }}>
 							<Form style={formStyle}>

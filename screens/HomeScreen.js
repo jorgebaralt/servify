@@ -138,7 +138,6 @@ class HomeScreen extends Component {
 			>
 				<SafeAreaView style={{ flex: 1 }}>
 					<Content
-						ref="scrollView"
 						style={{ flex: 1 }}
 						refreshControl={(
 <RefreshControl
