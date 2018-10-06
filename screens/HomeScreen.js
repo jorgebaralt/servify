@@ -114,17 +114,21 @@ class HomeScreen extends Component {
 		return <View />;
 	}
 
-	renderNewServicesNear = () => (
-			<View style={{ marginTop: 25 }}>
-				<Text style={styles.titleStyle}>New services near you</Text>
-				<FlatList
-					data={this.props.nearServicesList}
-					renderItem={({ item }) => this.renderNearServicesList(item)}
-					keyExtractor={(item) => item.title}
-					horizontal
-				/>
-			</View>
-		);
+	renderNewServicesNear = () => {
+		if (this.props.nearServicesList && this.props.nearServicesList.length > 0) {
+			return (
+				<View style={{ marginTop: 25 }}>
+					<Text style={styles.titleStyle}>New services near you</Text>
+					<FlatList
+						data={this.props.nearServicesList}
+						renderItem={({ item }) => this.renderNearServicesList(item)}
+						keyExtractor={(item) => item.title}
+						horizontal
+					/>
+				</View>
+			);
+		}		
+	};
 
 	render() {
 		return (
