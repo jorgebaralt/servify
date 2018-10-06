@@ -13,7 +13,6 @@ class SpecificServiceCard extends Component {
 		LayoutAnimation.easeInEaseOut();
 	}
 
-
 	render() {
 		const { service } = this.props;
 		const {
