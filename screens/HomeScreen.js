@@ -98,14 +98,14 @@ class HomeScreen extends Component {
 	};
 
 	renderNearServicesList = (service) => (
-			<SpecificServiceCard
-				service={service}
-				onPress={() => {
-					this.props.selectService(service);
-					this.props.navigation.navigate('service');
-				}}
-			/>
-		);
+		<SpecificServiceCard
+			service={service}
+			onPress={() => {
+				this.props.selectService(service);
+				this.props.navigation.navigate('service');
+			}}
+		/>
+	);
 
 	renderSpinner() {
 		if (this.state.loading) {
@@ -127,7 +127,7 @@ class HomeScreen extends Component {
 					/>
 				</View>
 			);
-		}		
+		}
 	};
 
 	render() {
@@ -138,6 +138,7 @@ class HomeScreen extends Component {
 			>
 				<SafeAreaView style={{ flex: 1 }}>
 					<Content
+						ref="scrollView"
 						style={{ flex: 1 }}
 						refreshControl={(
 <RefreshControl

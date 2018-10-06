@@ -57,9 +57,9 @@ class PostServiceScreen extends Component {
 			'willFocus',
 			this.handleAndroidBack
 		);
-		willBlurSubscription = this.props.navigation.addListener(
-			'willBlur', () => { this.setState(initialState); }
-		);
+		willBlurSubscription = this.props.navigation.addListener('willBlur', () => {
+			this.setState(initialState);
+		});
 	}
 
 	componentWillUpdate(nextProps) {
@@ -253,6 +253,10 @@ class PostServiceScreen extends Component {
 		return <View />;
 	}
 
+	setReference = (scroll) => {
+		this.component = scroll;
+	}
+
 	render() {
 		const {
 			titleStyle,
@@ -268,7 +272,7 @@ class PostServiceScreen extends Component {
 					behavior={Platform.OS === 'android' ? 'padding' : null}
 					style={{ flex: 1, justifyContent: 'center' }}
 				>
-					<Content>
+					<Content ref={(scroll) => { this.setReference(scroll); }}>
 						<Text style={titleStyle}>Post a New Service</Text>
 						<View style={{ flex: 1, alignItems: 'center' }}>
 							<Form style={formStyle}>
@@ -333,7 +337,8 @@ class PostServiceScreen extends Component {
 										onChangeText={(text) => this.setState({ miles: text })}
 										keyboardType="numeric"
 										placeholder={this.state.milesPlaceHolder}
-										onFocus={() => this.setState({ milesPlaceHolder: 'Up to 60 miles' })}
+										onFocus={() => this.setState({ milesPlaceHolder: 'Up to 60 miles' })
+										}
 										onBlur={() => this.setState({ milesPlaceHolder: '' })}
 									/>
 								</Item>
@@ -357,7 +362,10 @@ class PostServiceScreen extends Component {
 									dark
 									disabled={this.state.loading}
 									style={buttonStyle}
-									onPress={() => this.doPostService()}
+									onPress={() => {
+										this.doPostService();
+										this.component._root.scrollToEnd();
+									}}
 								>
 									<Text>Submit</Text>
 								</Button>
