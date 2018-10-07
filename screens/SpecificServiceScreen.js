@@ -12,11 +12,11 @@ import {
 	Left,
 	Content,
 	Card,
-	CardItem,
-	Spinner
+	CardItem
 } from 'native-base';
 import { connect } from 'react-redux';
 import { MapView, Linking } from 'expo';
+import { AnimatedRegion, Animated } from 'react-native-maps';
 import { updateFavorite } from '../actions';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -70,7 +70,7 @@ class SpecificServiceScreen extends Component {
 		};
 
 		this.setState({
-			region: fixedRegion
+			region: new AnimatedRegion(fixedRegion)
 		});
 	};
 
@@ -143,7 +143,7 @@ class SpecificServiceScreen extends Component {
 
 	renderSubcategoryName = () => {
 		const { service } = this.props;
-		const { descriptionStyle, cardStyle, subtitleStyle } = styles;
+		const { descriptionStyle } = styles;
 		if (service.subcategory) {
 			let subcategoryName = service.subcategory.split('_');
 			for (let i = 0; i < subcategoryName.length; i++) {
@@ -254,16 +254,13 @@ class SpecificServiceScreen extends Component {
 								<Text style={descriptionStyle}>
 									We cover the following area
 								</Text>
-								<MapView
-									style={mapStyle}
-									region={this.state.region}
-								>
+								<Animated style={mapStyle} region={this.state.region}>
 									<MapView.Circle
 										center={coords}
 										radius={meters}
 										strokeColor="#FF7043"
 									/>
-								</MapView>
+								</Animated>
 								<Button
 									transparent
 									style={{ position: 'absolute', marginTop: 20, marginLeft: 5 }}

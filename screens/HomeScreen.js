@@ -120,6 +120,7 @@ class HomeScreen extends Component {
 				<View style={{ marginTop: 25 }}>
 					<Text style={styles.titleStyle}>New services near you</Text>
 					<FlatList
+						style={{ marginLeft: 20 }}
 						data={this.props.nearServicesList}
 						renderItem={({ item }) => this.renderNearServicesList(item)}
 						keyExtractor={(item) => item.title}
@@ -140,13 +141,13 @@ class HomeScreen extends Component {
 					<Content
 						style={{ flex: 1 }}
 						refreshControl={(
-<RefreshControl
+							<RefreshControl
 								refreshing={this.state.refreshing}
 								onRefresh={() => this.onRefresh()}
 								tintColor="orange"
 								colors={['orange']}
-/>
-)}
+							/>
+						)}
 					>
 						{this.renderNewServicesNear()}
 					</Content>

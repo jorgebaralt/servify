@@ -51,7 +51,7 @@ const styles = {
 		shadowColor: 'black',
 		shadowOpacity: 0.2,
 		elevation: 1,
-		marginLeft: 20,
+		marginRight: 20,
 		marginTop: 20
 	},
 	titleStyleCard: {
