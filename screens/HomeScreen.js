@@ -129,6 +129,13 @@ class HomeScreen extends Component {
 				</View>
 			);
 		}
+		if (this.props.nearServicesList && this.props.nearServicesList.length === 0) {
+			return (
+				<View style={{ marginTop: 25 }}>
+					<Text style={styles.titleStyle}>No new services near you, be the first on creating new services around your area on the Post tab</Text>
+				</View>
+			);
+		}
 	};
 
 	render() {
