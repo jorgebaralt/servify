@@ -233,16 +233,11 @@ export const getNearServices = (currentLocation, distance) => async (
 
 // DELETE-SERVICE
 export const deleteService = (service) => async (dispatch) => {
-	const deleteUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/deleteService/?email='
-		+ service.email;
-	let url;
-	if (service.subcategory) {
-		url = deleteUrl + '&subcategory=' + service.subcategory;
-	} else {
-		url = deleteUrl + '&category=' + service.category;
-	}
+	const deleteUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/deleteService';
+	
 	try {
-		await axios.delete(url);
+		await axios.delete(deleteUrl, { data: service });
+
 		return dispatch({
 			type: DELETE_SERVICE_SUCCESS,
 			payload: 'Your service have been deleted'
@@ -257,7 +252,7 @@ export const deleteService = (service) => async (dispatch) => {
 
 // UPDATE-SERVICE
 export const updateService = (service) => async (dispatch) => {
-	const updateUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/updateService';
+	const updateUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/updateService';
 	const newService = service;
 	let locationData;
 	try {
@@ -278,12 +273,12 @@ export const updateService = (service) => async (dispatch) => {
 	} catch (e) {
 		return dispatch({
 			type: POST_SERVICE_FAIL,
-			payload:
-				'We could not find your address, please provide a correct address'
+			payload: 'We could not find your address, please provide a correct address'
 		});
 	}
 	try {
 		await axios.post(updateUrl, newService);
+
 		return dispatch({
 			type: UPDATE_SERVICE_SUCCESS,
 			payload: 'Your service has been updated'
@@ -321,7 +316,7 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
 	const radlat2 = (Math.PI * lat2) / 180;
 	const theta = lon1 - lon2;
 	const radtheta = (Math.PI * theta) / 180;
-	let dist = Math.sin(radlat1) * Math.sin(radlat2)
+	let dist =		Math.sin(radlat1) * Math.sin(radlat2)
 		+ Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
 	if (dist > 1) {
 		dist = 1;
