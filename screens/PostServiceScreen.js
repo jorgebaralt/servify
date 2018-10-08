@@ -24,7 +24,7 @@ import {
 import { connect } from 'react-redux';
 import { createService, resetMessageService } from '../actions';
 
-const maxCharCount = 120;
+const maxCharCount = 150;
 const initialState = {
 	selectedCategory: undefined,
 	selectedSubcategory: undefined,

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { View, Dimensions, Platform } from 'react-native';
+import { View, Dimensions, Platform, KeyboardAvoidingView } from 'react-native';
+import { AirbnbRating, Rating } from 'react-native-ratings';
 import {
 	Container,
 	Header,
@@ -12,7 +13,8 @@ import {
 	Left,
 	Content,
 	Card,
-	CardItem
+	CardItem,
+	Textarea
 } from 'native-base';
 import { connect } from 'react-redux';
 import { MapView, Linking } from 'expo';
@@ -20,6 +22,7 @@ import { AnimatedRegion, Animated } from 'react-native-maps';
 import { updateFavorite } from '../actions';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
+const maxCharCount = 100;
 let currentFavorite = [];
 let coords;
 let meters;
@@ -30,7 +33,9 @@ class SpecificServiceScreen extends Component {
 	state = {
 		isFav: false,
 		favLoading: false,
-		region: undefined
+		region: undefined,
+		description: '',
+		descriptionCharCount: maxCharCount
 	};
 
 	componentWillMount = async () => {
@@ -120,7 +125,7 @@ class SpecificServiceScreen extends Component {
 	};
 
 	renderIcon = () => {
-		if (this.props.email === this.props.service.email) {
+		if (this.props.currentUserEmail === this.props.service.email) {
 			return (
 				<Icon
 					type="Entypo"
@@ -153,6 +158,79 @@ class SpecificServiceScreen extends Component {
 			subcategoryName = subcategoryName.join(' ');
 			return <Text style={descriptionStyle}> - {subcategoryName}</Text>;
 		}
+	};
+
+	ratingCompleted = (count) => {
+		console.log(count);
+	};
+
+	descriptionChangeText = (text) => {
+		const { descriptionCharCount } = this.state;
+		if (descriptionCharCount < maxCharCount) {
+			this.setState({ description: text });
+		}
+		this.setState({ descriptionCharCount: maxCharCount - text.length });
+	};
+
+	renderCurrentUserReview = () => {
+		const {
+			cardStyle,
+			descriptionStyle,
+			infoStyle,
+			textAreaStyle,
+			charCountStyle
+		} = styles;
+		if (this.props.currentUserEmail !== this.props.service.email) {
+			// TODO: check if user already added comment
+			return (
+				<Card style={cardStyle}>
+					<CardItem>
+						<Body>
+							<Text style={{ fontSize: 17 }}>{this.props.displayName}</Text>
+							<View style={{ marginTop: 10, marginLeft: -5 }}>
+								<AirbnbRating
+									showRating
+									style={{ margin: 25 }}
+									count={5}
+									defaultRating={0}
+									size={30}
+									onFinishRating={(count) => this.ratingCompleted(count)}
+								/>
+							</View>
+							<Textarea
+								style={textAreaStyle}
+								rowSpan={2}
+								placeholder="Add your comments here"
+								maxLength={maxCharCount}
+								value={this.state.description}
+								onChangeText={(text) => this.descriptionChangeText(text)}
+							/>
+							<Text style={charCountStyle}>
+								{this.state.descriptionCharCount}
+							</Text>
+						</Body>
+					</CardItem>
+				</Card>
+			);
+		}
+	};
+
+	renderAllReviews = () => {
+		const { descriptionStyle } = styles;
+		return (
+			<View style={{ marginTop: 20 }}>
+				<Text style={descriptionStyle}>Render 5 comments here </Text>
+			</View>
+		);
+	};
+
+	showMoreComments = () => {
+		const { showMoreStyle } = styles;
+		return (
+			<View style={{ marginTop: 10, marginBottom: 40 }}>
+				<Text style={showMoreStyle}>Show more</Text>
+			</View>
+		);
 	};
 
 	render() {
@@ -202,101 +280,113 @@ class SpecificServiceScreen extends Component {
 						</Button>
 					</Right>
 				</Header>
+				<KeyboardAvoidingView
+					behavior={Platform.OS === 'android' ? 'padding' : null}
+					style={{ flex: 1, justifyContent: 'center' }}
+				>
+					<Content style={contentStyle} padder>
+						{/* TODO: Add Rating average here */}
+						{/* <Text style={subtitleStyle}>Rating </Text> */}
 
-				<Content style={contentStyle} padder>
-					{/* TODO: Add Rating average here */}
-					{/* <Text style={subtitleStyle}>Rating </Text> */}
-
-					{/* <View style={rowDirectionStyle}>
+						{/* <View style={rowDirectionStyle}>
                         <Text style={subtitleStyle}>Category</Text>
                         <Text style={regularTextStyle}>{service.title}</Text>
 					</View> */}
-					<Text style={[subtitleStyle, { marginTop: 0 }]}>Category</Text>
-					<Card style={cardStyle}>
-						<CardItem>
-							<Body style={{ flexDirection: 'row' }}>
-								<Text style={descriptionStyle}>{categoryName}</Text>
-								{this.renderSubcategoryName()}
-							</Body>
-						</CardItem>
-					</Card>
+						<Text style={[subtitleStyle, { marginTop: 5 }]}>Category</Text>
+						<Card style={cardStyle}>
+							<CardItem>
+								<Body style={{ flexDirection: 'row' }}>
+									<Text style={descriptionStyle}>{categoryName}</Text>
+									{this.renderSubcategoryName()}
+								</Body>
+							</CardItem>
+						</Card>
 
-					<Text style={subtitleStyle}>Service Description </Text>
-					<Card style={cardStyle}>
-						<CardItem>
-							<Body>
-								<Text style={descriptionStyle}>{service.description}</Text>
-							</Body>
-						</CardItem>
-					</Card>
-					<Text style={subtitleStyle}>Contact Information </Text>
-					<Card style={cardStyle}>
-						<CardItem>
-							<Body>
-								<Text selectable style={infoStyle}>
-									{service.displayName}:
-								</Text>
-								<Text selectable style={infoStyle}>
-									{service.email}
-								</Text>
-								<Text selectable style={infoStyle}>
-									{service.phone}
-								</Text>
-							</Body>
-						</CardItem>
-					</Card>
-					<Text style={subtitleStyle}>
-						{service.locationData.city}, {service.locationData.region}
-					</Text>
-					<Card style={cardStyle}>
-						<CardItem>
-							<Body>
-								<Text style={descriptionStyle}>
-									We cover the following area
-								</Text>
-								<Animated style={mapStyle} region={this.state.region}>
-									<MapView.Circle
-										center={coords}
-										radius={meters}
-										strokeColor="#FF7043"
-									/>
-								</Animated>
-								<Button
-									transparent
-									style={{ position: 'absolute', marginTop: 20, marginLeft: 5 }}
-								>
-									<Icon
-										type="MaterialIcons"
-										name="my-location"
-										style={{ color: 'black' }}
-										onPress={() => {
-											this.setState({ region: fixedRegion });
+						<Text style={subtitleStyle}>Service Description </Text>
+						<Card style={cardStyle}>
+							<CardItem>
+								<Body>
+									<Text style={descriptionStyle}>{service.description}</Text>
+								</Body>
+							</CardItem>
+						</Card>
+						<Text style={subtitleStyle}>Contact Information </Text>
+						<Card style={cardStyle}>
+							<CardItem>
+								<Body>
+									<Text selectable style={descriptionStyle}>
+										{service.displayName}
+									</Text>
+									<Text selectable style={infoStyle}>
+										{service.email}
+									</Text>
+									<Text selectable style={infoStyle}>
+										{service.phone}
+									</Text>
+								</Body>
+							</CardItem>
+						</Card>
+						<Text style={subtitleStyle}>
+							{service.locationData.city}, {service.locationData.region}
+						</Text>
+						<Card style={cardStyle}>
+							<CardItem>
+								<Body>
+									<Text style={descriptionStyle}>
+										We cover the following area
+									</Text>
+									<Animated style={mapStyle} region={this.state.region}>
+										<MapView.Circle
+											center={coords}
+											radius={meters}
+											strokeColor="#FF7043"
+										/>
+									</Animated>
+									<Button
+										transparent
+										style={{
+											position: 'absolute',
+											marginTop: 20,
+											marginLeft: 5
 										}}
-									/>
-								</Button>
-							</Body>
-						</CardItem>
-					</Card>
-					<View style={buttonViewStyle}>
-						<Button
-							bordered
-							style={buttonStyle}
-							onPress={() => this.callPressed()}
-						>
-							<Text style={{ color: '#FF7043', fontSize: 14 }}>Call Now</Text>
-						</Button>
-						<Button
-							bordered
-							style={[buttonStyle, { marginLeft: '5%' }]}
-							onPress={() => this.openEmail()}
-						>
-							<Text style={{ color: '#FF7043', fontSize: 14 }}>Email Now</Text>
-						</Button>
-					</View>
-					<Text style={subtitleStyle}>Reviews</Text>
-
-					{/* TODO: Add a share fab button */}
-				</Content>
+									>
+										<Icon
+											type="MaterialIcons"
+											name="my-location"
+											style={{ color: 'black' }}
+											onPress={() => {
+												this.setState({ region: fixedRegion });
+											}}
+										/>
+									</Button>
+								</Body>
+							</CardItem>
+						</Card>
+						<View style={buttonViewStyle}>
+							<Button
+								bordered
+								style={buttonStyle}
+								onPress={() => this.callPressed()}
+							>
+								<Text style={{ color: '#FF7043', fontSize: 15 }}>Call Now</Text>
+							</Button>
+							<Button
+								bordered
+								style={[buttonStyle, { marginLeft: '5%' }]}
+								onPress={() => this.openEmail()}
+							>
+								<Text style={{ color: '#FF7043', fontSize: 15 }}>
+									Email Now
+								</Text>
+							</Button>
+						</View>
+						<Text style={subtitleStyle}>Reviews</Text>
+						{this.renderCurrentUserReview()}
+						{this.renderAllReviews()}
+						{this.showMoreComments()}
+						{/* TODO: Add a share fab button */}
+					</Content>
+				</KeyboardAvoidingView>
 			</Container>
 		);
 	}
@@ -311,22 +401,23 @@ const styles = {
 	},
 	contentStyle: {
 		flex: 1,
-		marginTop: 10
+		margin: 10
 	},
 	cardStyle: {
 		shadowColor: null,
 		shadowOffset: null,
 		shadowOpacity: null,
-		elevation: null
+		elevation: null,
+		marginBottom: null
 	},
 	descriptionStyle: {
-		fontSize: 14
+		fontSize: 15
 	},
 	subtitleStyle: {
 		marginTop: 10,
 		fontWeight: 'bold',
 		color: '#4DB6AC',
-		fontSize: 16
+		fontSize: 17
 	},
 	footerBarStyle: {
 		position: 'absolute',
@@ -337,13 +428,13 @@ const styles = {
 		color: '#FF7043'
 	},
 	mapStyle: {
-		width: SCREEN_WIDTH - ((SCREEN_WIDTH * 7) / 100) * 2,
+		width: SCREEN_WIDTH - ((SCREEN_WIDTH * 10) / 100) * 2,
 		height: 200,
 		marginTop: 10
 	},
 	infoStyle: {
 		marginTop: 5,
-		fontSize: 14
+		fontSize: 15
 	},
 	buttonViewStyle: {
 		marginTop: 10,
@@ -354,13 +445,28 @@ const styles = {
 	},
 	buttonStyle: {
 		borderColor: '#FF7043'
+	},
+	textAreaStyle: {
+		marginTop: 10,
+		marginLeft: -10,
+		width: '100%'
+	},
+	charCountStyle: {
+		color: '#bfc6ea',
+		textAlign: 'right',
+		marginLeft: '90%'
+	},
+	showMoreStyle: {
+		color: '#03A9F4',
+		fontSize: 15
 	}
 };
 
 const mapStateToProps = (state) => ({
 	service: state.selectedService.service,
 	favorites: state.favoriteServices,
-	email: state.auth.email
+	currentUserEmail: state.auth.email,
+	displayName: state.auth.displayName
 });
 
 export default connect(
