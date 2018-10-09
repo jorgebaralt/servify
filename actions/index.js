@@ -5,3 +5,4 @@ export * from './service_actions';
 export * from './favorite_actions';
 export * from './feedback_actions';
 export * from './category_filter_actions';
+export * from './rating_actions';

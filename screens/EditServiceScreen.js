@@ -16,7 +16,13 @@ import {
 	Toast,
 	Spinner
 } from 'native-base';
-import { Alert, KeyboardAvoidingView, Platform, View } from 'react-native';
+import {
+	Alert,
+	KeyboardAvoidingView,
+	Platform,
+	View,
+	Keyboard
+} from 'react-native';
 import { connect } from 'react-redux';
 import { deleteService, resetMessageService, updateService } from '../actions';
 
@@ -58,6 +64,7 @@ class EditServiceScreen extends Component {
 	};
 
 	deleteService = async () => {
+		Keyboard.dismiss();
 		this.setState({ loading: true });
 		await this.props.deleteService(this.props.service);
 		this.setState({
@@ -84,6 +91,7 @@ class EditServiceScreen extends Component {
 	};
 
 	updateService = async () => {
+		Keyboard.dismiss();
 		this.setState({ loading: true });
 		const updatedService = {
 			category: this.props.service.category,
@@ -94,7 +102,9 @@ class EditServiceScreen extends Component {
 			miles: this.state.miles,
 			description: this.state.description,
 			displayName: this.props.displayName,
-			email: this.props.email
+			email: this.props.email,
+			ratingCount: this.props.service.ratingCount,
+			ratingSum: this.props.service.ratingSum
 		};
 		await this.props.updateService(updatedService);
 		this.setState({ loading: false });

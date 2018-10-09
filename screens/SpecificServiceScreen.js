@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { View, Dimensions, Platform, KeyboardAvoidingView } from 'react-native';
+import {
+	View,
+	Dimensions,
+	Platform,
+	KeyboardAvoidingView,
+	Keyboard,
+} from 'react-native';
 import { AirbnbRating, Rating } from 'react-native-ratings';
 import {
 	Container,
@@ -14,12 +20,13 @@ import {
 	Content,
 	Card,
 	CardItem,
-	Textarea
+	Textarea,
+	Spinner
 } from 'native-base';
 import { connect } from 'react-redux';
 import { MapView, Linking } from 'expo';
 import { AnimatedRegion, Animated } from 'react-native-maps';
-import { updateFavorite } from '../actions';
+import { updateFavorite, submitReview, getReviews } from '../actions';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const maxCharCount = 100;
@@ -34,8 +41,10 @@ class SpecificServiceScreen extends Component {
 		isFav: false,
 		favLoading: false,
 		region: undefined,
-		description: '',
-		descriptionCharCount: maxCharCount
+		comment: '',
+		commentCharCount: maxCharCount,
+		starCount: 0,
+		loadingUserComment: false
 	};
 
 	componentWillMount = async () => {
@@ -75,8 +84,11 @@ class SpecificServiceScreen extends Component {
 		};
 
 		this.setState({
-			region: new AnimatedRegion(fixedRegion)
+			region: new AnimatedRegion(fixedRegion),
+			loadingUserComment: true
 		});
+		await this.props.getReviews(service, this.props.currentUserEmail);
+		this.setState({ loadingUserComment: false });
 	};
 
 	onBackPress = () => {
@@ -160,16 +172,26 @@ class SpecificServiceScreen extends Component {
 		}
 	};
 
-	ratingCompleted = (count) => {
-		console.log(count);
+	commentChangeText = (text) => {
+		const { commentCharCount } = this.state;
+		if (commentCharCount < maxCharCount) {
+			this.setState({ comment: text });
+		}
+		this.setState({ commentCharCount: maxCharCount - text.length });
 	};
 
-	descriptionChangeText = (text) => {
-		const { descriptionCharCount } = this.state;
-		if (descriptionCharCount < maxCharCount) {
-			this.setState({ description: text });
+	submitReview = async () => {
+		this.setState({ loadingUserComment: true });
+		if (this.state.starCount > 0) {
+			const review = {
+				rating: this.state.starCount,
+				comment: this.state.comment,
+				reviewerDisplayName: this.props.displayName,
+				reviewerEmail: this.props.currentUserEmail
+			};
+			await this.props.submitReview(this.props.service, review);
+			this.setState({ loadingUserComment: false });
 		}
-		this.setState({ descriptionCharCount: maxCharCount - text.length });
 	};
 
 	renderCurrentUserReview = () => {
@@ -178,39 +200,80 @@ class SpecificServiceScreen extends Component {
 			descriptionStyle,
 			infoStyle,
 			textAreaStyle,
-			charCountStyle
+			charCountStyle,
+			subtitleStyle,
+			commentDate
 		} = styles;
+		const { currentUserReview } = this.props;
+		if (this.state.loadingUserComment) {
+			return <Spinner color="orange" />;
+		}
 		if (this.props.currentUserEmail !== this.props.service.email) {
-			// TODO: check if user already added comment
+			// do a user review
+			if (!currentUserReview) {
+				return (
+					<View>
+						<Card style={cardStyle}>
+							<CardItem>
+								<Body>
+									<Text style={{ fontSize: 17 }}>{this.props.displayName}</Text>
+									<View style={{ marginTop: 10, marginLeft: -5 }}>
+										<AirbnbRating
+											showRating
+											style={{ margin: 25 }}
+											count={5}
+											defaultRating={0}
+											size={30}
+											onFinishRating={(count) => this.setState({ starCount: count })
+											}
+										/>
+									</View>
+									<Textarea
+										style={textAreaStyle}
+										rowSpan={2}
+										placeholder="Add your comments here"
+										maxLength={maxCharCount}
+										value={this.state.comment}
+										onChangeText={(text) => this.commentChangeText(text)}
+									/>
+									<Text style={charCountStyle}>
+										{this.state.commentCharCount}
+									</Text>
+								</Body>
+							</CardItem>
+						</Card>
+						<Button
+							bordered
+							style={{ marginLeft: '60%', marginTop: 10 }}
+							onPress={() => this.submitReview()}
+						>
+							<Text style={{ fontSize: 15 }}>Submit review</Text>
+						</Button>
+					</View>
+				);
+			}
+			// See already created comment
 			return (
-				<Card style={cardStyle}>
-					<CardItem>
-						<Body>
-							<Text style={{ fontSize: 17 }}>{this.props.displayName}</Text>
-							<View style={{ marginTop: 10, marginLeft: -5 }}>
-								<AirbnbRating
-									showRating
-									style={{ margin: 25 }}
-									count={5}
-									defaultRating={0}
-									size={30}
-									onFinishRating={(count) => this.ratingCompleted(count)}
-								/>
-							</View>
-							<Textarea
-								style={textAreaStyle}
-								rowSpan={2}
-								placeholder="Add your comments here"
-								maxLength={maxCharCount}
-								value={this.state.description}
-								onChangeText={(text) => this.descriptionChangeText(text)}
-							/>
-							<Text style={charCountStyle}>
-								{this.state.descriptionCharCount}
-							</Text>
-						</Body>
-					</CardItem>
-				</Card>
+				<View>
+					<Text style={subtitleStyle}>Your review</Text>
+					<Card style={cardStyle}>
+						<CardItem>
+							<Body>
+								<Text style={{ fontSize: 15 }}>{this.props.displayName}</Text>
+								<View style={{ marginLeft: -5, flexDirection: 'row' }}>
+									<AirbnbRating
+										showRating
+										count={5}
+										defaultRating={currentUserReview.rating}
+										size={15}
+									/>
+									<Text style={commentDate}>{currentUserReview.timestamp.toString()}</Text>
+								</View>
+								<Text style={{ fontSize: 14, marginTop: 5 }}>{currentUserReview.comment}</Text>
+							</Body>
+						</CardItem>
+					</Card>
+				</View>
 			);
 		}
 	};
@@ -380,7 +443,6 @@ class SpecificServiceScreen extends Component {
 								</Text>
 							</Button>
 						</View>
-						<Text style={subtitleStyle}>Reviews</Text>
 						{this.renderCurrentUserReview()}
 						{this.renderAllReviews()}
 						{this.showMoreComments()}
@@ -459,6 +521,12 @@ const styles = {
 	showMoreStyle: {
 		color: '#03A9F4',
 		fontSize: 15
+	},
+	commentDate: {
+		fontSize: 13,
+		color: 'gray',
+		marginTop: 3,
+		marginLeft: 10
 	}
 };
 
@@ -466,10 +534,16 @@ const mapStateToProps = (state) => ({
 	service: state.selectedService.service,
 	favorites: state.favoriteServices,
 	currentUserEmail: state.auth.email,
-	displayName: state.auth.displayName
+	displayName: state.auth.displayName,
+	reviews: state.ratings.reviews,
+	currentUserReview: state.ratings.currentUserReview
 });
 
 export default connect(
 	mapStateToProps,
-	{ updateFavorite }
+	{
+		updateFavorite,
+		submitReview,
+		getReviews
+	}
 )(SpecificServiceScreen);

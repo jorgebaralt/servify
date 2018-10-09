@@ -400,12 +400,12 @@ const styles = {
 		marginTop: 30
 	},
 	buttonStyle: {
-		marginLeft: '50%',
+		marginLeft: '67%',
 		marginTop: 10,
 		marginBottom: 20
 	},
 	charCountStyle: {
-		right: '-33%',
+		marginLeft: '80%',
 		color: '#bfc6ea'
 	}
 };

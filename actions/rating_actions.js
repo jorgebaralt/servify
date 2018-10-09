@@ -1,0 +1,61 @@
+import axios from 'axios';
+import _ from 'lodash';
+import {
+	SUBMIT_REVIEW_SUCCESS,
+	SUBMIT_REVIEW_FAIL,
+	GET_REVIEWS_SUCCESS,
+	GET_REVIEWS_FAIL,
+	USER_ALREADY_REVIEW
+} from './types';
+
+export const submitReview = (service, review) => async (dispatch) => {
+	const data = {
+		service,
+		review
+	};
+	const submitReviewUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/postRating';
+	try {
+		await axios.post(submitReviewUrl, data);
+		dispatch({ type: USER_ALREADY_REVIEW, payload: review });
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+export const getReviews = (service, userEmail) => async (dispatch) => {
+	const getReviewsUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/getRatings';
+	try {
+		const { data } = await axios.get(getReviewsUrl, { params: service });
+		const newData = handleData(data, userEmail);
+		if (newData.currentUserReview) {
+			dispatch({ type: USER_ALREADY_REVIEW,payload: newData.currentUserReview });
+			dispatch({ type: GET_REVIEWS_SUCCESS, payload: newData.data });
+		} else {
+			dispatch({ type: GET_REVIEWS_SUCCESS, payload: newData });
+		}
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+const handleData = (data, userEmail) => {
+	let postIndex;
+	const currentUserReview = _.find(data, (review, i) => {
+		if (review.reviewerEmail === userEmail) {
+			postIndex = i;
+			return review;
+		}
+	});
+	if (currentUserReview) {
+		// remove user comment from list
+		data.splice(postIndex, 1);
+		// limit 5 newest comments
+		data.splice(5);
+		const newData = {
+			data,
+			currentUserReview
+		};
+		return newData;
+	}
+	return data;
+};

@@ -126,7 +126,6 @@ export const logOut = () => async (dispatch) => {
 export const resetMessage = () => async (dispatch) => dispatch({ type: RESET_MESSAGE_CREATE });
 
 export const passwordReset = (email) => async (dispatch) => {
-	console.log('reseting pass');
 	try {
 		await firebase.auth().sendPasswordResetEmail(email);
 		return dispatch({
