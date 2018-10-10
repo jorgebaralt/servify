@@ -5,8 +5,9 @@ import {
 	Platform,
 	KeyboardAvoidingView,
 	Keyboard,
+	FlatList
 } from 'react-native';
-import { AirbnbRating, Rating } from 'react-native-ratings';
+import { AirbnbRating } from 'react-native-ratings';
 import {
 	Container,
 	Header,
@@ -197,12 +198,10 @@ class SpecificServiceScreen extends Component {
 	renderCurrentUserReview = () => {
 		const {
 			cardStyle,
-			descriptionStyle,
-			infoStyle,
 			textAreaStyle,
 			charCountStyle,
 			subtitleStyle,
-			commentDate
+			commentDateStyle
 		} = styles;
 		const { currentUserReview } = this.props;
 		if (this.state.loadingUserComment) {
@@ -267,9 +266,13 @@ class SpecificServiceScreen extends Component {
 										defaultRating={currentUserReview.rating}
 										size={15}
 									/>
-									<Text style={commentDate}>{currentUserReview.timestamp.toString()}</Text>
+									<Text style={commentDateStyle}>
+										{currentUserReview.timestamp.toString()}
+									</Text>
 								</View>
-								<Text style={{ fontSize: 14, marginTop: 5 }}>{currentUserReview.comment}</Text>
+								<Text style={{ fontSize: 14, marginTop: 5 }}>
+									{currentUserReview.comment}
+								</Text>
 							</Body>
 						</CardItem>
 					</Card>
@@ -278,11 +281,47 @@ class SpecificServiceScreen extends Component {
 		}
 	};
 
-	renderAllReviews = () => {
-		const { descriptionStyle } = styles;
+	renderReviews = (review) => {
+		const { commentDateStyle, cardStyle } = styles;
 		return (
-			<View style={{ marginTop: 20 }}>
-				<Text style={descriptionStyle}>Render 5 comments here </Text>
+			<View>
+				<Card style={cardStyle}>
+					<CardItem>
+						<Body>
+							<Text style={{ fontSize: 15 }}>{review.reviewerDisplayName}</Text>
+							<View style={{ marginLeft: -5, flexDirection: 'row' }}>
+								<AirbnbRating
+									showRating
+									count={5}
+									defaultRating={review.rating}
+									size={15}
+								/>
+								<Text style={commentDateStyle}>
+									{review.timestamp.toString()}
+								</Text>
+							</View>
+							<Text style={{ fontSize: 14, marginTop: 5 }}>
+								{review.comment}
+							</Text>
+						</Body>
+					</CardItem>
+				</Card>
+			</View>
+		);		
+	}
+
+	renderAllReviews = () => {
+		const { subtitleStyle } = styles;
+		return (
+			<View>
+				<Text style={subtitleStyle}>All reviews</Text>
+				<FlatList
+					style={{ marginTop: 10 }}
+					data={this.props.reviews}
+					renderItem={({ item }) => this.renderReviews(item)}
+					keyExtractor={(item) => item.reviewerEmail}
+					enableEmptySections
+				/>
 			</View>
 		);
 	};
@@ -446,7 +485,6 @@ class SpecificServiceScreen extends Component {
 						{this.renderCurrentUserReview()}
 						{this.renderAllReviews()}
 						{this.showMoreComments()}
-						{/* TODO: Add a share fab button */}
 					</Content>
 				</KeyboardAvoidingView>
 			</Container>
@@ -522,7 +560,7 @@ const styles = {
 		color: '#03A9F4',
 		fontSize: 15
 	},
-	commentDate: {
+	commentDateStyle: {
 		fontSize: 13,
 		color: 'gray',
 		marginTop: 3,

@@ -4,7 +4,8 @@ import {
 	TouchableOpacity,
 	DeviceEventEmitter,
 	FlatList,
-	RefreshControl
+	RefreshControl,
+	View
 } from 'react-native';
 import {
 	Header,
@@ -20,6 +21,7 @@ import {
 	Right,
 	Spinner
 } from 'native-base';
+import { AirbnbRating } from 'react-native-ratings';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo';
 import {
@@ -112,7 +114,19 @@ class ServicesListScreen extends Component {
 				<Card style={cardStyle}>
 					<CardItem header style={cardHeaderStyle}>
 						<Text style={titleStyle}>{service.title}</Text>
-						<Text style={displayNameStyle}>by: {service.displayName}</Text>
+						<View style={phoneLocationStyle}>
+							<Text style={displayNameStyle}>by: {service.displayName}</Text>
+							<View style={{ marginLeft: '10%' }}>
+								<AirbnbRating
+									count={5}
+									defaultRating={service.ratingSum / service.ratingCount}
+									size={15}
+								/>
+							</View>
+							<Text style={[displayNameStyle, { marginTop: 2 }]}>
+								({(service.ratingSum / service.ratingCount).toFixed(1)})
+							</Text>
+						</View>
 					</CardItem>
 					<CardItem style={cardItemStyle}>
 						<Body style={phoneLocationStyle}>
@@ -133,7 +147,9 @@ class ServicesListScreen extends Component {
 							<Text>{displayDescription}</Text>
 						</Body>
 						<Right>
-							<Text style={{ color: 'gray' }}>{Math.floor(service.distance)} miles</Text>
+							<Text style={{ color: 'gray' }}>
+								{Math.floor(service.distance)} miles
+							</Text>
 						</Right>
 					</CardItem>
 				</Card>
@@ -152,13 +168,13 @@ class ServicesListScreen extends Component {
 						keyExtractor={(item) => item.title}
 						enableEmptySections
 						refreshControl={(
-							<RefreshControl
+<RefreshControl
 								refreshing={this.state.refreshing}
 								onRefresh={() => this.decideGetService()}
 								tintColor={this.props.category.color[0]}
 								colors={[this.props.category.color[0]]}
-							/>
-						)}
+/>
+)}
 					/>
 				);
 			}
