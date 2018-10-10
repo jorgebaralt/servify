@@ -159,7 +159,7 @@ class SpecificServiceScreen extends Component {
 				<Icon
 					type="Entypo"
 					name="dots-three-horizontal"
-					style={{ color: 'black' }}
+					style={{ color: 'black', fontSize: 16 }}
 					onPress={() => this.props.navigation.navigate('editService')}
 				/>
 			);
@@ -232,14 +232,10 @@ class SpecificServiceScreen extends Component {
 	};
 
 	openAlert = () => {
-		Alert.alert('What would you like to do?', '', [
+		Alert.alert('Delete', 'Do you want to delete your review?', [
 			{
 				text: 'Delete',
 				onPress: () => this.deleteComment()
-			},
-			{
-				text: 'Edit',
-				onPress: () => this.props.navigation.navigate()
 			},
 			{
 				text: 'Cancel'
@@ -377,25 +373,30 @@ class SpecificServiceScreen extends Component {
 
 	renderAllReviews = () => {
 		const { subtitleStyle } = styles;
-		return (
-			<View>
-				<Text style={subtitleStyle}>All reviews</Text>
-				<FlatList
-					style={{ marginTop: 10 }}
-					data={this.props.reviews}
-					renderItem={({ item }) => this.renderReviews(item)}
-					keyExtractor={(item) => item.reviewerEmail}
-					enableEmptySections
-				/>
-			</View>
-		);
+		if (this.props.reviews) {
+			if (this.props.reviews.length !== 0) {
+				return (
+					<View>
+						<Text style={subtitleStyle}>All reviews</Text>
+						<FlatList
+							style={{ marginTop: 10 }}
+							data={this.props.reviews}
+							renderItem={({ item }) => this.renderReviews(item)}
+							keyExtractor={(item) => item.reviewerEmail}
+							enableEmptySections
+						/>
+					</View>
+				);
+			}
+		}
 	};
 
+	// TODO: show more comments  
 	showMoreComments = () => {
 		const { showMoreStyle } = styles;
 		return (
 			<View style={{ marginTop: 10, marginBottom: 40 }}>
-				<Text style={showMoreStyle}>Show more</Text>
+				{/* <Text style={showMoreStyle}>Show more</Text> */}
 			</View>
 		);
 	};
