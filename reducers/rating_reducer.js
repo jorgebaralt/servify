@@ -1,7 +1,8 @@
 import {
 	GET_REVIEWS_SUCCESS,
 	GET_REVIEWS_FAIL,
-	USER_ALREADY_REVIEW
+	USER_ALREADY_REVIEW,
+	RESET_REVIEW
 } from '../actions/types';
 
 export default (state = {}, action) => {
@@ -12,6 +13,8 @@ export default (state = {}, action) => {
 			return { ...state, reviews: action.payload };
 		case GET_REVIEWS_FAIL:
 			return { ...state, reviews: undefined };
+		case RESET_REVIEW:
+			return {};
 		default:
 			return state;
 	}

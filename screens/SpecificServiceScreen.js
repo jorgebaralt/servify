@@ -27,7 +27,12 @@ import {
 import { connect } from 'react-redux';
 import { MapView, Linking } from 'expo';
 import { AnimatedRegion, Animated } from 'react-native-maps';
-import { updateFavorite, submitReview, getReviews } from '../actions';
+import {
+	updateFavorite,
+	submitReview,
+	getReviews,
+	resetReview
+} from '../actions';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const maxCharCount = 100;
@@ -88,11 +93,20 @@ class SpecificServiceScreen extends Component {
 			region: new AnimatedRegion(fixedRegion),
 			loadingUserComment: true
 		});
-		await this.props.getReviews(service, this.props.currentUserEmail);
-		this.setState({ loadingUserComment: false });
 	};
 
-	onBackPress = () => {
+	async componentDidMount() {
+		const { service } = this.props;
+		await this.props.getReviews(service, this.props.currentUserEmail);
+		this.setState({ loadingUserComment: false });
+	}
+
+	async componentWillUnmount() {
+		// cancel axios calls
+	}
+
+	onBackPress = async () => {
+		await this.props.resetReview();
 		this.props.navigation.goBack();
 	};
 
@@ -195,6 +209,17 @@ class SpecificServiceScreen extends Component {
 		}
 	};
 
+	renderCommentDate = (currentUserReview) => {
+		if (currentUserReview.timestamp) {
+			return (
+				<Text style={{ color: 'gray', marginTop: -5 }}>
+					{currentUserReview.timestamp}
+				</Text>
+			);
+		}
+		return <Text style={{ color: 'gray', marginTop: -5 }}>a moment ago</Text>;
+	};
+
 	renderCurrentUserReview = () => {
 		const {
 			cardStyle,
@@ -245,6 +270,7 @@ class SpecificServiceScreen extends Component {
 							bordered
 							style={{ marginLeft: '60%', marginTop: 10 }}
 							onPress={() => this.submitReview()}
+							disabled={this.state.starCount === 0}
 						>
 							<Text style={{ fontSize: 15 }}>Submit review</Text>
 						</Button>
@@ -267,7 +293,7 @@ class SpecificServiceScreen extends Component {
 										size={15}
 									/>
 									<Text style={commentDateStyle}>
-										{currentUserReview.timestamp.toString()}
+										{this.renderCommentDate(currentUserReview)}
 									</Text>
 								</View>
 								<Text style={{ fontSize: 14, marginTop: 5 }}>
@@ -307,8 +333,8 @@ class SpecificServiceScreen extends Component {
 					</CardItem>
 				</Card>
 			</View>
-		);		
-	}
+		);
+	};
 
 	renderAllReviews = () => {
 		const { subtitleStyle } = styles;
@@ -582,6 +608,7 @@ export default connect(
 	{
 		updateFavorite,
 		submitReview,
-		getReviews
+		getReviews,
+		resetReview
 	}
 )(SpecificServiceScreen);

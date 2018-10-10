@@ -45,10 +45,12 @@ class ServicesListScreen extends Component {
 			'willFocus',
 			this.handleAndroidBack
 		);
-
 		this.setState({ dataLoaded: false });
-		await this.decideGetService();
 	};
+
+	async componentDidMount() {
+		await this.decideGetService();
+	}
 
 	componentWillUnmount() {
 		willFocusSubscription.remove();
@@ -94,6 +96,15 @@ class ServicesListScreen extends Component {
 		this.setState({ dataLoaded: true, refreshing: false });
 	};
 
+	renderRating = (service) => {
+		if (service.ratingCount > 0) {
+			return (
+				<Text>{(service.ratingSum / service.ratingCount).toFixed(1)}</Text>
+			);
+		}
+		return <Text>(0)</Text>;
+	};
+
 	renderServices = (service) => {
 		const {
 			cardStyle,
@@ -101,7 +112,8 @@ class ServicesListScreen extends Component {
 			phoneLocationStyle,
 			displayNameStyle,
 			cardHeaderStyle,
-			cardItemStyle
+			cardItemStyle,
+			reviewLocationStyle
 		} = styles;
 		const displayDescription = service.description.substring(0, 30) + '...';
 		return (
@@ -114,17 +126,17 @@ class ServicesListScreen extends Component {
 				<Card style={cardStyle}>
 					<CardItem header style={cardHeaderStyle}>
 						<Text style={titleStyle}>{service.title}</Text>
-						<View style={phoneLocationStyle}>
+						<View style={reviewLocationStyle}>
 							<Text style={displayNameStyle}>by: {service.displayName}</Text>
-							<View style={{ marginLeft: '10%' }}>
+							<View style={{ marginLeft: '10%', marginTop: -3 }}>
 								<AirbnbRating
 									count={5}
 									defaultRating={service.ratingSum / service.ratingCount}
 									size={15}
 								/>
 							</View>
-							<Text style={[displayNameStyle, { marginTop: 2 }]}>
-								({(service.ratingSum / service.ratingCount).toFixed(1)})
+							<Text style={[displayNameStyle, { marginTop: -3 }]}>
+								{this.renderRating(service)}
 							</Text>
 						</View>
 					</CardItem>
@@ -233,6 +245,10 @@ const styles = {
 		fontSize: 18
 	},
 	phoneLocationStyle: {
+		flexDirection: 'row',
+		flex: 1
+	},
+	reviewLocationStyle: {
 		flexDirection: 'row',
 		flex: 1
 	},

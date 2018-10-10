@@ -42,3 +42,4 @@ export const SUBMIT_REVIEW_FAIL = 'submit_review_fail';
 export const GET_REVIEWS_SUCCESS = 'get_reviews_success';
 export const GET_REVIEWS_FAIL = 'get_reviews_fail';
 export const USER_ALREADY_REVIEW = 'user_already_review';
+export const RESET_REVIEW = 'reset_review';
