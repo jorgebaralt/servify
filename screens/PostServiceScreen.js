@@ -225,14 +225,14 @@ class PostServiceScreen extends Component {
 						<Picker
 							mode="dropdown"
 							iosIcon={(
-								<Icon
+<Icon
 									name={
 										this.state.selectedSubcategory
 											? undefined
 											: 'ios-arrow-down-outline'
 									}
-								/>
-							)}
+/>
+)}
 							placeholder="Pick a Subcategory"
 							placeholderStyle={{ color: '#bfc6ea', left: -15 }}
 							selectedValue={this.state.selectedSubcategory}
@@ -290,14 +290,14 @@ class PostServiceScreen extends Component {
 										placeholder="Pick a Category"
 										placeholderStyle={{ color: '#bfc6ea', left: -15 }}
 										iosIcon={(
-											<Icon
+<Icon
 												name={
 													this.state.selectedCategory
 														? undefined
 														: 'ios-arrow-down-outline'
 												}
-											/>
-										)}
+/>
+)}
 										selectedValue={this.state.selectedCategory}
 										onValueChange={(value) => this.setState({ selectedCategory: value })
 										}

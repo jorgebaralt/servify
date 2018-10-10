@@ -5,7 +5,8 @@ import {
 	Platform,
 	KeyboardAvoidingView,
 	Keyboard,
-	FlatList
+	FlatList,
+	Alert
 } from 'react-native';
 import { AirbnbRating } from 'react-native-ratings';
 import {
@@ -31,7 +32,8 @@ import {
 	updateFavorite,
 	submitReview,
 	getReviews,
-	resetReview
+	resetReview,
+	deleteReview
 } from '../actions';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -220,6 +222,31 @@ class SpecificServiceScreen extends Component {
 		return <Text style={{ color: 'gray', marginTop: -5 }}>a moment ago</Text>;
 	};
 
+	deleteComment = async () => {
+		this.setState({ loadingUserComment: true });
+		await this.props.deleteReview(
+			this.props.service,
+			this.props.currentUserReview
+		);
+		this.setState({ loadingUserComment: false });
+	};
+
+	openAlert = () => {
+		Alert.alert('What would you like to do?', '', [
+			{
+				text: 'Delete',
+				onPress: () => this.deleteComment()
+			},
+			{
+				text: 'Edit',
+				onPress: () => this.props.navigation.navigate()
+			},
+			{
+				text: 'Cancel'
+			}
+		]);
+	};
+
 	renderCurrentUserReview = () => {
 		const {
 			cardStyle,
@@ -283,6 +310,18 @@ class SpecificServiceScreen extends Component {
 					<Text style={subtitleStyle}>Your review</Text>
 					<Card style={cardStyle}>
 						<CardItem>
+							<Icon
+								name="dots-three-horizontal"
+								type="Entypo"
+								style={{
+									position: 'absolute',
+									right: 0,
+									top: 0,
+									color: 'gray'
+								}}
+								onPress={() => this.openAlert()}
+							/>
+
 							<Body>
 								<Text style={{ fontSize: 15 }}>{this.props.displayName}</Text>
 								<View style={{ marginLeft: -5, flexDirection: 'row' }}>
@@ -609,6 +648,7 @@ export default connect(
 		updateFavorite,
 		submitReview,
 		getReviews,
-		resetReview
+		resetReview,
+		deleteReview
 	}
 )(SpecificServiceScreen);
