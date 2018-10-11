@@ -391,7 +391,7 @@ class SpecificServiceScreen extends Component {
 		}
 	};
 
-	// TODO: show more comments  
+	// TODO: show more comments
 	showMoreComments = () => {
 		const { showMoreStyle } = styles;
 		return (
@@ -399,6 +399,25 @@ class SpecificServiceScreen extends Component {
 				{/* <Text style={showMoreStyle}>Show more</Text> */}
 			</View>
 		);
+	};
+
+	renderRatingAvg = () => {
+		if (this.props.service) {
+			return (
+				<View style={{ flexDirection: 'row', marginLeft: 5 }}>
+					<Text style={{}}>{this.props.service.rating.toFixed(1)} </Text>
+					<View>
+						<AirbnbRating
+							showRating
+							count={5}
+							defaultRating={this.props.service.rating}
+							size={15}
+						/>
+					</View>
+					<Text style={{}}>  ({this.props.service.ratingCount})</Text>
+				</View>
+			);
+		}
 	};
 
 	render() {
@@ -454,12 +473,8 @@ class SpecificServiceScreen extends Component {
 				>
 					<Content style={contentStyle} padder>
 						{/* TODO: Add Rating average here */}
-						{/* <Text style={subtitleStyle}>Rating </Text> */}
-
-						{/* <View style={rowDirectionStyle}>
-                        <Text style={subtitleStyle}>Category</Text>
-                        <Text style={regularTextStyle}>{service.title}</Text>
-					</View> */}
+						<Text style={subtitleStyle}>Rating </Text>
+						<View style={{ marginTop: 5 }}>{this.renderRatingAvg()}</View>
 						<Text style={[subtitleStyle, { marginTop: 5 }]}>Category</Text>
 						<Card style={cardStyle}>
 							<CardItem>
