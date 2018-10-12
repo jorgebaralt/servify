@@ -1,25 +1,30 @@
 import axios from 'axios';
 import { UPDATE_FAVORITE } from './types';
 
-const getFavURL = 'https://us-central1-servify-716c6.cloudfunctions.net/getFavorite';
-const updateFavURL = 'https://us-central1-servify-716c6.cloudfunctions.net/updateFavorite';
+const getFavURL =	'https://us-central1-servify-716c6.cloudfunctions.net/getFavorite';
+const addFavURL =	'https://us-central1-servify-716c6.cloudfunctions.net/addFavorite';
+const removeFavURL =	'https://us-central1-servify-716c6.cloudfunctions.net/removeFavorite';
 
-export const updateFavorite = (email, favorites) => async (dispatch) => {
-    try{
-        await axios.post(updateFavURL, { email, favorites });
-        const { data } = await axios.post(getFavURL, { email });
-
-        dispatch({ type: UPDATE_FAVORITE, payload: data });
-    } catch (e) {
-        console.log(e);
-    }
+export const addFavorite = (email, service) => async () => {
+	try {
+		await axios.post(addFavURL, { email, service });
+	} catch (e) {
+		console.log(e);
+	}
+};
+export const removeFavorite = (email, service) => async () => {
+	try {
+		await axios.post(removeFavURL, { email, service });
+	} catch (e) {
+		console.log(e);
+	}
 };
 
 export const getFavorites = (email) => async (dispatch) => {
-    try{
-        const { data } = await axios.post(getFavURL, { email });
-        dispatch({ type: UPDATE_FAVORITE, payload: data });
-    } catch(e) {
-        console.log(e);
-    }
+	try {
+		const { data } = await axios.post(getFavURL, { email });
+		dispatch({ type: UPDATE_FAVORITE, payload: data });
+	} catch (e) {
+		console.log(e);
+	}
 };

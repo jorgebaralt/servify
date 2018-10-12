@@ -29,16 +29,17 @@ import { connect } from 'react-redux';
 import { MapView, Linking } from 'expo';
 import { AnimatedRegion, Animated } from 'react-native-maps';
 import {
-	updateFavorite,
+	addFavorite,
 	submitReview,
 	getReviews,
 	resetReview,
-	deleteReview
+	deleteReview,
+	removeFavorite
 } from '../actions';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const maxCharCount = 100;
-let currentFavorite = [];
+
 let coords;
 let meters;
 let latitudeDelta;
@@ -57,19 +58,8 @@ class SpecificServiceScreen extends Component {
 
 	componentWillMount = async () => {
 		const { service } = this.props;
-		const { favorites } = this.props;
-		if (favorites.length) {
-			currentFavorite = favorites;
-			currentFavorite.forEach((element) => {
-				if (
-					element.title === service.title
-					&& element.category === service.category
-					&& element.description === service.description
-				) {
-					this.setState({ isFav: true });
-				}
-			});
-		}
+
+		
 		const { latitude, longitude } = service.geolocation;
 		coords = { latitude, longitude };
 		meters = service.miles * 1609.34;
@@ -95,6 +85,9 @@ class SpecificServiceScreen extends Component {
 			region: new AnimatedRegion(fixedRegion),
 			loadingUserComment: true
 		});
+		if (service.favUsers.includes(this.props.currentUserEmail)) {
+			this.setState({ isFav: true });
+		}
 	};
 
 	async componentDidMount() {
@@ -114,32 +107,21 @@ class SpecificServiceScreen extends Component {
 
 	addFavorite = async (email) => {
 		this.setState({ isFav: true });
-		currentFavorite.push(this.props.service);
-		await this.props.updateFavorite(email, currentFavorite);
+		await this.props.addFavorite(email, this.props.service);
 	};
 
 	removeFavorite = async (email) => {
-		const { service } = this.props;
 		this.setState({ isFav: false });
-		currentFavorite.forEach((element, i) => {
-			if (
-				element.title === service.title
-				&& element.category === service.category
-				&& element.description === service.description
-			) {
-				currentFavorite.splice(i, 1);
-			}
-		});
-		await this.props.updateFavorite(email, currentFavorite);
+		await this.props.removeFavorite(email, this.props.service);
 	};
 
 	favPressed = async () => {
 		this.setState({ favLoading: true });
-		const { email } = this.props;
+		const { currentUserEmail } = this.props;
 		if (this.state.isFav) {
-			await this.removeFavorite(email);
+			await this.removeFavorite(currentUserEmail);
 		} else {
-			await this.addFavorite(email);
+			await this.addFavorite(currentUserEmail);
 		}
 		this.setState({ favLoading: false });
 	};
@@ -414,7 +396,7 @@ class SpecificServiceScreen extends Component {
 							size={15}
 						/>
 					</View>
-					<Text style={{}}>  ({this.props.service.ratingCount})</Text>
+					<Text style={{}}> ({this.props.service.ratingCount})</Text>
 				</View>
 			);
 		}
@@ -661,10 +643,11 @@ const mapStateToProps = (state) => ({
 export default connect(
 	mapStateToProps,
 	{
-		updateFavorite,
+		addFavorite,
 		submitReview,
 		getReviews,
 		resetReview,
-		deleteReview
+		deleteReview,
+		removeFavorite
 	}
 )(SpecificServiceScreen);

@@ -43,7 +43,11 @@ class ServicesListScreen extends Component {
 	componentWillMount = async () => {
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
-			this.handleAndroidBack
+			async () => {
+				await this.decideGetService();
+				this.handleAndroidBack();
+			}
+			
 		);
 		this.setState({ dataLoaded: false });
 	};
@@ -180,7 +184,7 @@ class ServicesListScreen extends Component {
 						keyExtractor={(item) => item.title}
 						enableEmptySections
 						refreshControl={(
-<RefreshControl
+							<RefreshControl
 								refreshing={this.state.refreshing}
 								onRefresh={() => this.decideGetService()}
 								tintColor={this.props.category.color[0]}
