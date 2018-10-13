@@ -104,7 +104,9 @@ class EditServiceScreen extends Component {
 			displayName: this.props.displayName,
 			email: this.props.email,
 			ratingCount: this.props.service.ratingCount,
-			ratingSum: this.props.service.ratingSum
+			ratingSum: this.props.service.ratingSum,
+			rating: this.props.service.raing,
+			favUsers: this.props.service.favUsers
 		};
 		await this.props.updateService(updatedService);
 		this.setState({ loading: false });

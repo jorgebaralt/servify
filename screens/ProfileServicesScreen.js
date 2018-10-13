@@ -21,7 +21,7 @@ import {
 	Spinner
 } from 'native-base';
 import { connect } from 'react-redux';
-import { getServicesByEmail, selectService } from '../actions';
+import { getServicesByEmail, selectService, getFavorites } from '../actions';
 import EmptyListMessage from '../components/EmptyListMessage';
 
 let currentItem;
@@ -38,11 +38,17 @@ class ProfileServicesScreen extends Component {
 		currentItem = this.props.navigation.getParam('item');
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
-			this.handleAndroidBack
+			() => {
+				this.handleAndroidBack();
+				this.props.getFavorites(this.props.email);
+			}
 		);
 
 		if (currentItem.id === 'favorites') {
+			this.setState({ loading: true });
 			errorMessage =				'There is nothing in this list, Make sure that you add Services to Favorite by cliking on the top right icon, when looking at services.';
+			await this.props.getFavorites(this.props.email);
+			this.setState({ loading: false });
 		} else if (currentItem.id === 'my_services') {
 			this.setState({ loading: true });
 			await this.props.getServicesByEmail(this.props.email);
@@ -89,7 +95,8 @@ class ProfileServicesScreen extends Component {
 
 			let categoryName = service.category.split('_');
 			for (let i = 0; i < categoryName.length; i++) {
-				categoryName[i] = categoryName[i].charAt(0).toUpperCase() + categoryName[i].substring(1);
+				categoryName[i] =					categoryName[i].charAt(0).toUpperCase()
+					+ categoryName[i].substring(1);
 			}
 			categoryName = categoryName.join(' ');
 			return (
@@ -246,5 +253,5 @@ function mapStateToProps(state) {
 
 export default connect(
 	mapStateToProps,
-	{ getServicesByEmail, selectService }
+	{ getServicesByEmail, selectService, getFavorites }
 )(ProfileServicesScreen);

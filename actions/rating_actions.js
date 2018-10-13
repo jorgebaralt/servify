@@ -25,7 +25,6 @@ export const submitReview = (service, review) => async (dispatch) => {
 		dispatch({ type: USER_ALREADY_REVIEW, payload: review });
 	} catch (e) {
 		console.log(e);
-		console.log('canceled');
 	}
 };
 
