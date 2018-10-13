@@ -139,7 +139,7 @@ class ServicesListScreen extends Component {
 									size={15}
 								/>
 							</View>
-							<Text style={[displayNameStyle, { marginTop: -3 }]}>
+							<Text style={[displayNameStyle, { marginTop: -2, marginLeft: 3 }]}>
 								{this.renderRating(service)}
 							</Text>
 						</View>
@@ -189,7 +189,7 @@ class ServicesListScreen extends Component {
 								onRefresh={() => this.decideGetService()}
 								tintColor={this.props.category.color[0]}
 								colors={[this.props.category.color[0]]}
-/>
+							/>
 )}
 					/>
 				);
