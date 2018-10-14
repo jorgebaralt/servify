@@ -29,7 +29,7 @@ class CategoryCard extends Component {
 						style={{ flex: 1 }}
 					>
 						<CardItem header style={{ backgroundColor: 'transparent' }}>
-							<Text style={{ color: 'white' }}>{category.title}</Text>
+							<Text style={{ color: 'white', fontSize: 17 }}>{category.title}</Text>
 						</CardItem>
 					</LinearGradient>
 				</Card>
