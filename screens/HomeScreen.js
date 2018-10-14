@@ -170,7 +170,7 @@ const styles = {
 	},
 	iosHeader: {},
 	titleStyle: {
-		fontSize: 26,
+		fontSize: 22,
 		marginLeft: 20,
 		marginRight: 20
 	}

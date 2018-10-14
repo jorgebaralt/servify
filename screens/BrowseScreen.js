@@ -150,6 +150,7 @@ class BrowseScreen extends Component {
 						renderItem={({ item }) => this.renderCategories(item)}
 						keyExtractor={(category) => category.title}
 						numColumns={2}
+						style={{ marginBottom: 10, marginTop: 10 }}
 					/>
 				</Content>
 			</Container>

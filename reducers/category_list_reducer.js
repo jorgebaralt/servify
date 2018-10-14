@@ -38,16 +38,16 @@ const initialState = [
 			},
 			{
 				id: 0.3,
+				title: 'Carpet Clean',
+				description: 'Carpet clean desc',
+				dbReference: 'carpet'
+			},
+			{
+				id: 0.4,
 				title: 'Other',
 				description: 'Other Description',
 				dbReference: 'other'
 			},
-			{
-				id: 0.4,
-				title: 'Carpet Clean',
-				description: 'Carpet clean desc',
-				dbReference: 'carpet'
-			}
 		]
 	},
 	{
