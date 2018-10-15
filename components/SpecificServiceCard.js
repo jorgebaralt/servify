@@ -17,13 +17,14 @@ class SpecificServiceCard extends Component {
 				<View>
 					<View style={{ flexDirection: 'row' }}>
 						<Text style={[displayNameStyle, { marginTop: 3 }]}>
-							{service.rating}{' '}
+							Avg rating: {service.rating}{' '}
 						</Text>
 						<AirbnbRating
-							count={5}
-							defaultRating={service.ratingSum / service.ratingCount}
+							count={1}
+							defaultRating={service.rating}
 							size={15}
 						/>
+						
 					</View>
 					<Text style={[displayNameStyle, { marginTop: 10 }]}>
 						{service.displayName}
@@ -49,8 +50,7 @@ class SpecificServiceCard extends Component {
 		const {
 			cardStyle,
 			cardHeaderStyle,
-			titleStyleCard,
-			displayNameStyle
+			titleStyleCard
 		} = styles;
 		return (
 			<TouchableOpacity

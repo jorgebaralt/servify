@@ -95,6 +95,7 @@ class FeedbackScreen extends Component {
 		};
 		await this.props.submitFeedback(feedback);
 		this.setState(initialState);
+		this.onBackPress();
 	};
 
 	renderPicker = () => {

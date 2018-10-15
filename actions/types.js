@@ -48,3 +48,4 @@ export const GET_POPULAR_CATEGORY_SUCCESS = 'get_pop_cat_success';
 export const GET_POPULAR_CATEGORY_FAIL = 'get_pop_cat_fail';
 export const GET_POPULAR_SERVICES_SUCCESS = 'get_pop_services_success';
 export const GET_POPULAR_SERVICES_FAIL = 'get_pop_services_fail';
+export const CLEAN_POPULAR_NEAR_SERVICES = 'clean-pop-near-services';

@@ -19,7 +19,8 @@ import {
 	getUserLocation,
 	getPopularCategories,
 	getPopularNearServices,
-	selectCategory
+	selectCategory,
+	cleanPopularNearServices
 } from '../actions';
 import SpecificServiceCard from '../components/SpecificServiceCard';
 
@@ -101,6 +102,7 @@ class HomeScreen extends Component {
 				this.props.userLocation.coords,
 				DISTANCE
 			);
+			// await this.props.cleanPopularNearServices();
 			await this.props.getPopularNearServices(
 				this.props.userLocation.coords,
 				DISTANCE
@@ -198,20 +200,18 @@ class HomeScreen extends Component {
 		}
 	};
 
-	renderPopularNearServicesList = (service) => {
-		return (
-			<View>
-				<SpecificServiceCard
-					service={service}
-					showRating
-					onPress={() => {
-						this.props.selectService(service);
-						this.props.navigation.navigate('service');
-					}}
-				/>
-			</View>
-		);
-	}
+	renderPopularNearServicesList = (service) => (
+		<View>
+			<SpecificServiceCard
+				service={service}
+				showRating
+				onPress={() => {
+					this.props.selectService(service);
+					this.props.navigation.navigate('service');
+				}}
+			/>
+		</View>
+	);
 
 	renderPopularNearServices = () => {
 		if (
@@ -308,6 +308,7 @@ export default connect(
 		getUserLocation,
 		getPopularNearServices,
 		getPopularCategories,
-		selectCategory
+		selectCategory,
+		cleanPopularNearServices
 	}
 )(HomeScreen);

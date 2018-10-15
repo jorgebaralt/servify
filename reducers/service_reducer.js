@@ -13,7 +13,8 @@ import {
 	GET_POPULAR_CATEGORY_SUCCESS,
 	GET_POPULAR_CATEGORY_FAIL,
 	GET_POPULAR_SERVICES_SUCCESS,
-	GET_POPULAR_SERVICES_FAIL
+	GET_POPULAR_SERVICES_FAIL,
+	CLEAN_POPULAR_NEAR_SERVICES
 } from '../actions/types';
 
 export default (state = {}, action) => {
@@ -48,6 +49,8 @@ export default (state = {}, action) => {
 			return { ...state, popularNearServices: action.payload };
 		case GET_POPULAR_SERVICES_FAIL:
 			return { ...state, popularNearServices: undefined };
+		case CLEAN_POPULAR_NEAR_SERVICES:
+			return { ...state, popularNearServices: [] };
 		default:
 			return state;
 	}

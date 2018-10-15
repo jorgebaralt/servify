@@ -16,7 +16,8 @@ import {
 	GET_POPULAR_CATEGORY_SUCCESS,
 	GET_POPULAR_CATEGORY_FAIL,
 	GET_POPULAR_SERVICES_SUCCESS,
-	GET_POPULAR_SERVICES_FAIL
+	GET_POPULAR_SERVICES_FAIL,
+	CLEAN_POPULAR_NEAR_SERVICES
 } from './types';
 
 const GET_URL =	'https://us-central1-servify-716c6.cloudfunctions.net/getServices';
@@ -246,10 +247,12 @@ export const getPopularCategories = () => async (dispatch) => {
 	}
 };
 
+export const cleanPopularNearServices = () => (dispatch) => dispatch({ type: CLEAN_POPULAR_NEAR_SERVICES });
+
 export const getPopularNearServices = (currentLocation, distance) => async (
 	dispatch
 ) => {
-	const getNearUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/getNearService';
+	const getNearUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getNearService';
 	try {
 		let { data } = await axios.post(getNearUrl, {
 			currentLocation,

@@ -73,6 +73,7 @@ class PostServiceScreen extends Component {
 				type: 'success'
 			});
 			this.props.resetMessageService();
+			this.props.navigation.navigate('home');
 		}
 		if (error) {
 			Toast.show({
