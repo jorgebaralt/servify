@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, DeviceEventEmitter, Platform } from 'react-native';
+import { FlatList, DeviceEventEmitter, Platform, Linking } from 'react-native';
 import {
 	Container,
 	Header,
@@ -69,11 +69,16 @@ class ProfileScreen extends Component {
 			this.props.navigation.navigate('profileService', { item });
 		} else if (item.id === 'feedback') {
 			this.props.navigation.navigate('feedback');
+		} else if (item.id === 'contactUs') {
+			Linking.openURL('mailto:jorgebaraltq@gmail.com');
 		}
 	};
 
 	renderListItems = (item) => (
-		<ListItem onPress={() => this.goSelectedScreen(item)} style={{ marginTop: 15 }}>
+		<ListItem
+			onPress={() => this.goSelectedScreen(item)}
+			style={{ marginTop: 30 }}
+		>
 			<Left>
 				<Text>{item.title}</Text>
 			</Left>

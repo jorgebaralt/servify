@@ -3,7 +3,8 @@ import {
 	Dimensions,
 	DeviceEventEmitter,
 	Platform,
-	FlatList
+	FlatList,
+	Keyboard
 } from 'react-native';
 import {
 	Text,
@@ -23,6 +24,7 @@ let willFocusSubscription;
 let willBlurSubscription;
 let backPressSubscriptions;
 let allCategories;
+let keyboardDidHideListener;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 class BrowseScreen extends Component {
 	static navigationOptions = {
@@ -53,11 +55,13 @@ class BrowseScreen extends Component {
 			this.setState({ filter: '' });
 			this.handleSearch();
 		});
+		keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => this._keyboardDidHide());
 	}
 
 	componentWillUnmount() {
 		willFocusSubscription.remove();
 		willBlurSubscription.remove();
+		keyboardDidHideListener.remove();
 	}
 
 	handleAndroidBack = () => {
@@ -87,13 +91,13 @@ class BrowseScreen extends Component {
 	};
 
 	renderCategories = (category) => (
-			<CategoryCard
-				style={styles.gridItem}
-				cardStyle={styles.cardStyle}
-				category={category}
-				onPress={() => this.doSelectCategory(category)}
-			/>
-		);
+		<CategoryCard
+			style={styles.gridItem}
+			cardStyle={styles.cardStyle}
+			category={category}
+			onPress={() => this.doSelectCategory(category)}
+		/>
+	);
 
 	handleSearch = () => {
 		const filterWords = this.state.filter.toLowerCase().split(' ');
@@ -115,8 +119,12 @@ class BrowseScreen extends Component {
 		} else {
 			this.props.filterCategories(filteredCategories);
 		}
-		// LayoutAnimation.easeInEaseOut();
 	};
+
+	_keyboardDidHide() {
+		this.setState((prevState) => ({ filter: prevState.filter + ' ' }));
+		this.handleSearch();
+	}
 
 	render() {
 		const { androidHeader, iosHeader } = styles;
