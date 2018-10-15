@@ -36,10 +36,12 @@ export const facebookLogin = () => async (dispatch) => {
 		const credential = await firebase.auth.FacebookAuthProvider.credential(
 			token
 		);
+
 		const { user } = await firebase
 			.auth()
 			.signInAndRetrieveDataWithCredential(credential);
 		await axios.post(addUserdbURL, {
+			userId: user.uid,
 			email: user.email,
 			displayName: user.displayName
 		});
