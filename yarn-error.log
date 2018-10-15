@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/Cellar/node/10.8.0/bin/node /usr/local/Cellar/yarn/1.6.0/libexec/bin/yarn.js add https://github.com/jorgebaralt/react-native-ratings
+  /usr/local/Cellar/node/10.8.0/bin/node /usr/local/Cellar/yarn/1.6.0/libexec/bin/yarn.js add native-base
 
 PATH: 
   /Library/Frameworks/Python.framework/Versions/3.6/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Frameworks/Python.framework/Versions/3.6/bin
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: EACCES: permission denied, unlink '/Users/jorgebaralt/LocalProjects/ReactNative/servify/node_modules/.bin/acorn'
+  Error: EACCES: permission denied, unlink '/Users/jorgebaralt/LocalProjects/ReactNative/servify/node_modules/native-base/package.json'
 
 npm manifest: 
   {
@@ -30,7 +30,7 @@ npm manifest:
       "react": "16.3.1",
       "react-native": "https://github.com/expo/react-native/archive/sdk-28.0.0.tar.gz",
       "react-native-linear-gradient": "^2.4.2",
-      "react-native-ratings": "^6.0.0",
+      "react-native-ratings": "https://github.com/jorgebaralt/react-native-ratings",
       "react-navigation": "^2.17.0",
       "react-redux": "^5.0.7",
       "redux": "^4.0.0",
@@ -4782,9 +4782,9 @@ Lockfile:
       babel-plugin-module-resolver "^2.3.0"
       babel-preset-react-native "1.9.0"
   
-  react-native-ratings@^6.0.0:
+  "react-native-ratings@https://github.com/jorgebaralt/react-native-ratings":
     version "6.0.0"
-    resolved "https://registry.yarnpkg.com/react-native-ratings/-/react-native-ratings-6.0.0.tgz#8083c4955c14aef0751abb7f5ba6c48ae8b2189b"
+    resolved "https://github.com/jorgebaralt/react-native-ratings#20ea97a307dac70ea71c3396c515470f49b09302"
     dependencies:
       lodash "^4.17.4"
       prop-types "^15.5.10"

@@ -189,7 +189,7 @@ class ServicesListScreen extends Component {
 								tintColor={this.props.category.color[0]}
 								colors={[this.props.category.color[0]]}
 							/>
-)}
+						)}
 					/>
 				);
 			}

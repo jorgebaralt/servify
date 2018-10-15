@@ -59,7 +59,6 @@ class SpecificServiceScreen extends Component {
 	componentWillMount = async () => {
 		const { service } = this.props;
 
-		
 		const { latitude, longitude } = service.geolocation;
 		coords = { latitude, longitude };
 		meters = service.miles * 1609.34;
@@ -194,12 +193,28 @@ class SpecificServiceScreen extends Component {
 	};
 
 	renderCommentDate = (currentUserReview) => {
+		const date = new Date(currentUserReview.timestamp);
+		const monthNames = [
+			'January',
+			'February',
+			'March',
+			'April',
+			'May',
+			'June',
+			'July',
+			'August',
+			'September',
+			'October',
+			'November',
+			'December'
+		];
+		const day = date.getDate();
+		const monthIndex = date.getMonth();
+		const year = date.getFullYear();
+		const reviewDate = day + ' ' + monthNames[monthIndex] + ' ' + year;
+
 		if (currentUserReview.timestamp) {
-			return (
-				<Text style={{ color: 'gray', marginTop: -5 }}>
-					{currentUserReview.timestamp}
-				</Text>
-			);
+			return <Text style={{ color: 'gray', marginTop: -5 }}>{reviewDate}</Text>;
 		}
 		return <Text style={{ color: 'gray', marginTop: -5 }}>a moment ago</Text>;
 	};
@@ -273,7 +288,7 @@ class SpecificServiceScreen extends Component {
 						</Card>
 						<Button
 							bordered
-							style={{ marginLeft: '60%', marginTop: 10 }}
+							style={{ marginLeft: '60%', marginTop: 0 }}
 							onPress={() => this.submitReview()}
 							disabled={this.state.starCount === 0}
 						>
@@ -326,9 +341,28 @@ class SpecificServiceScreen extends Component {
 
 	renderReviews = (review) => {
 		const { commentDateStyle, cardStyle } = styles;
+		const date = new Date(review.timestamp);
+		const monthNames = [
+			'January',
+			'February',
+			'March',
+			'April',
+			'May',
+			'June',
+			'July',
+			'August',
+			'September',
+			'October',
+			'November',
+			'December'
+		];
+		const day = date.getDate();
+		const monthIndex = date.getMonth();
+		const year = date.getFullYear();
+		const reviewDate = day + ' ' + monthNames[monthIndex] + ' ' + year;
 		return (
 			<View>
-				<Card style={cardStyle}>
+				<Card style={[cardStyle, { marginBottom: 2 }]}>
 					<CardItem>
 						<Body>
 							<Text style={{ fontSize: 15 }}>{review.reviewerDisplayName}</Text>
@@ -339,9 +373,7 @@ class SpecificServiceScreen extends Component {
 									defaultRating={review.rating}
 									size={15}
 								/>
-								<Text style={commentDateStyle}>
-									{review.timestamp.toString()}
-								</Text>
+								<Text style={commentDateStyle}>{reviewDate}</Text>
 							</View>
 							<Text style={{ fontSize: 14, marginTop: 5 }}>
 								{review.comment}
@@ -367,6 +399,7 @@ class SpecificServiceScreen extends Component {
 							keyExtractor={(item) => item.reviewerEmail}
 							enableEmptySections
 						/>
+						{this.showMoreComments()}
 					</View>
 				);
 			}
@@ -378,7 +411,12 @@ class SpecificServiceScreen extends Component {
 		const { showMoreStyle } = styles;
 		return (
 			<View style={{ marginTop: 10, marginBottom: 40 }}>
-				{/* <Text style={showMoreStyle}>Show more</Text> */}
+				<Text
+					style={showMoreStyle}
+					onPress={() => this.props.navigation.navigate('reviews')}
+				>
+					Show more
+				</Text>
 			</View>
 		);
 	};
@@ -547,7 +585,6 @@ class SpecificServiceScreen extends Component {
 						</View>
 						{this.renderCurrentUserReview()}
 						{this.renderAllReviews()}
-						{this.showMoreComments()}
 					</Content>
 				</KeyboardAvoidingView>
 			</Container>
@@ -571,7 +608,7 @@ const styles = {
 		shadowOffset: null,
 		shadowOpacity: null,
 		elevation: null,
-		marginBottom: null
+		marginBottom: 5
 	},
 	descriptionStyle: {
 		fontSize: 15
@@ -617,7 +654,8 @@ const styles = {
 	charCountStyle: {
 		color: '#bfc6ea',
 		textAlign: 'right',
-		marginLeft: '90%'
+		marginLeft: '90%',
+		marginBottom: 2
 	},
 	showMoreStyle: {
 		color: '#03A9F4',
@@ -627,7 +665,7 @@ const styles = {
 		fontSize: 13,
 		color: 'gray',
 		marginTop: 3,
-		marginLeft: 10
+		marginLeft: 10,
 	}
 };
 

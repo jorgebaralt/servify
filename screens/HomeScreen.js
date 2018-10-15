@@ -27,7 +27,7 @@ import SpecificServiceCard from '../components/SpecificServiceCard';
 let backPressSubscriptions;
 let willFocusSubscription;
 let didFocusSubscription;
-const DISTANCE = 30;
+const DISTANCE = 50;
 
 class HomeScreen extends Component {
 	static navigationOptions = {
@@ -97,12 +97,11 @@ class HomeScreen extends Component {
 
 	onRefresh = async () => {
 		const { status } = await Permissions.askAsync(Permissions.LOCATION);
-		if (status === 'granted') {
+		if (status === 'granted' && this.props.userLocation) {
 			await this.props.getNearServices(
 				this.props.userLocation.coords,
 				DISTANCE
 			);
-			// await this.props.cleanPopularNearServices();
 			await this.props.getPopularNearServices(
 				this.props.userLocation.coords,
 				DISTANCE

@@ -7,7 +7,8 @@ import {
 	GET_REVIEWS_FAIL,
 	USER_ALREADY_REVIEW,
 	RESET_REVIEW,
-	DELETE_REVIEW_SUCCESS
+	DELETE_REVIEW_SUCCESS,
+	GET_SERVICE_REVIEWS
 } from './types';
 
 // Will be used to cancel axios call
@@ -23,6 +24,20 @@ export const submitReview = (service, review) => async (dispatch) => {
 	try {
 		await axios.post(submitReviewUrl, data);
 		dispatch({ type: USER_ALREADY_REVIEW, payload: review });
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+export const getServiceReviews = (service) => async (dispatch) => {
+	const getReviewsUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getRatings';
+	try {
+		const { data } = await axios.get(
+			getReviewsUrl,
+			{ params: service },
+			{ cancelToken: source.token }
+		);
+		dispatch({ type: GET_SERVICE_REVIEWS, payload: data });
 	} catch (e) {
 		console.log(e);
 	}

@@ -24,6 +24,7 @@ import ProfileServicesScreen from './screens/ProfileServicesScreen';
 import FeedbackScreen from './screens/FeedbackScreen';
 import EditServiceScreen from './screens/EditServiceScreen';
 import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
+import ReviewsScreen from './screens/ReviewsScreen';
 
 const store = createStore(reducers, {}, compose(applyMiddleware(thunk)));
 export default class App extends React.Component {
@@ -85,7 +86,8 @@ export default class App extends React.Component {
             service: { screen: SpecificServiceScreen },
             editService: { screen: EditServiceScreen },
             profileService: { screen: ProfileServicesScreen },
-            feedback: { screen: FeedbackScreen }
+            feedback: { screen: FeedbackScreen },
+            reviews: {screen: ReviewsScreen}
         }, {
                 headerMode: 'none'
         });

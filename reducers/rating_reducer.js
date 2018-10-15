@@ -3,7 +3,8 @@ import {
 	GET_REVIEWS_FAIL,
 	USER_ALREADY_REVIEW,
 	RESET_REVIEW,
-	DELETE_REVIEW_SUCCESS
+	DELETE_REVIEW_SUCCESS,
+	GET_SERVICE_REVIEWS
 } from '../actions/types';
 
 export default (state = {}, action) => {
@@ -16,6 +17,8 @@ export default (state = {}, action) => {
 			return { ...state, reviews: undefined };
 		case DELETE_REVIEW_SUCCESS:
 			return { ...state, currentUserReview: undefined };
+		case GET_SERVICE_REVIEWS:
+			return { ...state, serviceReviews: action.payload };
 		case RESET_REVIEW:
 			return {};
 		default:

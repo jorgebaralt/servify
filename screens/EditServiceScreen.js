@@ -21,11 +21,14 @@ import {
 	KeyboardAvoidingView,
 	Platform,
 	View,
-	Keyboard
+	Keyboard,
+	DeviceEventEmitter
 } from 'react-native';
 import { connect } from 'react-redux';
 import { deleteService, resetMessageService, updateService } from '../actions';
 
+let willFocusSubscription;
+let backPressSubscriptions;
 class EditServiceScreen extends Component {
 	state = {
 		title: this.props.service.title,
@@ -40,6 +43,17 @@ class EditServiceScreen extends Component {
 		miles: this.props.service.miles,
 		loading: false
 	};
+
+	componentWillMount() {
+		willFocusSubscription = this.props.navigation.addListener(
+			'willFocus',
+			this.handleAndroidBack
+		);
+	}
+
+	componentWillUnmount() {
+		willFocusSubscription.remove();
+	}
 
 	componentWillUpdate = (nextProps) => {
 		const { result } = nextProps;
@@ -61,6 +75,22 @@ class EditServiceScreen extends Component {
 			});
 			this.props.resetMessageService();
 		}
+	};
+
+	handleAndroidBack = () => {
+		backPressSubscriptions = new Set();
+		DeviceEventEmitter.removeAllListeners('hardwareBackPress');
+		DeviceEventEmitter.addListener('hardwareBackPress', () => {
+			const subscriptions = [];
+
+			backPressSubscriptions.forEach((sub) => subscriptions.push(sub));
+			for (let i = 0; i < subscriptions.reverse().length; i += 1) {
+				if (subscriptions[i]()) {
+					break;
+				}
+			}
+		});
+		backPressSubscriptions.add(() => this.props.navigation.pop());
 	};
 
 	deleteService = async () => {
