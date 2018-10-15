@@ -101,7 +101,10 @@ class HomeScreen extends Component {
 				this.props.userLocation.coords,
 				DISTANCE
 			);
-			await this.props.getPopularNearServices();
+			await this.props.getPopularNearServices(
+				this.props.userLocation.coords,
+				DISTANCE
+			);
 		}
 		await this.props.getPopularCategories();
 	};
@@ -195,6 +198,41 @@ class HomeScreen extends Component {
 		}
 	};
 
+	renderPopularNearServicesList = (service) => {
+		return (
+			<View>
+				<SpecificServiceCard
+					service={service}
+					showRating
+					onPress={() => {
+						this.props.selectService(service);
+						this.props.navigation.navigate('service');
+					}}
+				/>
+			</View>
+		);
+	}
+
+	renderPopularNearServices = () => {
+		if (
+			this.props.popularNearServices
+			&& this.props.popularNearServices.length > 0
+		) {
+			return (
+				<View style={{ marginTop: 25 }}>
+					<Text style={styles.titleStyle}>Popular near services</Text>
+					<FlatList
+						style={{ marginLeft: 20 }}
+						data={this.props.popularNearServices}
+						renderItem={({ item }) => this.renderPopularNearServicesList(item)}
+						keyExtractor={(item) => item.title}
+						horizontal
+					/>
+				</View>
+			);
+		}
+	};
+
 	render() {
 		return (
 			<Container
@@ -215,6 +253,7 @@ class HomeScreen extends Component {
 					>
 						{this.renderPopularCategories()}
 						{this.renderNewServicesNear()}
+						{this.renderPopularNearServices()}
 					</Content>
 				</SafeAreaView>
 			</Container>
@@ -230,12 +269,12 @@ const styles = {
 	titleStyle: {
 		fontSize: 26,
 		marginLeft: 20,
-		marginRight: 20,
+		marginRight: 20
 	},
 	textStyle: {
 		fontSize: 22,
 		marginLeft: 20,
-		marginRight: 20,
+		marginRight: 20
 	},
 	cardStyle: {
 		width: 140,
@@ -254,7 +293,8 @@ function mapStateToProps(state) {
 	return {
 		nearServicesList: state.serviceResult.nearServicesList,
 		userLocation: state.auth.location,
-		popularCategories: state.serviceResult.popularCategory
+		popularCategories: state.serviceResult.popularCategory,
+		popularNearServices: state.serviceResult.popularNearServices
 	};
 }
 

@@ -11,7 +11,9 @@ import {
 	GET_NEAR_SERVICES_SUCCESS,
 	GET_NEAR_SERVICES_FAIL,
 	GET_POPULAR_CATEGORY_SUCCESS,
-	GET_POPULAR_CATEGORY_FAIL
+	GET_POPULAR_CATEGORY_FAIL,
+	GET_POPULAR_SERVICES_SUCCESS,
+	GET_POPULAR_SERVICES_FAIL
 } from '../actions/types';
 
 export default (state = {}, action) => {
@@ -42,6 +44,10 @@ export default (state = {}, action) => {
 			return { ...state, popularCategory: action.payload };
 		case GET_POPULAR_CATEGORY_FAIL:
 			return { ...state, popularCategory: undefined };
+		case GET_POPULAR_SERVICES_SUCCESS:
+			return { ...state, popularNearServices: action.payload };
+		case GET_POPULAR_SERVICES_FAIL:
+			return { ...state, popularNearServices: undefined };
 		default:
 			return state;
 	}

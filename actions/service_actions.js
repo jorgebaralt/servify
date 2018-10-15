@@ -14,7 +14,9 @@ import {
 	GET_NEAR_SERVICES_FAIL,
 	GET_NEAR_SERVICES_SUCCESS,
 	GET_POPULAR_CATEGORY_SUCCESS,
-	GET_POPULAR_CATEGORY_FAIL
+	GET_POPULAR_CATEGORY_FAIL,
+	GET_POPULAR_SERVICES_SUCCESS,
+	GET_POPULAR_SERVICES_FAIL
 } from './types';
 
 const GET_URL =	'https://us-central1-servify-716c6.cloudfunctions.net/getServices';
@@ -234,23 +236,39 @@ export const getNearServices = (currentLocation, distance) => async (
 };
 
 export const getPopularCategories = () => async (dispatch) => {
-	const popularCategoryUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/getPopularCategories';
+	const popularCategoryUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getPopularCategories';
 	try {
-		let { data } = await axios.get(popularCategoryUrl);
+		const { data } = await axios.get(popularCategoryUrl);
 		dispatch({ type: GET_POPULAR_CATEGORY_SUCCESS, payload: data });
 	} catch (e) {
 		console.log(e);
+		return dispatch({ type: GET_POPULAR_CATEGORY_FAIL });
 	}
 };
 
-export const getPopularNearServices = () => async (dispatch) => {
-	console.log('get near popular services');
+export const getPopularNearServices = (currentLocation, distance) => async (
+	dispatch
+) => {
+	const getNearUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/getNearService';
+	try {
+		let { data } = await axios.post(getNearUrl, {
+			currentLocation,
+			distance
+		});
+		data = _.sortBy(data, 'rating');
+		data = data.reverse();
+		data = data.slice(0, 10);
+		dispatch({ type: GET_POPULAR_SERVICES_SUCCESS, payload: data });
+	} catch (e) {
+		console.log(e);
+		dispatch({ type: GET_POPULAR_SERVICES_FAIL });
+	}
 };
 
 // DELETE-SERVICE
 export const deleteService = (service) => async (dispatch) => {
-	const deleteUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/deleteService';
-	
+	const deleteUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/deleteService';
+
 	try {
 		await axios.delete(deleteUrl, { data: service });
 
@@ -268,7 +286,7 @@ export const deleteService = (service) => async (dispatch) => {
 
 // UPDATE-SERVICE
 export const updateService = (service) => async (dispatch) => {
-	const updateUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/updateService';
+	const updateUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/updateService';
 	const newService = service;
 	let locationData;
 	try {
@@ -289,7 +307,8 @@ export const updateService = (service) => async (dispatch) => {
 	} catch (e) {
 		return dispatch({
 			type: POST_SERVICE_FAIL,
-			payload: 'We could not find your address, please provide a correct address'
+			payload:
+				'We could not find your address, please provide a correct address'
 		});
 	}
 	try {

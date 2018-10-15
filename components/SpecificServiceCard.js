@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-import {
-	View,
-	Platform,
-	TouchableOpacity,
-	LayoutAnimation
-} from 'react-native';
+import { View, TouchableOpacity, LayoutAnimation } from 'react-native';
+import { AirbnbRating } from 'react-native-ratings';
 import { Text, Card, CardItem, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
 
@@ -12,6 +8,41 @@ class SpecificServiceCard extends Component {
 	componentWillMount() {
 		LayoutAnimation.easeInEaseOut();
 	}
+
+	renderContent = () => {
+		const { service } = this.props;
+		const { displayNameStyle } = styles;
+		if (this.props.showRating) {
+			return (
+				<View>
+					<View style={{ flexDirection: 'row' }}>
+						<Text style={[displayNameStyle, { marginTop: 3 }]}>
+							{service.rating}{' '}
+						</Text>
+						<AirbnbRating
+							count={5}
+							defaultRating={service.ratingSum / service.ratingCount}
+							size={15}
+						/>
+					</View>
+					<Text style={[displayNameStyle, { marginTop: 10 }]}>
+						{service.displayName}
+					</Text>
+					<Text style={displayNameStyle}>{service.phone}</Text>
+				</View>
+			);
+		}
+		return (
+			<View>
+				<Text style={[displayNameStyle, { marginTop: 10 }]}>
+					{service.displayName}
+				</Text>
+				<Text style={displayNameStyle}>{service.phone}</Text>
+				<Text style={displayNameStyle}>{service.location.city}</Text>
+				<Text style={displayNameStyle}>zip code: {service.zipCode}</Text>
+			</View>
+		);
+	};
 
 	render() {
 		const { service } = this.props;
@@ -31,12 +62,7 @@ class SpecificServiceCard extends Component {
 				<Card style={cardStyle}>
 					<CardItem header style={cardHeaderStyle}>
 						<Text style={titleStyleCard}>{service.title}</Text>
-						<Text style={[displayNameStyle, { marginTop: 10 }]}>
-							{service.displayName}
-						</Text>
-						<Text style={displayNameStyle}>{service.phone}</Text>
-						<Text style={displayNameStyle}>{service.location.city}</Text>
-						<Text style={displayNameStyle}>zip code: {service.zipCode}</Text>
+						{this.renderContent()}
 					</CardItem>
 				</Card>
 			</TouchableOpacity>

@@ -23,7 +23,6 @@ import {
 } from 'native-base';
 import { AirbnbRating } from 'react-native-ratings';
 import { connect } from 'react-redux';
-import { LinearGradient } from 'expo';
 import {
 	getServicesCategory,
 	getServicesSubcategory,
