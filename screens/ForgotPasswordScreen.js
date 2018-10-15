@@ -172,7 +172,7 @@ const styles = {
 		marginBottom: 40
 	},
 	formStyle: {
-		width: '80%'
+		width: '90%'
 	},
 	titleStyle: {
 		color: 'white',

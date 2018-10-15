@@ -104,7 +104,7 @@ class LoginScreen extends Component {
 				colors={['#FF7043', '#F4511E', '#BF360C']}
 				style={{ flex: 1 }}
 			>
-				<SafeAreaView style={{ flex: 1 }}>
+				<SafeAreaView style={{ flex: 1}}>
 					<Icon
 						style={backIconStyle}
 						type="Entypo"
@@ -115,7 +115,7 @@ class LoginScreen extends Component {
 					/>
 
 					{/* Login Form */}
-					<View style={{ flex: 1, alignItems: 'center' }}>
+					<View style={{ flex: 1, marginLeft: '5%' }}>
 						<Text style={titleStyle}>Sign in</Text>
 						<Form style={formStyle}>
 							<Item floatingLabel style={itemStyle}>
@@ -147,7 +147,7 @@ class LoginScreen extends Component {
 								title="Login User"
 								bordered
 								light
-								style={{ marginTop: 10 }}
+								style={{ marginTop: 10, marginLeft: '3%' }}
 								onPress={this.loginUser}
 							>
 								<Text>Log in</Text>
@@ -190,7 +190,7 @@ const styles = {
 		marginBottom: 40
 	},
 	formStyle: {
-		width: '80%'
+		width: '90%'
 	},
 	titleStyle: {
 		color: 'white',
