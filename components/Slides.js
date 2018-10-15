@@ -48,7 +48,7 @@ class Slides extends Component {
 		if (current === 0) {
 			return (
 				<TouchableOpacity
-					style={{ position: 'absolute', bottom: 20, right: 20 }}
+					style={{ position: 'absolute', bottom: 30, right: 20 }}
 					// onPress={} Navigate to Login Screen
 				>
                     <Text

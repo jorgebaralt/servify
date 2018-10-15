@@ -153,19 +153,19 @@ class LoginScreen extends Component {
 								<Text>Log in</Text>
 							</Button>
 						</View>
-						<TouchableOpacity
-							style={{ position: 'absolute', bottom: 20, right: 20 }}
-						>
-							<Text
-								style={{ fontSize: 16, color: 'white' }}
-								onPress={() => {
-									this.props.navigation.navigate('forgotPassword');
-								}}
-							>
-								Forgot password
-							</Text>
-						</TouchableOpacity>
 					</View>
+					<TouchableOpacity
+						style={{ position: 'absolute', bottom: 40, right: 20 }}
+					>
+						<Text
+							style={{ fontSize: 16, color: 'white' }}
+							onPress={() => {
+								this.props.navigation.navigate('forgotPassword');
+							}}
+						>
+							Forgot password
+						</Text>
+					</TouchableOpacity>
 				</SafeAreaView>
 			</LinearGradient>
 		);

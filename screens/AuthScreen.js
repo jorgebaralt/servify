@@ -107,7 +107,7 @@ class AuthScreen extends Component {
 					</View>
 					{/* // go to login screen */}
 					<TouchableOpacity
-						style={{ position: 'absolute', bottom: 50, right: 20 }}
+						style={{ position: 'absolute', bottom: 40, right: 20 }}
 					>
 						<Text
 							style={{ fontSize: 16, color: 'white' }}
@@ -120,7 +120,7 @@ class AuthScreen extends Component {
 					</TouchableOpacity>
 					{/* //go to welcome screen (tutorial) */}
 					<TouchableOpacity
-						style={{ position: 'absolute', bottom: 50, left: 20 }}
+						style={{ position: 'absolute', bottom: 40, left: 20 }}
 					>
 						<Text
 							style={{ fontSize: 16, color: 'white' }}

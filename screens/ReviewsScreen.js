@@ -153,6 +153,7 @@ const styles = {
 	cardStyle: {
 		width: '90%',
 		marginLeft: '5%',
+		marginTop: 10,
 		shadowColor: null,
 		shadowOffset: null,
 		shadowOpacity: null,
