@@ -10,12 +10,16 @@ import {
 import { Text, Container, Content, Icon, Spinner } from 'native-base';
 import { connect } from 'react-redux';
 import { Permissions } from 'expo';
+import CategoryCard from '../components/CategoryCard';
 import {
 	getCurrentUserDisplayName,
 	selectService,
 	getServicesByZipcode,
 	getNearServices,
-	getUserLocation
+	getUserLocation,
+	getPopularCategories,
+	getPopularNearServices,
+	selectCategory
 } from '../actions';
 import SpecificServiceCard from '../components/SpecificServiceCard';
 
@@ -84,17 +88,22 @@ class HomeScreen extends Component {
 
 		if (status === 'granted') {
 			await this.props.getUserLocation();
-			await this.props.getNearServices(
-				this.props.userLocation.coords,
-				DISTANCE
-			);
+			await this.onRefresh();
 		} else {
 			throw new Error('Location permission not granted');
 		}
 	};
 
 	onRefresh = async () => {
-		await this.props.getNearServices(this.props.userLocation.coords, DISTANCE);
+		const { status } = await Permissions.askAsync(Permissions.LOCATION);
+		if (status === 'granted') {
+			await this.props.getNearServices(
+				this.props.userLocation.coords,
+				DISTANCE
+			);
+			await this.props.getPopularNearServices();
+		}
+		await this.props.getPopularCategories();
 	};
 
 	renderNearServicesList = (service) => (
@@ -106,13 +115,6 @@ class HomeScreen extends Component {
 			}}
 		/>
 	);
-
-	renderSpinner() {
-		if (this.state.loading) {
-			return <Spinner style={{ marginTop: '50%' }} color="orange" />;
-		}
-		return <View />;
-	}
 
 	renderNewServicesNear = () => {
 		if (this.props.nearServicesList && this.props.nearServicesList.length > 0) {
@@ -129,10 +131,65 @@ class HomeScreen extends Component {
 				</View>
 			);
 		}
-		if (this.props.nearServicesList && this.props.nearServicesList.length === 0) {
+		if (
+			this.props.nearServicesList
+			&& this.props.nearServicesList.length === 0
+		) {
 			return (
 				<View style={{ marginTop: 25 }}>
-					<Text style={styles.titleStyle}>No new services near you, be the first on creating new services around your area on the Post tab</Text>
+					<Text style={styles.textStyle}>
+						No new services near you, be the first on creating new services
+						around your area on the
+						<Text
+							style={[styles.textStyle, { color: '#0277BD' }]}
+							onPress={() => this.props.navigation.navigate('postService')}
+						>
+							{' '}
+							Post tab
+						</Text>
+					</Text>
+				</View>
+			);
+		}
+	};
+
+	doSelectCategory = async (category) => {
+		await this.props.selectCategory(category);
+		// pick where to navigate
+		if (category.subcategories) {
+			this.props.navigation.navigate('subcategories');
+		} else {
+			this.props.navigation.navigate('servicesList');
+		}
+	};
+
+	renderSpinner() {
+		if (this.state.loading) {
+			return <Spinner style={{ marginTop: '50%' }} color="orange" />;
+		}
+		return <View />;
+	}
+
+	renderPopularCategoriesList = (category) => (
+		<CategoryCard
+			cardStyle={styles.cardStyle}
+			category={category}
+			onPress={() => this.doSelectCategory(category)}
+		/>
+	);
+
+	renderPopularCategories = () => {
+		if (this.props.popularCategories) {
+			return (
+				<View style={{ marginTop: 25 }}>
+					<Text style={styles.titleStyle}>Popular categories</Text>
+					<FlatList
+						style={{ marginLeft: 20 }}
+						data={this.props.popularCategories}
+						renderItem={({ item }) => this.renderPopularCategoriesList(item)}
+						keyExtractor={(item) => item.title}
+						horizontal
+					/>
 				</View>
 			);
 		}
@@ -148,14 +205,15 @@ class HomeScreen extends Component {
 					<Content
 						style={{ flex: 1 }}
 						refreshControl={(
-							<RefreshControl
+<RefreshControl
 								refreshing={this.state.refreshing}
 								onRefresh={() => this.onRefresh()}
 								tintColor="orange"
 								colors={['orange']}
-							/>
-						)}
+/>
+)}
 					>
+						{this.renderPopularCategories()}
 						{this.renderNewServicesNear()}
 					</Content>
 				</SafeAreaView>
@@ -170,16 +228,33 @@ const styles = {
 	},
 	iosHeader: {},
 	titleStyle: {
+		fontSize: 26,
+		marginLeft: 20,
+		marginRight: 20,
+	},
+	textStyle: {
 		fontSize: 22,
 		marginLeft: 20,
-		marginRight: 20
+		marginRight: 20,
+	},
+	cardStyle: {
+		width: 140,
+		height: 140,
+		shadowOffset: { width: 0, height: 0 },
+		shadowColor: 'black',
+		shadowOpacity: 0.2,
+		elevation: 1,
+		marginRight: 20,
+		marginTop: 20,
+		marginBottom: 20
 	}
 };
 
 function mapStateToProps(state) {
 	return {
 		nearServicesList: state.serviceResult.nearServicesList,
-		userLocation: state.auth.location
+		userLocation: state.auth.location,
+		popularCategories: state.serviceResult.popularCategory
 	};
 }
 
@@ -190,6 +265,9 @@ export default connect(
 		selectService,
 		getServicesByZipcode,
 		getNearServices,
-		getUserLocation
+		getUserLocation,
+		getPopularNearServices,
+		getPopularCategories,
+		selectCategory
 	}
 )(HomeScreen);

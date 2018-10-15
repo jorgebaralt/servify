@@ -141,7 +141,7 @@ class SpecificServiceScreen extends Component {
 				<Icon
 					type="Entypo"
 					name="dots-three-horizontal"
-					style={{ color: 'black', fontSize: 16 }}
+					style={{ color: 'black' }}
 					onPress={() => this.props.navigation.navigate('editService')}
 				/>
 			);

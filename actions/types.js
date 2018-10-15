@@ -44,3 +44,5 @@ export const GET_REVIEWS_FAIL = 'get_reviews_fail';
 export const USER_ALREADY_REVIEW = 'user_already_review';
 export const RESET_REVIEW = 'reset_review';
 export const DELETE_REVIEW_SUCCESS = 'delete_review_success';
+export const GET_POPULAR_CATEGORY_SUCCESS = 'get_pop_cat_success';
+export const GET_POPULAR_CATEGORY_FAIL = 'get_pop_cat_fail';

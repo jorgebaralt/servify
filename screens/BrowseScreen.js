@@ -3,7 +3,7 @@ import {
 	Dimensions,
 	DeviceEventEmitter,
 	Platform,
-	FlatList,
+	FlatList
 } from 'react-native';
 import {
 	Text,
@@ -86,14 +86,14 @@ class BrowseScreen extends Component {
 		}
 	};
 
-	renderCategories = (category) => {
-		return (
+	renderCategories = (category) => (
 			<CategoryCard
+				style={styles.gridItem}
+				cardStyle={styles.cardStyle}
 				category={category}
 				onPress={() => this.doSelectCategory(category)}
 			/>
 		);
-	};
 
 	handleSearch = () => {
 		const filterWords = this.state.filter.toLowerCase().split(' ');

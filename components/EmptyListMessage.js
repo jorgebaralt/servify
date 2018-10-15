@@ -36,7 +36,7 @@ const styles = {
         textAlign: 'center'
     },
     cardStyle: {
-        top: '5%',
+        top: '12%',
         marginLeft: '5%',
         width: '90%',
         height: '80%',

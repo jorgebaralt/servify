@@ -12,7 +12,9 @@ import {
 	UPDATE_SERVICE_FAIL,
 	UPDATE_SERVICE_SUCCESS,
 	GET_NEAR_SERVICES_FAIL,
-	GET_NEAR_SERVICES_SUCCESS
+	GET_NEAR_SERVICES_SUCCESS,
+	GET_POPULAR_CATEGORY_SUCCESS,
+	GET_POPULAR_CATEGORY_FAIL
 } from './types';
 
 const GET_URL =	'https://us-central1-servify-716c6.cloudfunctions.net/getServices';
@@ -229,6 +231,20 @@ export const getNearServices = (currentLocation, distance) => async (
 		console.log(e);
 		return dispatch({ type: GET_NEAR_SERVICES_FAIL });
 	}
+};
+
+export const getPopularCategories = () => async (dispatch) => {
+	const popularCategoryUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/getPopularCategories';
+	try {
+		let { data } = await axios.get(popularCategoryUrl);
+		dispatch({ type: GET_POPULAR_CATEGORY_SUCCESS, payload: data });
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+export const getPopularNearServices = () => async (dispatch) => {
+	console.log('get near popular services');
 };
 
 // DELETE-SERVICE

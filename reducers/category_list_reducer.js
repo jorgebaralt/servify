@@ -6,7 +6,7 @@ const initialState = [
 		title: 'Home Services',
 		description: 'Home Services Description',
 		dbReference: 'home_services',
-		color: ['#0288D1', '#90CAF9'],
+		color: ['#43A047', '#90CAF9'],
 		keyWords: [
 			'home',
 			'cleaning',
@@ -47,7 +47,7 @@ const initialState = [
 				title: 'Other',
 				description: 'Other Description',
 				dbReference: 'other'
-			},
+			}
 		]
 	},
 	{

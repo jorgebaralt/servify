@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, LayoutAnimation, Dimensions } from 'react-native';
+import { TouchableOpacity, LayoutAnimation } from 'react-native';
 import { Text, Card, CardItem } from 'native-base';
 import { LinearGradient } from 'expo';
 import { connect } from 'react-redux';
-
-const SCREEN_WIDTH = Dimensions.get('window').width;
 
 class CategoryCard extends Component {
 	componentWillMount() {
@@ -14,13 +12,14 @@ class CategoryCard extends Component {
 	render() {
 		const { category } = this.props;
 		const { color } = category;
+		const { style } = this.props;
 
 		return (
 			<TouchableOpacity
-				style={styles.gridItem}
+				style={style}
 				onPress={() => this.props.onPress()}
 			>
-				<Card style={styles.cardStyle}>
+				<Card style={this.props.cardStyle}>
 					{/* TODO: grab specific color from each category, ADD: An array of [x, y] where x and y are floats */}
 					<LinearGradient
 						colors={color}
@@ -37,31 +36,5 @@ class CategoryCard extends Component {
 		);
 	}
 }
-
-const styles = {
-	androidHeader: {
-		backgroundColor: '#F5F5F5'
-	},
-	iosHeader: {},
-	titleStyle: {
-		textAlign: 'center',
-		color: 'black',
-		fontWeight: 'bold',
-		fontSize: 26,
-		margin: 20
-	},
-	cardStyle: {
-		height: 100
-	},
-	gridItem: {
-		marginLeft: 10,
-		marginTop: 5,
-		width: SCREEN_WIDTH / 2 - 15,
-		shadowOffset: { width: 0, height: 0 },
-		shadowColor: 'black',
-		shadowOpacity: 0.2,
-		elevation: 1
-	}
-};
 
 export default connect(null)(CategoryCard);
