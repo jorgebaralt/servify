@@ -82,61 +82,53 @@ class ProfileServicesScreen extends Component {
 	};
 
 	renderServices = (service) => {
-		if (service) {
-			const {
-				cardStyle,
-				titleStyle,
-				phoneLocationStyle,
-				displayNameStyle,
-				cardHeaderStyle,
-				cardItemStyle
-			} = styles;
-			const displayDescription = service.description.substring(0, 30) + '...';
+		const {
+			cardStyle,
+			titleStyle,
+			phoneLocationStyle,
+			displayNameStyle,
+			cardHeaderStyle,
+			cardItemStyle
+		} = styles;
+		const displayDescription = service.description.substring(0, 30) + '...';
 
-			let categoryName = service.category.split('_');
-			for (let i = 0; i < categoryName.length; i++) {
-				categoryName[i] =					categoryName[i].charAt(0).toUpperCase()
-					+ categoryName[i].substring(1);
-			}
-			categoryName = categoryName.join(' ');
-			return (
-				<TouchableOpacity
-					key={service.id}
-					onPress={() => {
-						this.props.selectService(service);
-						this.props.navigation.navigate('service');
-					}}
-				>
-					<Card style={cardStyle}>
-						<CardItem header style={cardHeaderStyle}>
-							<Text style={titleStyle}>{service.title}</Text>
-							<Text style={displayNameStyle}>by: {service.displayName}</Text>
-							<Text style={displayNameStyle}>Category: {categoryName}</Text>
-						</CardItem>
-						<CardItem style={cardItemStyle}>
-							<Body style={phoneLocationStyle}>
-								<Text>{service.phone}</Text>
-								<Text style={{ marginLeft: '15%' }}>
-									{/* {service.locationData.city} */}
-								</Text>
-							</Body>
-							<Right>
-								<Icon name="arrow-forward" style={{ color: '#FF7043' }} />
-							</Right>
-						</CardItem>
-						<CardItem style={cardItemStyle}>
-							<Body>
-								<Text>{displayDescription}</Text>
-							</Body>
-						</CardItem>
-					</Card>
-				</TouchableOpacity>
-			);
+		let categoryName = service.category.split('_');
+		for (let i = 0; i < categoryName.length; i++) {
+			categoryName[i] =				categoryName[i].charAt(0).toUpperCase() + categoryName[i].substring(1);
 		}
+		categoryName = categoryName.join(' ');
 		return (
-			<EmptyListMessage buttonPress={this.onBackPress}>
-				{errorMessage}
-			</EmptyListMessage>
+			<TouchableOpacity
+				key={service.id}
+				onPress={() => {
+					this.props.selectService(service);
+					this.props.navigation.navigate('service');
+				}}
+			>
+				<Card style={cardStyle}>
+					<CardItem header style={cardHeaderStyle}>
+						<Text style={titleStyle}>{service.title}</Text>
+						<Text style={displayNameStyle}>by: {service.displayName}</Text>
+						<Text style={displayNameStyle}>Category: {categoryName}</Text>
+					</CardItem>
+					<CardItem style={cardItemStyle}>
+						<Body style={phoneLocationStyle}>
+							<Text>{service.phone}</Text>
+							<Text style={{ marginLeft: '15%' }}>
+								{/* {service.locationData.city} */}
+							</Text>
+						</Body>
+						<Right>
+							<Icon name="arrow-forward" style={{ color: '#FF7043' }} />
+						</Right>
+					</CardItem>
+					<CardItem style={cardItemStyle}>
+						<Body>
+							<Text>{displayDescription}</Text>
+						</Body>
+					</CardItem>
+				</Card>
+			</TouchableOpacity>
 		);
 	};
 
@@ -160,7 +152,7 @@ class ProfileServicesScreen extends Component {
 				/>
 			);
 		}
-		if (currentItem.id === 'my_services') {
+		if (currentItem.id === 'my_services' && this.props.serviceList > 0) {
 			return (
 				<FlatList
 					style={{ marginBottom: 40 }}
@@ -170,12 +162,13 @@ class ProfileServicesScreen extends Component {
 				/>
 			);
 		}
-
 		return (
 			<EmptyListMessage buttonPress={this.onBackPress}>
-				{errorMessage}
+				There is nothing in this list, Make sure that you create a Service
+				from our Post screen, then you will be able to modify it here
 			</EmptyListMessage>
 		);
+
 	};
 
 	render() {

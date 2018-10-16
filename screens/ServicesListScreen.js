@@ -131,7 +131,7 @@ class ServicesListScreen extends Component {
 						<Text style={titleStyle}>{service.title}</Text>
 						<View style={reviewLocationStyle}>
 							<Text style={displayNameStyle}>by: {service.displayName}</Text>
-							<View style={{ marginLeft: '10%', marginTop: -3 }}>
+							<View style={{ marginLeft: '4%', marginTop: -3 }}>
 								<AirbnbRating
 									count={5}
 									defaultRating={service.ratingSum / service.ratingCount}
@@ -146,7 +146,7 @@ class ServicesListScreen extends Component {
 					<CardItem style={cardItemStyle}>
 						<Body style={phoneLocationStyle}>
 							<Text>{service.phone}</Text>
-							<Text style={{ marginLeft: '15%' }}>
+							<Text style={{ marginLeft: '5%' }}>
 								{service.locationData.city}
 							</Text>
 						</Body>
@@ -163,7 +163,7 @@ class ServicesListScreen extends Component {
 						</Body>
 						<Right>
 							<Text style={{ color: 'gray' }}>
-								{Math.floor(service.distance)} miles
+								{Math.floor(service.distance)} mile(s)
 							</Text>
 						</Right>
 					</CardItem>
@@ -235,8 +235,8 @@ class ServicesListScreen extends Component {
 const styles = {
 	headerStyle: {},
 	cardStyle: {
-		width: '80%',
-		marginLeft: '10%',
+		width: '90%',
+		marginLeft: '5%',
 		marginTop: '2.5%',
 		shadowOffset: { width: 0, height: 0 },
 		shadowColor: 'black',

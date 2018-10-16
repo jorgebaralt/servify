@@ -214,9 +214,17 @@ class SpecificServiceScreen extends Component {
 		const reviewDate = day + ' ' + monthNames[monthIndex] + ' ' + year;
 
 		if (currentUserReview.timestamp) {
-			return <Text style={{ color: 'gray', marginTop: -5 }}>{reviewDate}</Text>;
+			return (
+				<Text style={{ color: 'gray', marginTop: -5, fontSize: 14 }}>
+					{reviewDate}
+				</Text>
+			);
 		}
-		return <Text style={{ color: 'gray', marginTop: -5 }}>a moment ago</Text>;
+		return (
+			<Text style={{ color: 'gray', marginTop: -5, fontSize: 14 }}>
+				a moment ago
+			</Text>
+		);
 	};
 
 	deleteComment = async () => {
@@ -654,7 +662,7 @@ const styles = {
 	charCountStyle: {
 		color: '#bfc6ea',
 		textAlign: 'right',
-		marginLeft: '90%',
+		marginLeft: '88%',
 		marginBottom: 2
 	},
 	showMoreStyle: {
@@ -665,7 +673,7 @@ const styles = {
 		fontSize: 13,
 		color: 'gray',
 		marginTop: 3,
-		marginLeft: 10,
+		marginLeft: 10
 	}
 };
 

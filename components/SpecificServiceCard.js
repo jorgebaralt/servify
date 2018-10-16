@@ -17,7 +17,7 @@ class SpecificServiceCard extends Component {
 				<View>
 					<View style={{ flexDirection: 'row' }}>
 						<Text style={[displayNameStyle, { marginTop: 3 }]}>
-							Avg rating: {service.rating}{' '}
+							Avg rating: {service.rating.toFixed(1)}{' '}
 						</Text>
 						<AirbnbRating
 							count={1}

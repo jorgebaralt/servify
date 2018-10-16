@@ -62,7 +62,7 @@ const styles = {
     },
     buttonStyleiOS: {
         position: 'absolute',
-        top: '82%',
+        top: '90%',
         alignItems: 'center',
         left: '37%'
     },
