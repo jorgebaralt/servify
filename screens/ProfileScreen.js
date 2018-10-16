@@ -71,13 +71,15 @@ class ProfileScreen extends Component {
 			this.props.navigation.navigate('feedback');
 		} else if (item.id === 'contactUs') {
 			Linking.openURL('mailto:jorgebaraltq@gmail.com');
+		} else if (item.id === 'help') {
+			this.props.navigation.navigate('help');
 		}
 	};
 
 	renderListItems = (item) => (
 		<ListItem
 			onPress={() => this.goSelectedScreen(item)}
-			style={{ marginTop: 30 }}
+			style={{ marginTop: 30, marginRight: 10 }}
 		>
 			<Left>
 				<Text>{item.title}</Text>

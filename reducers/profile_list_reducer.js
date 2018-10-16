@@ -13,13 +13,13 @@ export default () => [
 		iconName: 'favorite-border',
 		isList: true
 	},
-	{
-		id: 'invite',
-		title: 'Invite a Friend',
-		iconType: 'MaterialCommunityIcons',
-		iconName: 'gift',
-		isList: false
-	},
+	// {
+	// 	id: 'invite',
+	// 	title: 'Invite a Friend',
+	// 	iconType: 'MaterialCommunityIcons',
+	// 	iconName: 'gift',
+	// 	isList: false
+	// },
 	{
 		id: 'help',
 		title: 'Help',

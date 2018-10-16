@@ -122,8 +122,10 @@ class BrowseScreen extends Component {
 	};
 
 	_keyboardDidHide() {
-		this.setState((prevState) => ({ filter: prevState.filter + ' ' }));
-		this.handleSearch();
+		if (this.state.filter.length > 1) {
+			this.setState((prevState) => ({ filter: prevState.filter + ' ' }));
+			this.handleSearch();
+		}
 	}
 
 	render() {

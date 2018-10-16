@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "servify",
-    "description": "This project is really great.",
+    "description": "Easy way to find local services brougth to your home, contact them and make your life easier ",
     "slug": "servify",
     "privacy": "public",
     "sdkVersion": "28.0.0",
@@ -10,9 +10,9 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      // "image": "./assets/splash.png",
+      "resizeMode": "cover",
+      // "backgroundColor": "#FF7043"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -21,7 +21,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.jorgebaralt.servify"
+    },
+    "android": {
+      "package": "com.jorgebaralt.servify"
     }
   }
 }
