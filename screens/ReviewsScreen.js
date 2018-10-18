@@ -17,12 +17,14 @@ import {
 	CardItem,
 	Card
 } from 'native-base';
-import { getServiceReviews } from '../actions';
+import { getServiceReviews, cancelAxiosRating } from '../actions';
 
 let willFocusSubscription;
 let backPressSubscriptions;
 
 class ReviewsScreen extends Component {
+	state = { loading: true };
+
 	async componentWillMount() {
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
@@ -30,6 +32,7 @@ class ReviewsScreen extends Component {
 		);
 
 		await this.props.getServiceReviews(this.props.service);
+		this.setState({ loading: false });
 	}
 
 	componentWillUnmount() {
@@ -99,6 +102,13 @@ class ReviewsScreen extends Component {
 		);
 	};
 
+	renderSpinner() {
+		if (this.state.loading) {
+			return <Spinner color="orange" />;
+		}
+		return <View />;
+	}
+
 	renderReviews = () => {
 		if (this.props.reviews) {
 			return (
@@ -123,6 +133,7 @@ class ReviewsScreen extends Component {
 							transparent
 							onPress={() => {
 								this.props.navigation.goBack();
+								this.props.cancelAxiosRating();
 							}}
 						>
 							<Icon name="arrow-back" style={{ color: 'black' }} />
@@ -133,7 +144,10 @@ class ReviewsScreen extends Component {
 					</Body>
 					<Right />
 				</Header>
-				<Content>{this.renderReviews()}</Content>
+				<Content>
+					{this.renderSpinner()}
+					{this.renderReviews()}
+				</Content>
 			</Container>
 		);
 	}
@@ -169,5 +183,5 @@ const mapStateToProps = (state) => ({
 
 export default connect(
 	mapStateToProps,
-	{ getServiceReviews }
+	{ getServiceReviews, cancelAxiosRating }
 )(ReviewsScreen);
