@@ -336,7 +336,7 @@ class PostServiceScreen extends Component {
 									/>
 								</Item>
 								<Item style={itemStyle} floatingLabel>
-									<Label>Service Radius (Miles)</Label>
+									<Label>Area covered from your location (Miles)</Label>
 									<Input
 										value={this.state.miles}
 										onChangeText={(text) => this.setState({ miles: text })}

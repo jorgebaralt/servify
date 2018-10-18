@@ -53,7 +53,7 @@ class ProfileServicesScreen extends Component {
 			this.setState({ loading: true });
 			await this.props.getServicesByEmail(this.props.email);
 			this.setState({ loading: false });
-			errorMessage =				'There is nothing in this list, Make sure that you create a Service from our Post screen, then you will be able to modify it here';
+			errorMessage = 'There is nothing in this list, Make sure that you create a Service from our Post screen, then you will be able to modify it here';
 		}
 	}
 
@@ -152,7 +152,7 @@ class ProfileServicesScreen extends Component {
 				/>
 			);
 		}
-		if (currentItem.id === 'my_services' && this.props.serviceList > 0) {
+		if (currentItem.id === 'my_services' && this.props.servicesList.length > 0) {
 			return (
 				<FlatList
 					style={{ marginBottom: 40 }}
