@@ -6,7 +6,11 @@ class EmptyListMessage extends Component{
     render(){
         const { iconStyle, cardStyle, titleStyle, descriptionStyle, buttonStyleiOS, buttonStyleAndroid } = styles;
         return (
-            <View>
+            <View style={{
+                    flex: 1,
+                    alignItems: 'center'
+                }}
+            >
                     <Card bordered={false} style={cardStyle}>
                         <CardItem>
                             <Icon name="emoji-sad" type="Entypo" style={iconStyle} />
@@ -36,8 +40,7 @@ const styles = {
         textAlign: 'center'
     },
     cardStyle: {
-        top: '12%',
-        marginLeft: '5%',
+        top: '5%',
         width: '90%',
         height: '80%',
         alignContent: 'center',
@@ -62,12 +65,10 @@ const styles = {
     },
     buttonStyleiOS: {
         position: 'absolute',
-        top: '90%',
+        top: '83%',
         alignItems: 'center',
-        left: '37%'
     },
     buttonStyleAndroid: {
-        left: '37%',
         top: 35
     }
 };

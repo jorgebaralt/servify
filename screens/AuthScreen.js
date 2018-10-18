@@ -4,12 +4,15 @@ import {
 	TouchableOpacity,
 	DeviceEventEmitter,
 	BackHandler,
-	SafeAreaView
+	SafeAreaView,
+	Image
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Button, Text, Icon } from 'native-base';
 import { LinearGradient } from 'expo';
 import { facebookLogin } from '../actions';
+import Logo from '../assets/servifyLogo.png';
+import LogoBorderWhite from '../assets/logoBorderWhite.png';
 
 let backPressSubscriptions;
 let willFocusSubscription;
@@ -67,9 +70,12 @@ class AuthScreen extends Component {
 			<LinearGradient
 				colors={['#FF7043', '#F4511E', '#BF360C']}
 				style={{ flex: 1 }}
+				start={{ x: 1, y: 0 }}
+				end={{ x: 0, y: 1 }}
 			>
 				<SafeAreaView style={styles.authStyle}>
-					<Text style={styles.titleStyle}> Servify </Text>
+					<Image style={{ width: 82, height: 105, marginBottom: 20 }} source={LogoBorderWhite} />
+					{/* <Text style={styles.titleStyle}> Servify </Text> */}
 					{/* //log in with facebook */}
 					<View style={styles.buttonStyle}>
 						<Button
@@ -139,6 +145,7 @@ class AuthScreen extends Component {
 
 const styles = {
 	titleStyle: {
+		marginTop: 20,
 		fontSize: 40,
 		color: 'white',
 		marginBottom: 100,
@@ -150,7 +157,7 @@ const styles = {
 		alignItems: 'center'
 	},
 	buttonStyle: {
-		marginBottom: 30
+		marginTop: 40,
 	},
 	textStyle: {
 		fontSize: 16

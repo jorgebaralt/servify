@@ -3,7 +3,7 @@ export default () => [
 		id: '1',
 		question: 'How can I post a service?',
 		answer:
-			'You have to go to the Post tab on the main screen of the app. by filling the form you will be able to create your first service. Remeber, only one service per category is allowed.'
+			'You have to go to the Post tab on the main screen of the app. By filling the form you will be able to create your first service. Remeber, users can only create 1 service under each subcategory'
 	},
 	{
 		id: '2',
@@ -21,19 +21,19 @@ export default () => [
 		id: '4',
 		question: 'When do I have to pay for a service?',
 		answer:
-			'As for now, payments through the app are not supported, so the profesional and the user requestion the service have the liberty to decide when to do the payment, get in contact with the service provider for more information, since every service is different.'
+			'Payments through the app are not supported yet, so the profesional and the user requesting the service have the liberty to decide when to do the payment, get in contact with the service provider for more information'
 	},
 	{
 		id: '5',
 		question: 'How can I give feedback about a service?',
 		answer:
-			'By navigate to the specific service, if user scroll down there will be a review section where users can see previous reviews and add their own review'
+			'By navigating to the specific service, if user scroll down there will be a review section where users can see previous reviews and add their own review'
 	},
 	{
 		id: '6',
 		question: 'Can I cancel a service?',
 		answer:
-			'Each service, company, and person that provides the service is different. this will vary according to the service that you selected'
+			'Each service, company, and person that provides the service is different. this will vary according to the service that you selected, and the person you contacted.'
 	},
 	{
 		id: '7',
@@ -45,7 +45,7 @@ export default () => [
 		id: '8',
 		question: 'Can I edit or delete an already existing service?',
 		answer:
-			'Yes, you can go to profile, my services and look for the service that you want to delete/edit. Once you open your service, you can click on the three dot icon on the top right. you will have an optino to update or delete your service.'
+			'Yes, you can go to yout profile, click on my services, and look for the service that you want to delete/edit. Once you open your service, you can click on the three dot icon on the top right. you will have an optino to update or delete your service.'
 	},
 	{
 		id: '9',
