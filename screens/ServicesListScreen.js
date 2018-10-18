@@ -26,7 +26,8 @@ import { connect } from 'react-redux';
 import {
 	getServicesCategory,
 	getServicesSubcategory,
-	selectService
+	selectService,
+	cancelAxiosServices
 } from '../actions';
 import EmptyListMessage from '../components/EmptyListMessage';
 
@@ -42,18 +43,12 @@ class ServicesListScreen extends Component {
 	componentWillMount = async () => {
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
-			async () => {
-				await this.decideGetService();
+			() => {
 				this.handleAndroidBack();
 			}
-			
 		);
-		this.setState({ dataLoaded: false });
-	};
-
-	async componentDidMount() {
 		await this.decideGetService();
-	}
+	};
 
 	componentWillUnmount() {
 		willFocusSubscription.remove();
@@ -76,6 +71,7 @@ class ServicesListScreen extends Component {
 	};
 
 	onBackPress = () => {
+		this.props.cancelAxiosServices();
 		this.props.navigation.goBack(null);
 	};
 
@@ -138,7 +134,9 @@ class ServicesListScreen extends Component {
 									size={15}
 								/>
 							</View>
-							<Text style={[displayNameStyle, { marginTop: -2, marginLeft: 3 }]}>
+							<Text
+								style={[displayNameStyle, { marginTop: -2, marginLeft: 3 }]}
+							>
 								{this.renderRating(service)}
 							</Text>
 						</View>
@@ -174,7 +172,7 @@ class ServicesListScreen extends Component {
 
 	renderListView() {
 		if (this.state.dataLoaded) {
-			if (this.props.servicesList.length !== 0) {
+			if (this.props.servicesList && this.props.servicesList.length !== 0) {
 				return (
 					<FlatList
 						style={{ marginTop: 10, marginBottom: 40 }}
@@ -183,13 +181,13 @@ class ServicesListScreen extends Component {
 						keyExtractor={(item) => item.title}
 						enableEmptySections
 						refreshControl={(
-							<RefreshControl
+<RefreshControl
 								refreshing={this.state.refreshing}
 								onRefresh={() => this.decideGetService()}
 								tintColor={this.props.category.color[0]}
 								colors={[this.props.category.color[0]]}
-							/>
-						)}
+/>
+)}
 					/>
 				);
 			}
@@ -281,5 +279,10 @@ const mapStateToProps = (state) => ({
 
 export default connect(
 	mapStateToProps,
-	{ getServicesCategory, getServicesSubcategory, selectService }
+	{
+		getServicesCategory,
+		getServicesSubcategory,
+		selectService,
+		cancelAxiosServices
+	}
 )(ServicesListScreen);

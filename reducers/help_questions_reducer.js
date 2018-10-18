@@ -3,13 +3,13 @@ export default () => [
 		id: '1',
 		question: 'How can I post a service?',
 		answer:
-			'You have to go to the Post tab on the main screen of the app. By filling the form you will be able to create your first service. Remeber, users can only create 1 service under each subcategory'
+			'You have to go to the Post tab on the main screen of the app. By filling the form, you will be able to create your first service. Remember, users can only create 1 service under each subcategory'
 	},
 	{
 		id: '2',
 		question: 'Can everyone post a service?',
 		answer:
-			'Yes, for now we are alowing everyone to post only one service per category, this might change in the future.'
+			'Yes, for now we are allowing everyone to post only one service per category, this might change in the future.'
 	},
 	{
 		id: '3',
@@ -21,7 +21,7 @@ export default () => [
 		id: '4',
 		question: 'When do I have to pay for a service?',
 		answer:
-			'Payments through the app are not supported yet, so the profesional and the user requesting the service have the liberty to decide when to do the payment, get in contact with the service provider for more information'
+			'Payments through the app are not supported yet, so the professional and the user requesting the service have the liberty to decide when to do the payment, get in contact with the service provider for more information'
 	},
 	{
 		id: '5',
@@ -45,7 +45,7 @@ export default () => [
 		id: '8',
 		question: 'Can I edit or delete an already existing service?',
 		answer:
-			'Yes, you can go to yout profile, click on my services, and look for the service that you want to delete/edit. Once you open your service, you can click on the three dot icon on the top right. you will have an optino to update or delete your service.'
+			'Yes, you can go to your profile, click on my services, and look for the service that you want to delete/edit. Once you open your service, you can click on the three-dot icon on the top right. you will have an option to update or delete your service.'
 	},
 	{
 		id: '9',

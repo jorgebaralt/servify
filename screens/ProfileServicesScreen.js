@@ -21,7 +21,12 @@ import {
 	Spinner
 } from 'native-base';
 import { connect } from 'react-redux';
-import { getServicesByEmail, selectService, getFavorites } from '../actions';
+import {
+	getServicesByEmail,
+	selectService,
+	getFavorites,
+	cancelAxiosServices
+} from '../actions';
 import EmptyListMessage from '../components/EmptyListMessage';
 
 let currentItem;
@@ -53,7 +58,7 @@ class ProfileServicesScreen extends Component {
 			this.setState({ loading: true });
 			await this.props.getServicesByEmail(this.props.email);
 			this.setState({ loading: false });
-			errorMessage = 'There is nothing in this list, Make sure that you create a Service from our Post screen, then you will be able to modify it here';
+			errorMessage =				'There is nothing in this list, Make sure that you create a Service from our Post screen, then you will be able to modify it here';
 		}
 	}
 
@@ -79,6 +84,7 @@ class ProfileServicesScreen extends Component {
 
 	onBackPress = async () => {
 		await this.props.navigation.goBack();
+		this.props.cancelAxiosServices();
 	};
 
 	renderServices = (service) => {
@@ -143,7 +149,11 @@ class ProfileServicesScreen extends Component {
 		if (this.state.loading) {
 			return this.renderSpinner();
 		}
-		if (currentItem.id === 'favorites' && this.props.favorites.length > 0) {
+		if (
+			currentItem.id === 'favorites'
+			&& this.props.favorites
+			&& this.props.favorites.length > 0
+		) {
 			return (
 				<FlatList
 					data={this.props.favorites}
@@ -152,7 +162,11 @@ class ProfileServicesScreen extends Component {
 				/>
 			);
 		}
-		if (currentItem.id === 'my_services' && this.props.servicesList.length > 0) {
+		if (
+			currentItem.id === 'my_services'
+			&& this.props.servicesList
+			&& this.props.servicesList.length > 0
+		) {
 			return (
 				<FlatList
 					style={{ marginBottom: 40 }}
@@ -164,11 +178,10 @@ class ProfileServicesScreen extends Component {
 		}
 		return (
 			<EmptyListMessage buttonPress={this.onBackPress}>
-				There is nothing in this list, Make sure that you create a Service
-				from our Post screen, then you will be able to modify it here
+				There is nothing in this list, Make sure that you create a Service from
+				our Post screen, then you will be able to modify it here
 			</EmptyListMessage>
 		);
-
 	};
 
 	render() {
@@ -246,5 +259,5 @@ function mapStateToProps(state) {
 
 export default connect(
 	mapStateToProps,
-	{ getServicesByEmail, selectService, getFavorites }
+	{ getServicesByEmail, selectService, getFavorites, cancelAxiosServices }
 )(ProfileServicesScreen);

@@ -21,7 +21,8 @@ import {
 } from './types';
 
 const GET_URL =	'https://us-central1-servify-716c6.cloudfunctions.net/getServices';
-
+const { CancelToken } = axios;
+let source;
 // POST-SERVICE
 export const createService = (servicePost, email) => async (dispatch) => {
 	let isEmpty;
@@ -163,7 +164,9 @@ export const getServicesCategory = (category, userLocation) => async (
 ) => {
 	const url = GET_URL + '/?category=' + category;
 	try {
-		let { data } = await axios.get(url);
+		source = CancelToken.source();
+		let { data } = await axios.get(url, { cancelToken: source.token });
+
 		data = sortByDistance(data, userLocation);
 		return dispatch({ type: GET_SERVICES_SUCCESS, payload: data });
 	} catch (e) {
@@ -179,7 +182,8 @@ export const getServicesSubcategory = (subcategory, userLocation) => async (
 ) => {
 	const url = GET_URL + '/?subcategory=' + subcategory;
 	try {
-		let { data } = await axios.get(url);
+		source = CancelToken.source();
+		let { data } = await axios.get(url, { cancelToken: source.token });
 		data = sortByDistance(data, userLocation);
 		return dispatch({ type: GET_SERVICES_SUCCESS, payload: data });
 	} catch (e) {
@@ -190,8 +194,8 @@ export const getServicesSubcategory = (subcategory, userLocation) => async (
 export const getServicesByEmail = (email) => async (dispatch) => {
 	const url = GET_URL + '/?email=' + email;
 	try {
-		// TODO: change here
-		const { data } = await axios.get(url);
+		source = CancelToken.source();
+		const { data } = await axios.get(url, { cancelToken: source.token });
 		return dispatch({ type: GET_SERVICES_SUCCESS, payload: data });
 	} catch (e) {
 		console.log(e);
@@ -209,7 +213,8 @@ export const getServicesByZipcode = (currentLocation) => async (dispatch) => {
 		const [location] = locationData;
 		zipCode = location.postalCode;
 		const url = GET_URL + '?zipCode=' + zipCode;
-		const { data } = await axios.get(url);
+		source = CancelToken.source();
+		const { data } = await axios.get(url, { cancelToken: source.token });
 		return dispatch({ type: GET_SERVICES_SUCCESS, payload: data });
 	} catch (e) {
 		console.log(e);
@@ -222,10 +227,15 @@ export const getNearServices = (currentLocation, distance) => async (
 ) => {
 	const getNearUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getNearService';
 	try {
-		let { data } = await axios.post(getNearUrl, {
-			currentLocation,
-			distance
-		});
+		source = CancelToken.source();
+		let { data } = await axios.post(
+			getNearUrl,
+			{
+				currentLocation,
+				distance
+			},
+			{ cancelToken: source.token }
+		);
 		data = _.sortBy(data, 'timestamp');
 		data = data.reverse();
 		data = data.slice(0, 10);
@@ -239,7 +249,10 @@ export const getNearServices = (currentLocation, distance) => async (
 export const getPopularCategories = () => async (dispatch) => {
 	const popularCategoryUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getPopularCategories';
 	try {
-		const { data } = await axios.get(popularCategoryUrl);
+		source = CancelToken.source();
+		const { data } = await axios.get(popularCategoryUrl, {
+			cancelToken: source.token
+		});
 		dispatch({ type: GET_POPULAR_CATEGORY_SUCCESS, payload: data });
 	} catch (e) {
 		console.log(e);
@@ -254,10 +267,15 @@ export const getPopularNearServices = (currentLocation, distance) => async (
 ) => {
 	const getNearUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getNearService';
 	try {
-		let { data } = await axios.post(getNearUrl, {
-			currentLocation,
-			distance
-		});
+		source = CancelToken.source();
+		let { data } = await axios.post(
+			getNearUrl,
+			{
+				currentLocation,
+				distance
+			},
+			{ cancelToken: source.token }
+		);
 		data = _.sortBy(data, 'rating');
 		data = data.reverse();
 		data = data.slice(0, 10);
@@ -363,4 +381,8 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
 	dist = (dist * 180) / Math.PI;
 	dist = dist * 60 * 1.1515;
 	return dist;
+};
+
+export const cancelAxiosServices = () => async (dispatch) => {
+	await source.cancel('Fetched cancelled by user');
 };

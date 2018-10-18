@@ -13,7 +13,7 @@ import {
 
 // Will be used to cancel axios call
 const { CancelToken } = axios;
-const source = CancelToken.source();
+let source;
 
 export const submitReview = (service, review) => async (dispatch) => {
 	const data = {
@@ -32,10 +32,13 @@ export const submitReview = (service, review) => async (dispatch) => {
 export const getServiceReviews = (service) => async (dispatch) => {
 	const getReviewsUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getRatings';
 	try {
+		source = CancelToken.source();
 		const { data } = await axios.get(
 			getReviewsUrl,
-			{ params: service },
-			{ cancelToken: source.token }
+			{
+				params: service,
+				cancelToken: source.token 
+			},
 		);
 		dispatch({ type: GET_SERVICE_REVIEWS, payload: data });
 	} catch (e) {
@@ -46,10 +49,13 @@ export const getServiceReviews = (service) => async (dispatch) => {
 export const getReviews = (service, userEmail) => async (dispatch) => {
 	const getReviewsUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getRatings';
 	try {
+		source = CancelToken.source();
 		const { data } = await axios.get(
 			getReviewsUrl,
-			{ params: service },
-			{ cancelToken: source.token }
+			{
+				params: service,
+				cancelToken: source.token
+			}
 		);
 		const newData = handleData(data, userEmail);
 		if (newData.currentUserReview) {
@@ -103,4 +109,8 @@ const handleData = (data, userEmail) => {
 		return newData;
 	}
 	return data;
+};
+
+export const cancelAxiosRating = () => async (dispatch) => {
+	await source.cancel();
 };

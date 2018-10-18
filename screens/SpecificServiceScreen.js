@@ -34,7 +34,8 @@ import {
 	getReviews,
 	resetReview,
 	deleteReview,
-	removeFavorite
+	removeFavorite,
+	cancelAxiosRating
 } from '../actions';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -87,20 +88,19 @@ class SpecificServiceScreen extends Component {
 		if (service.favUsers.includes(this.props.currentUserEmail)) {
 			this.setState({ isFav: true });
 		}
-	};
 
-	async componentDidMount() {
-		const { service } = this.props;
 		await this.props.getReviews(service, this.props.currentUserEmail);
 		this.setState({ loadingUserComment: false });
+	};
+
+	componentWillUnmount() {
+		this.props.cancelAxiosRating();
 	}
 
-	async componentWillUnmount() {
-		// cancel axios calls
-	}
 
 	onBackPress = async () => {
 		await this.props.resetReview();
+		this.props.cancelAxiosRating();
 		this.props.navigation.goBack();
 	};
 
@@ -694,6 +694,7 @@ export default connect(
 		getReviews,
 		resetReview,
 		deleteReview,
-		removeFavorite
+		removeFavorite,
+		cancelAxiosRating
 	}
 )(SpecificServiceScreen);
