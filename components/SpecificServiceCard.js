@@ -19,7 +19,6 @@ class SpecificServiceCard extends Component {
 				</Text>
 			);
 		}
-
 	};
 
 	renderContent = () => {
@@ -75,8 +74,8 @@ class SpecificServiceCard extends Component {
 }
 const styles = {
 	cardStyle: {
-		width: 140,
-		height: 140,
+		width: 150,
+		height: 150,
 		shadowOffset: { width: 0, height: 0 },
 		shadowColor: 'black',
 		shadowOpacity: 0.2,
