@@ -27,25 +27,25 @@ const initialState = [
 			{
 				id: 0.1,
 				title: 'Home Cleaning',
-				description: 'Home Cleaning Description',
+				description: 'Get a cleaner house',
 				dbReference: 'home_cleaning'
 			},
 			{
 				id: 0.2,
 				title: 'Home Painting',
-				description: 'Home Painting Description',
+				description: 'Shiny walls',
 				dbReference: 'home_painting'
 			},
 			{
 				id: 0.3,
 				title: 'Carpet Clean',
-				description: 'Carpet clean desc',
+				description: 'Softy carpets',
 				dbReference: 'carpet'
 			},
 			{
 				id: 0.4,
 				title: 'Other',
-				description: 'Other Description',
+				description: 'Just other',
 				dbReference: 'other'
 			}
 		]
@@ -75,19 +75,19 @@ const initialState = [
 			{
 				id: 1.1,
 				title: 'Car Wash',
-				description: 'Car Wash Description',
+				description: 'Shiny car',
 				dbReference: 'car_wash'
 			},
 			{
 				id: 1.2,
 				title: 'Tire Change',
-				description: 'tire change description',
+				description: 'Shoes for your car',
 				dbReference: 'tire_change'
 			},
 			{
 				id: 1.3,
 				title: 'Mechanic',
-				description: 'Mechanic Description',
+				description: 'Avoid crashing',
 				dbReference: 'mechanic'
 			}
 		]
@@ -116,19 +116,19 @@ const initialState = [
 			{
 				id: 2.1,
 				title: 'A/C Repair',
-				description: 'A/C Repair Description',
+				description: 'Always cold',
 				dbReference: 'ac_repair'
 			},
 			{
 				id: 2.2,
 				title: 'Furniture Fix and Assembly',
-				description: 'Furniture Fix Assembly Description',
+				description: 'Easy built',
 				dbReference: 'furniture_fix_assembly'
 			},
 			{
 				id: 2.3,
 				title: 'Moving Help',
-				description: 'Moving Description',
+				description: 'Move out quickly',
 				dbReference: 'moving'
 			}
 		]
@@ -176,25 +176,25 @@ const initialState = [
 			{
 				id: 4.1,
 				title: 'Water leaks',
-				description: 'Leals Description',
+				description: 'Avoid inside rain',
 				dbReference: 'water_leak'
 			},
 			{
 				id: 4.2,
 				title: 'Drains',
-				description: 'Drains Description',
+				description: 'Better dry',
 				dbReference: 'drains'
 			},
 			{
 				id: 4.3,
 				title: 'Toilets',
-				description: 'Toilet Description',
+				description: 'We always need it working',
 				dbReference: 'toilet'
 			},
 			{
 				id: 4.4,
 				title: 'All Plumbing services',
-				description: 'All Description',
+				description: 'All you need',
 				dbReference: 'all_plumbing'
 			}
 		]
@@ -267,19 +267,19 @@ const initialState = [
 			{
 				id: 8.1,
 				title: 'Nails',
-				description: 'Nails Description',
+				description: 'Shiny nails',
 				dbReference: 'nails'
 			},
 			{
 				id: 8.2,
 				title: 'Hair cuttery',
-				description: 'Hair cut Description',
+				description: 'Looking sharp',
 				dbReference: 'hair'
 			},
 			{
 				id: 8.3,
 				title: 'Spa',
-				description: 'spa description',
+				description: 'Relax time',
 				dbReference: 'spa'
 			}
 		]
@@ -312,7 +312,7 @@ const initialState = [
 	{
 		id: 11,
 		title: 'Other',
-		description: 'Other Description',
+		description: 'Something else',
 		dbReference: 'other',
 		keyWords: ['other'],
 		color: ['#78909C', '#7986CB']

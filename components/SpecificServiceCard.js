@@ -9,6 +9,19 @@ class SpecificServiceCard extends Component {
 		LayoutAnimation.easeInEaseOut();
 	}
 
+	renderRating = () => {
+		const { displayNameStyle } = styles;
+		const { service } = this.props;
+		if (service.rating != null) {
+			return (
+				<Text style={[displayNameStyle, { marginTop: 3 }]}>
+					Avg rating: {service.rating.toFixed(1)}{' '}
+				</Text>
+			);
+		}
+
+	};
+
 	renderContent = () => {
 		const { service } = this.props;
 		const { displayNameStyle } = styles;
@@ -19,12 +32,7 @@ class SpecificServiceCard extends Component {
 						<Text style={[displayNameStyle, { marginTop: 3 }]}>
 							Avg rating: {service.rating.toFixed(1)}{' '}
 						</Text>
-						<AirbnbRating
-							count={1}
-							defaultRating={service.rating}
-							size={15}
-						/>
-						
+						<AirbnbRating count={1} defaultRating={service.rating} size={15} />
 					</View>
 					<Text style={[displayNameStyle, { marginTop: 10 }]}>
 						{service.displayName}
@@ -47,11 +55,7 @@ class SpecificServiceCard extends Component {
 
 	render() {
 		const { service } = this.props;
-		const {
-			cardStyle,
-			cardHeaderStyle,
-			titleStyleCard
-		} = styles;
+		const { cardStyle, cardHeaderStyle, titleStyleCard } = styles;
 		return (
 			<TouchableOpacity
 				style={{ marginBottom: 10 }}
