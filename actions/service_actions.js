@@ -39,117 +39,111 @@ export const createService = (servicePost, email) => async (dispatch) => {
 		displayName
 	} = servicePost;
 
-	if (selectedCategory && phone && zipCode && description && title) {
-		const category = selectedCategory.dbReference;
-		const geolocationData = await Location.geocodeAsync(zipCode);
-		const geolocation = geolocationData[0];
-		let locationData;
+	
+	const category = selectedCategory.dbReference;
+	const geolocationData = await Location.geocodeAsync(zipCode);
+	const geolocation = geolocationData[0];
+	let locationData;
+	try {
+		const locationInfo = await Location.reverseGeocodeAsync({
+			latitude: geolocation.latitude,
+			longitude: geolocation.longitude
+		});
+		[locationData] = locationInfo;
+		delete geolocation.accuracy;
+		delete geolocation.altitude;
+	} catch (e) {
+		return dispatch({
+			type: POST_SERVICE_FAIL,
+			payload:
+				'We could not find your address, please provide a correct address'
+		});
+	}
+
+	const newServicePost = {
+		category,
+		phone,
+		description,
+		title,
+		geolocation,
+		locationData,
+		miles,
+		email,
+		displayName,
+		zipCode: locationData.postalCode
+	};
+
+	if (miles > 60) {
+		return dispatch({
+			type: POST_SERVICE_FAIL,
+			payload:
+				'No more than 60 miles for local services, we are working on services across states'
+		});
+	}
+
+	// if there is subcategory option, and didnt pick one
+	if (selectedCategory.subcategories && !selectedSubcategory) {
+		return dispatch({
+			type: POST_SERVICE_FAIL,
+			payload: 'Please Fill Subcategory'
+		});
+	}
+
+	// if there is subcategory, add it to the object
+	if (selectedSubcategory) {
+		newServicePost.subcategory = selectedSubcategory.dbReference;
+		// check duplicate post by same user. under subcategory
+		const checkURL =				checkDuplicateBaseUrl
+			+ '/?email='
+			+ email
+			+ '&subcategory='
+			+ selectedSubcategory.dbReference;
 		try {
-			const locationInfo = await Location.reverseGeocodeAsync({
-				latitude: geolocation.latitude,
-				longitude: geolocation.longitude
-			});
-			[locationData] = locationInfo;
-			delete geolocation.accuracy;
-			delete geolocation.altitude;
+			const response = await axios.get(checkURL);
+			isEmpty = response.data;
+			if (!isEmpty) {
+				return dispatch({
+					type: POST_SERVICE_FAIL,
+					payload:
+						'This account already have a Service under this Subcategory, Only 1 service per subcategory is allowed'
+				});
+			}
 		} catch (e) {
 			return dispatch({
 				type: POST_SERVICE_FAIL,
-				payload:
-					'We could not find your address, please provide a correct address'
+				payload: 'Error connecting to server'
 			});
 		}
-
-		const newServicePost = {
-			category,
-			phone,
-			description,
-			title,
-			geolocation,
-			locationData,
-			miles,
-			email,
-			displayName,
-			zipCode: locationData.postalCode
-		};
-
-		if (miles > 60) {
-			return dispatch({
-				type: POST_SERVICE_FAIL,
-				payload:
-					'No more than 60 miles for local services, we are working on services across states'
-			});
-		}
-
-		// if there is subcategory option, and didnt pick one
-		if (selectedCategory.subcategories && !selectedSubcategory) {
-			return dispatch({
-				type: POST_SERVICE_FAIL,
-				payload: 'Please Fill Subcategory'
-			});
-		}
-
-		// if there is subcategory, add it to the object
-		if (selectedSubcategory) {
-			newServicePost.subcategory = selectedSubcategory.dbReference;
-			// check duplicate post by same user. under subcategory
-			const checkURL =				checkDuplicateBaseUrl
-				+ '/?email='
-				+ email
-				+ '&subcategory='
-				+ selectedSubcategory.dbReference;
-			try {
-				const response = await axios.get(checkURL);
-				isEmpty = response.data;
-				if (!isEmpty) {
-					return dispatch({
-						type: POST_SERVICE_FAIL,
-						payload:
-							'This account already have a Service under this Subcategory, Only 1 service per subcategory is allowed'
-					});
-				}
-			} catch (e) {
-				return dispatch({
-					type: POST_SERVICE_FAIL,
-					payload: 'Error connecting to server'
-				});
-			}
-		} else if (selectedCategory && !selectedSubcategory) {
-			const checkURL =				checkDuplicateBaseUrl + '/?email=' + email + '&category=' + category;
-			try {
-				const response = await axios.get(checkURL);
-				isEmpty = response.data;
-				if (!isEmpty) {
-					return dispatch({
-						type: POST_SERVICE_FAIL,
-						payload:
-							'This account already have a Service under this category, Only 1 service per category is allowed'
-					});
-				}
-			} catch (error) {
-				return dispatch({
-					type: POST_SERVICE_FAIL,
-					payload: 'Error connecting to server'
-				});
-			}
-		}
-
+	} else if (selectedCategory && !selectedSubcategory) {
+		const checkURL =				checkDuplicateBaseUrl + '/?email=' + email + '&category=' + category;
 		try {
-			await axios.post(url, newServicePost);
-			return dispatch({
-				type: POST_SERVICE_SUCCESS,
-				payload: 'Post has been created'
-			});
+			const response = await axios.get(checkURL);
+			isEmpty = response.data;
+			if (!isEmpty) {
+				return dispatch({
+					type: POST_SERVICE_FAIL,
+					payload:
+						'This account already have a Service under this category, Only 1 service per category is allowed'
+				});
+			}
 		} catch (error) {
 			return dispatch({
 				type: POST_SERVICE_FAIL,
 				payload: 'Error connecting to server'
 			});
 		}
-	} else {
+	}
+
+	try {
+		await axios.post(url, newServicePost);
+		return dispatch({
+			type: POST_SERVICE_SUCCESS,
+			payload: 'Post has been created'
+		});
+	} catch (error) {
 		return dispatch({
 			type: POST_SERVICE_FAIL,
-			payload: 'Please fill all the information'
+			payload: 'Error connecting to server'
 		});
 	}
 };

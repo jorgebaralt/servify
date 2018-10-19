@@ -119,20 +119,30 @@ class PostServiceScreen extends Component {
 			description,
 			miles
 		} = this.state;
-		const { displayName } = this.props;
-		const servicePost = {
-			selectedCategory,
-			selectedSubcategory,
-			title,
-			phone,
-			zipCode,
-			miles,
-			description,
-			displayName
-		};
+		if (selectedCategory && phone && zipCode && description && title) {
+			const { displayName } = this.props;
+			const servicePost = {
+				selectedCategory,
+				selectedSubcategory,
+				title,
+				phone,
+				zipCode,
+				miles,
+				description,
+				displayName
+			};
 
-		await this.props.createService(servicePost, this.props.email);
-		this.setState(initialState);
+			await this.props.createService(servicePost, this.props.email);
+			this.setState(initialState);
+		} else {
+			this.setState({ loading: false });
+			Toast.show({
+				text: 'Please fill all the fields',
+				buttonText: 'OK',
+				duration: 8000,
+				type: 'warning'
+			});
+		}
 	};
 
 	// text is only what I have typed, not value
