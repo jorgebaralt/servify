@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "servify",
+    "name": "Servify",
     "description": "Easy way to find local services brougth to your home, contact them and make your life easier ",
     "slug": "servify",
     "privacy": "public",
@@ -11,7 +11,7 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/servifyIcon.png",
+    "icon": "./assets/servifyIcon2.png",
     "splash": {
       "image": "./assets/servifySplashOrange.png",
       "resizeMode": "cover",
