@@ -33,7 +33,7 @@ export default () => [
 		id: '6',
 		question: 'Can I cancel a service?',
 		answer:
-			'Each service, company, and person that provides the service is different. this will vary according to the service that you selected, and the person you contacted.'
+			'Each service, company, and person that provides the service is different. This will vary according to the service that you selected, and the person you contacted.'
 	},
 	{
 		id: '7',

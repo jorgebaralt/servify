@@ -168,7 +168,7 @@ class HomeScreen extends Component {
 	};
 
 	renderSpinner() {
-		if (this.state.loading) {
+		if (this.props.popularCategories === undefined && this.props.popularNearServices === undefined && this.props.nearServicesList === undefined) {
 			return <Spinner style={{ marginTop: '50%' }} color="orange" />;
 		}
 		return <View />;
@@ -250,6 +250,7 @@ class HomeScreen extends Component {
 />
 )}
 					>
+						{this.renderSpinner()}
 						{this.renderPopularCategories()}
 						{this.renderNewServicesNear()}
 						{this.renderPopularNearServices()}
