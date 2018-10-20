@@ -9,13 +9,13 @@ export default () => [
 		id: '2',
 		question: 'Can everyone post a service?',
 		answer:
-			'Yes, for now we are allowing everyone to post only one service per category, this might change in the future.'
+			'Yes. For now we are allowing everyone to post only one service per category, this might change in the future.'
 	},
 	{
 		id: '3',
 		question: 'Is the app completely free?',
 		answer:
-			'Yes, users will be able to find and create services without any charge. Creating services as a free mode might change in the future.'
+			'Yes. Users will be able to find and create services without any charge. Creating services as a free mode might change in the future.'
 	},
 	{
 		id: '4',
@@ -45,12 +45,12 @@ export default () => [
 		id: '8',
 		question: 'Can I edit or delete an already existing service?',
 		answer:
-			'Yes, you can go to your profile, click on my services, and look for the service that you want to delete/edit. Once you open your service, you can click on the three-dot icon on the top right. you will have an option to update or delete your service.'
+			'Yes. You can go to your profile, click on my services, and look for the service that you want to delete/edit. Once you open your service, you can click on the three-dot icon on the top right. You will have an option to update or delete your service.'
 	},
 	{
 		id: '9',
 		question: 'Can I save a service for future reference?',
 		answer:
-			'Yes, once you find a service that you like, you can click on the heart icon on the top right, this will add this service to your favorites, which can be accessed later under profile tab and clicking on favorites. '
+			'Yes. Once you find a service that you like, you can click on the heart icon on the top right, this will add this service to your favorites, which can be accessed later under profile tab and clicking on favorites. '
 	}
 ];
