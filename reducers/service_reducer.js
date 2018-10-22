@@ -50,7 +50,7 @@ export default (state = {}, action) => {
 		case GET_POPULAR_SERVICES_FAIL:
 			return { ...state, popularNearServices: undefined };
 		case CLEAN_POPULAR_NEAR_SERVICES:
-			return { ...state, popularNearServices: [] };
+			return { ...state, servicesList: [] };
 		default:
 			return state;
 	}

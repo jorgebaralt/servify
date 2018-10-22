@@ -25,7 +25,8 @@ import {
 	getServicesByEmail,
 	selectService,
 	getFavorites,
-	cancelAxiosServices
+	cancelAxiosServices,
+	cleanPopularNearServices
 } from '../actions';
 import EmptyListMessage from '../components/EmptyListMessage';
 
@@ -83,8 +84,9 @@ class ProfileServicesScreen extends Component {
 	};
 
 	onBackPress = async () => {
-		await this.props.navigation.goBack();
 		this.props.cancelAxiosServices();
+		await this.props.navigation.goBack();
+		setTimeout(() => { this.props.cleanPopularNearServices(); }, 250);
 	};
 
 	renderServices = (service) => {
@@ -200,7 +202,10 @@ class ProfileServicesScreen extends Component {
 						</Button>
 					</Left>
 					<Body style={{ flex: 3 }}>
-						<Title style={Platform.Os === 'android' ? androidTitle : iosTitle}> {currentItem.title} </Title>
+						<Title style={Platform.Os === 'android' ? androidTitle : iosTitle}>
+							{' '}
+							{currentItem.title}{' '}
+						</Title>
 					</Body>
 					<Right />
 				</Header>
@@ -266,5 +271,11 @@ function mapStateToProps(state) {
 
 export default connect(
 	mapStateToProps,
-	{ getServicesByEmail, selectService, getFavorites, cancelAxiosServices }
+	{
+		getServicesByEmail,
+		selectService,
+		getFavorites,
+		cancelAxiosServices,
+		cleanPopularNearServices
+	}
 )(ProfileServicesScreen);

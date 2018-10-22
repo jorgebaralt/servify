@@ -79,18 +79,19 @@ class ServicesListScreen extends Component {
 		this.setState({ refreshing: true });
 		const { category, subcategory } = this.props;
 		const categoryRef = category.dbReference;
-
-		if (subcategory) {
-			const subcategoryRef = subcategory.dbReference;
-			await this.props.getServicesSubcategory(
-				subcategoryRef,
-				this.props.userLocation
-			);
-		} else {
-			await this.props.getServicesCategory(
-				categoryRef,
-				this.props.userLocation
-			);
+		if (this.props.userLocation) {
+			if (subcategory) {
+				const subcategoryRef = subcategory.dbReference;
+				await this.props.getServicesSubcategory(
+					subcategoryRef,
+					this.props.userLocation
+				);
+			} else {
+				await this.props.getServicesCategory(
+					categoryRef,
+					this.props.userLocation
+				);
+			}
 		}
 		this.setState({ dataLoaded: true, refreshing: false });
 	};

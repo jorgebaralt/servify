@@ -5,7 +5,8 @@ import {
 	BackHandler,
 	SafeAreaView,
 	FlatList,
-	RefreshControl
+	RefreshControl,
+	Alert
 } from 'react-native';
 import { Text, Container, Content, Icon, Spinner } from 'native-base';
 import { connect } from 'react-redux';
@@ -42,7 +43,7 @@ class HomeScreen extends Component {
 	};
 
 	state = {
-		refreshing: false,
+		refreshing: false
 	};
 
 	async componentWillMount() {
@@ -87,7 +88,22 @@ class HomeScreen extends Component {
 			await this.props.getUserLocation();
 			await this.onRefresh();
 		} else {
-			throw new Error('Location permission not granted');
+			Alert.alert(
+				'Allow Servify to access your location while you are using the app?',
+				'Servify uses current location to find and display nearby services',
+				[
+					{
+						text: 'Allow',
+						onPress: async () => {
+							await await this.props.getUserLocation();
+							await this.onRefresh();
+						}
+					},
+					{
+						text: 'Don`t Allow'
+					}
+				]
+			);
 		}
 	};
 
@@ -164,7 +180,11 @@ class HomeScreen extends Component {
 	};
 
 	renderSpinner() {
-		if (this.props.popularCategories === undefined && this.props.popularNearServices === undefined && this.props.nearServicesList === undefined) {
+		if (
+			this.props.popularCategories === undefined
+			&& this.props.popularNearServices === undefined
+			&& this.props.nearServicesList === undefined
+		) {
 			return <Spinner style={{ marginTop: '10%' }} color="orange" />;
 		}
 		return <View />;
@@ -246,9 +266,7 @@ class HomeScreen extends Component {
 />
 )}
 					>
-						<View>
-							{this.renderSpinner()}
-						</View>
+						<View>{this.renderSpinner()}</View>
 						{this.renderPopularCategories()}
 						{this.renderNewServicesNear()}
 						{this.renderPopularNearServices()}

@@ -9,7 +9,7 @@
       "ios",
       "android"
     ],
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/servifyIcon2.png",
     "splash": {
@@ -25,7 +25,10 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.jorgebaralt.servify"
+      "bundleIdentifier": "com.jorgebaralt.servify",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Servify uses current location to find and display nearby services"
+      }
     },
     "android": {
       "package": "com.jorgebaralt.servify"
