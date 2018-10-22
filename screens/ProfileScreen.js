@@ -70,7 +70,7 @@ class ProfileScreen extends Component {
 		} else if (item.id === 'feedback') {
 			this.props.navigation.navigate('feedback');
 		} else if (item.id === 'contactUs') {
-			Linking.openURL('mailto:jorgebaraltq@gmail.com');
+			Linking.openURL('mailto:servifyapp@gmail.com');
 		} else if (item.id === 'help') {
 			this.props.navigation.navigate('help');
 		}

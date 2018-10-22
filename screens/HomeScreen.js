@@ -43,11 +43,9 @@ class HomeScreen extends Component {
 
 	state = {
 		refreshing: false,
-		loading: false
 	};
 
 	async componentWillMount() {
-		this.setState({ loading: true });
 		await this.props.getCurrentUserDisplayName();
 		await this.getLocationAsync();
 
@@ -59,8 +57,6 @@ class HomeScreen extends Component {
 			'willFocus',
 			this.onRefresh
 		);
-
-		this.setState({ loading: false });
 	}
 
 	componentWillUnmount() {
@@ -169,7 +165,7 @@ class HomeScreen extends Component {
 
 	renderSpinner() {
 		if (this.props.popularCategories === undefined && this.props.popularNearServices === undefined && this.props.nearServicesList === undefined) {
-			return <Spinner style={{ marginTop: '50%' }} color="orange" />;
+			return <Spinner style={{ marginTop: '10%' }} color="orange" />;
 		}
 		return <View />;
 	}
@@ -250,7 +246,9 @@ class HomeScreen extends Component {
 />
 )}
 					>
-						{this.renderSpinner()}
+						<View>
+							{this.renderSpinner()}
+						</View>
 						{this.renderPopularCategories()}
 						{this.renderNewServicesNear()}
 						{this.renderPopularNearServices()}

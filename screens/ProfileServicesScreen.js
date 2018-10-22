@@ -185,7 +185,7 @@ class ProfileServicesScreen extends Component {
 	};
 
 	render() {
-		const { androidHeader, iosHeader } = styles;
+		const { androidHeader, iosHeader, androidTitle, iosTitle } = styles;
 		return (
 			<Container>
 				<Header style={Platform.OS === 'android' ? androidHeader : iosHeader}>
@@ -200,7 +200,7 @@ class ProfileServicesScreen extends Component {
 						</Button>
 					</Left>
 					<Body style={{ flex: 3 }}>
-						<Title style={{ color: 'black' }}> {currentItem.title} </Title>
+						<Title style={Platform.Os === 'android' ? androidTitle : iosTitle}> {currentItem.title} </Title>
 					</Body>
 					<Right />
 				</Header>
@@ -215,6 +215,13 @@ const styles = {
 		backgroundColor: '#F5F5F5'
 	},
 	iosHeader: {},
+	iosTitle: {
+		color: 'black'
+	},
+	androidTitle: {
+		color: 'black',
+		marginLeft: 10
+	},
 	cardStyle: {
 		width: '80%',
 		marginLeft: '10%',

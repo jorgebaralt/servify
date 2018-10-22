@@ -4,7 +4,7 @@ import {
 	Dimensions,
 	Platform,
 	KeyboardAvoidingView,
-	Keyboard,
+	DeviceEventEmitter,
 	FlatList,
 	Alert
 } from 'react-native';
@@ -45,6 +45,8 @@ let coords;
 let meters;
 let latitudeDelta;
 let fixedRegion;
+let willFocusSubscription;
+let backPressSubscriptions;
 
 class SpecificServiceScreen extends Component {
 	state = {
@@ -58,6 +60,13 @@ class SpecificServiceScreen extends Component {
 	};
 
 	componentWillMount = async () => {
+		willFocusSubscription = this.props.navigation.addListener(
+			'willFocus',
+			() => {
+				this.handleAndroidBack();
+			}
+		);
+
 		const { service } = this.props;
 
 		const { latitude, longitude } = service.geolocation;
@@ -95,8 +104,25 @@ class SpecificServiceScreen extends Component {
 
 	componentWillUnmount() {
 		this.props.cancelAxiosRating();
+		willFocusSubscription.remove();
 	}
 
+	handleAndroidBack = () => {
+		this.props.cancelAxiosRating();
+		backPressSubscriptions = new Set();
+		DeviceEventEmitter.removeAllListeners('hardwareBackPress');
+		DeviceEventEmitter.addListener('hardwareBackPress', () => {
+			const subscriptions = [];
+
+			backPressSubscriptions.forEach((sub) => subscriptions.push(sub));
+			for (let i = 0; i < subscriptions.reverse().length; i += 1) {
+				if (subscriptions[i]()) {
+					break;
+				}
+			}
+		});
+		backPressSubscriptions.add(() => this.props.navigation.pop());
+	};
 
 	onBackPress = async () => {
 		await this.props.resetReview();
@@ -480,13 +506,14 @@ class SpecificServiceScreen extends Component {
 							}}
 							disabled={this.state.favLoading}
 						>
-							<Icon name="arrow-back" style={{ color: 'black' }} />
+							<Icon
+								name="arrow-back"
+								style={{ color: 'black', flex: 1, width: 50 }}
+							/>
 						</Button>
 					</Left>
 					<Body style={styles.titleStyle}>
-						<Title style={{ color: 'black', marginLeft: 10 }}>
-							{service.title}
-						</Title>
+						<Title style={{ color: 'black' }}>{service.title}</Title>
 					</Body>
 
 					<Right>

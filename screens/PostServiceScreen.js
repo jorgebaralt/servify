@@ -162,11 +162,10 @@ class PostServiceScreen extends Component {
 	};
 
 	descriptionChangeText = (text) => {
-		const { descriptionCharCount } = this.state;
-		if (descriptionCharCount < maxCharCount) {
-			this.setState({ description: text });
-		}
+
+		this.setState({ description: text });
 		this.setState({ descriptionCharCount: maxCharCount - text.length });
+
 	};
 
 	setReference = (scroll) => {
@@ -352,8 +351,7 @@ class PostServiceScreen extends Component {
 										onChangeText={(text) => this.setState({ miles: text })}
 										keyboardType="numeric"
 										placeholder={this.state.milesPlaceHolder}
-										onFocus={() => this.setState({ milesPlaceHolder: 'Up to 60 miles' })
-										}
+										onFocus={() => this.setState({ milesPlaceHolder: 'Up to 60 miles' })}
 										onBlur={() => this.setState({ milesPlaceHolder: '' })}
 									/>
 								</Item>
@@ -370,7 +368,10 @@ class PostServiceScreen extends Component {
 							<Text style={charCountStyle}>
 								{this.state.descriptionCharCount}
 							</Text>
-							{this.renderSpinner()}
+							<View>
+								{this.renderSpinner()}
+							</View>
+							
 							<View>
 								<Button
 									bordered
