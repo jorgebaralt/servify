@@ -28,7 +28,7 @@ import SpecificServiceCard from '../components/SpecificServiceCard';
 let backPressSubscriptions;
 let willFocusSubscription;
 let didFocusSubscription;
-const DISTANCE = 50;
+const DISTANCE = 30;
 
 class HomeScreen extends Component {
 	static navigationOptions = {
@@ -93,11 +93,7 @@ class HomeScreen extends Component {
 				'Servify uses current location to find and display nearby services, for better performance, go to settings and allow Servify to use your location while using the app.',
 				[
 					{
-						text: 'Ok',
-						onPress: async () => {
-							await await this.props.getUserLocation();
-							await this.onRefresh();
-						}
+						text: 'Ok'
 					}
 				]
 			);
