@@ -90,17 +90,14 @@ class HomeScreen extends Component {
 		} else {
 			Alert.alert(
 				'Allow Servify to access your location while you are using the app?',
-				'Servify uses current location to find and display nearby services',
+				'Servify uses current location to find and display nearby services, for better performance, go to settings and allow Servify to use your location while using the app.',
 				[
 					{
-						text: 'Allow',
+						text: 'Ok',
 						onPress: async () => {
 							await await this.props.getUserLocation();
 							await this.onRefresh();
 						}
-					},
-					{
-						text: 'Don`t Allow'
 					}
 				]
 			);
