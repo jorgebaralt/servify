@@ -153,7 +153,7 @@ class SpecificServiceScreen extends Component {
 
 	callPressed = async () => {
 		const { phone } = this.props.service;
-		await Linking.openURL('tel:+1' + phone.replace(/\D/g, ''));
+		await Linking.openURL('tel:+' + phone.replace(/\D/g, ''));
 	};
 
 	openEmail = async () => {
