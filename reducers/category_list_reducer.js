@@ -260,7 +260,11 @@ const initialState = [
 			'haircut',
 			'cuttery',
 			'highlights',
-			'color'
+			'color',
+			'make',
+			'up',
+			'makeup',
+			'make-up'
 		],
 		color: ['#EC407A', '#AD1457'],
 		subcategories: [
@@ -281,6 +285,12 @@ const initialState = [
 				title: 'Spa',
 				description: 'Relax time',
 				dbReference: 'spa'
+			},
+			{
+				id: 8.4,
+				title: 'Make up',
+				description: 'Get prettier',
+				dbReference: 'make_up'
 			}
 		]
 	},
