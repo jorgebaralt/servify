@@ -10,7 +10,6 @@ import {
 	Text,
 	Left,
 	Content,
-	Input,
 	Item,
 	Textarea,
 	Toast,
@@ -79,7 +78,12 @@ class ReportScreen extends Component {
 		};
 		await this.props.reportService(report);
 		this.setState({ loading: false });
-		// TODO: Toast
+		Toast.show({
+		text: 'Service reported',
+			buttonText: 'OK',
+				duration: 5000,
+					type: 'success'
+		});
 		this.onBackPress();
 	}
 
