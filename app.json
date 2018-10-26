@@ -32,7 +32,12 @@
     },
     "android": {
       "package": "com.jorgebaralt.servify",
-      "versionCode": 2
+      "versionCode": 2,
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDTNg-VCuM7GC8j5gixjD4aEXrCMJnaH8w"
+        }
+      }
     }
   }
 }
