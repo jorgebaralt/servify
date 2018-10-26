@@ -346,6 +346,7 @@ export const reportService = (report) => async (dispatch) => {
 	const reportUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/reportService';
 	try {
 		await axios.post(reportUrl, report);
+		dispatch({});
 	} catch (e) {
 		console.log(e);
 	}
