@@ -108,7 +108,6 @@ class SpecificServiceScreen extends Component {
 	}
 
 	handleAndroidBack = () => {
-		this.props.cancelAxiosRating();
 		backPressSubscriptions = new Set();
 		DeviceEventEmitter.removeAllListeners('hardwareBackPress');
 		DeviceEventEmitter.addListener('hardwareBackPress', () => {
@@ -121,7 +120,10 @@ class SpecificServiceScreen extends Component {
 				}
 			}
 		});
-		backPressSubscriptions.add(() => this.props.navigation.pop());
+		backPressSubscriptions.add(() => {
+			this.props.navigation.pop();
+			this.props.cancelAxiosRating();
+		});
 	};
 
 	onBackPress = async () => {
@@ -160,6 +162,18 @@ class SpecificServiceScreen extends Component {
 		Linking.openURL(`mailto:${this.props.service.email}`);
 	};
 
+	reportAlert = () => {
+		Alert.alert('Report', 'Do you want to report this service?', [
+			{
+				text: 'Report',
+				onPress: () => this.props.navigation.navigate('report')
+			},
+			{
+				text: 'Cancel'
+			}
+		]);
+	}
+
 	renderIcon = () => {
 		if (this.props.currentUserEmail === this.props.service.email) {
 			return (
@@ -172,13 +186,22 @@ class SpecificServiceScreen extends Component {
 			);
 		}
 		return (
-			<Icon
-				type="MaterialIcons"
-				name={this.state.isFav ? 'favorite' : 'favorite-border'}
-				style={{ color: '#D84315' }}
-				onPress={() => this.favPressed()}
-				disabled={this.state.favLoading}
-			/>
+			<View style={{ flexDirection: 'row' }}>
+				<Icon
+					type="MaterialIcons"
+					name="info-outline"
+					style={{ color: 'black', fontSize: 26, marginLeft: 5, marginRight: 10 }}
+					onPress={() => this.reportAlert()}
+					disabled={this.state.favLoading}
+				/>
+				<Icon
+					type="MaterialIcons"
+					name={this.state.isFav ? 'favorite' : 'favorite-border'}
+					style={{ color: '#D84315', fontSize: 26 }}
+					onPress={() => this.favPressed()}
+					disabled={this.state.favLoading}
+				/>
+			</View>
 		);
 	};
 
@@ -459,7 +482,9 @@ class SpecificServiceScreen extends Component {
 		if (this.props.service) {
 			return (
 				<View style={{ flexDirection: 'row', marginLeft: 5 }}>
-					<Text style={{}}>{this.props.service.rating.toFixed(1)} </Text>
+					<Text onPress={() => this.props.navigation.navigate('reviews')}>
+						{this.props.service.rating.toFixed(1)}
+					</Text>
 					<View>
 						<AirbnbRating
 							showRating
@@ -468,7 +493,13 @@ class SpecificServiceScreen extends Component {
 							size={15}
 						/>
 					</View>
-					<Text style={{}}> ({this.props.service.ratingCount})</Text>
+					<Text
+						style={{}}
+						onPress={() => this.props.navigation.navigate('reviews')}
+					>
+						{' '}
+						({this.props.service.ratingCount})
+					</Text>
 				</View>
 			);
 		}

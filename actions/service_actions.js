@@ -17,7 +17,8 @@ import {
 	GET_POPULAR_CATEGORY_FAIL,
 	GET_POPULAR_SERVICES_SUCCESS,
 	GET_POPULAR_SERVICES_FAIL,
-	CLEAN_POPULAR_NEAR_SERVICES
+	CLEAN_POPULAR_NEAR_SERVICES,
+	SUBMIT_REPORT
 } from './types';
 
 const GET_URL =	'https://us-central1-servify-716c6.cloudfunctions.net/getServices';
@@ -39,7 +40,6 @@ export const createService = (servicePost, email) => async (dispatch) => {
 		displayName
 	} = servicePost;
 
-	
 	const category = selectedCategory.dbReference;
 	const geolocationData = await Location.geocodeAsync(zipCode);
 	const geolocation = geolocationData[0];
@@ -93,7 +93,7 @@ export const createService = (servicePost, email) => async (dispatch) => {
 	if (selectedSubcategory) {
 		newServicePost.subcategory = selectedSubcategory.dbReference;
 		// check duplicate post by same user. under subcategory
-		const checkURL =				checkDuplicateBaseUrl
+		const checkURL =			checkDuplicateBaseUrl
 			+ '/?email='
 			+ email
 			+ '&subcategory='
@@ -115,7 +115,7 @@ export const createService = (servicePost, email) => async (dispatch) => {
 			});
 		}
 	} else if (selectedCategory && !selectedSubcategory) {
-		const checkURL =				checkDuplicateBaseUrl + '/?email=' + email + '&category=' + category;
+		const checkURL =			checkDuplicateBaseUrl + '/?email=' + email + '&category=' + category;
 		try {
 			const response = await axios.get(checkURL);
 			isEmpty = response.data;
@@ -338,6 +338,16 @@ export const updateService = (service) => async (dispatch) => {
 			type: UPDATE_SERVICE_FAIL,
 			payload: 'Error updating your service. Try later'
 		});
+	}
+};
+
+// REPORT-SERVICE
+export const reportService = (report) => async (dispatch) => {
+	const reportUrl = '';
+	try {
+		await axios.post(reportUrl, report);
+	} catch (e) {
+		console.log(e);
 	}
 };
 

@@ -21,7 +21,9 @@ const initialState = [
 			'cleaning',
 			'garage',
 			'carpet',
-			'carpets'
+			'carpets',
+			'pool',
+			'swimming'
 		],
 		subcategories: [
 			{
@@ -44,6 +46,12 @@ const initialState = [
 			},
 			{
 				id: 0.4,
+				title: 'Pool services',
+				description: 'Get a clean pool',
+				dbReference: 'pool'
+			},
+			{
+				id: 0.5,
 				title: 'Other',
 				description: 'Just other',
 				dbReference: 'other'
@@ -321,6 +329,41 @@ const initialState = [
 	},
 	{
 		id: 11,
+		title: 'Health',
+		description: 'Get healthy',
+		dbReference: 'health',
+		keyWords: ['health', 'therapy', 'kids', 'adults'],
+		color: ['#D50000', '#E57373']
+	},
+	{
+		id: 12,
+		title: 'Real state',
+		description: 'Get your dream house',
+		dbReference: 'real_state',
+		keyWords: ['house', 'buy', 'realtor', 'broker', 'real', 'state'],
+		color: ['#827717', '#A5D6A7']
+	},
+	{
+		id: 12,
+		title: 'Fit',
+		description: 'Get in shape',
+		dbReference: 'fit',
+		keyWords: [
+			'sport',
+			'soccer',
+			'tennis',
+			'golf',
+			'practice',
+			'fit',
+			'fitness',
+			'train',
+			'run',
+			'training'
+		],
+		color: ['#E65100', '#FFCC80']
+	},
+	{
+		id: 13,
 		title: 'Other',
 		description: 'Something else',
 		dbReference: 'other',

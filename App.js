@@ -30,6 +30,7 @@ import ForgotPasswordScreen from './screens/ForgotPasswordScreen';
 import ReviewsScreen from './screens/ReviewsScreen';
 import HelpScreen from './screens/HelpScreen';
 import SpecificFaqScreen from './screens/SpecificFaqScreen';
+import ReportScreen from './screens/ReportScreen';
 
 const store = createStore(reducers, {}, compose(applyMiddleware(thunk)));
 export default class App extends React.Component {
@@ -100,7 +101,8 @@ export default class App extends React.Component {
 				feedback: { screen: FeedbackScreen },
 				reviews: { screen: ReviewsScreen },
 				help: { screen: HelpScreen },
-				specificFaq: { screen: SpecificFaqScreen }
+				specificFaq: { screen: SpecificFaqScreen },
+				report: { screen: ReportScreen }
 			},
 			{
 				headerMode: 'none'

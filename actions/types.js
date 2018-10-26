@@ -52,3 +52,4 @@ export const CLEAN_POPULAR_NEAR_SERVICES = 'clean-pop-near-services';
 export const GET_SERVICE_REVIEWS = 'get_service_reviews';
 export const SELECT_FAQ = 'select_faq';
 export const DESELECT_FAQ = 'deselect_faq';
+export const SUBMIT_REPORT = 'submit_report';
