@@ -307,11 +307,30 @@ const initialState = [
 		title: 'Landscaping',
 		description: 'landscape Description',
 		dbReference: 'landscape',
-		keyWords: ['landscape', 'grass', 'cut', 'palms', 'tree', 'trees'],
-		color: ['#43A047', '#C8E6C9']
+		keyWords: ['landscape', 'grass', 'cut', 'palms', 'tree', 'trees', 'grass'],
+		color: ['#FF6F00', '#FFF59D']
 	},
 	{
 		id: 10,
+		title: 'Pest control',
+		description: 'Pest control',
+		dbReference: 'pest',
+		keyWords: [
+			'pest',
+			'landscape',
+			'grass',
+			'palms',
+			'tree',
+			'trees',
+			'wild',
+			'lawn',
+			'debris',
+			'rodent'
+		],
+		color: ['#FDD835', '#C8E6C9']
+	},
+	{
+		id: 11,
 		title: 'Tutoring',
 		description: 'Tutoring Description',
 		dbReference: 'tutoring',
@@ -328,7 +347,7 @@ const initialState = [
 		color: ['#8D6E63', '#3E2723']
 	},
 	{
-		id: 11,
+		id: 12,
 		title: 'Health',
 		description: 'Get healthy',
 		dbReference: 'health',
@@ -336,7 +355,7 @@ const initialState = [
 		color: ['#D50000', '#E57373']
 	},
 	{
-		id: 12,
+		id: 13,
 		title: 'Real state',
 		description: 'Get your dream house',
 		dbReference: 'real_state',
@@ -344,7 +363,7 @@ const initialState = [
 		color: ['#827717', '#A5D6A7']
 	},
 	{
-		id: 12,
+		id: 14,
 		title: 'Fit',
 		description: 'Get in shape',
 		dbReference: 'fit',
@@ -363,7 +382,15 @@ const initialState = [
 		color: ['#E65100', '#FFCC80']
 	},
 	{
-		id: 13,
+		id: 16,
+		title: 'Insurance companies',
+		description: 'Insurance description',
+		dbReference: 'insurance',
+		keyWords: ['insurance', 'health', 'car', 'auto', 'policy'],
+		color: ['#006064', '#0288D1']
+	},
+	{
+		id: 17,
 		title: 'Other',
 		description: 'Something else',
 		dbReference: 'other',
