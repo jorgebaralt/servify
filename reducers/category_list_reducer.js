@@ -6,7 +6,7 @@ const initialState = [
 		title: 'Home Services',
 		description: 'Home Services Description',
 		dbReference: 'home_services',
-		color: ['#43A047', '#90CAF9'],
+		color: ['#5E35B1', '#9575CD'],
 		keyWords: [
 			'home',
 			'cleaning',
@@ -308,7 +308,7 @@ const initialState = [
 		description: 'landscape Description',
 		dbReference: 'landscape',
 		keyWords: ['landscape', 'grass', 'cut', 'palms', 'tree', 'trees', 'grass'],
-		color: ['#FF6F00', '#FFF59D']
+		color: ['#33691E', '#AED581']
 	},
 	{
 		id: 10,
@@ -327,7 +327,7 @@ const initialState = [
 			'debris',
 			'rodent'
 		],
-		color: ['#FDD835', '#C8E6C9']
+		color: ['#827717', '#9E9D24']
 	},
 	{
 		id: 11,
@@ -360,7 +360,7 @@ const initialState = [
 		description: 'Get your dream house',
 		dbReference: 'real_state',
 		keyWords: ['house', 'buy', 'realtor', 'broker', 'real', 'state'],
-		color: ['#827717', '#A5D6A7']
+		color: ['#0097A7', '#009688']
 	},
 	{
 		id: 14,

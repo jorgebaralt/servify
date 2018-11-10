@@ -6,7 +6,8 @@ import {
 	SafeAreaView,
 	FlatList,
 	RefreshControl,
-	Alert
+	Alert,
+	Linking
 } from 'react-native';
 import { Text, Container, Content, Icon, Spinner } from 'native-base';
 import { connect } from 'react-redux';
@@ -93,7 +94,10 @@ class HomeScreen extends Component {
 				'Servify uses current location to find and display nearby services, for better performance, go to settings and allow Servify to use your location while using the app.',
 				[
 					{
-						text: 'Ok'
+						text: 'Go to settings', onPress: () => Linking.openURL('app-settings:')
+					},
+					{
+						text: 'Cancel'
 					}
 				]
 			);
@@ -101,7 +105,7 @@ class HomeScreen extends Component {
 	};
 
 	onRefresh = async () => {
-		const { status } = await Permissions.askAsync(Permissions.LOCATION);
+		const { status } = await Permissions.getAsync(Permissions.LOCATION);
 		if (status === 'granted' && this.props.userLocation) {
 			await this.props.getNearServices(
 				this.props.userLocation.coords,
@@ -112,6 +116,7 @@ class HomeScreen extends Component {
 				DISTANCE
 			);
 		}
+		// TODO: improve performance
 		await this.props.getPopularCategories();
 	};
 

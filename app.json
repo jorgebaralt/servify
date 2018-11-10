@@ -35,8 +35,8 @@
       "versionCode": 3,
       "config": {
         "googleMaps": {
-            "apiKey": "AIzaSyD5KIVp89sqAl6ogAwncya3ltZcEwVUcwU"
-          }
+          "apiKey": "AIzaSyD5KIVp89sqAl6ogAwncya3ltZcEwVUcwU"
+        }
       }
     }
   }
