@@ -190,24 +190,52 @@ class ServicesListScreen extends Component {
 	};
 
 	renderListView() {
+		const {
+			sortByStyle,
+			iconSortStyle,
+			viewSortStyle
+		} = styles;
 		if (this.state.dataLoaded) {
 			if (this.props.servicesList && this.props.servicesList.length !== 0) {
 				return (
-					<FlatList
-						style={{ marginTop: 10, marginBottom: 40 }}
-						data={this.props.servicesList}
-						renderItem={({ item }) => this.renderServices(item)}
-						keyExtractor={(item) => item.title}
-						enableEmptySections
-						refreshControl={(
-<RefreshControl
-								refreshing={this.state.refreshing}
-								onRefresh={() => this.decideGetService()}
-								tintColor={this.props.category.color[0]}
-								colors={[this.props.category.color[0]]}
-/>
-)}
-					/>
+					<View>
+						<TouchableOpacity
+							style={viewSortStyle}
+							onPress={() => ActionSheet.show(
+								{
+									options: sortByOptions,
+									title: 'How would you like to sort the services?',
+									cancelButtonIndex: sortByOptions.length - 1
+								},
+								(selectedButtonIndex) => {
+									if (selectedButtonIndex !== sortByOptions.length - 1) {
+										this.setState({ sortBy: sortByOptions[selectedButtonIndex] });
+									}
+									this.decideGetService();
+								}
+							)
+							}
+						>
+							<Text style={sortByStyle}>Sort by: {this.state.sortBy}</Text>
+							<Icon name="ios-arrow-down" style={iconSortStyle} />
+						</TouchableOpacity>
+						<FlatList
+							style={{ marginTop: 10, marginBottom: 40 }}
+							data={this.props.servicesList}
+							renderItem={({ item }) => this.renderServices(item)}
+							keyExtractor={(item) => item.title}
+							enableEmptySections
+							refreshControl={(
+								<RefreshControl
+									refreshing={this.state.refreshing}
+									onRefresh={() => this.decideGetService()}
+									tintColor={this.props.category.color[0]}
+									colors={[this.props.category.color[0]]}
+								/>
+							)}
+						/>
+					</View>
+					
 				);
 			}
 			return (
@@ -221,12 +249,7 @@ class ServicesListScreen extends Component {
 	}
 
 	render() {
-		const {
-			headerTitleStyle,
-			sortByStyle,
-			iconSortStyle,
-			viewSortStyle
-		} = styles;
+		const { headerTitleStyle } = styles;
 		const { subcategory, category } = this.props;
 		return (
 			<Container>
@@ -248,27 +271,6 @@ class ServicesListScreen extends Component {
 					</Body>
 					<Right />
 				</Header>
-				<TouchableOpacity
-					style={viewSortStyle}
-					onPress={() => ActionSheet.show(
-							{
-								options: sortByOptions,
-								title: 'How would you like to sort the services?',
-								cancelButtonIndex: sortByOptions.length - 1
-							},
-							(selectedButtonIndex) => {
-								if (selectedButtonIndex !== sortByOptions.length - 1) {
-									this.setState({ sortBy: sortByOptions[selectedButtonIndex] });
-								}
-								this.decideGetService();
-							}
-						)
-					}
-				>
-					<Text style={sortByStyle}>Sort by: {this.state.sortBy}</Text>
-					<Icon name="ios-arrow-down" style={iconSortStyle} />
-				</TouchableOpacity>
-
 				{this.renderListView()}
 			</Container>
 		);
