@@ -48,7 +48,7 @@ export const facebookLogin = () => async (dispatch) => {
 		await getFavorites(user.email);
 		// if everything worked fine, we dispatch success and the displayName
 		return dispatch({ type: LOGIN_SUCCESS, payload: user.displayName });
-		// TODO: grab favorite list and store on device for fast access
+
 	} catch (e) {
 		return dispatch({ type: LOGIN_FAIL });
 	}
@@ -61,7 +61,7 @@ export const emailAndPasswordLogin = (email, password) => async (dispatch) => {
 			.signInWithEmailAndPassword(email, password);
 		await getFavorites(email);
 		await getEmail();
-		// TODO: grab favorite list and store on device for fast access
+
 		return dispatch({ type: LOGIN_SUCCESS, payload: user.displayName });
 	} catch (e) {
 		console.log(e);

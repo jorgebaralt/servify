@@ -19,7 +19,8 @@ import {
 	Button,
 	Icon,
 	Right,
-	Spinner
+	Spinner,
+	ActionSheet
 } from 'native-base';
 import { AirbnbRating } from 'react-native-ratings';
 import { connect } from 'react-redux';
@@ -33,11 +34,17 @@ import EmptyListMessage from '../components/EmptyListMessage';
 
 let willFocusSubscription;
 let backPressSubscriptions;
+const DISTANCE = 'Distance';
+const POPULARITY = 'Popularity';
+const NEWEST = 'Newest';
+const OLDEST = 'Oldest';
+const sortByOptions = [DISTANCE, POPULARITY, NEWEST, OLDEST, 'Cancel'];
 
 class ServicesListScreen extends Component {
 	state = {
 		dataLoaded: undefined,
-		refreshing: false
+		refreshing: false,
+		sortBy: DISTANCE
 	};
 
 	componentWillMount = async () => {
@@ -84,12 +91,14 @@ class ServicesListScreen extends Component {
 				const subcategoryRef = subcategory.dbReference;
 				await this.props.getServicesSubcategory(
 					subcategoryRef,
-					this.props.userLocation
+					this.props.userLocation,
+					this.state.sortBy
 				);
 			} else {
 				await this.props.getServicesCategory(
 					categoryRef,
-					this.props.userLocation
+					this.props.userLocation,
+					this.state.sortBy
 				);
 			}
 		}
@@ -104,6 +113,19 @@ class ServicesListScreen extends Component {
 		}
 		return <Text>(0)</Text>;
 	};
+
+	renderMilesToService = (service) => {
+		if (this.state.sortBy === 'Distance' && service.distance) {
+			return (
+				<Right>
+					<Text style={{ color: 'gray' }}>
+						{Math.floor(service.distance)} mile(s)
+					</Text>
+				</Right>
+			);
+		}
+		
+	}
 
 	renderServices = (service) => {
 		const {
@@ -160,11 +182,7 @@ class ServicesListScreen extends Component {
 						<Body>
 							<Text>{displayDescription}</Text>
 						</Body>
-						<Right>
-							<Text style={{ color: 'gray' }}>
-								{Math.floor(service.distance)} mile(s)
-							</Text>
-						</Right>
+						{this.renderMilesToService(service)}
 					</CardItem>
 				</Card>
 			</TouchableOpacity>
@@ -203,7 +221,12 @@ class ServicesListScreen extends Component {
 	}
 
 	render() {
-		const { headerTitleStyle } = styles;
+		const {
+			headerTitleStyle,
+			sortByStyle,
+			iconSortStyle,
+			viewSortStyle
+		} = styles;
 		const { subcategory, category } = this.props;
 		return (
 			<Container>
@@ -225,6 +248,27 @@ class ServicesListScreen extends Component {
 					</Body>
 					<Right />
 				</Header>
+				<TouchableOpacity
+					style={viewSortStyle}
+					onPress={() => ActionSheet.show(
+							{
+								options: sortByOptions,
+								title: 'How would you like to sort the services?',
+								cancelButtonIndex: sortByOptions.length - 1
+							},
+							(selectedButtonIndex) => {
+								if (selectedButtonIndex !== sortByOptions.length - 1) {
+									this.setState({ sortBy: sortByOptions[selectedButtonIndex] });
+								}
+								this.decideGetService();
+							}
+						)
+					}
+				>
+					<Text style={sortByStyle}>Sort by: {this.state.sortBy}</Text>
+					<Icon name="ios-arrow-down" style={iconSortStyle} />
+				</TouchableOpacity>
+
 				{this.renderListView()}
 			</Container>
 		);
@@ -268,6 +312,24 @@ const styles = {
 	},
 	cardItemStyle: {
 		marginTop: -10
+	},
+	viewSortStyle: {
+		display: 'flex',
+		flexDirection: 'row',
+		justifyContent: 'flex-end',
+		marginRight: '5%'
+	},
+	sortByStyle: {
+		color: 'gray',
+		display: 'flex',
+		marginRight: 0,
+		marginTop: 10
+	},
+	iconSortStyle: {
+		color: 'gray',
+		fontSize: 20,
+		marginTop: 10,
+		marginLeft: 2
 	}
 };
 

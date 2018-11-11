@@ -463,7 +463,7 @@ class SpecificServiceScreen extends Component {
 		}
 	};
 
-	// TODO: show more comments
+
 	showMoreComments = () => {
 		const { showMoreStyle } = styles;
 		return (
@@ -558,7 +558,6 @@ class SpecificServiceScreen extends Component {
 					style={{ flex: 1, justifyContent: 'center' }}
 				>
 					<Content style={contentStyle} padder>
-						{/* TODO: Add Rating average here */}
 						<Text style={subtitleStyle}>Rating </Text>
 						<View style={{ marginTop: 5 }}>{this.renderRatingAvg()}</View>
 						<Text style={[subtitleStyle, { marginTop: 5 }]}>Category</Text>

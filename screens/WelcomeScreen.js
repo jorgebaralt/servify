@@ -9,7 +9,7 @@ import { getFavorites, getEmail } from '../actions';
 
 const SLIDE_DATA = [
 	{ text: 'Welcome to Servify', color: '#FFA000' },
-	{ text: 'Easy way to Find a Service Brought to your Home', color: '#00B8D4' },
+	{ text: 'Easy way to Find a Service around your Area', color: '#00B8D4' },
 	{
 		text: 'Post or Find Help from any Professional Registered',
 		color: '#7E57C2'

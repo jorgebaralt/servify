@@ -153,15 +153,30 @@ export const resetMessageService = () => async (dispatch) => {
 };
 
 // GET-SERVICE
-export const getServicesCategory = (category, userLocation) => async (
+export const getServicesCategory = (category, userLocation, sortBy) => async (
 	dispatch
 ) => {
 	const url = GET_URL + '/?category=' + category;
 	try {
 		source = CancelToken.source();
 		let { data } = await axios.get(url, { cancelToken: source.token });
-
-		data = sortByDistance(data, userLocation);
+		// TODO: DECIDE SORTING
+		switch (sortBy) {
+			case 'Distance':
+				data = sortByDistance(data, userLocation);
+				break;
+			case 'Popularity':
+				data = sortByPopularity(data);
+				break;
+			case 'Newest':
+				data = sortByNewest(data);
+				break;
+			case 'Oldest':
+				data = sortByOldest(data);
+				break;
+			default:
+				data = sortByDistance(data, userLocation);
+		}
 		return dispatch({ type: GET_SERVICES_SUCCESS, payload: data });
 	} catch (e) {
 		return dispatch({
@@ -171,14 +186,32 @@ export const getServicesCategory = (category, userLocation) => async (
 	}
 };
 
-export const getServicesSubcategory = (subcategory, userLocation) => async (
-	dispatch
-) => {
+export const getServicesSubcategory = (
+	subcategory,
+	userLocation,
+	sortBy
+) => async (dispatch) => {
 	const url = GET_URL + '/?subcategory=' + subcategory;
 	try {
 		source = CancelToken.source();
 		let { data } = await axios.get(url, { cancelToken: source.token });
-		data = sortByDistance(data, userLocation);
+		// TODO: DECIDE SORTING
+		switch (sortBy) {
+			case 'Distance':
+				data = sortByDistance(data, userLocation);
+				break;
+			case 'Popularity':
+				data = sortByPopularity(data);
+				break;
+			case 'Newest':
+				data = sortByNewest(data);
+				break;
+			case 'Oldest':
+				data = sortByOldest(data);
+				break;
+			default:
+				data = sortByDistance(data, userLocation);
+		}
 		return dispatch({ type: GET_SERVICES_SUCCESS, payload: data });
 	} catch (e) {
 		return dispatch({ type: GET_SERVICES_FAIL });
@@ -388,6 +421,22 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
 	return dist;
 };
 
+// sort by popularity
+const sortByPopularity = (data) => {
+	const newData = _.sortBy(data, (service) => [
+		service.rating,
+		service.ratingCount
+	]);
+	return newData.reverse();
+};
+
+// sort by newest
+const sortByNewest = (data) => _.sortBy(data, 'timestamp');
+
+// sort by oldest
+const sortByOldest = (data) => _.sortBy(data, 'timestamp').reverse();
+
+// Cancel Axios calls
 export const cancelAxiosServices = () => async (dispatch) => {
 	await source.cancel('Fetched cancelled by user');
 };

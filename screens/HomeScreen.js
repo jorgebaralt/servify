@@ -116,7 +116,6 @@ class HomeScreen extends Component {
 				DISTANCE
 			);
 		}
-		// TODO: improve performance
 		await this.props.getPopularCategories();
 	};
 
