@@ -430,11 +430,11 @@ const sortByPopularity = (data) => {
 	return newData.reverse();
 };
 
-// sort by newest
-const sortByNewest = (data) => _.sortBy(data, 'timestamp');
-
 // sort by oldest
-const sortByOldest = (data) => _.sortBy(data, 'timestamp').reverse();
+const sortByOldest = (data) => _.sortBy(data, 'timestamp');
+
+// sort by newest
+const sortByNewest = (data) => _.sortBy(data, 'timestamp').reverse();
 
 // Cancel Axios calls
 export const cancelAxiosServices = () => async (dispatch) => {
