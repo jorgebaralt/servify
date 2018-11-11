@@ -383,10 +383,10 @@ const initialState = [
 	},
 	{
 		id: 16,
-		title: 'Insurance companies',
+		title: 'Insurance ',
 		description: 'Insurance description',
 		dbReference: 'insurance',
-		keyWords: ['insurance', 'health', 'car', 'auto', 'policy'],
+		keyWords: ['insurance', 'health', 'car', 'auto', 'policy', 'claim'],
 		color: ['#006064', '#0288D1']
 	},
 	{
