@@ -10,6 +10,7 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import firebase from 'firebase';
 import reducers from './reducers';
+import { firebaseKey } from './keys';
 // Screens
 import AuthScreen from './screens/AuthScreen';
 import WelcomeScreen from './screens/WelcomeScreen';
@@ -36,7 +37,7 @@ const store = createStore(reducers, {}, compose(applyMiddleware(thunk)));
 export default class App extends React.Component {
 	componentWillMount() {
 		firebase.initializeApp({
-			apiKey: 'AIzaSyBlfkH3vO25hXrejXrSeWRlejfETYUfb6I',
+			apiKey: firebaseKey,
 			authDomain: 'servify-716c6.firebaseapp.com',
 			databaseURL: 'https://servify-716c6.firebaseio.com',
 			projectId: 'servify-716c6',
