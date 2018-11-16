@@ -87,14 +87,14 @@ class HomeScreen extends Component {
 
 		if (status === 'granted') {
 			await this.props.getUserLocation();
-			await this.onRefresh();
 		} else {
 			Alert.alert(
 				'Allow Servify to access your location while you are using the app?',
 				'Servify uses current location to find and display nearby services, for better performance, go to settings and allow Servify to use your location while using the app.',
 				[
 					{
-						text: 'Go to settings', onPress: () => Linking.openURL('app-settings:')
+						text: 'Go to settings',
+						onPress: () => Linking.openURL('app-settings:')
 					},
 					{
 						text: 'Cancel'
@@ -102,6 +102,8 @@ class HomeScreen extends Component {
 				]
 			);
 		}
+		
+		await this.onRefresh();
 	};
 
 	onRefresh = async () => {
@@ -257,7 +259,7 @@ class HomeScreen extends Component {
 						refreshControl={(
 <RefreshControl
 								refreshing={this.state.refreshing}
-								onRefresh={() => this.onRefresh()}
+								onRefresh={async () => this.onRefresh()}
 								tintColor="orange"
 								colors={['orange']}
 />
