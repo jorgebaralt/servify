@@ -44,8 +44,7 @@ class HomeScreen extends Component {
 	};
 
 	state = {
-		refreshing: false,
-		locationPermission: false
+		refreshing: false
 	};
 
 	async componentWillMount() {
@@ -85,9 +84,7 @@ class HomeScreen extends Component {
 
 	getLocationAsync = async () => {
 		const { status } = await Permissions.askAsync(Permissions.LOCATION);
-
 		if (status === 'granted') {
-			this.setState({ locationPermission: true });
 			await this.props.getUserLocation();
 		} else {
 			Alert.alert(
@@ -104,17 +101,14 @@ class HomeScreen extends Component {
 				]
 			);
 		}
-		
 		await this.onRefresh();
 	};
 
 	onRefresh = async () => {
 		const { status } = await Permissions.getAsync(Permissions.LOCATION);
-		if (status === 'granted' && this.props.userLocation) {
-			this.setState({ locationPermission: true });
+		await this.props.getPopularCategories();
+		if (status === 'granted') {
 			await this.props.getUserLocation();
-		}
-		if (this.state.locationPermission) {
 			await this.props.getNearServices(
 				this.props.userLocation.coords,
 				DISTANCE
@@ -124,7 +118,6 @@ class HomeScreen extends Component {
 				DISTANCE
 			);
 		}
-		await this.props.getPopularCategories();
 	};
 
 	renderNearServicesList = (service) => (
