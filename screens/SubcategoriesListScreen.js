@@ -73,7 +73,8 @@ class SubcategoriesListScreen extends Component {
 					<Text>{subcategory.title}</Text>
 					<Right>
 						<Icon
-							name="arrow-forward"
+							name="ios-arrow-forward"
+							type="Ionicons"
 							style={{ color: this.props.category.color[0] }}
 						/>
 					</Right>
@@ -98,7 +99,11 @@ class SubcategoriesListScreen extends Component {
 								this.props.navigation.navigate('browse');
 							}}
 						>
-							<Icon name="arrow-back" style={{ color: 'white' }} />
+							<Icon
+								name="ios-arrow-back"
+								type="Ionicons"
+								style={{ color: 'white' }}
+							/>
 						</Button>
 					</Left>
 					<Body style={{ flex: 3 }}>

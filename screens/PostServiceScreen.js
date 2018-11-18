@@ -239,8 +239,9 @@ class PostServiceScreen extends Component {
 									name={
 										this.state.selectedSubcategory
 											? undefined
-											: 'ios-arrow-down-outline'
+											: 'ios-arrow-down'
 									}
+									type="Ionicons"
 />
 )}
 							placeholder="Pick a Subcategory"
@@ -304,8 +305,9 @@ class PostServiceScreen extends Component {
 												name={
 													this.state.selectedCategory
 														? undefined
-														: 'ios-arrow-down-outline'
+														: 'ios-arrow-down'
 												}
+												type="Ionicons"
 />
 )}
 										selectedValue={this.state.selectedCategory}

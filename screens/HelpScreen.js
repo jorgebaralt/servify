@@ -48,21 +48,25 @@ class HelpScreen extends Component {
 	};
 
 	renderQuestion = (faq) => (
-			<ListItem
-				style={{ marginTop: 30, marginRight: 10 }}
-				onPress={() => {
-					this.props.selectFaq(faq);
-					this.props.navigation.navigate('specificFaq');
-				}}
-			>
-				<Left>
-					<Text>{faq.question}</Text>
-				</Left>
-				<Right>
-					<Icon name="arrow-forward" style={{ color: 'gray', fontSize: 28 }} />
-				</Right>
-			</ListItem>
-		);
+		<ListItem
+			style={{ marginTop: 30, marginRight: 10 }}
+			onPress={() => {
+				this.props.selectFaq(faq);
+				this.props.navigation.navigate('specificFaq');
+			}}
+		>
+			<Left>
+				<Text>{faq.question}</Text>
+			</Left>
+			<Right>
+				<Icon
+					name="ios-arrow-forward"
+					type="Ionicons"
+					style={{ color: 'gray', fontSize: 28 }}
+				/>
+			</Right>
+		</ListItem>
+	);
 
 	renderQuestions = () => (
 		<FlatList
@@ -86,7 +90,11 @@ class HelpScreen extends Component {
 								this.props.navigation.goBack();
 							}}
 						>
-							<Icon name="arrow-back" style={{ color: 'black' }} />
+							<Icon
+								name="ios-arrow-back"
+								type="Ionicons"
+								style={{ color: 'black' }}
+							/>
 						</Button>
 					</Left>
 					<Body style={{ flex: 3 }}>

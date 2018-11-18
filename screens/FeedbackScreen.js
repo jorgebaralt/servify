@@ -170,7 +170,11 @@ class FeedbackScreen extends Component {
 								this.onBackPress();
 							}}
 						>
-							<Icon name="arrow-back" style={{ color: 'black' }} />
+							<Icon
+								name="ios-arrow-back"
+								type="Ionicons"
+								style={{ color: 'black' }}
+							/>
 						</Button>
 					</Left>
 					<Body>

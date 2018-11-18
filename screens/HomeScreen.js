@@ -84,6 +84,7 @@ class HomeScreen extends Component {
 
 	getLocationAsync = async () => {
 		const { status } = await Permissions.askAsync(Permissions.LOCATION);
+
 		if (status === 'granted') {
 			await this.props.getUserLocation();
 		} else {
@@ -108,7 +109,9 @@ class HomeScreen extends Component {
 		const { status } = await Permissions.getAsync(Permissions.LOCATION);
 		await this.props.getPopularCategories();
 		if (status === 'granted') {
-			await this.props.getUserLocation();
+			if (!this.props.userLocation) {
+				await this.props.getUserLocation();
+			}
 			await this.props.getNearServices(
 				this.props.userLocation.coords,
 				DISTANCE

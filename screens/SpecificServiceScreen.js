@@ -538,9 +538,11 @@ class SpecificServiceScreen extends Component {
 							disabled={this.state.favLoading}
 						>
 							<Icon
-								name="arrow-back"
+								name="ios-arrow-back"
+								type="Ionicons"
 								style={{ color: 'black', flex: 1, width: 50 }}
 							/>
+
 						</Button>
 					</Left>
 					<Body style={styles.titleStyle}>

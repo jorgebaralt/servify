@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Expo, { AppLoading } from 'expo';
+import { AppLoading } from 'expo';
 import { View, UIManager, Platform } from 'react-native';
 import _ from 'lodash';
 import firebase from 'firebase';
@@ -18,7 +18,6 @@ const SLIDE_DATA = [
 
 class WelcomeScreen extends Component {
 	state = {
-		loading: true,
 		authenticated: null
 	};
 
@@ -28,8 +27,6 @@ class WelcomeScreen extends Component {
 		}
 		// check if there is a user logged in already
 		await this.checkForUser();
-		// Make sure to load the Native Base Fonts
-		await this.loadFonts();
 	}
 
 	onSlidesComplete = () => {
@@ -55,18 +52,9 @@ class WelcomeScreen extends Component {
 		});
 	}
 
-	async loadFonts() {
-		await Expo.Font.loadAsync({
-			Roboto: require('native-base/Fonts/Roboto.ttf'),
-			Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
-			Ionicons: require('@expo/vector-icons/fonts/Ionicons.ttf')
-		});
-		this.setState({ loading: false });
-	}
-
 	render() {
 		// if we are still loading font or we have not checked for token
-		if (this.state.loading || _.isNull(this.state.authenticated)) {
+		if (_.isNull(this.state.authenticated)) {
 			return <AppLoading />;
 		}
 		return (

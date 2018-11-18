@@ -15,7 +15,7 @@ export default () => [
 		id: '3',
 		question: 'Is the app completely free?',
 		answer:
-			'Yes. Users will be able to find and create services without any charge. Creating services as a free mode might change in the future.'
+			'Yes. Users will be able to find and create services without any charge. Creating free services might change in the future.'
 	},
 	{
 		id: '4',

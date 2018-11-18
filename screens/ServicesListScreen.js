@@ -124,8 +124,7 @@ class ServicesListScreen extends Component {
 				</Right>
 			);
 		}
-		
-	}
+	};
 
 	renderServices = (service) => {
 		const {
@@ -137,6 +136,7 @@ class ServicesListScreen extends Component {
 			cardItemStyle,
 			reviewLocationStyle
 		} = styles;
+
 		const displayDescription = service.description.substring(0, 30) + '...';
 		return (
 			<TouchableOpacity
@@ -150,7 +150,7 @@ class ServicesListScreen extends Component {
 						<Text style={titleStyle}>{service.title}</Text>
 						<View style={reviewLocationStyle}>
 							<Text style={displayNameStyle}>by: {service.displayName}</Text>
-							<View style={{ marginLeft: '4%', marginTop: -3 }}>
+							<View style={{ justifyContent: 'flex-end', marginTop: -3 }}>
 								<AirbnbRating
 									count={5}
 									defaultRating={service.ratingSum / service.ratingCount}
@@ -173,7 +173,8 @@ class ServicesListScreen extends Component {
 						</Body>
 						<Right>
 							<Icon
-								name="arrow-forward"
+								name="ios-arrow-forward"
+								type="Ionicons"
 								style={{ color: this.props.category.color[0] }}
 							/>
 						</Right>
@@ -190,11 +191,7 @@ class ServicesListScreen extends Component {
 	};
 
 	renderListView() {
-		const {
-			sortByStyle,
-			iconSortStyle,
-			viewSortStyle
-		} = styles;
+		const { sortByStyle, iconSortStyle, viewSortStyle } = styles;
 		if (this.state.dataLoaded) {
 			if (this.props.servicesList && this.props.servicesList.length !== 0) {
 				return (
@@ -202,40 +199,44 @@ class ServicesListScreen extends Component {
 						<TouchableOpacity
 							style={viewSortStyle}
 							onPress={() => ActionSheet.show(
-								{
-									options: sortByOptions,
-									title: 'How would you like to sort the services?',
-									cancelButtonIndex: sortByOptions.length - 1
-								},
-								(selectedButtonIndex) => {
-									if (selectedButtonIndex !== sortByOptions.length - 1) {
-										this.setState({ sortBy: sortByOptions[selectedButtonIndex] });
+									{
+										options: sortByOptions,
+										title: 'How would you like to sort the services?',
+										cancelButtonIndex: sortByOptions.length - 1
+									},
+									(selectedButtonIndex) => {
+										if (selectedButtonIndex !== sortByOptions.length - 1) {
+											this.setState({
+												sortBy: sortByOptions[selectedButtonIndex]
+											});
+										}
+										this.decideGetService();
 									}
-									this.decideGetService();
-								}
-							)
+								)
 							}
 						>
 							<Text style={sortByStyle}>Sort by: {this.state.sortBy}</Text>
 							<Icon name="ios-arrow-down" style={iconSortStyle} />
 						</TouchableOpacity>
 						<FlatList
-							style={{ marginTop: 10, marginBottom: 40 }}
+							style={{ marginTop: 10, marginBottom: 40, height: '100%' }}
 							data={this.props.servicesList}
 							renderItem={({ item }) => this.renderServices(item)}
 							keyExtractor={(item) => item.title}
 							enableEmptySections
 							refreshControl={(
-								<RefreshControl
+<RefreshControl
 									refreshing={this.state.refreshing}
 									onRefresh={() => this.decideGetService()}
 									tintColor={this.props.category.color[0]}
-									colors={[this.props.category.color[0]]}
-								/>
-							)}
+									colors={[
+										this.props.category.color[0],
+										this.props.category.color[1]
+									]}
+/>
+)}
 						/>
 					</View>
-					
 				);
 			}
 			return (
@@ -261,7 +262,11 @@ class ServicesListScreen extends Component {
 								this.onBackPress();
 							}}
 						>
-							<Icon name="arrow-back" style={{ color: 'white' }} />
+							<Icon
+								name="ios-arrow-back"
+								type="Ionicons"
+								style={{ color: 'white' }}
+							/>
 						</Button>
 					</Left>
 					<Body style={{ flex: 3 }}>
@@ -297,8 +302,9 @@ const styles = {
 		flex: 1
 	},
 	reviewLocationStyle: {
-		flexDirection: 'row',
-		flex: 1
+		marginTop: 10,
+		diaplay: 'flex',
+		flexDirection: 'row'
 	},
 	headerTitleStyle: {
 		color: 'white'
@@ -310,7 +316,7 @@ const styles = {
 	},
 	displayNameStyle: {
 		fontSize: 14,
-		fontWeight: undefined
+		color: 'black'
 	},
 	cardItemStyle: {
 		marginTop: -10

@@ -86,7 +86,9 @@ class ProfileServicesScreen extends Component {
 	onBackPress = async () => {
 		this.props.cancelAxiosServices();
 		await this.props.navigation.goBack();
-		setTimeout(() => { this.props.cleanPopularNearServices(); }, 250);
+		setTimeout(() => {
+			this.props.cleanPopularNearServices();
+		}, 250);
 	};
 
 	renderServices = (service) => {
@@ -127,7 +129,11 @@ class ProfileServicesScreen extends Component {
 							</Text>
 						</Body>
 						<Right>
-							<Icon name="arrow-forward" style={{ color: '#FF7043' }} />
+							<Icon
+								name="ios-arrow-forward"
+								type="Ionicons"
+								style={{ color: '#FF7043' }}
+							/>
 						</Right>
 					</CardItem>
 					<CardItem style={cardItemStyle}>
@@ -198,7 +204,11 @@ class ProfileServicesScreen extends Component {
 								this.onBackPress();
 							}}
 						>
-							<Icon name="arrow-back" style={{ color: 'black' }} />
+							<Icon
+								name="ios-arrow-back"
+								type="Ionicons"
+								style={{ color: 'black' }}
+							/>
 						</Button>
 					</Left>
 					<Body style={{ flex: 3 }}>

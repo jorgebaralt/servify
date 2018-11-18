@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/Cellar/node/10.8.0/bin/node /usr/local/Cellar/yarn/1.6.0/libexec/bin/yarn.js add react-native-firebase
+  /usr/local/Cellar/node/10.8.0/bin/node /usr/local/Cellar/yarn/1.6.0/libexec/bin/yarn.js
 
 PATH: 
   /Library/Frameworks/Python.framework/Versions/3.6/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Frameworks/Python.framework/Versions/3.6/bin
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: EACCES: permission denied, unlink '/Users/jorgebaralt/LocalProjects/ReactNative/servify/node_modules/native-base/package.json'
+  Error: EACCES: permission denied, open '/Users/jorgebaralt/LocalProjects/ReactNative/servify/yarn.lock'
 
 npm manifest: 
   {
@@ -22,16 +22,16 @@ npm manifest:
     "private": true,
     "dependencies": {
       "axios": "^0.18.0",
-      "expo": "^28.0.1",
+      "expo": "^31.0.4",
       "firebase": "^5.5.1",
       "jshint": "^2.9.5",
       "lodash": "^4.17.11",
       "native-base": "^2.8.1",
-      "react": "16.3.1",
-      "react-native": "https://github.com/expo/react-native/archive/sdk-28.0.0.tar.gz",
+      "react": "16.5.0",
+      "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.1.tar.gz",
       "react-native-linear-gradient": "^2.4.2",
       "react-native-ratings": "https://github.com/jorgebaralt/react-native-ratings",
-      "react-navigation": "^2.17.0",
+      "react-navigation": "^2.18.2",
       "react-redux": "^5.0.7",
       "redux": "^4.0.0",
       "redux-thunk": "^2.3.0",
