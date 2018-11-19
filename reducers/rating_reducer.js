@@ -4,13 +4,16 @@ import {
 	USER_ALREADY_REVIEW,
 	RESET_REVIEW,
 	DELETE_REVIEW_SUCCESS,
-	GET_SERVICE_REVIEWS
+	GET_SERVICE_REVIEWS,
+	USER_NEVER_REVIEW
 } from '../actions/types';
 
 export default (state = {}, action) => {
 	switch (action.type) {
 		case USER_ALREADY_REVIEW:
 			return { ...state, currentUserReview: action.payload };
+		case USER_NEVER_REVIEW:
+			return { ...state, currentUserReview: undefined };
 		case GET_REVIEWS_SUCCESS:
 			return { ...state, reviews: action.payload };
 		case GET_REVIEWS_FAIL:

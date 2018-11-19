@@ -8,7 +8,8 @@ import {
 	USER_ALREADY_REVIEW,
 	RESET_REVIEW,
 	DELETE_REVIEW_SUCCESS,
-	GET_SERVICE_REVIEWS
+	GET_SERVICE_REVIEWS,
+	USER_NEVER_REVIEW
 } from './types';
 
 // Will be used to cancel axios call
@@ -33,13 +34,10 @@ export const getServiceReviews = (service) => async (dispatch) => {
 	const getReviewsUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getRatings';
 	try {
 		source = CancelToken.source();
-		const { data } = await axios.get(
-			getReviewsUrl,
-			{
-				params: service,
-				cancelToken: source.token 
-			},
-		);
+		const { data } = await axios.get(getReviewsUrl, {
+			params: service,
+			cancelToken: source.token
+		});
 		dispatch({ type: GET_SERVICE_REVIEWS, payload: data });
 	} catch (e) {
 		console.log(e);
@@ -50,13 +48,10 @@ export const getReviews = (service, userEmail) => async (dispatch) => {
 	const getReviewsUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getRatings';
 	try {
 		source = CancelToken.source();
-		const { data } = await axios.get(
-			getReviewsUrl,
-			{
-				params: service,
-				cancelToken: source.token
-			}
-		);
+		const { data } = await axios.get(getReviewsUrl, {
+			params: service,
+			cancelToken: source.token
+		});
 		const newData = handleData(data, userEmail);
 		if (newData.currentUserReview) {
 			dispatch({
@@ -65,6 +60,9 @@ export const getReviews = (service, userEmail) => async (dispatch) => {
 			});
 			dispatch({ type: GET_REVIEWS_SUCCESS, payload: newData.data });
 		} else {
+			dispatch({
+				type: USER_NEVER_REVIEW
+			});
 			dispatch({ type: GET_REVIEWS_SUCCESS, payload: newData });
 		}
 	} catch (e) {

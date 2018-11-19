@@ -162,10 +162,7 @@ class PostServiceScreen extends Component {
 	};
 
 	descriptionChangeText = (text) => {
-
-		this.setState({ description: text });
-		this.setState({ descriptionCharCount: maxCharCount - text.length });
-
+		this.setState({ description: text, descriptionCharCount: maxCharCount - text.length });
 	};
 
 	setReference = (scroll) => {

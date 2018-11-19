@@ -156,7 +156,7 @@ export const getEmail = () => async (dispatch) => {
 export const getUserLocation = () => async (dispatch) => {
 	try {
 		const location = await Location.getCurrentPositionAsync({
-			enableHighAccuracy: true
+			enableHighAccuracy: false
 		});
 		dispatch({ type: GET_USER_LOCATION_SUCCESS, payload: location });
 	} catch (e) {

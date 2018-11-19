@@ -172,7 +172,7 @@ class SpecificServiceScreen extends Component {
 				text: 'Cancel'
 			}
 		]);
-	}
+	};
 
 	renderIcon = () => {
 		if (this.props.currentUserEmail === this.props.service.email) {
@@ -190,7 +190,12 @@ class SpecificServiceScreen extends Component {
 				<Icon
 					type="MaterialIcons"
 					name="info-outline"
-					style={{ color: 'black', fontSize: 26, marginLeft: 5, marginRight: 10 }}
+					style={{
+						color: 'black',
+						fontSize: 26,
+						marginLeft: 5,
+						marginRight: 10
+					}}
 					onPress={() => this.reportAlert()}
 					disabled={this.state.favLoading}
 				/>
@@ -220,11 +225,7 @@ class SpecificServiceScreen extends Component {
 	};
 
 	commentChangeText = (text) => {
-		const { commentCharCount } = this.state;
-		if (commentCharCount < maxCharCount) {
-			this.setState({ comment: text });
-		}
-		this.setState({ commentCharCount: maxCharCount - text.length });
+		this.setState({ comment: text, commentCharCount: maxCharCount - text.length });
 	};
 
 	submitReview = async () => {
@@ -463,7 +464,6 @@ class SpecificServiceScreen extends Component {
 		}
 	};
 
-
 	showMoreComments = () => {
 		const { showMoreStyle } = styles;
 		return (
@@ -542,7 +542,6 @@ class SpecificServiceScreen extends Component {
 								type="Ionicons"
 								style={{ color: 'black', flex: 1, width: 50 }}
 							/>
-
 						</Button>
 					</Left>
 					<Body style={styles.titleStyle}>
