@@ -100,13 +100,12 @@ class BrowseScreen extends Component {
 	);
 
 	handleSearch = () => {
-		const filterWords = this.state.filter.toLowerCase().split(' ');
 		const filteredCategories = [];
 		const categoriesFiltered = [];
 
-		filterWords.forEach((word) => {
-			allCategories.forEach((category) => {
-				if (category.keyWords.includes(word)) {
+		allCategories.forEach(category => {
+			category.keyWords.forEach(key => {
+				if (key.includes(this.state.filter.toLowerCase())) {
 					if (!categoriesFiltered.includes(category.title)) {
 						filteredCategories.push(category);
 						categoriesFiltered.push(category.title);
@@ -114,6 +113,7 @@ class BrowseScreen extends Component {
 				}
 			});
 		});
+
 		if (filteredCategories.length < 1 || this.state.filter === '') {
 			this.props.filterEmpty();
 		} else {
@@ -122,8 +122,8 @@ class BrowseScreen extends Component {
 	};
 
 	_keyboardDidHide() {
-		if (this.state.filter.length > 1) {
-			this.setState((prevState) => ({ filter: prevState.filter + ' ' }));
+		if (this.state.filter.length === 0) {
+			this.setState({ filter: '' });
 			this.handleSearch();
 		}
 	}
