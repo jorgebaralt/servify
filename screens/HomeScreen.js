@@ -136,10 +136,9 @@ class HomeScreen extends Component {
 	renderNewServicesNear = () => {
 		if (this.props.nearServicesList && this.props.nearServicesList.length > 0) {
 			return (
-				<View style={{ marginTop: 25 }}>
+				<View style={{ marginTop: 15 }}>
 					<Text style={styles.titleStyle}>New services near you</Text>
 					<FlatList
-						style={{ marginLeft: 20 }}
 						data={this.props.nearServicesList}
 						renderItem={({ item }) => this.renderNearServicesList(item)}
 						keyExtractor={(item) => item.title}
@@ -205,7 +204,6 @@ class HomeScreen extends Component {
 				<View style={{ marginTop: 25 }}>
 					<Text style={styles.titleStyle}>Popular categories</Text>
 					<FlatList
-						style={{ marginLeft: 20 }}
 						data={this.props.popularCategories}
 						renderItem={({ item }) => this.renderPopularCategoriesList(item)}
 						keyExtractor={(item) => item.title}
@@ -238,7 +236,6 @@ class HomeScreen extends Component {
 				<View style={{ marginTop: 25 }}>
 					<Text style={styles.titleStyle}>Popular near services</Text>
 					<FlatList
-						style={{ marginLeft: 20 }}
 						data={this.props.popularNearServices}
 						renderItem={({ item }) => this.renderPopularNearServicesList(item)}
 						keyExtractor={(item) => item.title}
@@ -295,14 +292,15 @@ const styles = {
 	},
 	cardStyle: {
 		width: 140,
-		height: 140,
+		height: 70,
 		shadowOffset: { width: 0, height: 0 },
 		shadowColor: 'black',
 		shadowOpacity: 0.2,
 		elevation: 1,
-		marginRight: 20,
 		marginTop: 20,
-		marginBottom: 20
+		marginBottom: 20,
+		marginLeft: 20,
+		borderRadius: 8
 	}
 };
 

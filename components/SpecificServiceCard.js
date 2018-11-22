@@ -57,7 +57,7 @@ class SpecificServiceCard extends Component {
 		const { cardStyle, cardHeaderStyle, titleStyleCard } = styles;
 		return (
 			<TouchableOpacity
-				style={{ marginBottom: 10 }}
+				style={{ marginBottom: 10, borderRadius: 8 }}
 				onPress={() => {
 					this.props.onPress();
 				}}
@@ -76,12 +76,13 @@ const styles = {
 	cardStyle: {
 		width: 150,
 		height: 150,
-		shadowOffset: { width: 0, height: 0 },
+		shadowOffset: { width: 1, height: 1 },
 		shadowColor: 'black',
-		shadowOpacity: 0.2,
+		shadowOpacity: 0.5,
 		elevation: 1,
-		marginRight: 20,
-		marginTop: 20
+		marginLeft: 20,
+		marginTop: 20,
+		borderRadius: 8
 	},
 	titleStyleCard: {
 		fontSize: 15,
@@ -93,7 +94,8 @@ const styles = {
 	cardHeaderStyle: {
 		flexDirection: 'column',
 		display: 'flex',
-		alignItems: 'flex-start'
+		alignItems: 'flex-start',
+		borderRadius: 8
 	},
 	displayNameStyle: {
 		fontSize: 13,

@@ -265,7 +265,7 @@ export const getNearServices = (currentLocation, distance) => async (
 		);
 		data = _.sortBy(data, 'timestamp');
 		data = data.reverse();
-		data = data.slice(0, 10);
+		data = data.slice(0, 5);
 		return dispatch({ type: GET_NEAR_SERVICES_SUCCESS, payload: data });
 	} catch (e) {
 		console.log(e);

@@ -181,7 +181,8 @@ const styles = {
 		margin: 20
 	},
 	cardStyle: {
-		height: 100
+		height: 90,
+		borderRadius: 8
 	},
 	gridItem: {
 		marginLeft: 10,
@@ -190,7 +191,8 @@ const styles = {
 		shadowOffset: { width: 0, height: 0 },
 		shadowColor: 'black',
 		shadowOpacity: 0.2,
-		elevation: 1
+		elevation: 1,
+		borderRadius: 8
 	}
 };
 

@@ -6,7 +6,7 @@ const initialState = [
 		title: 'Home Services',
 		description: 'Home Services Description',
 		dbReference: 'home_services',
-		color: ['#5E35B1', '#9575CD'],
+		color: ['#5E35B1', '#673AB7'],
 		keyWords: [
 			'home',
 			'cleaning',
@@ -63,7 +63,7 @@ const initialState = [
 		title: 'Auto Services',
 		description: 'Car Wash and Repair Description',
 		dbReference: 'car_services',
-		color: ['#37474F', '#90A4AE'],
+		color: ['#37474F', '#455A64'],
 		keyWords: [
 			'car',
 			'auto',
@@ -105,7 +105,7 @@ const initialState = [
 		title: 'Handyman',
 		description: 'Handyman Description',
 		dbReference: 'handyman',
-		color: ['#00695C', '#4DB6AC'],
+		color: ['#00695C', '#00796B'],
 		keyWords: [
 			'fix',
 			'ac',
@@ -158,7 +158,7 @@ const initialState = [
 			'girl',
 			'children'
 		],
-		color: ['#AD1457', '#FF4081']
+		color: ['#AD1457', '#C2185B']
 	},
 	{
 		id: 4,
@@ -179,7 +179,7 @@ const initialState = [
 			'faucets',
 			'faucet'
 		],
-		color: ['#01579B', '#84FFFF'],
+		color: ['#01579B', '#01579B'],
 		subcategories: [
 			{
 				id: 4.1,
@@ -223,7 +223,7 @@ const initialState = [
 			'bath',
 			'fans'
 		],
-		color: ['#FB8C00', '#FFEB3B']
+		color: ['#FB8C00', '#FF9800']
 	},
 	{
 		id: 6,
@@ -245,7 +245,7 @@ const initialState = [
 			'paw',
 			'paws'
 		],
-		color: ['#F44336', '#FF8A65']
+		color: ['#F44336', '#EF5350']
 	},
 	{
 		id: 7,
@@ -253,7 +253,7 @@ const initialState = [
 		description: 'Food Description',
 		dbReference: 'food_catering',
 		keyWords: ['food', 'eat', 'catering', 'diet', 'restaurant', 'delivery'],
-		color: ['#0097A7', '#004D40']
+		color: ['#0097A7', '#00ACC1']
 	},
 	{
 		id: 8,
@@ -274,7 +274,7 @@ const initialState = [
 			'makeup',
 			'make-up'
 		],
-		color: ['#EC407A', '#AD1457'],
+		color: ['#EC407A', '#F06292'],
 		subcategories: [
 			{
 				id: 8.1,
@@ -308,7 +308,7 @@ const initialState = [
 		description: 'landscape Description',
 		dbReference: 'landscape',
 		keyWords: ['landscape', 'grass', 'cut', 'palms', 'tree', 'trees', 'grass'],
-		color: ['#33691E', '#AED581']
+		color: ['#33691E', '#558B2F']
 	},
 	{
 		id: 10,
@@ -344,7 +344,7 @@ const initialState = [
 			'class',
 			'classes'
 		],
-		color: ['#8D6E63', '#3E2723']
+		color: ['#795548', '#8D6E63']
 	},
 	{
 		id: 12,
@@ -360,7 +360,7 @@ const initialState = [
 		description: 'Get your dream house',
 		dbReference: 'real_state',
 		keyWords: ['house', 'buy', 'realtor', 'broker', 'real', 'state'],
-		color: ['#0097A7', '#009688']
+		color: ['#006064', '#00838F']
 	},
 	{
 		id: 14,
@@ -379,7 +379,7 @@ const initialState = [
 			'run',
 			'training'
 		],
-		color: ['#E65100', '#FFCC80']
+		color: ['#0D47A1', '#1565C0']
 	},
 	{
 		id: 16,
@@ -387,7 +387,7 @@ const initialState = [
 		description: 'Insurance description',
 		dbReference: 'insurance',
 		keyWords: ['insurance', 'health', 'car', 'auto', 'policy', 'claim'],
-		color: ['#006064', '#0288D1']
+		color: ['#7E57C2', '#9575CD']
 	},
 	{
 		id: 17,
@@ -395,7 +395,7 @@ const initialState = [
 		description: 'Something else',
 		dbReference: 'other',
 		keyWords: ['other'],
-		color: ['#78909C', '#7986CB']
+		color: ['#607D8B', '#78909C']
 	}
 ];
 
