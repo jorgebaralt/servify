@@ -303,8 +303,7 @@ export const getPopularNearServices = (currentLocation, distance) => async (
 			},
 			{ cancelToken: source.token }
 		);
-		data = _.sortBy(data, 'rating');
-		data = data.reverse();
+		data = sortByPopularity(data);
 		data = data.slice(0, 5);
 		dispatch({ type: GET_POPULAR_SERVICES_SUCCESS, payload: data });
 	} catch (e) {
