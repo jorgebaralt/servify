@@ -20,7 +20,8 @@ import {
 	Icon,
 	Right,
 	Spinner,
-	ActionSheet
+	ActionSheet,
+	Content
 } from 'native-base';
 import { AirbnbRating } from 'react-native-ratings';
 import { connect } from 'react-redux';
@@ -137,7 +138,7 @@ class ServicesListScreen extends Component {
 			reviewLocationStyle
 		} = styles;
 
-		const displayDescription = service.description.substring(0, 30) + '...';
+		const displayDescription = service.description.substring(0, 25) + '...';
 		return (
 			<TouchableOpacity
 				onPress={() => {
@@ -195,10 +196,11 @@ class ServicesListScreen extends Component {
 		if (this.state.dataLoaded) {
 			if (this.props.servicesList && this.props.servicesList.length !== 0) {
 				return (
-					<View>
-						<TouchableOpacity
-							style={viewSortStyle}
-							onPress={() => ActionSheet.show(
+					<Content>
+						<View>
+							<TouchableOpacity
+								style={viewSortStyle}
+								onPress={() => ActionSheet.show(
 									{
 										options: sortByOptions,
 										title: 'How would you like to sort the services?',
@@ -213,30 +215,31 @@ class ServicesListScreen extends Component {
 										this.decideGetService();
 									}
 								)
-							}
-						>
-							<Text style={sortByStyle}>Sort by: {this.state.sortBy}</Text>
-							<Icon name="ios-arrow-down" style={iconSortStyle} />
-						</TouchableOpacity>
-						<FlatList
-							style={{ marginTop: 10, marginBottom: 40, height: '100%' }}
-							data={this.props.servicesList}
-							renderItem={({ item }) => this.renderServices(item)}
-							keyExtractor={(item) => item.title}
-							enableEmptySections
-							refreshControl={(
-<RefreshControl
-									refreshing={this.state.refreshing}
-									onRefresh={() => this.decideGetService()}
-									tintColor={this.props.category.color[0]}
-									colors={[
-										this.props.category.color[0],
-										this.props.category.color[1]
-									]}
-/>
-)}
-						/>
-					</View>
+								}
+							>
+								<Text style={sortByStyle}>Sort by: {this.state.sortBy}</Text>
+								<Icon name="ios-arrow-down" style={iconSortStyle} />
+							</TouchableOpacity>
+							<FlatList
+								style={{ marginTop: 10, marginBottom: 40 }}
+								data={this.props.servicesList}
+								renderItem={({ item }) => this.renderServices(item)}
+								keyExtractor={(item) => item.title}
+								enableEmptySections
+								refreshControl={(
+									<RefreshControl
+										refreshing={this.state.refreshing}
+										onRefresh={() => this.decideGetService()}
+										tintColor={this.props.category.color[0]}
+										colors={[
+											this.props.category.color[0],
+											this.props.category.color[1]
+										]}
+									/>
+								)}
+							/>
+						</View>
+					</Content>
 				);
 			}
 			return (
@@ -248,6 +251,7 @@ class ServicesListScreen extends Component {
 		}
 		return <Spinner color={this.props.category.color[0]} />;
 	}
+
 
 	render() {
 		const { headerTitleStyle } = styles;
@@ -291,7 +295,9 @@ const styles = {
 		shadowOffset: { width: 0, height: 0 },
 		shadowColor: 'black',
 		shadowOpacity: 0.2,
-		elevation: 1
+		elevation: 1,
+		height: 165,
+		borderRadius: 8
 	},
 	contentStyle: {},
 	titleStyle: {
@@ -312,14 +318,16 @@ const styles = {
 	cardHeaderStyle: {
 		flexDirection: 'column',
 		display: 'flex',
-		alignItems: 'flex-start'
+		alignItems: 'flex-start',
+		borderRadius: 8
 	},
 	displayNameStyle: {
 		fontSize: 14,
 		color: 'black'
 	},
 	cardItemStyle: {
-		marginTop: -10
+		marginTop: -10,
+		borderRadius: 8
 	},
 	viewSortStyle: {
 		display: 'flex',

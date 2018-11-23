@@ -199,9 +199,7 @@ class FeedbackScreen extends Component {
 									iosIcon={(
 <Icon
 											name={
-												this.state.selectedOption
-													? undefined
-													: 'ios-arrow-down-outline'
+												this.state.selectedOption ? undefined : 'ios-arrow-down'
 											}
 />
 )}

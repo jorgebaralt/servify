@@ -18,7 +18,8 @@ import {
 	Button,
 	Icon,
 	Right,
-	Spinner
+	Spinner,
+	Content
 } from 'native-base';
 import { connect } from 'react-redux';
 import {
@@ -100,7 +101,7 @@ class ProfileServicesScreen extends Component {
 			cardHeaderStyle,
 			cardItemStyle
 		} = styles;
-		const displayDescription = service.description.substring(0, 30) + '...';
+		const displayDescription = service.description.substring(0, 25) + '...';
 
 		let categoryName = service.category.split('_');
 		for (let i = 0; i < categoryName.length; i++) {
@@ -163,11 +164,13 @@ class ProfileServicesScreen extends Component {
 			&& this.props.favorites.length > 0
 		) {
 			return (
-				<FlatList
-					data={this.props.favorites}
-					renderItem={({ item }) => this.renderServices(item)}
-					keyExtractor={(item) => item.title}
-				/>
+				<Content>
+					<FlatList
+						data={this.props.favorites}
+						renderItem={({ item }) => this.renderServices(item)}
+						keyExtractor={(item) => item.title}
+					/>
+				</Content>
 			);
 		}
 		if (
@@ -176,12 +179,14 @@ class ProfileServicesScreen extends Component {
 			&& this.props.servicesList.length > 0
 		) {
 			return (
-				<FlatList
-					style={{ marginBottom: 40 }}
-					data={this.props.servicesList}
-					renderItem={({ item }) => this.renderServices(item)}
-					keyExtractor={(item) => item.title}
-				/>
+				<Content>
+					<FlatList
+						style={{ marginBottom: 40 }}
+						data={this.props.servicesList}
+						renderItem={({ item }) => this.renderServices(item)}
+						keyExtractor={(item) => item.title}
+					/>
+				</Content>
 			);
 		}
 		return (
@@ -244,7 +249,9 @@ const styles = {
 		shadowOffset: { width: 0, height: 0 },
 		shadowColor: 'black',
 		shadowOpacity: 0.2,
-		elevation: 1
+		elevation: 1,
+		height: 165,
+		borderRadius: 8
 	},
 	contentStyle: {},
 	titleStyle: {
@@ -255,19 +262,22 @@ const styles = {
 		flex: 1
 	},
 	headerTitleStyle: {
-		color: 'white'
+		color: 'white',
+		borderRadius: 8
 	},
 	cardHeaderStyle: {
 		flexDirection: 'column',
 		display: 'flex',
-		alignItems: 'flex-start'
+		alignItems: 'flex-start',
+		borderRadius: 8
 	},
 	displayNameStyle: {
 		fontSize: 14,
 		fontWeight: undefined
 	},
 	cardItemStyle: {
-		marginTop: -10
+		marginTop: -10,
+		borderRadius: 8
 	}
 };
 

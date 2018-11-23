@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-import {
-	TouchableOpacity,
-	ListView,
-	DeviceEventEmitter,
-	FlatList
-} from 'react-native';
+import { TouchableOpacity, DeviceEventEmitter, FlatList } from 'react-native';
 import {
 	Text,
 	Card,
@@ -16,7 +11,8 @@ import {
 	Left,
 	Button,
 	Icon,
-	Right
+	Right,
+	Content
 } from 'native-base';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo';
@@ -69,7 +65,7 @@ class SubcategoriesListScreen extends Component {
 			onPress={() => this.doSelectSubcategory(subcategory)}
 		>
 			<Card style={styles.cardStyle}>
-				<CardItem header>
+				<CardItem header style={{ borderRadius: 8}}>
 					<Text>{subcategory.title}</Text>
 					<Right>
 						<Icon
@@ -113,13 +109,13 @@ class SubcategoriesListScreen extends Component {
 					</Body>
 					<Right />
 				</Header>
-
-				<FlatList
-					style={{ marginBottom: 40 }}
-					data={this.props.category.subcategories}
-					renderItem={({ item }) => this.renderSubcategories(item)}
-					keyExtractor={(item) => item.title}
-				/>
+				<Content>
+					<FlatList
+						data={this.props.category.subcategories}
+						renderItem={({ item }) => this.renderSubcategories(item)}
+						keyExtractor={(item) => item.title}
+					/>
+				</Content>
 			</Container>
 		);
 	}
@@ -133,7 +129,9 @@ const styles = {
 		shadowOffset: { width: 0, height: 0 },
 		shadowColor: 'black',
 		shadowOpacity: 0.2,
-		elevation: 1
+		elevation: 1,
+		height: 100,
+		borderRadius: 8
 	},
 	contentStyle: {}
 };
