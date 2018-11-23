@@ -23,7 +23,8 @@ const initialState = [
 			'carpet',
 			'carpets',
 			'pool',
-			'swimming'
+			'swimming',
+			'fence'
 		],
 		subcategories: [
 			{
@@ -52,6 +53,12 @@ const initialState = [
 			},
 			{
 				id: 0.5,
+				title: 'Fence services',
+				description: 'Great looking backyard',
+				dbReference: 'fence'
+			},
+			{
+				id: 0.6,
 				title: 'Other',
 				description: 'Just other',
 				dbReference: 'other'
