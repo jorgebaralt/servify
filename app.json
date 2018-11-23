@@ -5,9 +5,9 @@
     "slug": "servify",
     "privacy": "public",
     "sdkVersion": "31.0.0",
-    "facebookScheme":"fb270665710375213",
-    "facebookAppId":"270665710375213",
-    "facebookDisplayName":"servify",
+    "facebookScheme": "fb270665710375213",
+    "facebookAppId": "270665710375213",
+    "facebookDisplayName": "servify",
     "platforms": [
       "ios",
       "android"
