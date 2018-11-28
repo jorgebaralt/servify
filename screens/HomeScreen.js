@@ -24,6 +24,7 @@ import {
 	selectCategory,
 	cleanPopularNearServices
 } from '../actions';
+import { pageHit } from '../helper/ga_helper';
 import SpecificServiceCard from '../components/SpecificServiceCard';
 
 let backPressSubscriptions;
@@ -48,6 +49,7 @@ class HomeScreen extends Component {
 	};
 
 	async componentWillMount() {
+		pageHit('Home Screen');
 		await this.props.getCurrentUserDisplayName();
 		await this.getLocationAsync();
 
@@ -190,6 +192,26 @@ class HomeScreen extends Component {
 		return <View />;
 	}
 
+	renderSecondSpinner() {
+		if (
+			this.props.popularCategories !== undefined
+			&& this.props.popularNearServices === undefined
+			&& this.props.nearServicesList === undefined
+		) {
+			return <Spinner style={{ marginTop: '10%' }} color="orange" />;
+		}
+	}
+
+	renderThirdSpinner() {
+		if (
+			this.props.popularCategories !== undefined
+			&& this.props.popularNearServices !== undefined
+			&& this.props.nearServicesList === undefined
+		) {
+			return <Spinner style={{ marginTop: '10%' }} color="orange" />;
+		}
+	}
+
 	renderPopularCategoriesList = (category) => (
 		<CategoryCard
 			cardStyle={styles.cardStyle}
@@ -266,7 +288,9 @@ class HomeScreen extends Component {
 					>
 						<View>{this.renderSpinner()}</View>
 						{this.renderPopularCategories()}
+						<View>{this.renderSecondSpinner()}</View>
 						{this.renderNewServicesNear()}
+						<View>{this.renderThirdSpinner()}</View>
 						{this.renderPopularNearServices()}
 					</Content>
 				</SafeAreaView>

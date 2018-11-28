@@ -4,6 +4,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "expo": "^31.0.4",
+    "expo-analytics": "^1.0.7",
     "firebase": "^5.5.1",
     "jshint": "^2.9.5",
     "lodash": "^4.17.11",

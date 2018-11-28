@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import Slides from '../components/Slides';
 import { getFavorites, getEmail } from '../actions';
 
+
 const SLIDE_DATA = [
 	{ text: 'Welcome to Servify', color: '#FFA000' },
 	{ text: 'Easy way to Find a Service around your Area', color: '#00B8D4' },
