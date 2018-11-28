@@ -152,6 +152,7 @@ class PostServiceScreen extends Component {
 
 	// text is only what I have typed, not value
 	phoneChangeText = (text) => {
+
 		const input = text.replace(/\D/g, '').substring(0, 10);
 		const left = input.substring(0, 3);
 		const middle = input.substring(3, 6);
@@ -161,8 +162,10 @@ class PostServiceScreen extends Component {
 			this.setState({ phone: `(${left}) ${middle} - ${right}` });
 		} else if (input.length > 3) {
 			this.setState({ phone: `(${left}) ${middle}` });
-		} else if (input.length > 0) {
+		} else if (input.length > 1) {
 			this.setState({ phone: `(${left}` });
+		} else {
+			this.setState({ phone: left });
 		}
 	};
 
