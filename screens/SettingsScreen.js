@@ -13,12 +13,18 @@ import {
 } from 'native-base';
 import { connect } from 'react-redux';
 import { logOut } from '../actions';
+import { pageHit } from '../helper/ga_helper';
 
 class SettingsScreen extends Component {
+
+	componentDidMount() {
+		pageHit('Settings Screen');
+	}
+
 	doLogOut = async () => {
-    await this.props.logOut();
-    await this.props.navigation.navigate('home');
-    await this.props.navigation.navigate('auth');
+		await this.props.logOut();
+		await this.props.navigation.navigate('home');
+		await this.props.navigation.navigate('auth');
 	};
 
 	render() {

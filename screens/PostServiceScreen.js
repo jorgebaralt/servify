@@ -23,6 +23,7 @@ import {
 } from 'native-base';
 import { connect } from 'react-redux';
 import { createService, resetMessageService } from '../actions';
+import { pageHit } from '../helper/ga_helper';
 
 const maxCharCount = 150;
 const initialState = {
@@ -60,6 +61,10 @@ class PostServiceScreen extends Component {
 		willBlurSubscription = this.props.navigation.addListener('willBlur', () => {
 			this.setState(initialState);
 		});
+	}
+
+	componentDidMount() {
+		pageHit('Post Service Screen');
 	}
 
 	componentWillUpdate(nextProps) {
@@ -162,7 +167,10 @@ class PostServiceScreen extends Component {
 	};
 
 	descriptionChangeText = (text) => {
-		this.setState({ description: text, descriptionCharCount: maxCharCount - text.length });
+		this.setState({
+			description: text,
+			descriptionCharCount: maxCharCount - text.length
+		});
 	};
 
 	setReference = (scroll) => {
@@ -350,7 +358,8 @@ class PostServiceScreen extends Component {
 										onChangeText={(text) => this.setState({ miles: text })}
 										keyboardType="numeric"
 										placeholder={this.state.milesPlaceHolder}
-										onFocus={() => this.setState({ milesPlaceHolder: 'Up to 60 miles' })}
+										onFocus={() => this.setState({ milesPlaceHolder: 'Up to 60 miles' })
+										}
 										onBlur={() => this.setState({ milesPlaceHolder: '' })}
 									/>
 								</Item>
@@ -367,10 +376,8 @@ class PostServiceScreen extends Component {
 							<Text style={charCountStyle}>
 								{this.state.descriptionCharCount}
 							</Text>
-							<View>
-								{this.renderSpinner()}
-							</View>
-							
+							<View>{this.renderSpinner()}</View>
+
 							<View>
 								<Button
 									bordered

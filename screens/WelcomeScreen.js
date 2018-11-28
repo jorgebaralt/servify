@@ -6,7 +6,7 @@ import firebase from 'firebase';
 import { connect } from 'react-redux';
 import Slides from '../components/Slides';
 import { getFavorites, getEmail } from '../actions';
-
+import { pageHit } from '../helper/ga_helper';
 
 const SLIDE_DATA = [
 	{ text: 'Welcome to Servify', color: '#FFA000' },
@@ -28,6 +28,10 @@ class WelcomeScreen extends Component {
 		}
 		// check if there is a user logged in already
 		await this.checkForUser();
+	}
+
+	componentDidMount() {
+		pageHit('Welcome Screen');
 	}
 
 	onSlidesComplete = () => {

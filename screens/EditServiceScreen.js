@@ -26,6 +26,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { deleteService, resetMessageService, updateService } from '../actions';
+import { pageHit } from '../helper/ga_helper';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -49,6 +50,10 @@ class EditServiceScreen extends Component {
 			'willFocus',
 			this.handleAndroidBack
 		);
+	}
+
+	componentDidMount() {
+		pageHit('Edit Service Screen');
 	}
 
 	componentWillUnmount() {

@@ -49,7 +49,6 @@ class HomeScreen extends Component {
 	};
 
 	async componentWillMount() {
-		pageHit('Home Screen');
 		await this.props.getCurrentUserDisplayName();
 		await this.getLocationAsync();
 
@@ -61,6 +60,10 @@ class HomeScreen extends Component {
 			'willFocus',
 			this.onRefresh
 		);
+	}
+
+	componentDidMount() {
+		pageHit('Home Screen');
 	}
 
 	componentWillUnmount() {

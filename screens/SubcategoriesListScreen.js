@@ -17,6 +17,7 @@ import {
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo';
 import { deselectCategory, selectSubcategory } from '../actions';
+import { pageHit } from '../helper/ga_helper';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -27,6 +28,10 @@ class SubcategoriesListScreen extends Component {
 			'willFocus',
 			this.handleAndroidBack
 		);
+	}
+
+	componentDidMount() {
+		pageHit('Subcategories List Screen');
 	}
 
 	componentWillUnmount() {
@@ -65,7 +70,7 @@ class SubcategoriesListScreen extends Component {
 			onPress={() => this.doSelectSubcategory(subcategory)}
 		>
 			<Card style={styles.cardStyle}>
-				<CardItem header style={{ borderRadius: 8}}>
+				<CardItem header style={{ borderRadius: 8 }}>
 					<Text>{subcategory.title}</Text>
 					<Right>
 						<Icon

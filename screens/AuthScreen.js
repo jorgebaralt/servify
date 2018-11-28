@@ -13,6 +13,7 @@ import { LinearGradient } from 'expo';
 import { facebookLogin } from '../actions';
 import Logo from '../assets/servifyLogo.png';
 import LogoBorderWhite from '../assets/logoBorderWhite.png';
+import { pageHit } from '../helper/ga_helper';
 
 let backPressSubscriptions;
 let willFocusSubscription;
@@ -74,7 +75,10 @@ class AuthScreen extends Component {
 				end={{ x: 0, y: 1 }}
 			>
 				<SafeAreaView style={styles.authStyle}>
-					<Image style={{ width: 82, height: 105, marginBottom: 20 }} source={LogoBorderWhite} />
+					<Image
+						style={{ width: 82, height: 105, marginBottom: 20 }}
+						source={LogoBorderWhite}
+					/>
 					{/* <Text style={styles.titleStyle}> Servify </Text> */}
 					{/* //log in with facebook */}
 					<View style={styles.buttonStyle}>
@@ -157,7 +161,7 @@ const styles = {
 		alignItems: 'center'
 	},
 	buttonStyle: {
-		marginTop: 40,
+		marginTop: 40
 	},
 	textStyle: {
 		fontSize: 16

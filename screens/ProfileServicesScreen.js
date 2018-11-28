@@ -30,9 +30,10 @@ import {
 	cleanPopularNearServices
 } from '../actions';
 import EmptyListMessage from '../components/EmptyListMessage';
+import { pageHit } from '../helper/ga_helper';
 
-let currentItem;
 let errorMessage;
+let currentItem;
 let willFocusSubscription;
 let backPressSubscriptions;
 
@@ -62,6 +63,10 @@ class ProfileServicesScreen extends Component {
 			this.setState({ loading: false });
 			errorMessage =				'There is nothing in this list, Make sure that you create a Service from our Post screen, then you will be able to modify it here';
 		}
+	}
+
+	componentDidMount() {
+		pageHit('Profile Services Screen');
 	}
 
 	componentWillUnmount() {
@@ -191,8 +196,7 @@ class ProfileServicesScreen extends Component {
 		}
 		return (
 			<EmptyListMessage buttonPress={this.onBackPress}>
-				There is nothing in this list, Make sure that you create a Service from
-				our Post screen, then you will be able to modify it here
+				{errorMessage}
 			</EmptyListMessage>
 		);
 	};

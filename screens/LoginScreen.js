@@ -14,6 +14,7 @@ import { LinearGradient } from 'expo';
 import { View, SafeAreaView, Keyboard, DeviceEventEmitter, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { emailAndPasswordLogin, resetMessage } from '../actions';
+import { pageHit } from '../helper/ga_helper';
 
 let backPressSubscriptions;
 let willFocusSubscription;
@@ -31,6 +32,10 @@ class LoginScreen extends Component {
 			'didFocus',
 			this.handleAndroidBack
 		);
+	}
+
+	componentDidMount() {
+		pageHit('Login Screen');
 	}
 
 	componentWillUpdate(nextProps) {
@@ -52,6 +57,10 @@ class LoginScreen extends Component {
 			});
 		}
 		this.props.resetMessage();
+	}
+
+	componentWillUnmount() {
+		willFocusSubscription.remove();
 	}
 
 	handleAndroidBack = () => {

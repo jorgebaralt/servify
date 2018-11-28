@@ -22,6 +22,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { createEmailAccount, resetMessage } from '../actions';
+import { pageHit } from '../helper/ga_helper';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -35,14 +36,18 @@ const initialState = {
 	loading: false
 };
 class CreateAccountScreen extends Component {
-    state = initialState;
-    
-    componentWillMount() {
-        willFocusSubscription = this.props.navigation.addListener(
-            'willFocus',
-            this.handleAndroidBack
-        );
-    }
+	state = initialState;
+
+	componentWillMount() {
+		willFocusSubscription = this.props.navigation.addListener(
+			'willFocus',
+			this.handleAndroidBack
+		);
+	}
+
+	componentDidMount() {
+		pageHit('Create Account Screen');
+	}
 
 	// when we receive new props, instantly:
 	componentWillUpdate(nextProps) {
@@ -67,23 +72,27 @@ class CreateAccountScreen extends Component {
 			});
 			this.props.resetMessage();
 		}
-    }
-    
-    handleAndroidBack = () => {
-        backPressSubscriptions = new Set();
-        DeviceEventEmitter.removeAllListeners('hardwareBackPress');
-        DeviceEventEmitter.addListener('hardwareBackPress', () => {
-            const subscriptions = [];
+	}
 
-            backPressSubscriptions.forEach((sub) => subscriptions.push(sub));
-            for (let i = 0; i < subscriptions.reverse().length; i += 1) {
-                if (subscriptions[i]()) {
-                    break;
-                }
-            }
-        });
-        backPressSubscriptions.add(() => this.props.navigation.navigate('auth'));
-    };
+	componentWillUnmount() {
+		willFocusSubscription.remove();
+	}
+
+	handleAndroidBack = () => {
+		backPressSubscriptions = new Set();
+		DeviceEventEmitter.removeAllListeners('hardwareBackPress');
+		DeviceEventEmitter.addListener('hardwareBackPress', () => {
+			const subscriptions = [];
+
+			backPressSubscriptions.forEach((sub) => subscriptions.push(sub));
+			for (let i = 0; i < subscriptions.reverse().length; i += 1) {
+				if (subscriptions[i]()) {
+					break;
+				}
+			}
+		});
+		backPressSubscriptions.add(() => this.props.navigation.navigate('auth'));
+	};
 
 	createAccount = async () => {
 		Keyboard.dismiss();

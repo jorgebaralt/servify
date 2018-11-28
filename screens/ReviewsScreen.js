@@ -18,6 +18,7 @@ import {
 	Card
 } from 'native-base';
 import { getServiceReviews, cancelAxiosRating } from '../actions';
+import { pageHit } from '../helper/ga_helper';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -33,6 +34,10 @@ class ReviewsScreen extends Component {
 
 		await this.props.getServiceReviews(this.props.service);
 		this.setState({ loading: false });
+	}
+
+	componentDidMount() {
+		pageHit('Reviews Screen');
 	}
 
 	componentWillUnmount() {

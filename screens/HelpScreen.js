@@ -15,6 +15,7 @@ import {
 	ListItem
 } from 'native-base';
 import { selectFaq } from '../actions';
+import { pageHit } from '../helper/ga_helper';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -25,6 +26,10 @@ class HelpScreen extends Component {
 			'willFocus',
 			this.handleAndroidBack
 		);
+	}
+
+	componentDidMount() {
+		pageHit('Help Screen');
 	}
 
 	componentWillUnmount() {

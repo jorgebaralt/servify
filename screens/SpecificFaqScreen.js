@@ -15,6 +15,7 @@ import {
 	ListItem
 } from 'native-base';
 import { deselectFaq } from '../actions';
+import { pageHit } from '../helper/ga_helper';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -25,6 +26,10 @@ class SpecificFaqScreen extends Component {
 			'willFocus',
 			this.handleAndroidBack
 		);
+	}
+
+	componentDidMount() {
+		pageHit('Specific FAQ Screen');
 	}
 
 	componentWillUnmount() {

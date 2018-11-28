@@ -16,6 +16,7 @@ import {
 } from 'native-base';
 import { connect } from 'react-redux';
 import { getCurrentUserDisplayName } from '../actions';
+import { pageHit } from '../helper/ga_helper';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -41,6 +42,7 @@ class ProfileScreen extends Component {
 
 	componentDidMount() {
 		willBlurSubscriptions = this.props.navigation.addListener('willBlur', () => DeviceEventEmitter.removeAllListeners('hardwareBackPress'));
+		pageHit('Profile Screen');
 	}
 
 	componentWillUnmount() {

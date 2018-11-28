@@ -20,6 +20,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { resetMessage, passwordReset } from '../actions';
+import { pageHit } from '../helper/ga_helper';
 
 let backPressSubscriptions;
 let willFocusSubscription;
@@ -36,6 +37,10 @@ class forgotPassword extends Component {
 			'didFocus',
 			this.handleAndroidBack
 		);
+	}
+
+	componentDidMount() {
+		pageHit('Forgot Password Screen');
 	}
 
 	componentWillUpdate(nextProps) {
@@ -58,6 +63,10 @@ class forgotPassword extends Component {
 			});
 		}
 		this.props.resetMessage();
+	}
+
+	componentWillUnmount() {
+		willFocusSubscription.remove();
 	}
 
 	handleAndroidBack = () => {

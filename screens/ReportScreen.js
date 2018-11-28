@@ -17,13 +17,10 @@ import {
 	Form,
 	Picker
 } from 'native-base';
-import {
-	Platform,
-	View,
-	DeviceEventEmitter
-} from 'react-native';
+import { Platform, View, DeviceEventEmitter } from 'react-native';
 import { connect } from 'react-redux';
 import { reportService } from '../actions';
+import { pageHit } from '../helper/ga_helper';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -41,6 +38,10 @@ class ReportScreen extends Component {
 			'willFocus',
 			this.handleAndroidBack
 		);
+	}
+
+	componentDidMount() {
+		pageHit('Report Screen');
 	}
 
 	componentWillUnmount() {
@@ -74,18 +75,18 @@ class ReportScreen extends Component {
 			reason: this.state.selectedOption,
 			description: this.state.description,
 			serviceTitle: this.props.service.title,
-			serviceOwner: this.props.service.email,
+			serviceOwner: this.props.service.email
 		};
 		await this.props.reportService(report);
 		this.setState({ loading: false });
 		Toast.show({
-		text: 'Service reported',
+			text: 'Service reported',
 			buttonText: 'OK',
-				duration: 5000,
-					type: 'success'
+			duration: 5000,
+			type: 'success'
 		});
 		this.onBackPress();
-	}
+	};
 
 	renderPicker = () => {
 		let pickerArr;
@@ -175,12 +176,13 @@ class ReportScreen extends Component {
 				<Content>
 					<Text style={titleStyle}>Report a service</Text>
 					<Text style={DescriptionStyle}>
-						Does 
+						Does
 						<Text style={{ fontWeight: 'bold' }}>
-							{' '}{this.props.service.title}{' '}
-						</Text> 
-						contains anything offensive, innapropiate, or fake? please
-						report it as soon as possible so we can take a closer look.
+							{' '}
+							{this.props.service.title}{' '}
+						</Text>
+						contains anything offensive, innapropiate, or fake? please report it
+						as soon as possible so we can take a closer look.
 					</Text>
 					<View style={{ flex: 1, alignItems: 'center' }}>
 						<Form style={formStyle}>
@@ -248,8 +250,9 @@ const styles = {
 	}
 };
 
-const mapStateToProps = (state) => {
-	return { service: state.selectedService.service };
-};
+const mapStateToProps = (state) => ({ service: state.selectedService.service });
 
-export default connect(mapStateToProps, { reportService })(ReportScreen);
+export default connect(
+	mapStateToProps,
+	{ reportService }
+)(ReportScreen);

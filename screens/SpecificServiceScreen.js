@@ -37,6 +37,7 @@ import {
 	removeFavorite,
 	cancelAxiosRating
 } from '../actions';
+import { pageHit } from '../helper/ga_helper';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const maxCharCount = 100;
@@ -73,7 +74,8 @@ class SpecificServiceScreen extends Component {
 		coords = { latitude, longitude };
 		meters = service.miles * 1609.34;
 		latitudeDelta = 0.0922;
-
+		
+		// Map according to miles around the service
 		if (service.miles <= 3) {
 			latitudeDelta = 0.0799;
 		} else if (service.miles <= 10 && service.miles > 3) {
@@ -101,6 +103,10 @@ class SpecificServiceScreen extends Component {
 		await this.props.getReviews(service, this.props.currentUserEmail);
 		this.setState({ loadingUserComment: false });
 	};
+
+	componentDidMount() {
+		pageHit('Specific Service Screen');
+	}
 
 	componentWillUnmount() {
 		this.props.cancelAxiosRating();
@@ -225,7 +231,10 @@ class SpecificServiceScreen extends Component {
 	};
 
 	commentChangeText = (text) => {
-		this.setState({ comment: text, commentCharCount: maxCharCount - text.length });
+		this.setState({
+			comment: text,
+			commentCharCount: maxCharCount - text.length
+		});
 	};
 
 	submitReview = async () => {

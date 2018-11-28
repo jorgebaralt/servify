@@ -32,6 +32,7 @@ import {
 	cancelAxiosServices
 } from '../actions';
 import EmptyListMessage from '../components/EmptyListMessage';
+import { pageHit } from '../helper/ga_helper';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -57,6 +58,10 @@ class ServicesListScreen extends Component {
 		);
 		await this.decideGetService();
 	};
+
+	componentDidMount() {
+		pageHit('Services List Screen');
+	}
 
 	componentWillUnmount() {
 		willFocusSubscription.remove();
@@ -201,20 +206,20 @@ class ServicesListScreen extends Component {
 							<TouchableOpacity
 								style={viewSortStyle}
 								onPress={() => ActionSheet.show(
-									{
-										options: sortByOptions,
-										title: 'How would you like to sort the services?',
-										cancelButtonIndex: sortByOptions.length - 1
-									},
-									(selectedButtonIndex) => {
-										if (selectedButtonIndex !== sortByOptions.length - 1) {
-											this.setState({
-												sortBy: sortByOptions[selectedButtonIndex]
-											});
+										{
+											options: sortByOptions,
+											title: 'How would you like to sort the services?',
+											cancelButtonIndex: sortByOptions.length - 1
+										},
+										(selectedButtonIndex) => {
+											if (selectedButtonIndex !== sortByOptions.length - 1) {
+												this.setState({
+													sortBy: sortByOptions[selectedButtonIndex]
+												});
+											}
+											this.decideGetService();
 										}
-										this.decideGetService();
-									}
-								)
+									)
 								}
 							>
 								<Text style={sortByStyle}>Sort by: {this.state.sortBy}</Text>
@@ -227,7 +232,7 @@ class ServicesListScreen extends Component {
 								keyExtractor={(item) => item.title}
 								enableEmptySections
 								refreshControl={(
-									<RefreshControl
+<RefreshControl
 										refreshing={this.state.refreshing}
 										onRefresh={() => this.decideGetService()}
 										tintColor={this.props.category.color[0]}
@@ -235,8 +240,8 @@ class ServicesListScreen extends Component {
 											this.props.category.color[0],
 											this.props.category.color[1]
 										]}
-									/>
-								)}
+/>
+)}
 							/>
 						</View>
 					</Content>
@@ -251,7 +256,6 @@ class ServicesListScreen extends Component {
 		}
 		return <Spinner color={this.props.category.color[0]} />;
 	}
-
 
 	render() {
 		const { headerTitleStyle } = styles;

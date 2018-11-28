@@ -19,6 +19,7 @@ import {
 import { connect } from 'react-redux';
 import { selectCategory, filterCategories, filterEmpty } from '../actions';
 import CategoryCard from '../components/CategoryCard';
+import { pageHit } from '../helper/ga_helper';
 
 let willFocusSubscription;
 let willBlurSubscription;
@@ -56,6 +57,10 @@ class BrowseScreen extends Component {
 			this.handleSearch();
 		});
 		keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => this._keyboardDidHide());
+	}
+
+	componentDidMount() {
+		pageHit('Browse Screen');
 	}
 
 	componentWillUnmount() {
@@ -103,8 +108,8 @@ class BrowseScreen extends Component {
 		const filteredCategories = [];
 		const categoriesFiltered = [];
 
-		allCategories.forEach(category => {
-			category.keyWords.forEach(key => {
+		allCategories.forEach((category) => {
+			category.keyWords.forEach((key) => {
 				if (key.includes(this.state.filter.toLowerCase())) {
 					if (!categoriesFiltered.includes(category.title)) {
 						filteredCategories.push(category);
