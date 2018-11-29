@@ -1,6 +1,6 @@
 // Google Analytics Helper
 import { Analytics, PageHit, Event } from 'expo-analytics';
-import { GA_KEY } from '../keys';
+import { GA_KEY } from '../config/keys';
 
 const analytics = new Analytics(GA_KEY);
 

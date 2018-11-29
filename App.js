@@ -10,7 +10,7 @@ import { createStore, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import firebase from 'firebase';
 import reducers from './reducers';
-import { firebaseKey } from './keys';
+import { firebaseKey } from './config/keys';
 // Screens
 import AuthScreen from './screens/AuthScreen';
 import WelcomeScreen from './screens/WelcomeScreen';

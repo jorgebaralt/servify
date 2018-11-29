@@ -18,7 +18,6 @@ import {
 	GET_POPULAR_SERVICES_SUCCESS,
 	GET_POPULAR_SERVICES_FAIL,
 	CLEAN_POPULAR_NEAR_SERVICES,
-	SUBMIT_REPORT
 } from './types';
 
 const GET_URL =	'https://us-central1-servify-716c6.cloudfunctions.net/getServices';
@@ -249,7 +248,7 @@ export const getServicesByZipcode = (currentLocation) => async (dispatch) => {
 	}
 };
 
-export const getNearServices = (currentLocation, distance) => async (
+export const getNewNearServices = (currentLocation, distance) => async (
 	dispatch
 ) => {
 	const getNearUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getNearService';
@@ -303,7 +302,9 @@ export const getPopularNearServices = (currentLocation, distance) => async (
 			},
 			{ cancelToken: source.token }
 		);
+		// sort near services by popularity
 		data = sortByPopularity(data);
+		// get the top 5
 		data = data.slice(0, 5);
 		dispatch({ type: GET_POPULAR_SERVICES_SUCCESS, payload: data });
 	} catch (e) {
@@ -315,7 +316,6 @@ export const getPopularNearServices = (currentLocation, distance) => async (
 // DELETE-SERVICE
 export const deleteService = (service) => async (dispatch) => {
 	const deleteUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/deleteService';
-
 	try {
 		await axios.delete(deleteUrl, { data: service });
 
@@ -385,20 +385,25 @@ export const reportService = (report) => async (dispatch) => {
 };
 
 // Helper Functions
+
 // sort array by distance
 const sortByDistance = (data, userLocation) => {
 	let newData = [];
+	// for each service, calculate distance from user to service
 	data.forEach((service) => {
 		const newService = service;
+		
 		const distance = calculateDistance(
 			userLocation.coords.latitude,
 			userLocation.coords.longitude,
 			newService.geolocation.latitude,
 			newService.geolocation.longitude
 		);
+		// add a distance property to the service
 		newService.distance = distance;
 		newData.push(newService);
 	});
+	// sort services by distance
 	newData = _.sortBy(newData, 'distance');
 	return newData;
 };

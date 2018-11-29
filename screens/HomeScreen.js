@@ -17,7 +17,7 @@ import {
 	getCurrentUserDisplayName,
 	selectService,
 	getServicesByZipcode,
-	getNearServices,
+	getNewNearServices,
 	getUserLocation,
 	getPopularCategories,
 	getPopularNearServices,
@@ -26,6 +26,7 @@ import {
 } from '../actions';
 import { pageHit } from '../helper/ga_helper';
 import SpecificServiceCard from '../components/SpecificServiceCard';
+import loadingDots from '../assets/svg/loading.svg';
 
 let backPressSubscriptions;
 let willFocusSubscription;
@@ -117,7 +118,7 @@ class HomeScreen extends Component {
 			if (!this.props.userLocation) {
 				await this.props.getUserLocation();
 			}
-			await this.props.getNearServices(
+			await this.props.getNewNearServices(
 				this.props.userLocation.coords,
 				DISTANCE
 			);
@@ -346,7 +347,7 @@ export default connect(
 		getCurrentUserDisplayName,
 		selectService,
 		getServicesByZipcode,
-		getNearServices,
+		getNewNearServices,
 		getUserLocation,
 		getPopularNearServices,
 		getPopularCategories,
