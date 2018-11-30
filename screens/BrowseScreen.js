@@ -106,14 +106,14 @@ class BrowseScreen extends Component {
 
 	handleSearch = () => {
 		const filteredCategories = [];
-		const categoriesFiltered = [];
+		const nameCheckCategory = [];
 
 		allCategories.forEach((category) => {
 			category.keyWords.forEach((key) => {
 				if (key.includes(this.state.filter.toLowerCase())) {
-					if (!categoriesFiltered.includes(category.title)) {
+					if (!nameCheckCategory.includes(category.title)) {
 						filteredCategories.push(category);
-						categoriesFiltered.push(category.title);
+						nameCheckCategory.push(category.title);
 					}
 				}
 			});

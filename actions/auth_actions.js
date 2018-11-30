@@ -15,7 +15,6 @@ import {
     PASSWORD_RESET_FAIL
     
 } from './types';
-import { getFavorites } from './favorite_actions';
 
 const addUserdbURL =	'https://us-central1-servify-716c6.cloudfunctions.net/addUserdb';
 // How to use AsyncStorage:
@@ -40,12 +39,13 @@ export const facebookLogin = () => async (dispatch) => {
 		const { user } = await firebase
 			.auth()
 			.signInAndRetrieveDataWithCredential(credential);
+
 		await axios.post(addUserdbURL, {
 			userId: user.uid,
 			email: user.email,
 			displayName: user.displayName
 		});
-		await getFavorites(user.email);
+		// await getFavorites(user.email);
 		// if everything worked fine, we dispatch success and the displayName
 		return dispatch({ type: LOGIN_SUCCESS, payload: user.displayName });
 
@@ -59,7 +59,8 @@ export const emailAndPasswordLogin = (email, password) => async (dispatch) => {
 		const { user } = await firebase
 			.auth()
 			.signInWithEmailAndPassword(email, password);
-		await getFavorites(email);
+
+		// fetch email, for global state
 		await getEmail();
 
 		return dispatch({ type: LOGIN_SUCCESS, payload: user.displayName });
