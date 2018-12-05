@@ -26,7 +26,7 @@ import {
 } from '../actions';
 import { pageHit } from '../helper/ga_helper';
 import SpecificServiceCard from '../components/SpecificServiceCard';
-import loadingDots from '../assets/svg/loading.svg';
+import Star from '../assets/svg/Star';
 
 let backPressSubscriptions;
 let willFocusSubscription;
@@ -140,13 +140,17 @@ class HomeScreen extends Component {
 	);
 
 	renderNewServicesNear = () => {
-		if (this.props.nearServicesList && this.props.nearServicesList.length > 0) {
+		if (
+			this.props.nearServicesList
+			&& this.props.nearServicesList.length > 0
+		) {
 			return (
 				<View style={{ marginTop: 15 }}>
 					<Text style={styles.titleStyle}>New services near you</Text>
 					<FlatList
 						data={this.props.nearServicesList}
-						renderItem={({ item }) => this.renderNearServicesList(item)}
+						renderItem={({ item }) => this.renderNearServicesList(item)
+						}
 						keyExtractor={(item) => item.title}
 						horizontal
 					/>
@@ -160,11 +164,12 @@ class HomeScreen extends Component {
 			return (
 				<View style={{ marginTop: 25 }}>
 					<Text style={styles.textStyle}>
-						No new services near you, be the first on creating new services
-						around your area on the
+						No new services near you, be the first on creating new
+						services around your area on the
 						<Text
 							style={[styles.textStyle, { color: '#0277BD' }]}
-							onPress={() => this.props.navigation.navigate('postService')}
+							onPress={() => this.props.navigation.navigate('postService')
+							}
 						>
 							{' '}
 							Post tab
@@ -231,7 +236,8 @@ class HomeScreen extends Component {
 					<Text style={styles.titleStyle}>Popular categories</Text>
 					<FlatList
 						data={this.props.popularCategories}
-						renderItem={({ item }) => this.renderPopularCategoriesList(item)}
+						renderItem={({ item }) => this.renderPopularCategoriesList(item)
+						}
 						keyExtractor={(item) => item.title}
 						horizontal
 					/>
@@ -263,7 +269,8 @@ class HomeScreen extends Component {
 					<Text style={styles.titleStyle}>Popular near services</Text>
 					<FlatList
 						data={this.props.popularNearServices}
-						renderItem={({ item }) => this.renderPopularNearServicesList(item)}
+						renderItem={({ item }) => this.renderPopularNearServicesList(item)
+						}
 						keyExtractor={(item) => item.title}
 						horizontal
 					/>

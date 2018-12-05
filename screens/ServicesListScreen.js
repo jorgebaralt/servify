@@ -23,7 +23,6 @@ import {
 	ActionSheet,
 	Content
 } from 'native-base';
-import { AirbnbRating } from 'react-native-ratings';
 import { connect } from 'react-redux';
 import {
 	getServicesCategory,
@@ -33,6 +32,7 @@ import {
 } from '../actions';
 import EmptyListMessage from '../components/EmptyListMessage';
 import { pageHit } from '../helper/ga_helper';
+import StarsRating from '../components/StarsRating';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -114,7 +114,9 @@ class ServicesListScreen extends Component {
 	renderRating = (service) => {
 		if (service.ratingCount > 0) {
 			return (
-				<Text>{(service.ratingSum / service.ratingCount).toFixed(1)}</Text>
+				<Text>
+					{(service.ratingSum / service.ratingCount).toFixed(1)}
+				</Text>
 			);
 		}
 		return <Text>(0)</Text>;
@@ -155,16 +157,26 @@ class ServicesListScreen extends Component {
 					<CardItem header style={cardHeaderStyle}>
 						<Text style={titleStyle}>{service.title}</Text>
 						<View style={reviewLocationStyle}>
-							<Text style={displayNameStyle}>by: {service.displayName}</Text>
-							<View style={{ justifyContent: 'flex-end', marginTop: -3 }}>
-								<AirbnbRating
-									count={5}
-									defaultRating={service.ratingSum / service.ratingCount}
-									size={15}
+							<Text style={displayNameStyle}>
+								by: {service.displayName}
+							</Text>
+							<View
+								style={{
+									marginLeft: 5,
+								}}
+							>
+								<StarsRating
+									width={15}
+									height={15}
+									spacing={5}
+									rating={service.rating}
 								/>
 							</View>
 							<Text
-								style={[displayNameStyle, { marginTop: -2, marginLeft: 3 }]}
+								style={[
+									displayNameStyle,
+									{ marginTop: -2, marginLeft: 3 }
+								]}
 							>
 								{this.renderRating(service)}
 							</Text>
@@ -199,7 +211,10 @@ class ServicesListScreen extends Component {
 	renderListView() {
 		const { sortByStyle, iconSortStyle, viewSortStyle } = styles;
 		if (this.state.dataLoaded) {
-			if (this.props.servicesList && this.props.servicesList.length !== 0) {
+			if (
+				this.props.servicesList
+				&& this.props.servicesList.length !== 0
+			) {
 				return (
 					<Content>
 						<View>
@@ -208,13 +223,21 @@ class ServicesListScreen extends Component {
 								onPress={() => ActionSheet.show(
 										{
 											options: sortByOptions,
-											title: 'How would you like to sort the services?',
-											cancelButtonIndex: sortByOptions.length - 1
+											title:
+												'How would you like to sort the services?',
+											cancelButtonIndex:
+												sortByOptions.length - 1
 										},
 										(selectedButtonIndex) => {
-											if (selectedButtonIndex !== sortByOptions.length - 1) {
+											if (
+												selectedButtonIndex
+												!== sortByOptions.length - 1
+											) {
 												this.setState({
-													sortBy: sortByOptions[selectedButtonIndex]
+													sortBy:
+														sortByOptions[
+															selectedButtonIndex
+														]
 												});
 											}
 											this.decideGetService();
@@ -222,19 +245,26 @@ class ServicesListScreen extends Component {
 									)
 								}
 							>
-								<Text style={sortByStyle}>Sort by: {this.state.sortBy}</Text>
-								<Icon name="ios-arrow-down" style={iconSortStyle} />
+								<Text style={sortByStyle}>
+									Sort by: {this.state.sortBy}
+								</Text>
+								<Icon
+									name="ios-arrow-down"
+									style={iconSortStyle}
+								/>
 							</TouchableOpacity>
 							<FlatList
 								style={{ marginTop: 10, marginBottom: 40 }}
 								data={this.props.servicesList}
-								renderItem={({ item }) => this.renderServices(item)}
+								renderItem={({ item }) => this.renderServices(item)
+								}
 								keyExtractor={(item) => item.title}
 								enableEmptySections
 								refreshControl={(
 <RefreshControl
 										refreshing={this.state.refreshing}
-										onRefresh={() => this.decideGetService()}
+										onRefresh={() => this.decideGetService()
+										}
 										tintColor={this.props.category.color[0]}
 										colors={[
 											this.props.category.color[0],
@@ -249,8 +279,8 @@ class ServicesListScreen extends Component {
 			}
 			return (
 				<EmptyListMessage buttonPress={this.onBackPress}>
-					Unfortunetly there are no services posted for this category, we are
-					working on getting more people to post services!
+					Unfortunetly there are no services posted for this category,
+					we are working on getting more people to post services!
 				</EmptyListMessage>
 			);
 		}

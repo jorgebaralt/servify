@@ -6,7 +6,8 @@ import {
 	KeyboardAvoidingView,
 	DeviceEventEmitter,
 	FlatList,
-	Alert
+	Alert,
+	TouchableOpacity
 } from 'react-native';
 import { AirbnbRating } from 'react-native-ratings';
 import {
@@ -38,6 +39,7 @@ import {
 	cancelAxiosRating
 } from '../actions';
 import { pageHit } from '../helper/ga_helper';
+import StarsRating from '../components/StarsRating';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const maxCharCount = 100;
@@ -74,7 +76,7 @@ class SpecificServiceScreen extends Component {
 		coords = { latitude, longitude };
 		meters = service.miles * 1609.34;
 		latitudeDelta = 0.0922;
-		
+
 		// Map according to miles around the service
 		if (service.miles <= 3) {
 			latitudeDelta = 0.0799;
@@ -187,7 +189,8 @@ class SpecificServiceScreen extends Component {
 					type="Entypo"
 					name="dots-three-horizontal"
 					style={{ color: 'black' }}
-					onPress={() => this.props.navigation.navigate('editService')}
+					onPress={() => this.props.navigation.navigate('editService')
+					}
 				/>
 			);
 		}
@@ -320,22 +323,31 @@ class SpecificServiceScreen extends Component {
 			return <Spinner color="orange" />;
 		}
 		if (this.props.currentUserEmail !== this.props.service.email) {
-			// do a user review
+			// User have not added a review yet
 			if (!currentUserReview) {
 				return (
 					<View>
 						<Card style={cardStyle}>
 							<CardItem>
 								<Body>
-									<Text style={{ fontSize: 17 }}>{this.props.displayName}</Text>
-									<View style={{ marginTop: 10, marginLeft: -5 }}>
+									<Text style={{ fontSize: 17 }}>
+										{this.props.displayName}
+									</Text>
+									<View
+										style={{
+											marginTop: 10,
+											marginLeft: -5
+										}}
+									>
 										<AirbnbRating
 											showRating
 											style={{ margin: 25 }}
 											count={5}
 											defaultRating={0}
 											size={30}
-											onFinishRating={(count) => this.setState({ starCount: count })
+											onFinishRating={(count) => this.setState({
+													starCount: count
+												})
 											}
 										/>
 									</View>
@@ -345,7 +357,8 @@ class SpecificServiceScreen extends Component {
 										placeholder="Add your comments here"
 										maxLength={maxCharCount}
 										value={this.state.comment}
-										onChangeText={(text) => this.commentChangeText(text)}
+										onChangeText={(text) => this.commentChangeText(text)
+										}
 									/>
 									<Text style={charCountStyle}>
 										{this.state.commentCharCount}
@@ -364,7 +377,7 @@ class SpecificServiceScreen extends Component {
 					</View>
 				);
 			}
-			// See already created comment
+			// User can see his own
 			return (
 				<View>
 					<Text style={subtitleStyle}>Your review</Text>
@@ -383,16 +396,25 @@ class SpecificServiceScreen extends Component {
 							/>
 
 							<Body>
-								<Text style={{ fontSize: 15 }}>{this.props.displayName}</Text>
-								<View style={{ marginLeft: -5, flexDirection: 'row' }}>
-									<AirbnbRating
-										showRating
-										count={5}
-										defaultRating={currentUserReview.rating}
-										size={15}
+								<Text style={{ fontSize: 15 }}>
+									{this.props.displayName}
+								</Text>
+								<View
+									style={{
+										marginLeft: 0,
+										flexDirection: 'row'
+									}}
+								>
+									<StarsRating
+										width={20}
+										height={20}
+										spacing={5}
+										rating={currentUserReview.rating}
 									/>
 									<Text style={commentDateStyle}>
-										{this.renderCommentDate(currentUserReview)}
+										{this.renderCommentDate(
+											currentUserReview
+										)}
 									</Text>
 								</View>
 								<Text style={{ fontSize: 14, marginTop: 5 }}>
@@ -432,15 +454,19 @@ class SpecificServiceScreen extends Component {
 				<Card style={[cardStyle, { marginBottom: 2 }]}>
 					<CardItem>
 						<Body>
-							<Text style={{ fontSize: 15 }}>{review.reviewerDisplayName}</Text>
-							<View style={{ marginLeft: -5, flexDirection: 'row' }}>
-								<AirbnbRating
-									showRating
-									count={5}
-									defaultRating={review.rating}
-									size={15}
+							<Text style={{ fontSize: 15 }}>
+								{review.reviewerDisplayName}
+							</Text>
+							<View style={{ flexDirection: 'row' }}>
+								<StarsRating
+									width={15}
+									height={15}
+									spacing={5}
+									rating={review.rating}
 								/>
-								<Text style={commentDateStyle}>{reviewDate}</Text>
+								<Text style={commentDateStyle}>
+									{reviewDate}
+								</Text>
 							</View>
 							<Text style={{ fontSize: 14, marginTop: 5 }}>
 								{review.comment}
@@ -490,26 +516,22 @@ class SpecificServiceScreen extends Component {
 	renderRatingAvg = () => {
 		if (this.props.service) {
 			return (
-				<View style={{ flexDirection: 'row', marginLeft: 5 }}>
-					<Text onPress={() => this.props.navigation.navigate('reviews')}>
-						{this.props.service.rating.toFixed(1)}
-					</Text>
-					<View>
-						<AirbnbRating
-							showRating
-							count={5}
-							defaultRating={this.props.service.rating}
-							size={15}
+				<TouchableOpacity
+					onPress={() => this.props.navigation.navigate('reviews')}
+					style={{ flexDirection: 'row', marginLeft: 5 }}
+				>
+					<Text>{this.props.service.rating.toFixed(1)}</Text>
+					<View style={{ marginTop: 2, marginLeft: 5 }}>
+						<StarsRating
+							width={15}
+							height={15}
+							spacing={5}
+							rating={this.props.service.rating}
 						/>
 					</View>
-					<Text
-						style={{}}
-						onPress={() => this.props.navigation.navigate('reviews')}
-					>
-						{' '}
-						({this.props.service.ratingCount})
-					</Text>
-				</View>
+
+					<Text> ({this.props.service.ratingCount})</Text>
+				</TouchableOpacity>
 			);
 		}
 	};
@@ -531,13 +553,18 @@ class SpecificServiceScreen extends Component {
 
 		let categoryName = service.category.split('_');
 		for (let i = 0; i < categoryName.length; i++) {
-			categoryName[i] =				categoryName[i].charAt(0).toUpperCase() + categoryName[i].substring(1);
+			categoryName[i] =				categoryName[i].charAt(0).toUpperCase()
+				+ categoryName[i].substring(1);
 		}
 		categoryName = categoryName.join(' ');
 
 		return (
 			<Container style={{ flex: 1 }}>
-				<Header style={Platform.OS === 'android' ? androidHeader : iosHeader}>
+				<Header
+					style={
+						Platform.OS === 'android' ? androidHeader : iosHeader
+					}
+				>
 					<Left>
 						<Button
 							transparent
@@ -554,7 +581,9 @@ class SpecificServiceScreen extends Component {
 						</Button>
 					</Left>
 					<Body style={styles.titleStyle}>
-						<Title style={{ color: 'black' }}>{service.title}</Title>
+						<Title style={{ color: 'black' }}>
+							{service.title}
+						</Title>
 					</Body>
 
 					<Right>
@@ -569,12 +598,18 @@ class SpecificServiceScreen extends Component {
 				>
 					<Content style={contentStyle} padder>
 						<Text style={subtitleStyle}>Rating </Text>
-						<View style={{ marginTop: 5 }}>{this.renderRatingAvg()}</View>
-						<Text style={[subtitleStyle, { marginTop: 5 }]}>Category</Text>
+						<View style={{ marginTop: 5 }}>
+							{this.renderRatingAvg()}
+						</View>
+						<Text style={[subtitleStyle, { marginTop: 5 }]}>
+							Category
+						</Text>
 						<Card style={cardStyle}>
 							<CardItem>
 								<Body style={{ flexDirection: 'row' }}>
-									<Text style={descriptionStyle}>{categoryName}</Text>
+									<Text style={descriptionStyle}>
+										{categoryName}
+									</Text>
 									{this.renderSubcategoryName()}
 								</Body>
 							</CardItem>
@@ -584,7 +619,9 @@ class SpecificServiceScreen extends Component {
 						<Card style={cardStyle}>
 							<CardItem>
 								<Body>
-									<Text style={descriptionStyle}>{service.description}</Text>
+									<Text style={descriptionStyle}>
+										{service.description}
+									</Text>
 								</Body>
 							</CardItem>
 						</Card>
@@ -605,7 +642,8 @@ class SpecificServiceScreen extends Component {
 							</CardItem>
 						</Card>
 						<Text style={subtitleStyle}>
-							{service.locationData.city}, {service.locationData.region}
+							{service.locationData.city},{' '}
+							{service.locationData.region}
 						</Text>
 						<Card style={cardStyle}>
 							<CardItem>
@@ -613,7 +651,10 @@ class SpecificServiceScreen extends Component {
 									<Text style={descriptionStyle}>
 										We cover the following area
 									</Text>
-									<Animated style={mapStyle} region={this.state.region}>
+									<Animated
+										style={mapStyle}
+										region={this.state.region}
+									>
 										<MapView.Circle
 											center={coords}
 											radius={meters}
@@ -633,7 +674,9 @@ class SpecificServiceScreen extends Component {
 											name="my-location"
 											style={{ color: 'black' }}
 											onPress={() => {
-												this.setState({ region: fixedRegion });
+												this.setState({
+													region: fixedRegion
+												});
 											}}
 										/>
 									</Button>
@@ -646,14 +689,20 @@ class SpecificServiceScreen extends Component {
 								style={buttonStyle}
 								onPress={() => this.callPressed()}
 							>
-								<Text style={{ color: '#FF7043', fontSize: 15 }}>Call Now</Text>
+								<Text
+									style={{ color: '#FF7043', fontSize: 15 }}
+								>
+									Call Now
+								</Text>
 							</Button>
 							<Button
 								bordered
 								style={[buttonStyle, { marginLeft: '5%' }]}
 								onPress={() => this.openEmail()}
 							>
-								<Text style={{ color: '#FF7043', fontSize: 15 }}>
+								<Text
+									style={{ color: '#FF7043', fontSize: 15 }}
+								>
 									Email Now
 								</Text>
 							</Button>
@@ -739,7 +788,6 @@ const styles = {
 	commentDateStyle: {
 		fontSize: 13,
 		color: 'gray',
-		marginTop: 3,
 		marginLeft: 10
 	}
 };

@@ -1,37 +1,38 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, LayoutAnimation } from 'react-native';
-import { AirbnbRating } from 'react-native-ratings';
+import { View, TouchableOpacity, LayoutAnimation,StyleSheet } from 'react-native';
 import { Text, Card, CardItem, Button, Icon } from 'native-base';
 import { connect } from 'react-redux';
+import StarsRating from './StarsRating';
 
 class SpecificServiceCard extends Component {
 	componentWillMount() {
 		LayoutAnimation.easeInEaseOut();
 	}
 
-	renderRating = () => {
-		const { displayNameStyle } = styles;
-		const { service } = this.props;
-		if (service.rating != null) {
-			return (
-				<Text style={[displayNameStyle, { marginTop: 3 }]}>
-					Avg rating: {service.rating.toFixed(1)}{' '}
-				</Text>
-			);
-		}
-	};
+	// renderRating = () => {
+	// 	const { displayNameStyle } = styles;
+	// 	const { service } = this.props;
+	// 	if (service.rating != null) {
+	// 		return (
+	// 			<Text style={[displayNameStyle, { marginTop: 3 }]}>
+	// 				Avg rating: {service.rating.toFixed(1)}{' '}
+	// 			</Text>
+	// 		);
+	// 	}
+	// };
 
 	renderContent = () => {
 		const { service } = this.props;
 		const { displayNameStyle } = styles;
+
 		if (this.props.showRating) {
 			return (
 				<View>
 					<View style={{ flexDirection: 'row' }}>
-						<Text style={[displayNameStyle, { marginTop: 3 }]}>
-							Avg rating: {service.rating.toFixed(1)}{' '}
+						<Text style={displayNameStyle}>
+							{service.rating.toFixed(1)}{' '}
 						</Text>
-						<AirbnbRating count={1} defaultRating={service.rating} size={15} />
+						<StarsRating rating={service.rating} />
 					</View>
 					<Text style={[displayNameStyle, { marginTop: 10 }]}>
 						{service.displayName}
@@ -98,7 +99,7 @@ const styles = {
 		borderRadius: 8
 	},
 	displayNameStyle: {
-		fontSize: 13,
+		fontSize: 12,
 		fontWeight: undefined
 	}
 };
