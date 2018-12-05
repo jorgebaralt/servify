@@ -281,13 +281,13 @@ export const getPopularCategories = () => async (dispatch) => {
 		});
 		dispatch({ type: GET_POPULAR_CATEGORY_SUCCESS, payload: data });
 	} catch (e) {
-		console.log(e);
 		return dispatch({ type: GET_POPULAR_CATEGORY_FAIL });
 	}
 };
 
 export const cleanPopularNearServices = () => (dispatch) => dispatch({ type: CLEAN_POPULAR_NEAR_SERVICES });
 
+// Popular near Services
 export const getPopularNearServices = (currentLocation, distance) => async (
 	dispatch
 ) => {
@@ -428,8 +428,8 @@ const calculateDistance = (lat1, lon1, lat2, lon2) => {
 // sort by popularity
 const sortByPopularity = (data) => {
 	const newData = _.sortBy(data, (service) => [
-		service.rating,
-		service.ratingCount
+		service.ratingCount,
+		service.rating
 	]);
 	return newData.reverse();
 };
