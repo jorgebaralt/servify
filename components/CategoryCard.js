@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { TouchableOpacity, LayoutAnimation } from 'react-native';
 import { Text, Card, CardItem } from 'native-base';
 import { LinearGradient } from 'expo';
-import { connect } from 'react-redux';
 
 class CategoryCard extends Component {
 	componentWillMount() {
@@ -10,9 +9,8 @@ class CategoryCard extends Component {
 	}
 
 	render() {
-		const { category } = this.props;
+		const { category, style, cardStyle } = this.props;
 		const { color } = category;
-		const { style, cardStyle } = this.props;
 
 		return (
 			<TouchableOpacity style={style} onPress={() => this.props.onPress()}>
@@ -36,4 +34,4 @@ class CategoryCard extends Component {
 	}
 }
 
-export default connect(null)(CategoryCard);
+export default CategoryCard;

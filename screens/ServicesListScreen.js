@@ -122,6 +122,7 @@ class ServicesListScreen extends Component {
 		return <Text>(0)</Text>;
 	};
 
+	// if we are sorting by distance, show it
 	renderMilesToService = (service) => {
 		if (this.state.sortBy === 'Distance' && service.distance) {
 			return (
@@ -134,6 +135,49 @@ class ServicesListScreen extends Component {
 		}
 	};
 
+	// Handles click and render of action sheet
+	// TODO: animate on scroll down dissapear, show on scroll up
+	renderActionSheet = () => {
+		const { sortByStyle, iconSortStyle, viewSortStyle } = styles;
+		return this.props.servicesList != null
+			&& this.props.servicesList.length !== 0 ? (
+			<View style={viewSortStyle}>
+				<TouchableOpacity
+					style={{ flexDirection: 'row', marginRight: 10 }}
+					onPress={() => ActionSheet.show(
+							{
+								options: sortByOptions,
+								title:
+									'How would you like to sort the services?',
+								cancelButtonIndex: sortByOptions.length - 1
+							},
+							(selectedButtonIndex) => {
+								if (
+									selectedButtonIndex
+									!== sortByOptions.length - 1
+								) {
+									this.setState({
+										sortBy:
+											sortByOptions[selectedButtonIndex]
+									});
+								}
+								this.decideGetService();
+							}
+						)
+					}
+				>
+					<Text style={sortByStyle}>
+						Sort by: {this.state.sortBy}
+					</Text>
+					<Icon name="ios-arrow-down" style={iconSortStyle} />
+				</TouchableOpacity>
+			</View>
+		) : (
+			<View />
+		);
+	};
+
+	// TODO: move to component
 	renderServices = (service) => {
 		const {
 			cardStyle,
@@ -145,71 +189,75 @@ class ServicesListScreen extends Component {
 			reviewLocationStyle
 		} = styles;
 
-		const displayDescription = service.description.substring(0, 25) + '...';
+		const displayDescription = service.description.substring(0, 20) + '...';
 		return (
-			<TouchableOpacity
-				onPress={() => {
-					this.props.selectService(service);
-					this.props.navigation.navigate('service');
-				}}
-			>
-				<Card style={cardStyle}>
-					<CardItem header style={cardHeaderStyle}>
-						<Text style={titleStyle}>{service.title}</Text>
-						<View style={reviewLocationStyle}>
-							<Text style={displayNameStyle}>
-								by: {service.displayName}
-							</Text>
-							<View
-								style={{
-									marginLeft: 5,
-								}}
-							>
-								<StarsRating
-									width={15}
-									height={15}
-									spacing={5}
-									rating={service.rating}
-								/>
+			<View>
+				<TouchableOpacity
+					onPress={() => {
+						this.props.selectService(service);
+						this.props.navigation.navigate('service');
+					}}
+				>
+					<Card style={cardStyle}>
+						<CardItem header style={cardHeaderStyle}>
+							<Text style={titleStyle}>{service.title}</Text>
+							<View style={reviewLocationStyle}>
+								<Text style={displayNameStyle}>
+									by: {service.displayName}
+								</Text>
+								<View
+									style={{
+										marginLeft: 5
+									}}
+								>
+									<StarsRating
+										width={15}
+										height={15}
+										spacing={5}
+										rating={service.rating}
+									/>
+								</View>
+								<Text
+									style={[
+										displayNameStyle,
+										{ marginTop: -2, marginLeft: 3 }
+									]}
+								>
+									{/* Avg rating text */}
+									{this.renderRating(service)}
+								</Text>
 							</View>
-							<Text
-								style={[
-									displayNameStyle,
-									{ marginTop: -2, marginLeft: 3 }
-								]}
-							>
-								{this.renderRating(service)}
-							</Text>
-						</View>
-					</CardItem>
-					<CardItem style={cardItemStyle}>
-						<Body style={phoneLocationStyle}>
-							<Text>{service.phone}</Text>
-							<Text style={{ marginLeft: '5%' }}>
-								{service.locationData.city}
-							</Text>
-						</Body>
-						<Right>
-							<Icon
-								name="ios-arrow-forward"
-								type="Ionicons"
-								style={{ color: this.props.category.color[0] }}
-							/>
-						</Right>
-					</CardItem>
-					<CardItem style={cardItemStyle}>
-						<Body>
-							<Text>{displayDescription}</Text>
-						</Body>
-						{this.renderMilesToService(service)}
-					</CardItem>
-				</Card>
-			</TouchableOpacity>
+						</CardItem>
+						<CardItem style={cardItemStyle}>
+							<Body style={phoneLocationStyle}>
+								<Text>{service.phone}</Text>
+								<Text style={{ marginLeft: '5%' }}>
+									{service.locationData.city}
+								</Text>
+							</Body>
+							<Right>
+								<Icon
+									name="ios-arrow-forward"
+									type="Ionicons"
+									style={{
+										color: this.props.category.color[0]
+									}}
+								/>
+							</Right>
+						</CardItem>
+						<CardItem style={cardItemStyle}>
+							<Body>
+								<Text>{displayDescription}</Text>
+							</Body>
+							{this.renderMilesToService(service)}
+						</CardItem>
+					</Card>
+				</TouchableOpacity>
+			</View>
 		);
 	};
 
 	renderListView() {
-		const { sortByStyle, iconSortStyle, viewSortStyle } = styles;
 		if (this.state.dataLoaded) {
 			if (
 				this.props.servicesList
@@ -218,41 +266,7 @@ class ServicesListScreen extends Component {
 				return (
 					<Content>
 						<View>
-							<TouchableOpacity
-								style={viewSortStyle}
-								onPress={() => ActionSheet.show(
-										{
-											options: sortByOptions,
-											title:
-												'How would you like to sort the services?',
-											cancelButtonIndex:
-												sortByOptions.length - 1
-										},
-										(selectedButtonIndex) => {
-											if (
-												selectedButtonIndex
-												!== sortByOptions.length - 1
-											) {
-												this.setState({
-													sortBy:
-														sortByOptions[
-															selectedButtonIndex
-														]
-												});
-											}
-											this.decideGetService();
-										}
-									)
-								}
-							>
-								<Text style={sortByStyle}>
-									Sort by: {this.state.sortBy}
-								</Text>
-								<Icon
-									name="ios-arrow-down"
-									style={iconSortStyle}
-								/>
-							</TouchableOpacity>
+							{/* TODO: Dynamic size each card */}
 							<FlatList
 								style={{ marginTop: 10, marginBottom: 40 }}
 								data={this.props.servicesList}
@@ -314,6 +328,7 @@ class ServicesListScreen extends Component {
 					</Body>
 					<Right />
 				</Header>
+				{this.renderActionSheet()}
 				{this.renderListView()}
 			</Container>
 		);
@@ -330,7 +345,7 @@ const styles = {
 		shadowColor: 'black',
 		shadowOpacity: 0.2,
 		elevation: 1,
-		height: 165,
+		height: 160,
 		borderRadius: 8
 	},
 	contentStyle: {},
@@ -364,10 +379,8 @@ const styles = {
 		borderRadius: 8
 	},
 	viewSortStyle: {
-		display: 'flex',
-		flexDirection: 'row',
-		justifyContent: 'flex-end',
-		marginRight: '5%'
+		flexDirection: 'row-reverse',
+		marginBottom: 10
 	},
 	sortByStyle: {
 		color: 'gray',

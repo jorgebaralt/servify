@@ -1,25 +1,14 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, LayoutAnimation,StyleSheet } from 'react-native';
-import { Text, Card, CardItem, Button, Icon } from 'native-base';
+import { View, TouchableOpacity, LayoutAnimation } from 'react-native';
+import { Text, Card, CardItem } from 'native-base';
 import { connect } from 'react-redux';
 import StarsRating from './StarsRating';
 
 class SpecificServiceCard extends Component {
+	// animate on appear
 	componentWillMount() {
 		LayoutAnimation.easeInEaseOut();
 	}
-
-	// renderRating = () => {
-	// 	const { displayNameStyle } = styles;
-	// 	const { service } = this.props;
-	// 	if (service.rating != null) {
-	// 		return (
-	// 			<Text style={[displayNameStyle, { marginTop: 3 }]}>
-	// 				Avg rating: {service.rating.toFixed(1)}{' '}
-	// 			</Text>
-	// 		);
-	// 	}
-	// };
 
 	renderContent = () => {
 		const { service } = this.props;

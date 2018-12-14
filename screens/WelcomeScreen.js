@@ -23,6 +23,7 @@ class WelcomeScreen extends Component {
 	};
 
 	async componentWillMount() {
+		// Automatically animates views to their new positions when the next layout happens.
 		if (Platform.OS === 'android') {
 			UIManager.setLayoutAnimationEnabledExperimental(true);
 		}
@@ -31,6 +32,7 @@ class WelcomeScreen extends Component {
 	}
 
 	componentDidMount() {
+		// ga hit
 		pageHit('Welcome Screen');
 	}
 
@@ -39,15 +41,14 @@ class WelcomeScreen extends Component {
 	};
 
 	async checkForUser() {
-		// TODO: for testing Log out
-		//  firebase.auth().signOut().then(() => { console.log('Logging out'); });
-		// this checks for user on the first screen on the app
+		// check for logged in user
 		firebase.auth().onAuthStateChanged(async (user) => {
 			if (user) {
 				await this.props.getEmail();
 				if (this.props.email) {
 					this.props.getFavorites(this.props.email);
 				}
+				// navigate to main if already logged in
 				this.props.navigation.navigate('main');
 				this.setState({ authenticated: true });
 			} else {
@@ -62,6 +63,7 @@ class WelcomeScreen extends Component {
 		if (_.isNull(this.state.authenticated)) {
 			return <AppLoading />;
 		}
+		// show app tutorial
 		return (
 			<View style={{ flex: 1 }}>
 				<Slides data={SLIDE_DATA} onComplete={this.onSlidesComplete} />

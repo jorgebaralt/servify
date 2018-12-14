@@ -5,18 +5,7 @@ import { Button, Text } from 'native-base';
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 class Slides extends Component {
-	renderSlides = () => this.props.data.map((slide, i) => (
-			<View
-				key={slide.text}
-				style={[styles.slideStyle, { backgroundColor: slide.color }]}
-			>
-				<Text style={styles.textStyle}>{slide.text}</Text>
-				<View style={{ flexDirection: 'row' }}>{this.renderDots(i)}</View>
-				{this.renderLastSlide(i)}
-				{this.renderSkipButton(i)}
-			</View>
-		));
-
+	// Render button on last slide
 	renderLastSlide(i) {
 		if (i === this.props.data.length - 1) {
 			return (
@@ -35,6 +24,7 @@ class Slides extends Component {
 		return <View />;
 	}
 
+	// Render progress dots dots depending on slide
 	renderDots(current) {
 		return this.props.data.map((slide, i) => {
 			if (i === current) {
@@ -44,6 +34,7 @@ class Slides extends Component {
 		});
 	}
 
+	// Render skip button on first slide
 	renderSkipButton(current) {
 		if (current === 0) {
 			return (
@@ -62,6 +53,18 @@ class Slides extends Component {
 		}
 		return <View />;
 	}
+
+	renderSlides = () => this.props.data.map((slide, i) => (
+			<View
+				key={slide.text}
+				style={[styles.slideStyle, { backgroundColor: slide.color }]}
+			>
+				<Text style={styles.textStyle}>{slide.text}</Text>
+				<View style={{ flexDirection: 'row' }}>{this.renderDots(i)}</View>
+				{this.renderLastSlide(i)}
+				{this.renderSkipButton(i)}
+			</View>
+		));
 
 	render() {
 		return (

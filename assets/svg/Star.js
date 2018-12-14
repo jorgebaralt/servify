@@ -10,7 +10,6 @@ const Star = (props) => (
 		width={props.width ? props.width : 12}
 		height={props.height ? props.height : 12}
 		style={{ marginRight: props.spacing ? props.spacing : 2 }}
-		display="block"
 		fill="#330"
 	>
 		<Defs>

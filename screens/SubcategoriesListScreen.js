@@ -81,7 +81,7 @@ class SubcategoriesListScreen extends Component {
 					</Right>
 				</CardItem>
 				<CardItem>
-					<Body>
+					<Body style={{ marginBottom: -15 }}>
 						<Text>{subcategory.description}</Text>
 					</Body>
 				</CardItem>

@@ -197,7 +197,6 @@ const styles = {
 		shadowColor: 'black',
 		shadowOpacity: 0.2,
 		elevation: 1,
-		borderRadius: 8
 	}
 };
 

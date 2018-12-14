@@ -9,7 +9,6 @@ const Dollar = (props) => (
 		aria-hidden="true"
 		width={props.width ? props.width : 16}
 		height={props.height ? props.height : 16}
-		display="block"
 		fill="#007791"
 	>
 		<Defs>
