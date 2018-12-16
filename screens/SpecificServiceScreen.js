@@ -9,7 +9,6 @@ import {
 	Alert,
 	TouchableOpacity
 } from 'react-native';
-import { AirbnbRating } from 'react-native-ratings';
 import {
 	Container,
 	Header,
@@ -40,6 +39,8 @@ import {
 } from '../actions';
 import { pageHit } from '../helper/ga_helper';
 import StarsRating from '../components/StarsRating';
+import StarsRatingPick from '../components/StarsRatingPick';
+import DollarRatingPick from '../components/DollarRatingPick';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const maxCharCount = 100;
@@ -59,6 +60,7 @@ class SpecificServiceScreen extends Component {
 		comment: '',
 		commentCharCount: maxCharCount,
 		starCount: 0,
+		dollarCount: 0,
 		loadingUserComment: false
 	};
 
@@ -310,6 +312,7 @@ class SpecificServiceScreen extends Component {
 		]);
 	};
 
+	// Current user review
 	renderCurrentUserReview = () => {
 		const {
 			cardStyle,
@@ -333,23 +336,17 @@ class SpecificServiceScreen extends Component {
 									<Text style={{ fontSize: 17 }}>
 										{this.props.displayName}
 									</Text>
-									<View
-										style={{
-											marginTop: 10,
-											marginLeft: -5
-										}}
-									>
-										<AirbnbRating
-											showRating
-											style={{ margin: 25 }}
-											count={5}
-											defaultRating={0}
-											size={30}
-											onFinishRating={(count) => this.setState({
-													starCount: count
-												})
-											}
+									<View style={{ marginTop: 10 }}>
+										<StarsRatingPick
+											width={30}
+											height={30}
+											spacing={5}
+											rating={this.state.starCount}
+											selectRating={(count) => this.setState({ starCount: count })}
 										/>
+									</View>
+									<View style={{ marginTop: 10 }}>
+										<DollarRatingPick rating={this.state.dollarCount} selectRating={(count) => this.setState({ dollarCount: count })} />
 									</View>
 									<Textarea
 										style={textAreaStyle}
@@ -377,7 +374,7 @@ class SpecificServiceScreen extends Component {
 					</View>
 				);
 			}
-			// User can see his own
+			// User sees his own review
 			return (
 				<View>
 					<Text style={subtitleStyle}>Your review</Text>

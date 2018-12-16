@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { View, DeviceEventEmitter, FlatList, Platform } from 'react-native';
-import { AirbnbRating } from 'react-native-ratings';
 import {
 	Container,
 	Header,
@@ -19,6 +18,7 @@ import {
 } from 'native-base';
 import { getServiceReviews, cancelAxiosRating } from '../actions';
 import { pageHit } from '../helper/ga_helper';
+import StarsRating from '../components/StarsRating';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -88,12 +88,12 @@ class ReviewsScreen extends Component {
 					<CardItem>
 						<Body>
 							<Text style={{ fontSize: 15 }}>{review.reviewerDisplayName}</Text>
-							<View style={{ marginLeft: -5, flexDirection: 'row' }}>
-								<AirbnbRating
-									showRating
-									count={5}
-									defaultRating={review.rating}
-									size={15}
+							<View style={{ marginLeft: 0, flexDirection: 'row' }}>
+								<StarsRating
+									width={15}
+									height={15}
+									spacing={5}
+									rating={review.rating}
 								/>
 								<Text style={commentDateStyle}>{reviewDate}</Text>
 							</View>
@@ -170,7 +170,7 @@ const styles = {
 	commentDateStyle: {
 		fontSize: 13,
 		color: 'gray',
-		marginTop: 3,
+		marginTop: 0,
 		marginLeft: 10
 	},
 	cardStyle: {

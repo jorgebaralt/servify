@@ -189,7 +189,7 @@ class ServicesListScreen extends Component {
 			reviewLocationStyle
 		} = styles;
 
-		const displayDescription = service.description.substring(0, 20) + '...';
+		const displayDescription = service.description.substring(0, 15) + '...';
 		return (
 			<View>
 				<TouchableOpacity
