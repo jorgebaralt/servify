@@ -197,7 +197,7 @@ class ReportScreen extends Component {
 											name={
 												this.state.selectedOption
 													? undefined
-													: 'ios-arrow-down-outline'
+													: 'ios-arrow-down'
 											}
 />
 )}
