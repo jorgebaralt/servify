@@ -35,19 +35,21 @@ class EmptyListMessage extends Component {
 				}}
 			>
 				<Card bordered={false} style={cardStyle}>
-					<CardItem>
+					<CardItem style={{ alignContent: 'center', justifyContent: 'center' }}>
+						<View style={{ width: 250, height: 250 }}>
 						<Lottie
 							ref={(animation) => {
 								this.animation = animation;
 							}}
 							style={{
-								width: 200,
-                                height: 200,
-                                marginLeft: 20,
+								width: 250,
+								height: 250,
                             }}
                             loop={false}
-							source={require('../assets/lottie/search&locate.json')}
+							source={require('../../assets/lottie/search&locate.json')}
 						/>
+						</View>
+						
 					</CardItem>
 					<CardItem>
 						<Animated.Text style={[titleStyle, {opacity: this.state.fadeAnimation }]}>Oops!</Animated.Text>

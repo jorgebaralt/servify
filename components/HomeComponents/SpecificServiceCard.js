@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, TouchableOpacity, LayoutAnimation } from 'react-native';
 import { Text, Card, CardItem } from 'native-base';
 import { connect } from 'react-redux';
-import StarsRating from './StarsRating';
+import StarsRating from '../Ratings/StarsRating';
 
 class SpecificServiceCard extends Component {
 	// animate on appear

@@ -13,6 +13,7 @@ import { Text, Container, Content, Icon, Spinner } from 'native-base';
 import { connect } from 'react-redux';
 import { Permissions } from 'expo';
 import CategoryCard from '../components/CategoryCard';
+import SpecificServiceCard from '../components/HomeComponents/SpecificServiceCard';
 import {
 	getCurrentUserDisplayName,
 	selectService,
@@ -25,8 +26,6 @@ import {
 	cleanPopularNearServices
 } from '../actions';
 import { pageHit } from '../helper/ga_helper';
-import SpecificServiceCard from '../components/SpecificServiceCard';
-import Star from '../assets/svg/Star';
 
 let backPressSubscriptions;
 let willFocusSubscription;

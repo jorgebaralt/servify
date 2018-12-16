@@ -38,9 +38,9 @@ import {
 	cancelAxiosRating
 } from '../actions';
 import { pageHit } from '../helper/ga_helper';
-import StarsRating from '../components/StarsRating';
-import StarsRatingPick from '../components/StarsRatingPick';
-import DollarRatingPick from '../components/DollarRatingPick';
+import StarsRating from '../components/Ratings/StarsRating';
+import StarsRatingPick from '../components/Ratings/StarsRatingPick';
+import DollarRatingPick from '../components/Ratings/DollarRatingPick';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const maxCharCount = 100;

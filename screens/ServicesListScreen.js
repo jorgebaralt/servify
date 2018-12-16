@@ -30,9 +30,9 @@ import {
 	selectService,
 	cancelAxiosServices
 } from '../actions';
-import EmptyListMessage from '../components/EmptyListMessage';
+import EmptyListMessage from '../components/ErrorMessage/EmptyListMessage';
 import { pageHit } from '../helper/ga_helper';
-import StarsRating from '../components/StarsRating';
+import StarsRating from '../components/Ratings/StarsRating';
 
 let willFocusSubscription;
 let backPressSubscriptions;

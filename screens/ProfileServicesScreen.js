@@ -29,7 +29,7 @@ import {
 	cancelAxiosServices,
 	cleanPopularNearServices
 } from '../actions';
-import EmptyListMessage from '../components/EmptyListMessage';
+import EmptyListMessage from '../components/ErrorMessage/EmptyListMessage';
 import { pageHit } from '../helper/ga_helper';
 
 let errorMessage;
