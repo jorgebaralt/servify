@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
-import { View, Platform } from 'react-native';
+import { View, Platform, Animated } from 'react-native';
 import { Text, Card, CardItem, Button } from 'native-base';
 import { DangerZone } from 'expo';
 
 const { Lottie } = DangerZone;
 
 class EmptyListMessage extends Component {
+	state = { fadeAnimation: new Animated.Value(0) }
+	
 	componentDidMount() {
 		this.animation.play();
+		Animated.timing(
+			this.state.fadeAnimation, {
+				toValue: 1,
+				duration: 2500
+			}
+		).start();
 	}
 
 	render() {
@@ -42,12 +50,12 @@ class EmptyListMessage extends Component {
 						/>
 					</CardItem>
 					<CardItem>
-						<Text style={titleStyle}>Oops!</Text>
+						<Animated.Text style={[titleStyle, {opacity: this.state.fadeAnimation }]}>Oops!</Animated.Text>
 					</CardItem>
 					<CardItem>
-						<Text style={descriptionStyle}>
+						<Animated.Text style={[descriptionStyle, { opacity: this.state.fadeAnimation }]}>
 							{this.props.children}
-						</Text>
+						</Animated.Text>
 					</CardItem>
 				</Card>
 				<View
