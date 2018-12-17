@@ -52,7 +52,7 @@ class EmptyListMessage extends Component {
 						
 					</CardItem>
 					<CardItem>
-						<Animated.Text style={[titleStyle, {opacity: this.state.fadeAnimation }]}>Oops!</Animated.Text>
+						<Animated.Text style={[titleStyle, { opacity: this.state.fadeAnimation }]}>Oops!</Animated.Text>
 					</CardItem>
 					<CardItem>
 						<Animated.Text style={[descriptionStyle, { opacity: this.state.fadeAnimation }]}>

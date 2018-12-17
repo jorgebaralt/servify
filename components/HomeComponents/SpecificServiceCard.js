@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, LayoutAnimation } from 'react-native';
+import { View, TouchableOpacity, LayoutAnimation, Image } from 'react-native';
 import { Text, Card, CardItem } from 'native-base';
 import { connect } from 'react-redux';
 import StarsRating from '../Ratings/StarsRating';
+import ServiceImage from './ServiceImage';
 
 class SpecificServiceCard extends Component {
 	// animate on appear
@@ -53,6 +54,7 @@ class SpecificServiceCard extends Component {
 				}}
 			>
 				<Card style={cardStyle}>
+					<ServiceImage />
 					<CardItem header style={cardHeaderStyle}>
 						<Text style={titleStyleCard}>{service.title}</Text>
 						{this.renderContent()}
@@ -65,14 +67,15 @@ class SpecificServiceCard extends Component {
 const styles = {
 	cardStyle: {
 		width: 150,
-		height: 150,
+		height: 250,
 		shadowOffset: { width: 1, height: 1 },
 		shadowColor: 'black',
 		shadowOpacity: 0.5,
 		elevation: 1,
 		marginLeft: 20,
 		marginTop: 20,
-		borderRadius: 8
+		borderRadius: 8,
+		overflow: 'hidden'
 	},
 	titleStyleCard: {
 		fontSize: 15,
