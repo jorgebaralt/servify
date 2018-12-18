@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, LayoutAnimation, Image } from 'react-native';
+import { View, TouchableOpacity, LayoutAnimation } from 'react-native';
 import { Text, Card, CardItem } from 'native-base';
 import { connect } from 'react-redux';
 import StarsRating from '../Ratings/StarsRating';
@@ -15,30 +15,31 @@ class SpecificServiceCard extends Component {
 		const { service } = this.props;
 		const { displayNameStyle } = styles;
 
-		if (this.props.showRating) {
-			return (
-				<View>
+		return (
+			<View style={{ marginTop: 5 }}>
+				<Text style={displayNameStyle}>
+					{service.displayName}
+				</Text>
+				{/* Show rating */}
+				{this.props.showRating ? (
 					<View style={{ flexDirection: 'row' }}>
 						<Text style={displayNameStyle}>
 							{service.rating.toFixed(1)}{' '}
 						</Text>
 						<StarsRating rating={service.rating} />
 					</View>
-					<Text style={[displayNameStyle, { marginTop: 10 }]}>
-						{service.displayName}
+				) : (
+					<View />
+					)}
+				{/* Show location */}
+				{this.props.showLocation ? (
+					<Text style={displayNameStyle}>
+						{service.locationData.city}
 					</Text>
-					<Text style={displayNameStyle}>{service.phone}</Text>
-				</View>
-			);
-		}
-		return (
-			<View>
-				<Text style={[displayNameStyle, { marginTop: 10 }]}>
-					{service.displayName}
-				</Text>
-				<Text style={displayNameStyle}>{service.phone}</Text>
-				<Text style={displayNameStyle}>{service.location.city}</Text>
-				<Text style={displayNameStyle}>zip code: {service.zipCode}</Text>
+				) : (
+					<View />
+					)}
+				{/* TODO: Show price */}
 			</View>
 		);
 	};
@@ -48,7 +49,7 @@ class SpecificServiceCard extends Component {
 		const { cardStyle, cardHeaderStyle, titleStyleCard } = styles;
 		return (
 			<TouchableOpacity
-				style={{ marginBottom: 10, borderRadius: 8 }}
+				style={{ marginBottom: 10, borderRadius: 8, marginRight: this.props.last ? 20 : 0 }}
 				onPress={() => {
 					this.props.onPress();
 				}}
@@ -66,8 +67,8 @@ class SpecificServiceCard extends Component {
 }
 const styles = {
 	cardStyle: {
-		width: 150,
-		height: 250,
+		width: 170,
+		height: 175,
 		shadowOffset: { width: 1, height: 1 },
 		shadowColor: 'black',
 		shadowOpacity: 0.5,
@@ -78,8 +79,7 @@ const styles = {
 		overflow: 'hidden'
 	},
 	titleStyleCard: {
-		fontSize: 15,
-		height: 38
+		fontSize: 12
 	},
 	headerTitleStyle: {
 		color: 'white'

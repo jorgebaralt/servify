@@ -22,8 +22,7 @@ import {
 	getUserLocation,
 	getPopularCategories,
 	getPopularNearServices,
-	selectCategory,
-	cleanPopularNearServices
+	selectCategory
 } from '../actions';
 import { pageHit } from '../helper/ga_helper';
 
@@ -128,9 +127,11 @@ class HomeScreen extends Component {
 		}
 	};
 
-	renderNearServicesList = (service) => (
+	renderNearServicesList = (service, i) => (
 		<SpecificServiceCard
+			last={this.props.nearServicesList.length - 1 === i}
 			service={service}
+			showLocation
 			onPress={() => {
 				this.props.selectService(service);
 				this.props.navigation.navigate('service');
@@ -148,7 +149,7 @@ class HomeScreen extends Component {
 					<Text style={styles.titleStyle}>New services near you</Text>
 					<FlatList
 						data={this.props.nearServicesList}
-						renderItem={({ item }) => this.renderNearServicesList(item)
+						renderItem={({ item, index }) => this.renderNearServicesList(item, index)
 						}
 						keyExtractor={(item) => item.title}
 						horizontal
@@ -220,13 +221,16 @@ class HomeScreen extends Component {
 		}
 	}
 
-	renderPopularCategoriesList = (category) => (
-		<CategoryCard
-			cardStyle={styles.cardStyle}
-			category={category}
-			onPress={() => this.doSelectCategory(category)}
-		/>
-	);
+	renderPopularCategoriesList = (category, i) => {
+		return (
+			<CategoryCard
+				last={this.props.popularCategories.length - 1 === i}
+				cardStyle={styles.cardStyle}
+				category={category}
+				onPress={() => this.doSelectCategory(category)}
+			/>
+		);
+	};
 
 	renderPopularCategories = () => {
 		if (this.props.popularCategories) {
@@ -235,7 +239,7 @@ class HomeScreen extends Component {
 					<Text style={styles.titleStyle}>Popular categories</Text>
 					<FlatList
 						data={this.props.popularCategories}
-						renderItem={({ item }) => this.renderPopularCategoriesList(item)
+						renderItem={({ item, index }) => this.renderPopularCategoriesList(item, index)
 						}
 						keyExtractor={(item) => item.title}
 						horizontal
@@ -245,9 +249,10 @@ class HomeScreen extends Component {
 		}
 	};
 
-	renderPopularNearServicesList = (service) => (
+	renderPopularNearServicesList = (service, i) => (
 		<View>
 			<SpecificServiceCard
+				last={this.props.popularNearServices.length - 1 === i}
 				service={service}
 				showRating
 				onPress={() => {
@@ -268,7 +273,7 @@ class HomeScreen extends Component {
 					<Text style={styles.titleStyle}>Popular near services</Text>
 					<FlatList
 						data={this.props.popularNearServices}
-						renderItem={({ item }) => this.renderPopularNearServicesList(item)
+						renderItem={({ item, index }) => this.renderPopularNearServicesList(item, index)
 						}
 						keyExtractor={(item) => item.title}
 						horizontal
@@ -334,7 +339,8 @@ const styles = {
 		marginTop: 20,
 		marginBottom: 20,
 		marginLeft: 20,
-		borderRadius: 8
+		borderRadius: 8,
+		overflow: 'hidden'
 	}
 };
 
@@ -357,7 +363,6 @@ export default connect(
 		getUserLocation,
 		getPopularNearServices,
 		getPopularCategories,
-		selectCategory,
-		cleanPopularNearServices
+		selectCategory
 	}
 )(HomeScreen);

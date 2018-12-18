@@ -97,7 +97,6 @@ class BrowseScreen extends Component {
 
 	renderCategories = (category) => (
 		<CategoryCard
-			style={styles.gridItem}
 			cardStyle={styles.cardStyle}
 			category={category}
 			onPress={() => this.doSelectCategory(category)}
@@ -187,16 +186,11 @@ const styles = {
 	},
 	cardStyle: {
 		height: 90,
-		borderRadius: 8
-	},
-	gridItem: {
+		borderRadius: 8,
 		marginLeft: 10,
 		marginTop: 5,
 		width: SCREEN_WIDTH / 2 - 15,
-		shadowOffset: { width: 0, height: 0 },
-		shadowColor: 'black',
-		shadowOpacity: 0.2,
-		elevation: 1,
+		overflow: 'hidden'
 	}
 };
 
