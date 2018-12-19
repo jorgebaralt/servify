@@ -12,7 +12,6 @@ export const getPopularCategories = async (callback) => {
 			cancelToken: source.token
 		});
 		callback(data);
-
 	} catch (e) {
 		console.log(e);
 	}
