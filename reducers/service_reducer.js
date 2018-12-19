@@ -37,18 +37,6 @@ export default (state = {}, action) => {
 			return { ...state, error: action.payload };
 		case RESET_MESSAGE_POST:
 			return { ...state, error: undefined, success: undefined };
-		case GET_NEAR_SERVICES_SUCCESS:
-			return { ...state, nearServicesList: action.payload };
-		case GET_NEAR_SERVICES_FAIL:
-			return { ...state, nearServicesList: undefined };
-		case GET_POPULAR_CATEGORY_SUCCESS:
-			return { ...state, popularCategory: action.payload };
-		case GET_POPULAR_CATEGORY_FAIL:
-			return { ...state, popularCategory: undefined };
-		case GET_POPULAR_SERVICES_SUCCESS:
-			return { ...state, popularNearServices: action.payload };
-		case GET_POPULAR_SERVICES_FAIL:
-			return { ...state, popularNearServices: undefined };
 		case CLEAN_POPULAR_NEAR_SERVICES:
 			return { ...state, servicesList: [] };
 		default:

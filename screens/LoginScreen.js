@@ -14,7 +14,7 @@ import { LinearGradient } from 'expo';
 import { View, SafeAreaView, Keyboard, DeviceEventEmitter, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import { emailAndPasswordLogin, resetMessage } from '../actions';
-import { pageHit } from '../helper/ga_helper';
+import { pageHit } from '../shared/ga_helper';
 
 let backPressSubscriptions;
 let willFocusSubscription;

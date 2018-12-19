@@ -17,7 +17,7 @@ import {
 	Card
 } from 'native-base';
 import { getServiceReviews, cancelAxiosRating } from '../actions';
-import { pageHit } from '../helper/ga_helper';
+import { pageHit } from '../shared/ga_helper';
 import StarsRating from '../components/Ratings/StarsRating';
 
 let willFocusSubscription;

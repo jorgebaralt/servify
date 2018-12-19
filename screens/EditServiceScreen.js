@@ -26,7 +26,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import { deleteService, resetMessageService, updateService } from '../actions';
-import { pageHit } from '../helper/ga_helper';
+import { pageHit } from '../shared/ga_helper';
 
 let willFocusSubscription;
 let backPressSubscriptions;

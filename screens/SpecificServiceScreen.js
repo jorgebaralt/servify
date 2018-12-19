@@ -37,7 +37,7 @@ import {
 	removeFavorite,
 	cancelAxiosRating
 } from '../actions';
-import { pageHit } from '../helper/ga_helper';
+import { pageHit } from '../shared/ga_helper';
 import StarsRating from '../components/Ratings/StarsRating';
 import StarsRatingPick from '../components/Ratings/StarsRatingPick';
 import DollarRatingPick from '../components/Ratings/DollarRatingPick';

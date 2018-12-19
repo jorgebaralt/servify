@@ -23,7 +23,7 @@ import {
 } from 'native-base';
 import { connect } from 'react-redux';
 import { createService, resetMessageService } from '../actions';
-import { pageHit } from '../helper/ga_helper';
+import { pageHit } from '../shared/ga_helper';
 
 const maxCharCount = 150;
 const initialState = {
@@ -408,7 +408,8 @@ const styles = {
 	titleStyle: {
 		color: 'black',
 		fontSize: 26,
-		margin: 20
+		margin: 20,
+		fontWeight: '600'
 	},
 	formStyle: {
 		width: '95%'

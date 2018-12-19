@@ -11,9 +11,9 @@ import { connect } from 'react-redux';
 import { Button, Text, Icon } from 'native-base';
 import { LinearGradient } from 'expo';
 import { facebookLogin } from '../actions';
-import Logo from '../assets/servifyLogo.png';
+
 import LogoBorderWhite from '../assets/logoBorderWhite.png';
-import { pageHit } from '../helper/ga_helper';
+import { pageHit } from '../shared/ga_helper';
 
 let backPressSubscriptions;
 let willFocusSubscription;
@@ -27,6 +27,7 @@ class AuthScreen extends Component {
 	}
 
 	componentDidMount() {
+		pageHit('Auth Screen');
 		willBlurSubscriptions = this.props.navigation.addListener('willBlur', () => DeviceEventEmitter.removeAllListeners('hardwareBackPress'));
 	}
 

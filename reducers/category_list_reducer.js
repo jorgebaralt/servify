@@ -1,5 +1,5 @@
 import { NEW_FILTER_EMPTY, NEW_FILTER_SUCCESS } from '../actions/types';
-import categories from '../helper/categories';
+import categories from '../shared/categories';
 
 const initialState = categories;
 

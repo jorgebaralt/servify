@@ -11,12 +11,6 @@ import {
 	DELETE_SERVICE_FAIL,
 	UPDATE_SERVICE_FAIL,
 	UPDATE_SERVICE_SUCCESS,
-	GET_NEAR_SERVICES_FAIL,
-	GET_NEAR_SERVICES_SUCCESS,
-	GET_POPULAR_CATEGORY_SUCCESS,
-	GET_POPULAR_CATEGORY_FAIL,
-	GET_POPULAR_SERVICES_SUCCESS,
-	GET_POPULAR_SERVICES_FAIL,
 	CLEAN_POPULAR_NEAR_SERVICES,
 } from './types';
 
@@ -248,70 +242,7 @@ export const getServicesByZipcode = (currentLocation) => async (dispatch) => {
 	}
 };
 
-export const getNewNearServices = (currentLocation, distance) => async (
-	dispatch
-) => {
-	const getNearUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getNearService';
-	try {
-		source = CancelToken.source();
-		let { data } = await axios.post(
-			getNearUrl,
-			{
-				currentLocation,
-				distance
-			},
-			{ cancelToken: source.token }
-		);
-		data = _.sortBy(data, 'timestamp');
-		data = data.reverse();
-		data = data.slice(0, 5);
-		return dispatch({ type: GET_NEAR_SERVICES_SUCCESS, payload: data });
-	} catch (e) {
-		console.log(e);
-		return dispatch({ type: GET_NEAR_SERVICES_FAIL });
-	}
-};
-
-export const getPopularCategories = () => async (dispatch) => {
-	const popularCategoryUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getPopularCategories';
-	try {
-		source = CancelToken.source();
-		const { data } = await axios.get(popularCategoryUrl, {
-			cancelToken: source.token
-		});
-		dispatch({ type: GET_POPULAR_CATEGORY_SUCCESS, payload: data });
-	} catch (e) {
-		return dispatch({ type: GET_POPULAR_CATEGORY_FAIL });
-	}
-};
-
 export const cleanPopularNearServices = () => (dispatch) => dispatch({ type: CLEAN_POPULAR_NEAR_SERVICES });
-
-// Popular near Services
-export const getPopularNearServices = (currentLocation, distance) => async (
-	dispatch
-) => {
-	const getNearUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getNearService';
-	try {
-		source = CancelToken.source();
-		let { data } = await axios.post(
-			getNearUrl,
-			{
-				currentLocation,
-				distance
-			},
-			{ cancelToken: source.token }
-		);
-		// sort near services by popularity
-		data = sortByPopularity(data);
-		// get the top 5
-		data = data.slice(0, 5);
-		dispatch({ type: GET_POPULAR_SERVICES_SUCCESS, payload: data });
-	} catch (e) {
-		console.log(e);
-		dispatch({ type: GET_POPULAR_SERVICES_FAIL });
-	}
-};
 
 // DELETE-SERVICE
 export const deleteService = (service) => async (dispatch) => {

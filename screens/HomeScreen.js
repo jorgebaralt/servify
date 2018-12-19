@@ -17,14 +17,11 @@ import SpecificServiceCard from '../components/HomeComponents/SpecificServiceCar
 import {
 	getCurrentUserDisplayName,
 	selectService,
-	getServicesByZipcode,
-	getNewNearServices,
 	getUserLocation,
-	getPopularCategories,
-	getPopularNearServices,
 	selectCategory
 } from '../actions';
-import { pageHit } from '../helper/ga_helper';
+import * as api from '../api';
+import { pageHit } from '../shared/ga_helper';
 
 let backPressSubscriptions;
 let willFocusSubscription;
@@ -44,12 +41,16 @@ class HomeScreen extends Component {
 	};
 
 	state = {
-		refreshing: false
+		refreshing: false,
+		popularCategories: undefined,
+		popularNearServices: undefined,
+		newNearServices: undefined
 	};
 
-	async componentWillMount() {
+	async componentDidMount() {
+		pageHit('Home Screen');
 		await this.props.getCurrentUserDisplayName();
-		await this.getLocationAsync();
+		this.getLocationAsync();
 
 		didFocusSubscription = this.props.navigation.addListener(
 			'didFocus',
@@ -59,10 +60,6 @@ class HomeScreen extends Component {
 			'willFocus',
 			this.onRefresh
 		);
-	}
-
-	componentDidMount() {
-		pageHit('Home Screen');
 	}
 
 	componentWillUnmount() {
@@ -111,25 +108,52 @@ class HomeScreen extends Component {
 
 	onRefresh = async () => {
 		const { status } = await Permissions.getAsync(Permissions.LOCATION);
-		await this.props.getPopularCategories();
+		// Get popular Categories no matter of status ()
+		await api.getPopularCategories((popularCategories) => this.setState({ popularCategories }));
 		if (status === 'granted') {
 			if (!this.props.userLocation) {
 				await this.props.getUserLocation();
 			}
-			await this.props.getNewNearServices(
-				this.props.userLocation.coords,
-				DISTANCE
-			);
-			await this.props.getPopularNearServices(
-				this.props.userLocation.coords,
-				DISTANCE
-			);
+			// Get New Near Services
+			await api.getNewNearServices(this.props.userLocation.coords, DISTANCE, (newNearServices) => this.setState({ newNearServices }));
+			// Get Popular Near Services
+			await api.getPopularNearServices(this.props.userLocation.coords, DISTANCE, (popularNearServices) => this.setState({ popularNearServices }));
 		}
 	};
 
-	renderNearServicesList = (service, i) => (
+	// on category selected
+	doSelectCategory = async (category) => {
+		await this.props.selectCategory(category);
+		if (category.subcategories) {
+			// FIXME: never happening, because is not on back-end
+			this.props.navigation.navigate('subcategories');
+		} else {
+			this.props.navigation.navigate('servicesList');
+		}
+	};
+
+	// Spinner
+	renderSpinner() {
+		if (
+			(this.state.popularCategories === undefined
+			&& this.state.popularNearServices === undefined
+			&& this.state.newNearServices === undefined) 
+			|| (this.state.popularCategories !== undefined
+			&& this.state.popularNearServices === undefined
+			&& this.state.newNearServices === undefined)
+			|| (this.state.popularCategories !== undefined
+			&& this.state.popularNearServices !== undefined
+			&& this.state.newNearServices === undefined)
+		) {
+			return <Spinner style={{ marginTop: '10%' }} color="orange" />;
+		}
+		return <View />;
+	}
+
+	// each item new near services
+	renderNearNearServices = (service, i) => (
 		<SpecificServiceCard
-			last={this.props.nearServicesList.length - 1 === i}
+			last={this.state.newNearServices.length - 1 === i}
 			service={service}
 			showLocation
 			onPress={() => {
@@ -139,17 +163,18 @@ class HomeScreen extends Component {
 		/>
 	);
 
+	// Make sure we can render new near services 
 	renderNewServicesNear = () => {
 		if (
-			this.props.nearServicesList
-			&& this.props.nearServicesList.length > 0
+			this.state.newNearServices
+			&& this.state.newNearServices.length > 0
 		) {
 			return (
 				<View style={{ marginTop: 15 }}>
 					<Text style={styles.titleStyle}>New services near you</Text>
 					<FlatList
-						data={this.props.nearServicesList}
-						renderItem={({ item, index }) => this.renderNearServicesList(item, index)
+						data={this.state.newNearServices}
+						renderItem={({ item, index }) => this.renderNearNearServices(item, index)
 						}
 						keyExtractor={(item) => item.title}
 						horizontal
@@ -158,9 +183,10 @@ class HomeScreen extends Component {
 			);
 		}
 		if (
-			this.props.nearServicesList
-			&& this.props.nearServicesList.length === 0
+			this.state.newNearServices
+			&& this.state.newNearServices.length === 0
 		) {
+			// TODO: change for image
 			return (
 				<View style={{ marginTop: 25 }}>
 					<Text style={styles.textStyle}>
@@ -180,51 +206,11 @@ class HomeScreen extends Component {
 		}
 	};
 
-	doSelectCategory = async (category) => {
-		await this.props.selectCategory(category);
-		// pick where to navigate
-		if (category.subcategories) {
-			this.props.navigation.navigate('subcategories');
-		} else {
-			this.props.navigation.navigate('servicesList');
-		}
-	};
-
-	renderSpinner() {
-		if (
-			this.props.popularCategories === undefined
-			&& this.props.popularNearServices === undefined
-			&& this.props.nearServicesList === undefined
-		) {
-			return <Spinner style={{ marginTop: '10%' }} color="orange" />;
-		}
-		return <View />;
-	}
-
-	renderSecondSpinner() {
-		if (
-			this.props.popularCategories !== undefined
-			&& this.props.popularNearServices === undefined
-			&& this.props.nearServicesList === undefined
-		) {
-			return <Spinner style={{ marginTop: '10%' }} color="orange" />;
-		}
-	}
-
-	renderThirdSpinner() {
-		if (
-			this.props.popularCategories !== undefined
-			&& this.props.popularNearServices !== undefined
-			&& this.props.nearServicesList === undefined
-		) {
-			return <Spinner style={{ marginTop: '10%' }} color="orange" />;
-		}
-	}
-
+	// each item in popular categories
 	renderPopularCategoriesList = (category, i) => {
 		return (
 			<CategoryCard
-				last={this.props.popularCategories.length - 1 === i}
+				last={this.state.popularCategories.length - 1 === i}
 				cardStyle={styles.cardStyle}
 				category={category}
 				onPress={() => this.doSelectCategory(category)}
@@ -232,13 +218,14 @@ class HomeScreen extends Component {
 		);
 	};
 
+	// make sure we can render popular categories
 	renderPopularCategories = () => {
-		if (this.props.popularCategories) {
+		if (this.state.popularCategories) {
 			return (
 				<View style={{ marginTop: 25 }}>
 					<Text style={styles.titleStyle}>Popular categories</Text>
 					<FlatList
-						data={this.props.popularCategories}
+						data={this.state.popularCategories}
 						renderItem={({ item, index }) => this.renderPopularCategoriesList(item, index)
 						}
 						keyExtractor={(item) => item.title}
@@ -249,10 +236,11 @@ class HomeScreen extends Component {
 		}
 	};
 
+	// each item in popular near services
 	renderPopularNearServicesList = (service, i) => (
 		<View>
 			<SpecificServiceCard
-				last={this.props.popularNearServices.length - 1 === i}
+				last={this.state.popularNearServices.length - 1 === i}
 				service={service}
 				showRating
 				onPress={() => {
@@ -263,16 +251,17 @@ class HomeScreen extends Component {
 		</View>
 	);
 
+	// make sure we can render popular near services
 	renderPopularNearServices = () => {
 		if (
-			this.props.popularNearServices
-			&& this.props.popularNearServices.length > 0
+			this.state.popularNearServices
+			&& this.state.popularNearServices.length > 0
 		) {
 			return (
 				<View style={{ marginTop: 25 }}>
 					<Text style={styles.titleStyle}>Popular near services</Text>
 					<FlatList
-						data={this.props.popularNearServices}
+						data={this.state.popularNearServices}
 						renderItem={({ item, index }) => this.renderPopularNearServicesList(item, index)
 						}
 						keyExtractor={(item) => item.title}
@@ -293,20 +282,19 @@ class HomeScreen extends Component {
 					<Content
 						style={{ flex: 1 }}
 						refreshControl={(
-<RefreshControl
+							<RefreshControl
 								refreshing={this.state.refreshing}
 								onRefresh={async () => this.onRefresh()}
 								tintColor="orange"
 								colors={['orange']}
-/>
-)}
+							/>
+						)}
 					>
-						<View>{this.renderSpinner()}</View>
+						
 						{this.renderPopularCategories()}
-						<View>{this.renderSecondSpinner()}</View>
 						{this.renderNewServicesNear()}
-						<View>{this.renderThirdSpinner()}</View>
 						{this.renderPopularNearServices()}
+						{this.renderSpinner()}
 					</Content>
 				</SafeAreaView>
 			</Container>
@@ -322,7 +310,8 @@ const styles = {
 	titleStyle: {
 		fontSize: 26,
 		marginLeft: 20,
-		marginRight: 20
+		marginRight: 20,
+		fontWeight: '600'
 	},
 	textStyle: {
 		fontSize: 22,
@@ -346,10 +335,7 @@ const styles = {
 
 function mapStateToProps(state) {
 	return {
-		nearServicesList: state.serviceResult.nearServicesList,
 		userLocation: state.auth.location,
-		popularCategories: state.serviceResult.popularCategory,
-		popularNearServices: state.serviceResult.popularNearServices
 	};
 }
 
@@ -358,11 +344,7 @@ export default connect(
 	{
 		getCurrentUserDisplayName,
 		selectService,
-		getServicesByZipcode,
-		getNewNearServices,
 		getUserLocation,
-		getPopularNearServices,
-		getPopularCategories,
 		selectCategory
 	}
 )(HomeScreen);

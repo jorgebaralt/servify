@@ -30,7 +30,7 @@ import {
 	cleanPopularNearServices
 } from '../actions';
 import EmptyListMessage from '../components/ErrorMessage/EmptyListMessage';
-import { pageHit } from '../helper/ga_helper';
+import { pageHit } from '../shared/ga_helper';
 
 let errorMessage;
 let currentItem;
@@ -92,7 +92,7 @@ class ProfileServicesScreen extends Component {
 		this.props.cancelAxiosServices();
 		await this.props.navigation.goBack();
 		setTimeout(() => {
-			this.props.cleanPopularNearServices();
+			// this.props.cleanPopularNearServices();
 		}, 250);
 	};
 
