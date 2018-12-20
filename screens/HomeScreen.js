@@ -7,7 +7,7 @@ import {
 	RefreshControl,
 	Alert,
 	Linking,
-	ScrollView
+	ScrollView,
 } from 'react-native';
 import { Text, Container, Icon, Spinner } from 'native-base';
 import { connect } from 'react-redux';
@@ -45,18 +45,20 @@ class HomeScreen extends Component {
 		refreshing: false,
 		popularCategories: undefined,
 		popularNearServices: undefined,
-		newNearServices: undefined
+		newNearServices: undefined,
+		dataLoaded: false
 	};
 
 	async componentDidMount() {
 		pageHit('Home Screen');
 		await this.props.getCurrentUserDisplayName();
-		this.getLocationAsync();
+		await this.getLocationAsync();
 
 		didFocusSubscription = this.props.navigation.addListener(
 			'didFocus',
 			this.handleAndroidBack
 		);
+
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			this.onRefresh
@@ -104,7 +106,7 @@ class HomeScreen extends Component {
 				]
 			);
 		}
-		await this.onRefresh();
+		this.onRefresh();
 	};
 
 	onRefresh = async () => {
@@ -127,6 +129,9 @@ class HomeScreen extends Component {
 				DISTANCE,
 				(popularNearServices) => this.setState({ popularNearServices })
 			);
+			if (this.state.popularCategories && this.state.newNearServices && this.state.popularNearServices) {
+				this.setState({ dataLoaded: true });
+			}
 		}
 	};
 
@@ -140,24 +145,6 @@ class HomeScreen extends Component {
 			this.props.navigation.navigate('servicesList');
 		}
 	};
-
-	// Spinner
-	renderSpinner() {
-		if (
-			(this.state.popularCategories === undefined
-				&& this.state.popularNearServices === undefined
-				&& this.state.newNearServices === undefined)
-			|| (this.state.popularCategories !== undefined
-				&& this.state.popularNearServices === undefined
-				&& this.state.newNearServices === undefined)
-			|| (this.state.popularCategories !== undefined
-				&& this.state.popularNearServices !== undefined
-				&& this.state.newNearServices === undefined)
-		) {
-			return <Spinner style={{ marginTop: '10%' }} color="orange" />;
-		}
-		return <View />;
-	}
 
 	// each item new near services
 	renderNearNearServices = (service, i) => (
@@ -174,10 +161,7 @@ class HomeScreen extends Component {
 
 	// Make sure we can render new near services
 	renderNewServicesNear = () => {
-		if (
-			this.state.newNearServices
-			&& this.state.newNearServices.length > 0
-		) {
+		if (this.state.newNearServices.length > 0) {
 			return (
 				<View style={{ marginTop: 15 }}>
 					<Text style={styles.titleStyle}>New services near you</Text>
@@ -191,13 +175,10 @@ class HomeScreen extends Component {
 				</View>
 			);
 		}
-		if (
-			this.state.newNearServices
-			&& this.state.newNearServices.length === 0
-		) {
+		if (this.state.newNearServices.length === 0) {
 			// TODO: change for image
 			return (
-				<View style={{ marginTop: 25 }}>
+				<View style={{ marginTop: 25, marginBottom: 20 }}>
 					<Text style={styles.textStyle}>
 						No new services near you, be the first on creating new
 						services around your area on the
@@ -227,7 +208,6 @@ class HomeScreen extends Component {
 
 	// make sure we can render popular categories
 	renderPopularCategories = () => {
-		if (this.state.popularCategories) {
 			return (
 				<View style={{ marginTop: 45 }}>
 					<Text style={styles.titleStyle}>Popular categories</Text>
@@ -240,7 +220,6 @@ class HomeScreen extends Component {
 					/>
 				</View>
 			);
-		}
 	};
 
 	// each item in popular near services
@@ -260,10 +239,7 @@ class HomeScreen extends Component {
 
 	// make sure we can render popular near services
 	renderPopularNearServices = () => {
-		if (
-			this.state.popularNearServices
-			&& this.state.popularNearServices.length > 0
-		) {
+		if (this.state.popularNearServices.length > 0) {
 			return (
 				<View style={{ marginTop: 25 }}>
 					<Text style={styles.titleStyle}>Popular near services</Text>
@@ -278,6 +254,28 @@ class HomeScreen extends Component {
 			);
 		}
 	};
+
+	// Render content when all fetches are completed.
+	renderContent() {
+		if (this.state.dataLoaded) {
+			return (
+				<View>
+					{this.renderPopularCategories()}
+					{this.renderNewServicesNear()}
+					{this.renderPopularNearServices()}
+					{/* Show image when last service list is rendered */}
+					<View>
+						<Text style={styles.titleStyle}>Keep growing</Text>
+						<InfoImage
+							text="Host your service near Orlando, FL "
+							buttonText="Post a service"
+						/>
+					</View>
+				</View>
+			);
+		} 
+		return <Spinner style={{ marginTop: '10%' }} color="orange" />;
+	}
 
 	render() {
 		return (
@@ -296,23 +294,7 @@ class HomeScreen extends Component {
 						/>
 					)}
 				>
-					{/* TODO: check all is loaded instead of 1 by 1 */}
-					{this.renderPopularCategories()}
-					{this.renderNewServicesNear()}
-					{this.renderPopularNearServices()}
-					{this.renderSpinner()}
-					{/* Show image when last service list is rendered */}
-					{this.state.newNearServices !== undefined ? (
-						<View>
-							<Text style={styles.titleStyle}>Keep growing</Text>
-							<InfoImage
-								text="Host your service near Orlando, FL "
-								buttonText="Post a service"
-							/>
-						</View>
-					) : (
-						<View />
-					)}
+					{this.renderContent()}
 				</ScrollView>
 
 			</Container>
