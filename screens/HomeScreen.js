@@ -8,10 +8,12 @@ import {
 	Alert,
 	Linking,
 	ScrollView,
+	ActivityIndicator,
+	Text
 } from 'react-native';
-import { Text, Container, Icon, Spinner } from 'native-base';
 import { connect } from 'react-redux';
 import { Permissions } from 'expo';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CategoryCard from '../components/CategoryCard';
 import SpecificServiceCard from '../components/HomeComponents/SpecificServiceCard';
 import InfoImage from '../components/HomeComponents/InfoImage';
@@ -33,8 +35,8 @@ class HomeScreen extends Component {
 	static navigationOptions = {
 		title: 'Home',
 		tabBarIcon: ({ tintColor }) => (
-			<Icon
-				type="MaterialCommunityIcons"
+			<MaterialCommunityIcons
+				size={32}
 				name="home-outline"
 				style={{ color: tintColor }}
 			/>
@@ -273,18 +275,14 @@ class HomeScreen extends Component {
 					</View>
 				</View>
 			);
-		} 
-		return <Spinner style={{ marginTop: '10%' }} color="orange" />;
+		}
+		return <ActivityIndicator style={{ marginTop: 100 }} size="large" color="#FF7043" />;
 	}
 
 	render() {
 		return (
-			<Container
-				style={{ flex: 1, backgroundColor: '#FFFFFF' }}
-				forceInset={{ bottom: 'always' }}
-			>
 				<ScrollView
-					style={{ flex: 1, marginTop: 0, paddingTop: 0 }}
+					style={{ flex: 1, marginTop: 0, paddingTop: 0,backgroundColor: '#FFFFFF' }}
 					refreshControl={(
 						<RefreshControl
 							refreshing={this.state.refreshing}
@@ -296,8 +294,6 @@ class HomeScreen extends Component {
 				>
 					{this.renderContent()}
 				</ScrollView>
-
-			</Container>
 		);
 	}
 }
