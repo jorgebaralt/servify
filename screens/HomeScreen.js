@@ -273,6 +273,7 @@ class HomeScreen extends Component {
 							buttonText="Post a service"
 						/>
 					</View>
+					
 				</View>
 			);
 		}

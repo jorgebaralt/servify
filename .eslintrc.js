@@ -51,5 +51,7 @@ module.exports = {
         "no-underscore-dangle": [0],
         "prefer-const": [1],
         "consistent-return": [0],
+        "react/button-has-type": [0],
+        "no-nested-ternary": [0]
     }
 };
