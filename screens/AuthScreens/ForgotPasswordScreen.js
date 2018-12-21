@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-	Icon,
 	Toast
 } from 'native-base';
 import { LinearGradient } from 'expo';
@@ -12,6 +11,7 @@ import {
 	Text,
 	ActivityIndicator
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { resetMessage, passwordReset } from '../../actions';
 import { pageHit } from '../../shared/ga_helper';
@@ -114,10 +114,10 @@ class forgotPassword extends Component {
 			end={{ x: 0, y: 1 }}
 			>
 				<SafeAreaView style={{ flex: 1 }}>
-					<Icon
+					<Ionicons
 						style={backIconStyle}
-						type="Entypo"
-						name="chevron-thin-left"
+						name="ios-arrow-back"
+						size={40}
 						onPress={() => {
 							this.props.navigation.navigate('login');
 						}}
@@ -156,24 +156,11 @@ class forgotPassword extends Component {
 }
 
 const styles = {
-	inputStyle: {
-		color: 'white',
-		width: '10%'
-	},
-	labelStyle: {
-		color: 'white'
-	},
-	itemStyle: {
-		margin: 10
-	},
 	backIconStyle: {
 		color: 'white',
 		top: 10,
-		left: 0,
+		left: 5,
 		marginBottom: 40
-	},
-	formStyle: {
-		width: '90%'
 	},
 	titleStyle: {
 		color: 'white',

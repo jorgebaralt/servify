@@ -1,28 +1,25 @@
 import React, { Component } from 'react';
 import {
-	Text,
-	Form,
-	Item,
-	Input,
-	Icon,
-	Label,
 	Toast,
-	Button,
-	Content,
-	Spinner
 } from 'native-base';
 import { LinearGradient } from 'expo';
 import {
 	View,
+	ScrollView,
 	KeyboardAvoidingView,
 	SafeAreaView,
 	Platform,
 	Keyboard,
-	DeviceEventEmitter
+	DeviceEventEmitter,
+	ActivityIndicator,
+	Text
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
+import { Button, FloatingLabelInput } from '../../components/UI';
 import { createEmailAccount, resetMessage } from '../../actions';
 import { pageHit } from '../../shared/ga_helper';
+import { colors } from '../../shared/styles';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -114,18 +111,14 @@ class CreateAccountScreen extends Component {
 
 	renderSpinner() {
 		if (this.state.loading) {
-			return <Spinner color="white" />;
+			return <ActivityIndicator style={{ marginTop: 100 }} size="large" color={colors.white} />;
 		}
 		return <View />;
 	}
 
 	render() {
 		const {
-			inputStyle,
-			labelStyle,
-			itemStyle,
 			backIconStyle,
-			formStyle,
 			titleStyle
 		} = styles;
 
@@ -135,10 +128,10 @@ class CreateAccountScreen extends Component {
 				style={{ flex: 1 }}
 			>
 				<SafeAreaView style={{ flex: 1 }}>
-					<Icon
+					<Ionicons
 						style={backIconStyle}
-						type="Entypo"
-						name="chevron-thin-left"
+						name="ios-arrow-back"
+						size={40}
 						onPress={() => {
 							this.props.navigation.navigate('auth');
 						}}
@@ -147,66 +140,63 @@ class CreateAccountScreen extends Component {
 						behavior={Platform.OS === 'android' ? 'padding' : null}
 						style={{ flex: 1, justifyContent: 'center' }}
 					>
-						<Content>
-							<View style={{ flex: 1, alignItems: 'center' }}>
+						<ScrollView>
+							<View style={{ flex: 1, paddingLeft: 20, paddingRight: 20 }}>
 								<Text style={titleStyle}>Sign up</Text>
-								<Form style={formStyle}>
-									<Item floatingLabel style={itemStyle}>
-										<Label style={labelStyle}>First Name</Label>
-										<Input
-											style={inputStyle}
-											value={this.state.firstName}
-											onChangeText={(firstName) => {
-												this.setState({ firstName });
-											}}
-										/>
-									</Item>
-									<Item floatingLabel style={itemStyle}>
-										<Label style={labelStyle}>Last Name</Label>
-										<Input
-											style={inputStyle}
-											value={this.state.lastName}
-											onChangeText={(lastName) => {
-												this.setState({ lastName });
-											}}
-										/>
-									</Item>
-									<Item floatingLabel style={itemStyle}>
-										<Label style={labelStyle}>Email</Label>
-										<Input
-											autoCapitalize="none"
-											style={inputStyle}
-											value={this.state.email}
-											onChangeText={(email) => {
-												this.setState({ email });
-											}}
-										/>
-									</Item>
-									<Item floatingLabel style={itemStyle}>
-										<Label style={labelStyle}>Password</Label>
-										<Input
-											style={inputStyle}
-											secureTextEntry
-											value={this.state.password}
-											onChangeText={(password) => {
-												this.setState({ password });
-											}}
-										/>
-									</Item>
-								</Form>
+								<FloatingLabelInput
+									value={this.state.firstName}
+									label="First name"
+									firstColor={colors.white}
+									secondColor={colors.white}
+									onChangeText={(firstName) => {
+										this.setState({ firstName });
+									}}
+									style={{ marginTop: 20 }}
+								/>
+								<FloatingLabelInput
+									value={this.state.lastName}
+									label="Last name"
+									firstColor={colors.white}
+									secondColor={colors.white}
+									onChangeText={(lastName) => {
+										this.setState({ lastName });
+									}}
+									style={{ marginTop: 20 }}
+								/>
+								<FloatingLabelInput
+									value={this.state.email}
+									label="Email"
+									firstColor={colors.white}
+									secondColor={colors.white}
+									onChangeText={(email) => {
+										this.setState({ email });
+									}}
+									style={{ marginTop: 20 }}
+									autoCapitalize="none"
+								/>
+								<FloatingLabelInput
+									value={this.state.password}
+									label="Password"
+									firstColor={colors.white}
+									secondColor={colors.white}
+									onChangeText={(password) => {
+										this.setState({ password });
+									}}
+									style={{ marginTop: 20 }}
+									secureTextEntry
+								/>
+								<Button
+									bordered
+									light
+									style={{ marginTop: 40 }}
+									onPress={this.createAccount}
+								>
+									Create Account
+								</Button>
 								{this.renderSpinner()}
-								<View>
-									<Button
-										bordered
-										light
-										style={{ marginTop: 40, marginBottom: 40 }}
-										onPress={this.createAccount}
-									>
-										<Text>Create Account</Text>
-									</Button>
-								</View>
+
 							</View>
-						</Content>
+						</ScrollView>
 					</KeyboardAvoidingView>
 				</SafeAreaView>
 			</LinearGradient>
@@ -215,30 +205,16 @@ class CreateAccountScreen extends Component {
 }
 
 const styles = {
-	inputStyle: {
-		color: 'white'
-	},
-	labelStyle: {
-		color: 'white'
-	},
-	itemStyle: {
-		margin: 10
-	},
 	backIconStyle: {
 		color: 'white',
 		top: 10,
-		left: 0,
-		paddingBottom: 20
-	},
-	formStyle: {
-		width: '80%',
-		alignItems: 'center'
+		left: 5,
+		marginBottom: 40
 	},
 	titleStyle: {
 		color: 'white',
 		fontWeight: 'bold',
 		fontSize: 30,
-		margin: 10
 	}
 };
 
