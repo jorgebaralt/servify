@@ -19,8 +19,8 @@ import {
 	Toast
 } from 'native-base';
 import { connect } from 'react-redux';
-import { submitFeedback, resetFeedbackMessage } from '../actions';
-import { pageHit } from '../shared/ga_helper';
+import { submitFeedback, resetFeedbackMessage } from '../../actions';
+import { pageHit } from '../../shared/ga_helper';
 
 let willFocusSubscription;
 let backPressSubscriptions;

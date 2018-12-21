@@ -14,17 +14,17 @@ import {
 import { connect } from 'react-redux';
 import { Permissions } from 'expo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import CategoryCard from '../components/CategoryCard';
-import SpecificServiceCard from '../components/HomeComponents/SpecificServiceCard';
-import InfoImage from '../components/HomeComponents/InfoImage';
+import CategoryCard from '../../components/CategoryCard';
+import SpecificServiceCard from '../../components/HomeComponents/SpecificServiceCard';
+import InfoImage from '../../components/HomeComponents/InfoImage';
 import {
 	getCurrentUserDisplayName,
 	selectService,
 	getUserLocation,
 	selectCategory
-} from '../actions';
-import * as api from '../api';
-import { pageHit } from '../shared/ga_helper';
+} from '../../actions';
+import * as api from '../../api';
+import { pageHit } from '../../shared/ga_helper';
 
 let backPressSubscriptions;
 let willFocusSubscription;

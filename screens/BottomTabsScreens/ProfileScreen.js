@@ -15,8 +15,8 @@ import {
 	Left
 } from 'native-base';
 import { connect } from 'react-redux';
-import { getCurrentUserDisplayName } from '../actions';
-import { pageHit } from '../shared/ga_helper';
+import { getCurrentUserDisplayName } from '../../actions';
+import { pageHit } from '../../shared/ga_helper';
 
 let willFocusSubscription;
 let backPressSubscriptions;

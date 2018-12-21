@@ -14,8 +14,8 @@ import {
 	Content,
 	ListItem
 } from 'native-base';
-import { deselectFaq } from '../actions';
-import { pageHit } from '../shared/ga_helper';
+import { deselectFaq } from '../../actions';
+import { pageHit } from '../../shared/ga_helper';
 
 let willFocusSubscription;
 let backPressSubscriptions;

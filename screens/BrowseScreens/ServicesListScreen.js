@@ -29,10 +29,10 @@ import {
 	getServicesSubcategory,
 	selectService,
 	cancelAxiosServices
-} from '../actions';
-import EmptyListMessage from '../components/ErrorMessage/EmptyListMessage';
-import { pageHit } from '../shared/ga_helper';
-import StarsRating from '../components/Ratings/StarsRating';
+} from '../../actions';
+import EmptyListMessage from '../../components/ErrorMessage/EmptyListMessage';
+import { pageHit } from '../../shared/ga_helper';
+import StarsRating from '../../components/Ratings/StarsRating';
 
 let willFocusSubscription;
 let backPressSubscriptions;

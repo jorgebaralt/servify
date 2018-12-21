@@ -19,8 +19,8 @@ import {
 } from 'native-base';
 import { Platform, View, DeviceEventEmitter } from 'react-native';
 import { connect } from 'react-redux';
-import { reportService } from '../actions';
-import { pageHit } from '../shared/ga_helper';
+import { reportService } from '../../actions';
+import { pageHit } from '../../shared/ga_helper';
 
 let willFocusSubscription;
 let backPressSubscriptions;

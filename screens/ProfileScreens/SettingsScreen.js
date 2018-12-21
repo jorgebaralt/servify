@@ -12,8 +12,8 @@ import {
 	Content
 } from 'native-base';
 import { connect } from 'react-redux';
-import { logOut } from '../actions';
-import { pageHit } from '../shared/ga_helper';
+import { logOut } from '../../actions';
+import { pageHit } from '../../shared/ga_helper';
 
 class SettingsScreen extends Component {
 

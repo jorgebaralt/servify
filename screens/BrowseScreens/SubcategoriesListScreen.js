@@ -16,8 +16,8 @@ import {
 } from 'native-base';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo';
-import { deselectCategory, selectSubcategory } from '../actions';
-import { pageHit } from '../shared/ga_helper';
+import { deselectCategory, selectSubcategory } from '../../actions';
+import { pageHit } from '../../shared/ga_helper';
 
 let willFocusSubscription;
 let backPressSubscriptions;

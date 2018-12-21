@@ -13,10 +13,10 @@ import {
 	ActivityIndicator
 } from 'react-native';
 import { connect } from 'react-redux';
-import { resetMessage, passwordReset } from '../actions';
-import { pageHit } from '../shared/ga_helper';
-import { Button, FloatingLabelInput } from '../components/UI';
-import { colors } from '../shared/styles';
+import { resetMessage, passwordReset } from '../../actions';
+import { pageHit } from '../../shared/ga_helper';
+import { Button, FloatingLabelInput } from '../../components/UI';
+import { colors } from '../../shared/styles';
 
 let backPressSubscriptions;
 let willFocusSubscription;

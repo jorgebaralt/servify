@@ -10,11 +10,11 @@ import {
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { LinearGradient } from 'expo';
-import { facebookLogin } from '../actions';
-import { Button } from '../components/UI';
+import { facebookLogin } from '../../actions';
+import { Button } from '../../components/UI';
 
-import LogoBorderWhite from '../assets/logoBorderWhite.png';
-import { pageHit } from '../shared/ga_helper';
+import LogoBorderWhite from '../../assets/logoBorderWhite.png';
+import { pageHit } from '../../shared/ga_helper';
 
 let backPressSubscriptions;
 let willFocusSubscription;

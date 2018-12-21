@@ -12,10 +12,10 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
-import { emailAndPasswordLogin, resetMessage } from '../actions';
-import { pageHit } from '../shared/ga_helper';
-import { FloatingLabelInput, Button } from '../components/UI';
-import { colors } from '../shared/styles';
+import { emailAndPasswordLogin, resetMessage } from '../../actions';
+import { pageHit } from '../../shared/ga_helper';
+import { FloatingLabelInput, Button } from '../../components/UI';
+import { colors } from '../../shared/styles';
 
 let backPressSubscriptions;
 let willFocusSubscription;

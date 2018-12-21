@@ -4,9 +4,9 @@ import { View, UIManager, Platform } from 'react-native';
 import _ from 'lodash';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
-import Slides from '../components/UI/Slides/Slides';
-import { getFavorites, getEmail } from '../actions';
-import { pageHit } from '../shared/ga_helper';
+import Slides from '../../components/UI/Slides/Slides';
+import { getFavorites, getEmail } from '../../actions';
+import { pageHit } from '../../shared/ga_helper';
 
 const SLIDE_DATA = [
 	{ text: 'Welcome to Servify', color: '#FFA000' },

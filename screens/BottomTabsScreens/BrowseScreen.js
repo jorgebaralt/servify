@@ -17,9 +17,9 @@ import {
 	Content
 } from 'native-base';
 import { connect } from 'react-redux';
-import { selectCategory, filterCategories, filterEmpty } from '../actions';
-import CategoryCard from '../components/CategoryCard';
-import { pageHit } from '../shared/ga_helper';
+import { selectCategory, filterCategories, filterEmpty } from '../../actions';
+import CategoryCard from '../../components/CategoryCard';
+import { pageHit } from '../../shared/ga_helper';
 
 let willFocusSubscription;
 let willBlurSubscription;

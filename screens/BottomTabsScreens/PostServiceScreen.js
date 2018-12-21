@@ -22,8 +22,8 @@ import {
 	Toast
 } from 'native-base';
 import { connect } from 'react-redux';
-import { createService, resetMessageService } from '../actions';
-import { pageHit } from '../shared/ga_helper';
+import { createService, resetMessageService } from '../../actions';
+import { pageHit } from '../../shared/ga_helper';
 
 const maxCharCount = 150;
 const initialState = {
