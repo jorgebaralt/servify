@@ -4,7 +4,7 @@ import { View, UIManager, Platform } from 'react-native';
 import _ from 'lodash';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
-import Slides from '../components/Slides';
+import Slides from '../components/UI/Slides/Slides';
 import { getFavorites, getEmail } from '../actions';
 import { pageHit } from '../shared/ga_helper';
 

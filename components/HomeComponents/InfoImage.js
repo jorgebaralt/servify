@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Dimensions, ImageBackground, TouchableOpacity, Animated, Text } from 'react-native';
-import Button from '../UI/Button/Button';
+import { Button } from '../UI';
 
 const { width } = Dimensions.get('window');
 

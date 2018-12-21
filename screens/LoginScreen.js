@@ -1,23 +1,25 @@
 import React, { Component } from 'react';
-import {
-	Text,
-	Form,
-	Item,
-	Button,
-	Label,
-	Input,
-	Icon,
-	Toast,
-	Spinner
-} from 'native-base';
+import { Toast } from 'native-base';
 import { LinearGradient } from 'expo';
-import { View, SafeAreaView, Keyboard, DeviceEventEmitter, TouchableOpacity } from 'react-native';
+import {
+	View,
+	SafeAreaView,
+	Keyboard,
+	DeviceEventEmitter,
+	TouchableOpacity,
+	ActivityIndicator,
+	Text
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { emailAndPasswordLogin, resetMessage } from '../actions';
 import { pageHit } from '../shared/ga_helper';
+import { FloatingLabelInput, Button } from '../components/UI';
+import { colors } from '../shared/styles';
 
 let backPressSubscriptions;
 let willFocusSubscription;
+
 const initialState = {
 	email: '',
 	password: '',
@@ -93,75 +95,77 @@ class LoginScreen extends Component {
 
 	renderSpinner() {
 		if (this.state.loading) {
-			return <Spinner color="white" />;
+			return (
+				<ActivityIndicator
+					style={{ marginTop: 100 }}
+					size="large"
+					color={colors.white}
+				/>
+			);
 		}
 		return <View />;
 	}
 
 	render() {
-		const {
-			inputStyle,
-			labelStyle,
-			itemStyle,
-			backIconStyle,
-			formStyle,
-			titleStyle
-		} = styles;
+		const { backIconStyle, titleStyle } = styles;
 
 		return (
 			<LinearGradient
 				colors={['#FF7043', '#F4511E', '#BF360C']}
 				style={{ flex: 1 }}
+				start={{ x: 1, y: 0 }}
+				end={{ x: 0, y: 1 }}
 			>
-				<SafeAreaView style={{ flex: 1}}>
-					<Icon
+				<SafeAreaView style={{ flex: 1 }}>
+					<Ionicons
 						style={backIconStyle}
-						type="Entypo"
-						name="chevron-thin-left"
+						name="ios-arrow-back"
+						size={40}
 						onPress={() => {
 							this.props.navigation.navigate('auth');
 						}}
 					/>
 
 					{/* Login Form */}
-					<View style={{ flex: 1, marginLeft: '5%' }}>
+					<View
+						style={{ flex: 1, paddingLeft: 20, paddingRight: 20 }}
+					>
 						<Text style={titleStyle}>Sign in</Text>
-						<Form style={formStyle}>
-							<Item floatingLabel style={itemStyle}>
-								<Label style={labelStyle}>Email</Label>
-								<Input
-									autoCapitalize="none"
-									style={inputStyle}
-									value={this.state.email}
-									onChangeText={(email) => {
-										this.setState({ email });
-									}}
-								/>
-							</Item>
-							<Item floatingLabel style={itemStyle}>
-								<Label style={labelStyle}>Password</Label>
-								<Input
-									style={inputStyle}
-									value={this.state.password}
-									secureTextEntry
-									onChangeText={(password) => {
-										this.setState({ password });
-									}}
-								/>
-							</Item>
-						</Form>
+
+						<FloatingLabelInput
+							value={this.state.email}
+							label="Email"
+							firstColor={colors.white}
+							secondColor={colors.white}
+							onChangeText={(email) => {
+								this.setState({ email });
+							}}
+							autoCapitalize="none"
+							style={{ marginTop: 20 }}
+						/>
+
+						<FloatingLabelInput
+							value={this.state.password}
+							label="Password"
+							firstColor={colors.white}
+							secondColor={colors.white}
+							onChangeText={(password) => {
+								this.setState({ password });
+							}}
+							secureTextEntry
+							style={{ marginTop: 20 }}
+						/>
+
+						<Button
+							title="Login User"
+							bordered
+							style={{ marginTop: 40 }}
+							onPress={this.loginUser}
+						>
+							Log in
+						</Button>
+
 						{this.renderSpinner()}
-						<View>
-							<Button
-								title="Login User"
-								bordered
-								light
-								style={{ marginTop: 10, marginLeft: '3%' }}
-								onPress={this.loginUser}
-							>
-								<Text>Log in</Text>
-							</Button>
-						</View>
 					</View>
 					<TouchableOpacity
 						style={{ position: 'absolute', bottom: 40, right: 20 }}
@@ -169,7 +173,9 @@ class LoginScreen extends Component {
 						<Text
 							style={{ fontSize: 16, color: 'white' }}
 							onPress={() => {
-								this.props.navigation.navigate('forgotPassword');
+								this.props.navigation.navigate(
+									'forgotPassword'
+								);
 							}}
 						>
 							Forgot password
@@ -182,30 +188,16 @@ class LoginScreen extends Component {
 }
 
 const styles = {
-	inputStyle: {
-		color: 'white',
-		width: '10%'
-	},
-	labelStyle: {
-		color: 'white'
-	},
-	itemStyle: {
-		margin: 10
-	},
 	backIconStyle: {
 		color: 'white',
 		top: 10,
-		left: 0,
+		left: 5,
 		marginBottom: 40
-	},
-	formStyle: {
-		width: '90%'
 	},
 	titleStyle: {
 		color: 'white',
 		fontWeight: 'bold',
-		fontSize: 30,
-		margin: 10
+		fontSize: 30
 	}
 };
 

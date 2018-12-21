@@ -262,6 +262,7 @@ class HomeScreen extends Component {
 		if (this.state.dataLoaded) {
 			return (
 				<View>
+			
 					{this.renderPopularCategories()}
 					{this.renderNewServicesNear()}
 					{this.renderPopularNearServices()}

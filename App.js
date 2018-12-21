@@ -32,6 +32,7 @@ import ReviewsScreen from './screens/ReviewsScreen';
 import HelpScreen from './screens/HelpScreen';
 import SpecificFaqScreen from './screens/SpecificFaqScreen';
 import ReportScreen from './screens/ReportScreen';
+import { colors } from './shared/styles';
 
 const store = createStore(reducers, {}, compose(applyMiddleware(thunk)));
 export default class App extends React.Component {
@@ -58,8 +59,8 @@ export default class App extends React.Component {
 			{
 				tabBarOptions: {
 					showLabel: true,
-					activeTintColor: '#FF7043',
-					inactiveTintColor: '#000',
+					activeTintColor: colors.primaryColor,
+					inactiveTintColor: colors.black,
 					labelStyle: {
 						fontSize: 12
 					},
@@ -133,6 +134,6 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		backgroundColor: '#fff'
+		backgroundColor: colors.white
 	}
 });

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
-import { Button, Text } from 'native-base';
+import { View, ScrollView, Dimensions, TouchableOpacity, Text } from 'react-native';
+import { Button } from '..';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -11,12 +11,10 @@ class Slides extends Component {
 			return (
 				<View style={styles.buttonStyle}>
 					<Button
-						title="On Complete"
 						bordered
-						light
 						onPress={this.props.onComplete}
 					>
-						<Text>Lets Go!</Text>
+						Lets Go!
 					</Button>
 				</View>
 			);

@@ -62,7 +62,7 @@ export const emailAndPasswordLogin = (email, password) => async (dispatch) => {
 
 		// fetch email, for global state
 		await getEmail();
-
+		// FIXME: store user in redux
 		return dispatch({ type: LOGIN_SUCCESS, payload: user.displayName });
 	} catch (e) {
 		console.log(e);

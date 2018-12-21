@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
 import {
-	Text,
-	Form,
-	Item,
-	Button,
-	Label,
-	Input,
 	Icon,
-	Toast,
-	Spinner
+	Toast
 } from 'native-base';
 import { LinearGradient } from 'expo';
 import {
@@ -16,11 +9,14 @@ import {
 	SafeAreaView,
 	Keyboard,
 	DeviceEventEmitter,
-	TouchableOpacity
+	Text,
+	ActivityIndicator
 } from 'react-native';
 import { connect } from 'react-redux';
 import { resetMessage, passwordReset } from '../actions';
 import { pageHit } from '../shared/ga_helper';
+import { Button, FloatingLabelInput } from '../components/UI';
+import { colors } from '../shared/styles';
 
 let backPressSubscriptions;
 let willFocusSubscription;
@@ -99,25 +95,23 @@ class forgotPassword extends Component {
 
 	renderSpinner() {
 		if (this.state.loading) {
-			return <Spinner color="white" />;
+			return <ActivityIndicator style={{ marginTop: 100 }} size="large" color={colors.white} />;
 		}
 		return <View />;
 	}
 
 	render() {
 		const {
-			inputStyle,
-			labelStyle,
-			itemStyle,
 			backIconStyle,
-			formStyle,
 			titleStyle
 		} = styles;
 
 		return (
 			<LinearGradient
-				colors={['#FF7043', '#F4511E', '#BF360C']}
-				style={{ flex: 1 }}
+			colors={['#FF7043', '#F4511E', '#BF360C']}
+			style={{ flex: 1 }}
+			start={{ x: 1, y: 0 }}
+			end={{ x: 0, y: 1 }}
 			>
 				<SafeAreaView style={{ flex: 1 }}>
 					<Icon
@@ -130,32 +124,30 @@ class forgotPassword extends Component {
 					/>
 
 					{/* Login Form */}
-					<View style={{ flex: 1, marginLeft: 20 }}>
+					<View style={{ flex: 1, paddingRight: 20, paddingLeft: 20 }}>
 						<Text style={titleStyle}>Forgot Password</Text>
-						<Form style={formStyle}>
-							<Item floatingLabel style={itemStyle}>
-								<Label style={labelStyle}>Email</Label>
-								<Input
-									autoCapitalize="none"
-									style={inputStyle}
-									value={this.state.email}
-									onChangeText={(email) => {
-										this.setState({ email });
-									}}
-								/>
-							</Item>
-						</Form>
+						<FloatingLabelInput
+							value={this.state.email}
+							label="Email"
+							firstColor={colors.white}
+							secondColor={colors.white}
+							onChangeText={(email) => {
+								this.setState({ email });
+							}}
+							autoCapitalize="none"
+							style={{ marginTop: 20 }}
+						/>
 						{this.renderSpinner()}
-						<View>
+
 							<Button
 								bordered
 								light
-								style={{ marginTop: 40, marginLeft: 15 }}
+								style={{ marginTop: 40 }}
 								onPress={() => this.resetPassword()}
 							>
-								<Text>Get reset link</Text>
+								Get reset link
 							</Button>
-						</View>
+
 					</View>
 				</SafeAreaView>
 			</LinearGradient>
@@ -187,7 +179,6 @@ const styles = {
 		color: 'white',
 		fontWeight: 'bold',
 		fontSize: 30,
-		margin: 10
 	}
 };
 

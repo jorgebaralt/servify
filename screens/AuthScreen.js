@@ -3,14 +3,15 @@ import {
 	View,
 	TouchableOpacity,
 	DeviceEventEmitter,
-	BackHandler,
 	SafeAreaView,
-	Image
+	Image,
+	Text
 } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
-import { Button, Text, Icon } from 'native-base';
 import { LinearGradient } from 'expo';
 import { facebookLogin } from '../actions';
+import { Button } from '../components/UI';
 
 import LogoBorderWhite from '../assets/logoBorderWhite.png';
 import { pageHit } from '../shared/ga_helper';
@@ -28,7 +29,10 @@ class AuthScreen extends Component {
 
 	componentDidMount() {
 		pageHit('Auth Screen');
-		willBlurSubscriptions = this.props.navigation.addListener('willBlur', () => DeviceEventEmitter.removeAllListeners('hardwareBackPress'));
+		willBlurSubscriptions = this.props.navigation.addListener(
+			'willBlur',
+			() => DeviceEventEmitter.removeAllListeners('hardwareBackPress')
+		);
 	}
 
 	componentWillUpdate(nextProps) {
@@ -79,41 +83,34 @@ class AuthScreen extends Component {
 					<Image
 						style={{ width: 82, height: 105, marginBottom: 20 }}
 						source={LogoBorderWhite}
+						resizeMode="cover"
 					/>
 					{/* <Text style={styles.titleStyle}> Servify </Text> */}
 					{/* //log in with facebook */}
 					<View style={styles.buttonStyle}>
-						<Button
-							bordered
-							light
-							title="Facebook"
-							onPress={this.loginWithFacebook}
-						>
-							<Text style={styles.textStyle}>
-								<Icon
-									style={{
-										color: 'white',
-										fontSize: 16,
-										marginRight: 10
-									}}
-									type="Entypo"
-									name="facebook"
-								/>{' '}
-								Log in with Facebook
-							</Text>
+						<Button bordered onPress={this.loginWithFacebook} style={{ fontSize: 18 }}>
+							<MaterialCommunityIcons
+								style={{
+									color: 'white',
+									fontSize: 20,
+									marginRight: 10
+								}}
+								name="facebook-box"
+							/>{' '}
+							Log in with Facebook
 						</Button>
 					</View>
 					{/* //Create account with email */}
 					<View style={styles.buttonStyle}>
 						<Button
 							bordered
-							light
 							title="Servify"
+							style={{ fontSize: 18 }}
 							onPress={() => {
 								this.props.navigation.navigate('createAccount');
 							}}
 						>
-							<Text style={styles.textStyle}>Create account with Email</Text>
+							Create account with Email
 						</Button>
 					</View>
 					{/* // go to login screen */}

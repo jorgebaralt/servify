@@ -3,10 +3,9 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 
-const Button = (props) => {
+export const Button = (props) => {
 	const styles = StyleSheet.create({
 		defaultButton: {
-			flex: 1,
 			alignSelf: 'flex-start',
 			backgroundColor: props.color ? props.color : 'blue',
 			padding: 10,
@@ -21,16 +20,9 @@ const Button = (props) => {
 			fontSize: props.style ? (props.style.fontSize ? props.style.fontSize : 16) : 16
 		},
 		borderedButtonStyle: {
-			flex: 1,
-			alignSelf: 'flex-start',
 			borderColor: props.color ? props.color : 'white',
 			borderWidth: 1,
 			backgroundColor: 'transparent',
-			padding: 10,
-			borderRadius: 5,
-			width: 'auto',
-			marginLeft: 5,
-			marginRight: 5,
 		},
 		borderedTextStyle: {
 			alignSelf: 'center',
@@ -44,10 +36,10 @@ const Button = (props) => {
 	let textStyle;
 
 	if (props.bordered) {
-		buttonStyle = styles.borderedButtonStyle;
+		buttonStyle = [styles.defaultButton, styles.borderedButtonStyle, props.style];
 		textStyle = styles.borderedTextStyle;
 	} else {
-		buttonStyle = styles.defaultButton;
+		buttonStyle = [styles.defaultButton, props.style];
 		textStyle = styles.defaultText;
 	}
 	
@@ -59,5 +51,3 @@ const Button = (props) => {
 		</TouchableOpacity>
 	);
 };
-
-export default Button;
