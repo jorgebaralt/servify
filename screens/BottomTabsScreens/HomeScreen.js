@@ -111,7 +111,7 @@ class HomeScreen extends Component {
 
 	onRefresh = async () => {
 		const { status } = await Permissions.getAsync(Permissions.LOCATION);
-		// Get popular Categories no matter of status ()
+		// Get popular Categories, no need location for this
 		await api.getPopularCategories((popularCategories) => this.setState({ popularCategories }));
 		if (status === 'granted') {
 			if (!this.props.userLocation) {

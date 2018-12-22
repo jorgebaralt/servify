@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 import auth from './auth_reducer';
-import categories from './category_list_reducer';
 import selectedCategory from './select_category_reducer';
 import serviceResult from './service_reducer';
 import selectedService from './select_service_reducer';
@@ -13,7 +12,6 @@ import location from './location_reducer';
 
 export default combineReducers({
     auth,
-    categories,
     selectedCategory,
     serviceResult,
     selectedService,

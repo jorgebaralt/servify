@@ -20,11 +20,11 @@ import { connect } from 'react-redux';
 import { selectCategory, filterCategories, filterEmpty } from '../../actions';
 import CategoryCard from '../../components/CategoryCard';
 import { pageHit } from '../../shared/ga_helper';
+import categories from '../../shared/categories';
 
 let willFocusSubscription;
 let willBlurSubscription;
 let backPressSubscriptions;
-let allCategories;
 let keyboardDidHideListener;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 class BrowseScreen extends Component {
@@ -40,11 +40,11 @@ class BrowseScreen extends Component {
 	};
 
 	state = {
-		filter: ''
+		filter: '',
+		categories
 	};
 
 	async componentWillMount() {
-		allCategories = this.props.categories;
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			() => {
@@ -86,8 +86,10 @@ class BrowseScreen extends Component {
 	};
 
 	doSelectCategory = async (category) => {
+		// FIXME: remove this from props pass it down as parameter, use it for search on next screen
 		await this.props.selectCategory(category);
 		// pick where to navigate
+		// FIXME: here
 		if (category.subcategories) {
 			this.props.navigation.navigate('subcategories');
 		} else {
@@ -107,7 +109,7 @@ class BrowseScreen extends Component {
 		const filteredCategories = [];
 		const nameCheckCategory = [];
 
-		allCategories.forEach((category) => {
+		this.state.categories.forEach((category) => {
 			category.keyWords.forEach((key) => {
 				if (key.includes(this.state.filter.toLowerCase())) {
 					if (!nameCheckCategory.includes(category.title)) {
@@ -119,9 +121,9 @@ class BrowseScreen extends Component {
 		});
 
 		if (filteredCategories.length < 1 || this.state.filter === '') {
-			this.props.filterEmpty();
+			this.setState({ categories });
 		} else {
-			this.props.filterCategories(filteredCategories);
+			this.setState({ categories: filteredCategories });
 		}
 	};
 
@@ -160,7 +162,7 @@ class BrowseScreen extends Component {
 				</Header>
 				<Content>
 					<FlatList
-						data={this.props.categories}
+						data={this.state.categories}
 						renderItem={({ item }) => this.renderCategories(item)}
 						keyExtractor={(category) => category.title}
 						numColumns={2}
@@ -194,14 +196,7 @@ const styles = {
 	}
 };
 
-function mapStateToProps(state) {
-	return {
-		categories: state.categories,
-		userLocation: state.location.data
-	};
-}
-
 export default connect(
-	mapStateToProps,
-	{ selectCategory, filterCategories, filterEmpty }
+	null,
+	{ selectCategory }
 )(BrowseScreen);

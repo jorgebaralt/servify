@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Platform, DeviceEventEmitter } from 'react-native';
+import { View, Platform, DeviceEventEmitter, ActivityIndicator } from 'react-native';
 import {
 	Content,
 	Header,
@@ -11,7 +11,6 @@ import {
 	Button,
 	Icon,
 	Right,
-	Spinner,
 	Form,
 	Item,
 	Picker,
@@ -20,8 +19,8 @@ import {
 } from 'native-base';
 import { connect } from 'react-redux';
 import { submitFeedback } from '../../api';
-// import { submitFeedback, resetFeedbackMessage } from '../../actions';
 import { pageHit } from '../../shared/ga_helper';
+import { colors } from '../../shared/styles';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -66,11 +65,7 @@ class FeedbackScreen extends Component {
 	};
 
 	clearState = () => {
-		this.setState({
-			selectedOption: undefined,
-			description: '',
-			loading: false
-		});
+		this.setState(initialState);
 	}
 
 	showToast = (text, type) => {
@@ -120,7 +115,13 @@ class FeedbackScreen extends Component {
 
 	renderSpinner() {
 		if (this.state.loading) {
-			return <Spinner color="orange" />;
+			return (
+				<ActivityIndicator
+					style={{ marginTop: 100 }}
+					size="large"
+					color={colors.white}
+				/>
+			);
 		}
 		return <View />;
 	}
@@ -139,7 +140,6 @@ class FeedbackScreen extends Component {
 						onChangeText={(text) => this.setState({ description: text })
 						}
 					/>
-					{this.renderSpinner()}
 					<Button
 						bordered
 						dark
@@ -149,6 +149,7 @@ class FeedbackScreen extends Component {
 					>
 						<Text style={{ color: '#FF7043' }}>Submit</Text>
 					</Button>
+					{this.renderSpinner()}
 				</View>
 			);
 		}
