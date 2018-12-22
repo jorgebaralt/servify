@@ -1,10 +1,6 @@
 import firebase from 'firebase';
 import {
 	GET_CURRENT_USER,
-	STORE_USER_DISPLAY_NAME,
-	GET_EMAIL_FAIL,
-	GET_EMAIL_SUCCESS,
-    
 } from './types';
 
 // How to use AsyncStorage:

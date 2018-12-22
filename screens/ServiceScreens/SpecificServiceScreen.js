@@ -100,11 +100,11 @@ class SpecificServiceScreen extends Component {
 			region: new AnimatedRegion(fixedRegion),
 			loadingUserComment: true
 		});
-		if (service.favUsers.includes(this.props.currentUser.email)) {
+		if (service.favUsers.includes(this.props.user.email)) {
 			this.setState({ isFav: true });
 		}
 
-		await this.props.getReviews(service, this.props.currentUser.email);
+		await this.props.getReviews(service, this.props.user.email);
 		this.setState({ loadingUserComment: false });
 	};
 
@@ -154,11 +154,11 @@ class SpecificServiceScreen extends Component {
 
 	favPressed = async () => {
 		this.setState({ favLoading: true });
-		const { currentUserEmail } = this.props;
+		const { user } = this.props;
 		if (this.state.isFav) {
-			await this.removeFavorite(currentUserEmail);
+			await this.removeFavorite(user.email);
 		} else {
-			await this.addFavorite(currentUserEmail);
+			await this.addFavorite(user.email);
 		}
 		this.setState({ favLoading: false });
 	};
@@ -185,7 +185,7 @@ class SpecificServiceScreen extends Component {
 	};
 
 	renderIcon = () => {
-		if (this.props.currentUser.email === this.props.service.email) {
+		if (this.props.user.email === this.props.service.email) {
 			return (
 				<Icon
 					type="Entypo"
@@ -248,8 +248,8 @@ class SpecificServiceScreen extends Component {
 			const review = {
 				rating: this.state.starCount,
 				comment: this.state.comment,
-				reviewerDisplayName: this.props.displayName,
-				reviewerEmail: this.props.currentUser.email
+				reviewerDisplayName: this.props.user.displayName,
+				reviewerEmail: this.props.user.email
 			};
 			await this.props.submitReview(this.props.service, review);
 			this.setState({ loadingUserComment: false });
@@ -325,7 +325,7 @@ class SpecificServiceScreen extends Component {
 		if (this.state.loadingUserComment) {
 			return <Spinner color="orange" />;
 		}
-		if (this.props.currentUser.email !== this.props.service.email) {
+		if (this.props.user.email !== this.props.service.email) {
 			// User have not added a review yet
 			if (!currentUserReview) {
 				return (
@@ -334,7 +334,7 @@ class SpecificServiceScreen extends Component {
 							<CardItem>
 								<Body>
 									<Text style={{ fontSize: 17 }}>
-										{this.props.displayName}
+										{this.props.user.displayName}
 									</Text>
 									<View style={{ marginTop: 10 }}>
 										<StarsRatingPick
@@ -394,7 +394,7 @@ class SpecificServiceScreen extends Component {
 
 							<Body>
 								<Text style={{ fontSize: 15 }}>
-									{this.props.displayName}
+									{this.props.user.displayName}
 								</Text>
 								<View
 									style={{
@@ -792,7 +792,7 @@ const styles = {
 const mapStateToProps = (state) => ({
 	service: state.selectedService.service,
 	favorites: state.favoriteServices,
-	currentUser: state.auth.user,
+	user: state.auth.user,
 	displayName: state.auth.displayName,
 	reviews: state.ratings.reviews,
 	currentUserReview: state.ratings.currentUserReview
