@@ -6,7 +6,6 @@ import serviceResult from './service_reducer';
 import selectedService from './select_service_reducer';
 import favoriteServices from './fav_reducer';
 import profileList from './profile_list_reducer';
-import feedback from './feedback_reducer';
 import ratings from './rating_reducer';
 import help from './help_questions_reducer';
 import selectedFaq from './select_faq_reducer';
@@ -20,7 +19,6 @@ export default combineReducers({
     selectedService,
     favoriteServices,
     profileList,
-    feedback,
     ratings,
     help,
     selectedFaq,

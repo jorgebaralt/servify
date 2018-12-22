@@ -19,7 +19,8 @@ import {
 	Toast
 } from 'native-base';
 import { connect } from 'react-redux';
-import { submitFeedback, resetFeedbackMessage } from '../../actions';
+import { submitFeedback } from '../../api';
+// import { submitFeedback, resetFeedbackMessage } from '../../actions';
 import { pageHit } from '../../shared/ga_helper';
 
 let willFocusSubscription;
@@ -44,29 +45,6 @@ class FeedbackScreen extends Component {
 		pageHit('Feedback Screen');
 	}
 
-	componentWillUpdate(nextProps) {
-		const { result } = nextProps;
-		const { success, error } = result;
-		if (success) {
-			Toast.show({
-				text: success,
-				buttonText: 'OK',
-				duration: 5000,
-				type: 'success'
-			});
-			this.props.resetFeedbackMessage();
-		}
-		if (error) {
-			Toast.show({
-				text: error,
-				buttonText: 'OK',
-				duration: 2000,
-				type: 'warning'
-			});
-			this.props.resetFeedbackMessage();
-		}
-	}
-
 	componentWillUnmount() {
 		willFocusSubscription.remove();
 	}
@@ -87,6 +65,26 @@ class FeedbackScreen extends Component {
 		backPressSubscriptions.add(() => this.props.navigation.pop());
 	};
 
+	clearState = () => {
+		this.setState({
+			selectedOption: undefined,
+			description: '',
+			loading: false
+		});
+	}
+
+	showToast = (text, type) => {
+		Toast.show({
+			text,
+			duration: 2000,
+			type
+		});
+		if (type === 'success') {
+			this.clearState();
+			this.onBackPress();
+		}
+	};
+
 	onBackPress = () => {
 		this.props.navigation.goBack(null);
 	};
@@ -98,9 +96,7 @@ class FeedbackScreen extends Component {
 			option: this.state.selectedOption,
 			description: this.state.description
 		};
-		await this.props.submitFeedback(feedback);
-		this.setState(initialState);
-		this.onBackPress();
+		await submitFeedback(feedback, (text, type) => this.showToast(text, type));
 	};
 
 	renderPicker = () => {
@@ -140,7 +136,8 @@ class FeedbackScreen extends Component {
 						bordered
 						placeholder="Describe here..."
 						value={this.state.description}
-						onChangeText={(text) => this.setState({ description: text })}
+						onChangeText={(text) => this.setState({ description: text })
+						}
 					/>
 					{this.renderSpinner()}
 					<Button
@@ -167,7 +164,11 @@ class FeedbackScreen extends Component {
 		} = styles;
 		return (
 			<Container style={{ flex: 1 }}>
-				<Header style={Platform.OS === 'android' ? androidHeader : iosHeader}>
+				<Header
+					style={
+						Platform.OS === 'android' ? androidHeader : iosHeader
+					}
+				>
 					<Left>
 						<Button
 							transparent
@@ -183,15 +184,18 @@ class FeedbackScreen extends Component {
 						</Button>
 					</Left>
 					<Body>
-						<Title style={{ color: 'black', marginLeft: 10 }}>Feedback</Title>
+						<Title style={{ color: 'black', marginLeft: 10 }}>
+							Feedback
+						</Title>
 					</Body>
 					<Right />
 				</Header>
 				<Content>
 					<Text style={titleStyle}>How can we improve?</Text>
 					<Text style={DescriptionStyle}>
-						We are always looking for ways to improve, so we listen very close
-						to every feedback. Please tell us what you love or where to improve.
+						We are always looking for ways to improve, so we listen
+						very close to every feedback. Please tell us what you
+						love or where to improve.
 					</Text>
 					<View style={{ flex: 1, alignItems: 'center' }}>
 						<Form style={formStyle}>
@@ -200,11 +204,16 @@ class FeedbackScreen extends Component {
 									mode="dropdown"
 									style={{ width: undefined }}
 									placeholder="Pick an Option"
-									placeholderStyle={{ color: '#bfc6ea', left: -15 }}
+									placeholderStyle={{
+										color: '#bfc6ea',
+										left: -15
+									}}
 									iosIcon={(
 <Icon
 											name={
-												this.state.selectedOption ? undefined : 'ios-arrow-down'
+												this.state.selectedOption
+													? undefined
+													: 'ios-arrow-down'
 											}
 />
 )}
@@ -258,11 +267,7 @@ const styles = {
 };
 
 const mapStateToProps = (state) => ({
-	user: state.auth.user,
-	result: state.feedback
+	user: state.auth.user
 });
 
-export default connect(
-	mapStateToProps,
-	{ submitFeedback, resetFeedbackMessage }
-)(FeedbackScreen);
+export default connect(mapStateToProps)(FeedbackScreen);
