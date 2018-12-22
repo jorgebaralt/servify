@@ -11,8 +11,7 @@ import {
 	Text
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { connect } from 'react-redux';
-import { emailAndPasswordLogin, resetMessage } from '../../actions';
+import { emailAndPasswordLogin } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 import { FloatingLabelInput, Button } from '../../components/UI';
 import { colors } from '../../shared/styles';
@@ -40,30 +39,20 @@ class LoginScreen extends Component {
 		pageHit('Login Screen');
 	}
 
-	componentWillUpdate(nextProps) {
-		const { displayName, message } = nextProps;
-		if (displayName) {
-			this.props.navigation.navigate('main');
-			Toast.show({
-				text: 'Welcome ' + displayName,
-				duration: 2000,
-				type: 'success'
-			});
-		}
-		if (message) {
-			Toast.show({
-				text: message,
-				buttonText: 'Okay',
-				duration: 5000,
-				type: 'warning'
-			});
-		}
-		this.props.resetMessage();
-	}
-
 	componentWillUnmount() {
 		willFocusSubscription.remove();
 	}
+
+	showToast = (text, type) => {
+		Toast.show({
+			text,
+			duration: 2000,
+			type
+		});
+		if (type === 'success') {
+			this.clearState();
+		}
+	};
 
 	handleAndroidBack = () => {
 		backPressSubscriptions = new Set();
@@ -85,8 +74,7 @@ class LoginScreen extends Component {
 		Keyboard.dismiss();
 		this.setState({ loading: true });
 		const { email, password } = this.state;
-		await this.props.emailAndPasswordLogin(email, password);
-		this.clearState();
+		await emailAndPasswordLogin(email, password, (text, type) => this.showToast(text, type));
 	};
 
 	clearState() {
@@ -201,14 +189,5 @@ const styles = {
 	}
 };
 
-function mapStateToProps(state) {
-	return {
-		displayName: state.auth.displayName,
-		message: state.auth.message
-	};
-}
 
-export default connect(
-	mapStateToProps,
-	{ emailAndPasswordLogin, resetMessage }
-)(LoginScreen);
+export default LoginScreen;

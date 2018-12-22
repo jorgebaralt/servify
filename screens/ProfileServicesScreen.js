@@ -48,18 +48,18 @@ class ProfileServicesScreen extends Component {
 			'willFocus',
 			() => {
 				this.handleAndroidBack();
-				this.props.getFavorites(this.props.email);
+				this.props.getFavorites(this.props.user.email);
 			}
 		);
 		if (currentItem.id === 'favorites') {
 			errorMessage =				'There is nothing in this list, Make sure that you add Services to Favorite by cliking on the top right icon, when looking at services.';
 			this.setState({ loading: true });
-			await this.props.getFavorites(this.props.email);
+			await this.props.getFavorites(this.props.user.email);
 			this.setState({ loading: false });
 		} else if (currentItem.id === 'my_services') {
 			errorMessage =				'There is nothing in this list, Make sure that you create a Service from our Post screen, then you will be able to modify it here';
 			this.setState({ loading: true });
-			await this.props.getServicesByEmail(this.props.email);
+			await this.props.getServicesByEmail(this.props.user.email);
 			this.setState({ loading: false });
 		}
 	}
@@ -288,7 +288,7 @@ function mapStateToProps(state) {
 	return {
 		favorites: state.favoriteServices,
 		servicesList: state.serviceResult.servicesList,
-		email: state.auth.email
+		user: state.auth.user
 	};
 }
 

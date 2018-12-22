@@ -18,7 +18,6 @@ import CategoryCard from '../../components/CategoryCard';
 import SpecificServiceCard from '../../components/HomeComponents/SpecificServiceCard';
 import InfoImage from '../../components/HomeComponents/InfoImage';
 import {
-	getCurrentUserDisplayName,
 	selectService,
 	getUserLocation,
 	selectCategory
@@ -53,7 +52,6 @@ class HomeScreen extends Component {
 
 	async componentDidMount() {
 		pageHit('Home Screen');
-		await this.props.getCurrentUserDisplayName();
 		await this.getLocationAsync();
 
 		didFocusSubscription = this.props.navigation.addListener(
@@ -284,7 +282,7 @@ class HomeScreen extends Component {
 	render() {
 		return (
 				<ScrollView
-					style={{ flex: 1, marginTop: 0, paddingTop: 0,backgroundColor: '#FFFFFF' }}
+					style={{ flex: 1, marginTop: 0, paddingTop: 0, backgroundColor: '#FFFFFF' }}
 					refreshControl={(
 						<RefreshControl
 							refreshing={this.state.refreshing}
@@ -333,14 +331,13 @@ const styles = {
 
 function mapStateToProps(state) {
 	return {
-		userLocation: state.auth.location
+		userLocation: state.location.data,
 	};
 }
 
 export default connect(
 	mapStateToProps,
 	{
-		getCurrentUserDisplayName,
 		selectService,
 		getUserLocation,
 		selectCategory

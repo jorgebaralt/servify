@@ -137,7 +137,7 @@ class PostServiceScreen extends Component {
 				displayName
 			};
 
-			await this.props.createService(servicePost, this.props.email);
+			await this.props.createService(servicePost, this.props.user.email);
 			this.setState(initialState);
 		} else {
 			this.setState({ loading: false });
@@ -436,8 +436,7 @@ function mapStateToProps(state) {
 	return {
 		categories: state.categories,
 		result: state.serviceResult,
-		email: state.auth.email,
-		displayName: state.auth.displayName
+		user: state.auth.user
 	};
 }
 

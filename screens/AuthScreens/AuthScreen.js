@@ -8,11 +8,9 @@ import {
 	Text
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { connect } from 'react-redux';
 import { LinearGradient } from 'expo';
-import { facebookLogin } from '../../actions';
+import { facebookLogin } from '../../api/index';
 import { Button } from '../../components/UI';
-
 import LogoBorderWhite from '../../assets/logoBorderWhite.png';
 import { pageHit } from '../../shared/ga_helper';
 
@@ -35,19 +33,9 @@ class AuthScreen extends Component {
 		);
 	}
 
-	componentWillUpdate(nextProps) {
-		this.onAuthComplete(nextProps);
-	}
-
 	componentWillUnmount() {
 		willFocusSubscription.remove();
 		willBlurSubscriptions.remove();
-	}
-
-	async onAuthComplete(props) {
-		if (props.displayName) {
-			await this.props.navigation.navigate('home');
-		}
 	}
 
 	handleAndroidBack = () => {
@@ -67,8 +55,7 @@ class AuthScreen extends Component {
 	};
 
 	loginWithFacebook = async () => {
-		await this.props.facebookLogin();
-		this.onAuthComplete(this.props);
+		await facebookLogin((text, type) => console.log(text, type));
 	};
 
 	render() {
@@ -85,8 +72,8 @@ class AuthScreen extends Component {
 						source={LogoBorderWhite}
 						resizeMode="cover"
 					/>
-					{/* <Text style={styles.titleStyle}> Servify </Text> */}
-					{/* //log in with facebook */}
+					<Text style={styles.titleStyle}> Servify </Text>
+					{/* log in with facebook */}
 					<View style={styles.buttonStyle}>
 						<Button bordered onPress={this.loginWithFacebook} style={{ fontSize: 18 }}>
 							<MaterialCommunityIcons
@@ -100,7 +87,7 @@ class AuthScreen extends Component {
 							Log in with Facebook
 						</Button>
 					</View>
-					{/* //Create account with email */}
+					{/* Create account with email */}
 					<View style={styles.buttonStyle}>
 						<Button
 							bordered
@@ -148,9 +135,8 @@ class AuthScreen extends Component {
 const styles = {
 	titleStyle: {
 		marginTop: 20,
-		fontSize: 40,
+		fontSize: 30,
 		color: 'white',
-		marginBottom: 100,
 		fontWeight: 'bold'
 	},
 	authStyle: {
@@ -166,11 +152,4 @@ const styles = {
 	}
 };
 
-function mapStateToProps(state) {
-	return { displayName: state.auth.displayName };
-}
-
-export default connect(
-	mapStateToProps,
-	{ facebookLogin }
-)(AuthScreen);
+export default AuthScreen;

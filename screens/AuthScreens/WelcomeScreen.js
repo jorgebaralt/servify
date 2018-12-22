@@ -5,7 +5,7 @@ import _ from 'lodash';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
 import Slides from '../../components/UI/Slides/Slides';
-import { getFavorites, getEmail } from '../../actions';
+import { getCurrentUser } from '../../actions';
 import { pageHit } from '../../shared/ga_helper';
 
 const SLIDE_DATA = [
@@ -41,19 +41,17 @@ class WelcomeScreen extends Component {
 	};
 
 	async checkForUser() {
-		// check for logged in user
+		// Listen for user loggin change
 		firebase.auth().onAuthStateChanged(async (user) => {
 			if (user) {
-				await this.props.getEmail();
-				if (this.props.email) {
-					this.props.getFavorites(this.props.email);
-				}
+				await this.props.getCurrentUser();
 				// navigate to main if already logged in
-				this.props.navigation.navigate('main');
+				this.props.navigation.navigate('home');
 				this.setState({ authenticated: true });
 			} else {
 				// No user is signed in.
 				this.setState({ authenticated: false });
+				this.props.navigation.navigate('auth');
 			}
 		});
 	}
@@ -71,13 +69,8 @@ class WelcomeScreen extends Component {
 		);
 	}
 }
-function mapStateToProps(state) {
-	return {
-		email: state.auth.email
-	};
-}
 
 export default connect(
-	mapStateToProps,
-	{ getFavorites, getEmail }
+	null,
+	{ getCurrentUser }
 )(WelcomeScreen);

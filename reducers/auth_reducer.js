@@ -1,19 +1,17 @@
 import {
+	GET_CURRENT_USER,
 	STORE_USER_DISPLAY_NAME,
 	LOG_OUT,
 	LOGIN_FAIL,
 	LOGIN_SUCCESS,
-	RESET_MESSAGE_CREATE,
 	GET_EMAIL_SUCCESS,
 	GET_EMAIL_FAIL,
-	GET_USER_LOCATION_FAIL,
-	GET_USER_LOCATION_SUCCESS,
-	PASSWORD_RESET_SUCCESS,
-	PASSWORD_RESET_FAIL
 } from '../actions/types';
 
 export default (state = {}, action) => {
 	switch (action.type) {
+		case GET_CURRENT_USER:
+			return { ...state, user: action.payload };
 		case STORE_USER_DISPLAY_NAME:
 			return { ...state, displayName: action.payload };
 		case LOGIN_SUCCESS:
@@ -26,16 +24,6 @@ export default (state = {}, action) => {
 			return { ...state, email: action.payload };
 		case GET_EMAIL_FAIL:
 			return { ...state };
-		case RESET_MESSAGE_CREATE:
-			return { ...state, message: undefined, passwordMessage: undefined };
-		case GET_USER_LOCATION_SUCCESS:
-			return { ...state, location: action.payload };
-		case GET_USER_LOCATION_FAIL:
-			return { ...state, location: undefined };
-		case PASSWORD_RESET_SUCCESS:
-			return { ...state, passwordMessage: action.payload };
-		case PASSWORD_RESET_FAIL:
-			return { ...state, passwordMessageFail: action.payload };
 		default:
 			return state;
 	}

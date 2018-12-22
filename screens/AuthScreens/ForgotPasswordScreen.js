@@ -12,10 +12,9 @@ import {
 	ActivityIndicator
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { connect } from 'react-redux';
-import { resetMessage, passwordReset } from '../../actions';
 import { pageHit } from '../../shared/ga_helper';
 import { Button, FloatingLabelInput } from '../../components/UI';
+import { passwordReset } from '../../api';
 import { colors } from '../../shared/styles';
 
 let backPressSubscriptions;
@@ -39,28 +38,6 @@ class forgotPassword extends Component {
 		pageHit('Forgot Password Screen');
 	}
 
-	componentWillUpdate(nextProps) {
-		const { passwordMessage, passwordMessageFail } = nextProps;
-
-		if (passwordMessage) {
-			Toast.show({
-				text: passwordMessage,
-				buttonText: 'Okay',
-				duration: 5000,
-				type: 'success'
-			});
-		}
-		if (passwordMessageFail) {
-			Toast.show({
-				text: passwordMessageFail,
-				buttonText: 'Okay',
-				duration: 5000,
-				type: 'warning'
-			});
-		}
-		this.props.resetMessage();
-	}
-
 	componentWillUnmount() {
 		willFocusSubscription.remove();
 	}
@@ -81,12 +58,22 @@ class forgotPassword extends Component {
 		backPressSubscriptions.add(() => this.props.navigation.navigate('auth'));
 	};
 
+	showToast = (text, type) => {
+		Toast.show({
+			text,
+			duration: 2000,
+			type
+		});
+		if (type === 'success') {
+			this.clearState();
+		}
+	};
+
 	resetPassword = async () => {
 		Keyboard.dismiss();
 		this.setState({ loading: true });
 		const { email } = this.state;
-		await this.props.passwordReset(email);
-		this.clearState();
+		await passwordReset(email, (text, type) => this.showToast(text, type));
 	};
 
 	clearState() {
@@ -169,14 +156,5 @@ const styles = {
 	}
 };
 
-function mapStateToProps(state) {
-	return {
-		passwordMessage: state.auth.passwordMessage,
-		passwordMessageFail: state.auth.passwordMessageFail
-	};
-}
 
-export default connect(
-	mapStateToProps,
-	{ resetMessage, passwordReset }
-)(forgotPassword);
+export default forgotPassword;

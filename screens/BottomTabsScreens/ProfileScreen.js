@@ -15,7 +15,6 @@ import {
 	Left
 } from 'native-base';
 import { connect } from 'react-redux';
-import { getCurrentUserDisplayName } from '../../actions';
 import { pageHit } from '../../shared/ga_helper';
 
 let willFocusSubscription;
@@ -31,9 +30,6 @@ class ProfileScreen extends Component {
 	};
 
 	componentWillMount() {
-		if (!this.props.displayName) {
-			this.props.getCurrentUserDisplayName();
-		}
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			this.handleAndroidBack
@@ -103,7 +99,7 @@ class ProfileScreen extends Component {
 				<Header style={Platform.OS === 'android' ? androidHeader : iosHeader}>
 					<Left style={{ flex: 4 }}>
 						<Title style={{ color: 'black', marginLeft: 10 }}>
-							{this.props.displayName}
+							{this.props.user.displayName}
 						</Title>
 					</Left>
 					<Right>
@@ -141,12 +137,13 @@ const styles = {
 
 function mapStateToProps(state) {
 	return {
-		displayName: state.auth.displayName,
+		// FIXME: FIX here, getuser instead of displayName
+		user: state.auth.user,
+		// FIXME: mode profile list out of redux, have it as state
 		profileList: state.profileList
 	};
 }
 
 export default connect(
 	mapStateToProps,
-	{ getCurrentUserDisplayName }
 )(ProfileScreen);

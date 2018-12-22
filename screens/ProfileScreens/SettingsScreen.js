@@ -11,8 +11,7 @@ import {
 	Left,
 	Content
 } from 'native-base';
-import { connect } from 'react-redux';
-import { logOut } from '../../actions';
+import { logout } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 
 class SettingsScreen extends Component {
@@ -22,9 +21,7 @@ class SettingsScreen extends Component {
 	}
 
 	doLogOut = async () => {
-		await this.props.logOut();
-		await this.props.navigation.navigate('home');
-		await this.props.navigation.navigate('auth');
+		await logout();
 	};
 
 	render() {
@@ -60,7 +57,4 @@ class SettingsScreen extends Component {
 	}
 }
 
-export default connect(
-	null,
-	{ logOut }
-)(SettingsScreen);
+export default SettingsScreen;

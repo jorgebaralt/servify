@@ -15,9 +15,8 @@ import {
 	Text
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { connect } from 'react-redux';
 import { Button, FloatingLabelInput } from '../../components/UI';
-import { createEmailAccount, resetMessage } from '../../actions';
+import { createEmailAccount } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 import { colors } from '../../shared/styles';
 
@@ -46,34 +45,20 @@ class CreateAccountScreen extends Component {
 		pageHit('Create Account Screen');
 	}
 
-	// when we receive new props, instantly:
-	componentWillUpdate(nextProps) {
-		const { message, displayName } = nextProps;
-
-		if (displayName) {
-			this.props.navigation.navigate('home');
-			Toast.show({
-				text: 'Welcome ' + displayName,
-				buttonText: 'OK',
-				duration: 3000,
-				type: 'success'
-			});
-			this.props.resetMessage();
-		}
-		if (message) {
-			Toast.show({
-				text: message,
-				buttonText: 'OK',
-				duration: 5000,
-				type: 'warning'
-			});
-			this.props.resetMessage();
-		}
-	}
-
 	componentWillUnmount() {
 		willFocusSubscription.remove();
 	}
+
+	showToast = (text, type) => {
+		Toast.show({
+			text,
+			duration: 2000,
+			type
+		});
+		if (type === 'success') {
+			this.clearState();
+		}
+	};
 
 	handleAndroidBack = () => {
 		backPressSubscriptions = new Set();
@@ -91,6 +76,7 @@ class CreateAccountScreen extends Component {
 		backPressSubscriptions.add(() => this.props.navigation.navigate('auth'));
 	};
 
+
 	createAccount = async () => {
 		Keyboard.dismiss();
 		this.setState({ loading: true });
@@ -101,7 +87,7 @@ class CreateAccountScreen extends Component {
 			email,
 			password
 		};
-		await this.props.createEmailAccount(user);
+		await createEmailAccount(user, (text, type) => this.showToast(text, type));
 		this.clearState();
 	};
 
@@ -218,14 +204,5 @@ const styles = {
 	}
 };
 
-function mapStateToProps(state) {
-	return {
-		displayName: state.auth.displayName,
-		message: state.auth.message
-	};
-}
 
-export default connect(
-	mapStateToProps,
-	{ createEmailAccount, resetMessage }
-)(CreateAccountScreen);
+export default CreateAccountScreen;

@@ -400,7 +400,7 @@ const mapStateToProps = (state) => ({
 	subcategory: state.selectedCategory.subcategory,
 	category: state.selectedCategory.category,
 	servicesList: state.serviceResult.servicesList,
-	userLocation: state.auth.location
+	userLocation: state.location.data
 });
 
 export default connect(

@@ -197,7 +197,7 @@ const styles = {
 function mapStateToProps(state) {
 	return {
 		categories: state.categories,
-		userLocation: state.auth.location
+		userLocation: state.location.data
 	};
 }
 

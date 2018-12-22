@@ -136,8 +136,8 @@ class EditServiceScreen extends Component {
 			location: this.state.location,
 			miles: this.state.miles,
 			description: this.state.description,
-			displayName: this.props.displayName,
-			email: this.props.email,
+			displayName: this.props.user.displayName,
+			email: this.props.user.email,
 			ratingCount: this.props.service.ratingCount,
 			ratingSum: this.props.service.ratingSum,
 			rating: this.props.service.rating,
@@ -311,8 +311,7 @@ const styles = {
 const mapStateToProps = (state) => ({
 	service: state.selectedService.service,
 	result: state.serviceResult,
-	displayName: state.auth.displayName,
-	email: state.auth.email
+	user: state.auth.user
 });
 
 export default connect(

@@ -10,6 +10,7 @@ import feedback from './feedback_reducer';
 import ratings from './rating_reducer';
 import help from './help_questions_reducer';
 import selectedFaq from './select_faq_reducer';
+import location from './location_reducer';
 
 export default combineReducers({
     auth,
@@ -22,5 +23,6 @@ export default combineReducers({
     feedback,
     ratings,
     help,
-    selectedFaq
+    selectedFaq,
+    location
 });

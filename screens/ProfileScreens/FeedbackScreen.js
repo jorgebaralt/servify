@@ -94,7 +94,7 @@ class FeedbackScreen extends Component {
 	sendFeedback = async () => {
 		this.setState({ loading: true });
 		const feedback = {
-			email: this.props.email,
+			email: this.props.user.email,
 			option: this.state.selectedOption,
 			description: this.state.description
 		};
@@ -258,7 +258,7 @@ const styles = {
 };
 
 const mapStateToProps = (state) => ({
-	email: state.auth.email,
+	user: state.auth.user,
 	result: state.feedback
 });
 
