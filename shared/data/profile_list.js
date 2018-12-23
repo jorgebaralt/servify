@@ -1,4 +1,4 @@
-export default () => [
+export const profileList = [
 	{
 		id: 'my_services',
 		title: 'My Services',

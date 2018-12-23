@@ -3,19 +3,18 @@ import { FlatList, DeviceEventEmitter, Platform, Linking } from 'react-native';
 import {
 	Container,
 	Header,
-	Body,
 	Right,
 	Button,
 	Icon,
 	Title,
 	Text,
 	Content,
-	List,
 	ListItem,
 	Left
 } from 'native-base';
 import { connect } from 'react-redux';
 import { pageHit } from '../../shared/ga_helper';
+import { profileList } from '../../shared/data';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -28,6 +27,8 @@ class ProfileScreen extends Component {
 			<Icon type="Feather" name="user" style={{ color: tintColor }} />
 		)
 	};
+
+	state={ profileList }
 
 	componentWillMount() {
 		willFocusSubscription = this.props.navigation.addListener(
@@ -118,7 +119,7 @@ class ProfileScreen extends Component {
 				</Header>
 				<Content>
 					<FlatList
-						data={this.props.profileList}
+						data={this.state.profileList}
 						renderItem={({ item }) => this.renderListItems(item)}
 						keyExtractor={(item) => item.title}
 					/>
@@ -137,10 +138,7 @@ const styles = {
 
 function mapStateToProps(state) {
 	return {
-		// FIXME: FIX here, getuser instead of displayName
 		user: state.auth.user,
-		// FIXME: mode profile list out of redux, have it as state
-		profileList: state.profileList
 	};
 }
 
