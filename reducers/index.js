@@ -15,7 +15,6 @@ export default combineReducers({
     serviceResult,
     selectedService,
     favoriteServices,
-    profileList,
     ratings,
     help,
     selectedFaq,
