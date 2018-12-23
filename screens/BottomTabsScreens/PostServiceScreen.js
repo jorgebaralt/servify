@@ -22,8 +22,9 @@ import {
 	Toast
 } from 'native-base';
 import { connect } from 'react-redux';
-import { createService, resetMessageService } from '../../actions';
+import { createService } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
+import categories from '../../shared/categories';
 
 const maxCharCount = 150;
 const initialState = {
@@ -31,12 +32,13 @@ const initialState = {
 	selectedSubcategory: undefined,
 	title: '',
 	phone: '',
-	zipCode: '',
+	location: '',
 	miles: '',
 	description: '',
 	loading: false,
 	descriptionCharCount: maxCharCount,
-	milesPlaceHolder: ''
+	milesPlaceHolder: '',
+	categories
 };
 
 let willFocusSubscription;
@@ -58,37 +60,16 @@ class PostServiceScreen extends Component {
 			'willFocus',
 			this.handleAndroidBack
 		);
-		willBlurSubscription = this.props.navigation.addListener('willBlur', () => {
-			this.setState(initialState);
-		});
+		willBlurSubscription = this.props.navigation.addListener(
+			'willBlur',
+			() => {
+				this.setState(initialState);
+			}
+		);
 	}
 
 	componentDidMount() {
 		pageHit('Post Service Screen');
-	}
-
-	componentWillUpdate(nextProps) {
-		const { result } = nextProps;
-		const { success, error } = result;
-		if (success) {
-			Toast.show({
-				text: success,
-				buttonText: 'OK',
-				duration: 3000,
-				type: 'success'
-			});
-			this.props.resetMessageService();
-			this.props.navigation.navigate('home');
-		}
-		if (error) {
-			Toast.show({
-				text: error,
-				buttonText: 'OK',
-				duration: 8000,
-				type: 'warning'
-			});
-			this.props.resetMessageService();
-		}
 	}
 
 	componentWillUnmount() {
@@ -112,47 +93,62 @@ class PostServiceScreen extends Component {
 		backPressSubscriptions.add(() => this.props.navigation.navigate('home'));
 	};
 
+	showToast = (text, type) => {
+		Toast.show({
+			text,
+			duration: 2000,
+			type
+		});
+		if (type === 'success') {
+			this.setState(initialState);
+		}
+	};
+
 	doPostService = async () => {
 		Keyboard.dismiss();
-		this.setState({ loading: true });
+
 		const {
 			selectedCategory,
 			selectedSubcategory,
 			title,
 			phone,
-			zipCode,
+			location,
 			description,
 			miles
 		} = this.state;
-		if (selectedCategory && phone && zipCode && description && title) {
-			const { displayName } = this.props;
+		if (
+			selectedCategory
+			&& phone
+			&& location
+			&& description
+			&& title
+			&& miles
+		) {
+			const { displayName } = this.props.user;
 			const servicePost = {
 				selectedCategory,
 				selectedSubcategory,
 				title,
 				phone,
-				zipCode,
-				miles,
+				location,
 				description,
+				miles,
 				displayName
 			};
-
-			await this.props.createService(servicePost, this.props.user.email);
-			this.setState(initialState);
-		} else {
+			this.setState({ loading: true });
+			await createService(
+				servicePost,
+				this.props.user.email,
+				(text, type) => this.showToast(text, type)
+			);
 			this.setState({ loading: false });
-			Toast.show({
-				text: 'Please fill all the fields',
-				buttonText: 'OK',
-				duration: 8000,
-				type: 'warning'
-			});
+		} else {
+			this.showToast('Please fill all the fields', 'warning');
 		}
 	};
 
 	// text is only what I have typed, not value
 	phoneChangeText = (text) => {
-
 		const input = text.replace(/\D/g, '').substring(0, 10);
 		const left = input.substring(0, 3);
 		const middle = input.substring(3, 6);
@@ -190,8 +186,9 @@ class PostServiceScreen extends Component {
 				color: ['#AD1457', '#F06292']
 			}
 		];
+		// add firt option for android
 		if (Platform.OS === 'android') {
-			const newArray = arr.concat(this.props.categories);
+			const newArray = arr.concat(this.state.categories);
 			return newArray.map((category) => (
 				<Picker.Item
 					key={category.id}
@@ -200,8 +197,13 @@ class PostServiceScreen extends Component {
 				/>
 			));
 		}
-		return this.props.categories.map((category) => (
-			<Picker.Item key={category.id} label={category.title} value={category} />
+		// ios works fine
+		return this.state.categories.map((category) => (
+			<Picker.Item
+				key={category.id}
+				label={category.title}
+				value={category}
+			/>
 		));
 	}
 
@@ -216,7 +218,9 @@ class PostServiceScreen extends Component {
 			}
 		];
 		if (Platform.OS === 'android') {
-			const newArray = arr.concat(this.state.selectedCategory.subcategories);
+			const newArray = arr.concat(
+				this.state.selectedCategory.subcategories
+			);
 			return newArray.map((category) => (
 				<Picker.Item
 					key={category.id}
@@ -234,24 +238,29 @@ class PostServiceScreen extends Component {
 		));
 	}
 
+	renderPickerIcon = () => (
+			<Icon
+				name={
+					this.state.selectedSubcategory
+						? undefined
+						: 'ios-arrow-down'
+				}
+				type="Ionicons"
+			/>
+		);
+
 	// TODO: animate when the new picker appears
 	renderSubcategories() {
 		if (this.state.selectedCategory) {
 			if (this.state.selectedCategory.subcategories) {
 				return (
-					<Item picker style={{ margin: 10, marginLeft: 15, width: '90%' }}>
+					<Item
+						picker
+						style={{ margin: 10, marginLeft: 15, width: '90%' }}
+					>
 						<Picker
 							mode="dropdown"
-							iosIcon={(
-<Icon
-									name={
-										this.state.selectedSubcategory
-											? undefined
-											: 'ios-arrow-down'
-									}
-									type="Ionicons"
-/>
-)}
+							iosIcon={this.renderPickerIcon()}
 							placeholder="Pick a Subcategory"
 							placeholderStyle={{ color: '#bfc6ea', left: -15 }}
 							selectedValue={this.state.selectedSubcategory}
@@ -301,25 +310,27 @@ class PostServiceScreen extends Component {
 							<Form style={formStyle}>
 								<Item
 									picker
-									style={{ margin: 10, marginLeft: 15, width: '90%' }}
+									style={{
+										margin: 10,
+										marginLeft: 15,
+										width: '90%'
+									}}
 								>
 									<Picker
 										mode="dropdown"
 										style={{ width: undefined }}
 										placeholder="Pick a Category"
-										placeholderStyle={{ color: '#bfc6ea', left: -15 }}
-										iosIcon={(
-<Icon
-												name={
-													this.state.selectedCategory
-														? undefined
-														: 'ios-arrow-down'
-												}
-												type="Ionicons"
-/>
-)}
-										selectedValue={this.state.selectedCategory}
-										onValueChange={(value) => this.setState({ selectedCategory: value })
+										placeholderStyle={{
+											color: '#bfc6ea',
+											left: -15
+										}}
+										iosIcon={this.renderPickerIcon()}
+										selectedValue={
+											this.state.selectedCategory
+										}
+										onValueChange={(value) => this.setState({
+												selectedCategory: value
+											})
 										}
 										textStyle={{ left: -15 }}
 									>
@@ -333,7 +344,8 @@ class PostServiceScreen extends Component {
 									<Label>Service Title</Label>
 									<Input
 										value={this.state.title}
-										onChangeText={(text) => this.setState({ title: text })}
+										onChangeText={(text) => this.setState({ title: text })
+										}
 										maxLength={25}
 									/>
 								</Item>
@@ -342,28 +354,41 @@ class PostServiceScreen extends Component {
 									<Label>Contact Phone</Label>
 									<Input
 										value={this.state.phone}
-										onChangeText={(text) => this.phoneChangeText(text)}
+										onChangeText={(text) => this.phoneChangeText(text)
+										}
 										keyboardType="phone-pad"
 										maxLength={16}
 									/>
 								</Item>
 								<Item style={itemStyle} floatingLabel>
-									<Label>Address, Zip Code, or Location</Label>
+									<Label>
+										Address, Zip Code, or Location
+									</Label>
 									<Input
-										value={this.state.zipCode}
-										onChangeText={(text) => this.setState({ zipCode: text })}
+										value={this.state.location}
+										onChangeText={(text) => this.setState({ location: text })
+										}
 									/>
 								</Item>
 								<Item style={itemStyle} floatingLabel>
 									<Label>Service cover area (Miles)</Label>
 									<Input
 										value={this.state.miles}
-										onChangeText={(text) => this.setState({ miles: text })}
-										keyboardType="numeric"
-										placeholder={this.state.milesPlaceHolder}
-										onFocus={() => this.setState({ milesPlaceHolder: 'Up to 60 miles' })
+										onChangeText={(text) => this.setState({ miles: text })
 										}
-										onBlur={() => this.setState({ milesPlaceHolder: '' })}
+										keyboardType="numeric"
+										placeholder={
+											this.state.milesPlaceHolder
+										}
+										onFocus={() => this.setState({
+												milesPlaceHolder:
+													'Up to 60 miles'
+											})
+										}
+										onBlur={() => this.setState({
+												milesPlaceHolder: ''
+											})
+										}
 									/>
 								</Item>
 								<Textarea
@@ -373,7 +398,8 @@ class PostServiceScreen extends Component {
 									placeholder="Describe your Service Here"
 									maxLength={maxCharCount}
 									value={this.state.description}
-									onChangeText={(text) => this.descriptionChangeText(text)}
+									onChangeText={(text) => this.descriptionChangeText(text)
+									}
 								/>
 							</Form>
 							<Text style={charCountStyle}>
@@ -434,13 +460,8 @@ const styles = {
 
 function mapStateToProps(state) {
 	return {
-		categories: state.categories,
-		result: state.serviceResult,
 		user: state.auth.user
 	};
 }
 
-export default connect(
-	mapStateToProps,
-	{ createService, resetMessageService }
-)(PostServiceScreen);
+export default connect(mapStateToProps)(PostServiceScreen);

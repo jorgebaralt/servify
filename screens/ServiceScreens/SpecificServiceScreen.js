@@ -297,7 +297,7 @@ class SpecificServiceScreen extends Component {
 			this.props.service,
 			this.props.currentUserReview
 		);
-		this.setState({ loadingUserComment: false });
+		this.setState({ loadingUserComment: false, starCount: 0, dollarCount: 0 });
 	};
 
 	openAlert = () => {

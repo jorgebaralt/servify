@@ -1,8 +1,109 @@
 import axios from 'axios';
+import { Location } from 'expo';
 import _ from 'lodash';
 
 const { CancelToken } = axios;
 let source;
+
+// Create a service
+export const createService = async (servicePost, email, callback) => {
+	let isEmpty;
+	const createServiceURL = 'https://us-central1-servify-716c6.cloudfunctions.net/postService';
+	const checkDuplicateBaseUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/getServicesCount/';
+	const {
+		selectedCategory,
+		selectedSubcategory,
+		phone,
+		location,
+		description,
+		title,
+		miles,
+		displayName
+	} = servicePost;
+
+	if (miles > 60) {
+		return callback('No more than 60 miles for local services, we are working on services across states', 'warning');
+	}
+	
+	// Get geoLocation based on location data
+	const geolocationData = await Location.geocodeAsync(location);
+	const geolocation = geolocationData[0];
+	let locationData;
+	try {
+		const locationInfo = await Location.reverseGeocodeAsync({
+			latitude: geolocation.latitude,
+			longitude: geolocation.longitude
+		});
+		[locationData] = locationInfo;
+		delete geolocation.accuracy;
+		delete geolocation.altitude;
+	} catch (e) {
+		console.log(e);
+		callback('We could not find your address, please provide a correct address', 'warning');
+	}
+
+	// service to be posted, if everything is fine
+	// the rest data (ratings, location(geopoints) is set on backend)
+	const category = selectedCategory.dbReference;
+	const newServicePost = {
+		category,
+		phone,
+		description,
+		title,
+		geolocation,
+		locationData,
+		miles,
+		email,
+		displayName,
+		zipCode: locationData.postalCode
+	};
+	
+
+	// if there is subcategory option, and didnt pick one
+	if (selectedCategory.subcategories && !selectedSubcategory) {
+		return callback('Please Fill Subcategory', 'warning');
+	}
+
+	// if there is a subcategory selected, add it to the object
+	if (selectedSubcategory) {
+		newServicePost.subcategory = selectedSubcategory.dbReference;
+		// Check duplicate service using subcategory
+		const checkURL = checkDuplicateBaseUrl
+			+ '/?email='
+			+ email
+			+ '&subcategory='
+			+ selectedSubcategory.dbReference;
+		try {
+			const response = await axios.get(checkURL);
+			isEmpty = response.data;
+			if (!isEmpty) {
+				return callback('This account already have a Service under this Subcategory, Only 1 service per subcategory is allowed', 'warning');
+			}
+		} catch (e) {
+			return callback('Error connecting to server', 'warning');
+		}
+	} else {
+		// Check duplicate using category
+		const checkURL =			checkDuplicateBaseUrl + '/?email=' + email + '&category=' + category;
+		try {
+			const response = await axios.get(checkURL);
+			isEmpty = response.data;
+			if (!isEmpty) {
+				return callback('This account already have a Service under this category, Only 1 service per category is allowed', 'warning');
+			}
+		} catch (error) {
+			return callback('Error connecting to server', 'warning');
+		}
+	}
+	try {
+		// Everything is fine, post the service
+		await axios.post(createServiceURL, newServicePost);
+		return callback('Service has been posted', 'success');
+	} catch (error) {
+		return callback('Error connecting to server', 'warning');
+	}
+};
+
 // Get popular categories 
 export const getPopularCategories = async (callback) => {
 	const popularCategoryUrl =	'https://us-central1-servify-716c6.cloudfunctions.net/getPopularCategories';
@@ -80,12 +181,12 @@ const sortByDistance = (data, userLocation) => {
 		newService.distance = distance;
 		newData.push(newService);
 	});
-	// sort services by distance
+	// sort services by distances
 	newData = _.sortBy(newData, 'distance');
 	return newData;
 };
 
-// calculate distance of 2 geopoints
+// calculate distance between of 2 geopoints
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
 	const radlat1 = (Math.PI * lat1) / 180;
 	const radlat2 = (Math.PI * lat2) / 180;
