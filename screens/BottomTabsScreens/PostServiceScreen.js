@@ -5,26 +5,18 @@ import {
 	KeyboardAvoidingView,
 	Keyboard,
 	Platform,
-	DeviceEventEmitter
+	DeviceEventEmitter,
+	ScrollView,
+	ActivityIndicator,
+	Text
 } from 'react-native';
-import {
-	Text,
-	Content,
-	Form,
-	Label,
-	Spinner,
-	Item,
-	Input,
-	Textarea,
-	Picker,
-	Icon,
-	Button,
-	Toast
-} from 'native-base';
+import { Item, Picker, Icon, Toast } from 'native-base';
 import { connect } from 'react-redux';
 import { createService } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 import categories from '../../shared/categories';
+import { Button, FloatingLabelInput, TextArea } from '../../components/UI';
+import { colors } from '../../shared/styles';
 
 const maxCharCount = 150;
 const initialState = {
@@ -239,25 +231,18 @@ class PostServiceScreen extends Component {
 	}
 
 	renderPickerIcon = () => (
-			<Icon
-				name={
-					this.state.selectedSubcategory
-						? undefined
-						: 'ios-arrow-down'
-				}
-				type="Ionicons"
-			/>
-		);
+		<Icon
+			name={this.state.selectedSubcategory ? undefined : 'ios-arrow-down'}
+			type="Ionicons"
+		/>
+	);
 
 	// TODO: animate when the new picker appears
 	renderSubcategories() {
 		if (this.state.selectedCategory) {
 			if (this.state.selectedCategory.subcategories) {
 				return (
-					<Item
-						picker
-						style={{ margin: 10, marginLeft: 15, width: '90%' }}
-					>
+					<Item picker>
 						<Picker
 							mode="dropdown"
 							iosIcon={this.renderPickerIcon()}
@@ -280,9 +265,15 @@ class PostServiceScreen extends Component {
 
 	renderSpinner() {
 		if (this.state.loading) {
-			return <Spinner color="orange" />;
+			return (
+				<ActivityIndicator
+					style={{ marginTop: 100 }}
+					size="large"
+					color={colors.white}
+				/>
+			);
 		}
-		return <View />;
+		return <View style={{ height: 80 }} />;
 	}
 
 	render() {
@@ -300,131 +291,131 @@ class PostServiceScreen extends Component {
 					behavior={Platform.OS === 'android' ? 'padding' : null}
 					style={{ flex: 1, justifyContent: 'center' }}
 				>
-					<Content
+					<ScrollView
+						style={{ flex: 1, paddingLeft: 20, paddingRight: 20 }}
 						ref={(scroll) => {
 							this.setReference(scroll);
 						}}
 					>
 						<Text style={titleStyle}>Post a New Service</Text>
-						<View style={{ flex: 1, alignItems: 'center' }}>
-							<Form style={formStyle}>
-								<Item
-									picker
-									style={{
-										margin: 10,
-										marginLeft: 15,
-										width: '90%'
-									}}
-								>
-									<Picker
-										mode="dropdown"
-										style={{ width: undefined }}
-										placeholder="Pick a Category"
-										placeholderStyle={{
-											color: '#bfc6ea',
-											left: -15
-										}}
-										iosIcon={this.renderPickerIcon()}
-										selectedValue={
-											this.state.selectedCategory
-										}
-										onValueChange={(value) => this.setState({
-												selectedCategory: value
-											})
-										}
-										textStyle={{ left: -15 }}
-									>
-										{this.renderPickerItemsCategories()}
-									</Picker>
-								</Item>
+						<Item picker style={{ marginTop: 20 }}>
+							<Picker
+								mode="dropdown"
+								style={{ width: undefined }}
+								placeholder="Pick a Category"
+								placeholderStyle={{
+									color: '#bfc6ea',
+									left: -15
+								}}
+								iosIcon={this.renderPickerIcon()}
+								selectedValue={this.state.selectedCategory}
+								onValueChange={(value) => this.setState({
+										selectedCategory: value
+									})
+								}
+								textStyle={{ left: -15 }}
+							>
+								{this.renderPickerItemsCategories()}
+							</Picker>
+						</Item>
+						{/* If there is subcategory */}
+						{this.renderSubcategories()}
+						<FloatingLabelInput
+							value={this.state.title}
+							label="Service title"
+							firstColor={colors.darkGray}
+							secondColor={colors.primaryColor}
+							fontColor={colors.black}
+							onChangeText={(text) => this.setState({ title: text })
+							}
+							style={{ marginTop: 20 }}
+							maxLength={25}
+						/>
 
-								{this.renderSubcategories()}
+						<FloatingLabelInput
+							value={this.state.phone}
+							label="Contact phone"
+							firstColor={colors.darkGray}
+							secondColor={colors.primaryColor}
+							fontColor={colors.black}
+							onChangeText={(text) => this.phoneChangeText(text)}
+							style={{ marginTop: 20 }}
+							maxLength={16}
+							keyboardType="phone-pad"
+						/>
 
-								<Item style={itemStyle} floatingLabel>
-									<Label>Service Title</Label>
-									<Input
-										value={this.state.title}
-										onChangeText={(text) => this.setState({ title: text })
-										}
-										maxLength={25}
-									/>
-								</Item>
+						<FloatingLabelInput
+							value={this.state.location}
+							label="Address, Zip Code, or Location"
+							firstColor={colors.darkGray}
+							secondColor={colors.primaryColor}
+							fontColor={colors.black}
+							onChangeText={(text) => this.setState({ location: text })
+							}
+							style={{ marginTop: 20 }}
+						/>
 
-								<Item style={itemStyle} floatingLabel>
-									<Label>Contact Phone</Label>
-									<Input
-										value={this.state.phone}
-										onChangeText={(text) => this.phoneChangeText(text)
-										}
-										keyboardType="phone-pad"
-										maxLength={16}
-									/>
-								</Item>
-								<Item style={itemStyle} floatingLabel>
-									<Label>
-										Address, Zip Code, or Location
-									</Label>
-									<Input
-										value={this.state.location}
-										onChangeText={(text) => this.setState({ location: text })
-										}
-									/>
-								</Item>
-								<Item style={itemStyle} floatingLabel>
-									<Label>Service cover area (Miles)</Label>
-									<Input
-										value={this.state.miles}
-										onChangeText={(text) => this.setState({ miles: text })
-										}
-										keyboardType="numeric"
-										placeholder={
-											this.state.milesPlaceHolder
-										}
-										onFocus={() => this.setState({
-												milesPlaceHolder:
-													'Up to 60 miles'
-											})
-										}
-										onBlur={() => this.setState({
-												milesPlaceHolder: ''
-											})
-										}
-									/>
-								</Item>
-								<Textarea
-									style={textAreaStyle}
-									rowSpan={4}
-									bordered
-									placeholder="Describe your Service Here"
-									maxLength={maxCharCount}
-									value={this.state.description}
-									onChangeText={(text) => this.descriptionChangeText(text)
-									}
-								/>
-							</Form>
+						<FloatingLabelInput
+							value={this.state.miles}
+							label="Miles"
+							firstColor={colors.darkGray}
+							secondColor={colors.primaryColor}
+							fontColor={colors.black}
+							onChangeText={(text) => this.setState({ miles: text })
+							}
+							maxLength={2}
+							style={{ marginTop: 20 }}
+							onFocus={() => this.setState({
+									milesPlaceHolder: 'Up to 60 miles'
+								})
+							}
+							onBlur={() => this.setState({
+									milesPlaceHolder: ''
+								})
+							}
+							placeholder={this.state.milesPlaceHolder}
+							keyboardType="numeric"
+						/>
+
+						<TextArea
+							style={{ marginTop: 20 }}
+							label="Description"
+							size={40}
+							firstColor={colors.darkGray}
+							secondColor={colors.primaryColor}
+							fontColor={colors.black}
+							multiline
+							bordered
+							numberOfLines={4}
+							placeholder="Describe your Service Here"
+							maxLength={maxCharCount}
+							value={this.state.description}
+							onChangeText={(text) => this.descriptionChangeText(text)
+							}
+						/>
+						<View>
 							<Text style={charCountStyle}>
 								{this.state.descriptionCharCount}
 							</Text>
-							<View>{this.renderSpinner()}</View>
-
-							<View>
-								<Button
-									bordered
-									dark
-									disabled={this.state.loading}
-									style={buttonStyle}
-									onPress={() => {
-										this.doPostService();
-										this.component._root.scrollToEnd();
-									}}
-								>
-									<Text>Submit</Text>
-								</Button>
-							</View>
 						</View>
+
+						<View>
+							<Button
+								bordered
+								color={colors.primaryColor}
+								style={buttonStyle}
+								onPress={() => {
+									this.doPostService();
+									this.component._root.scrollToEnd();
+								}}
+							>
+								Submit
+							</Button>
+						</View>
+						<View>{this.renderSpinner()}</View>
 						{/* TODO: Services should be first Submitted for approval. */}
 						{/* TODO: Users will also be able to contact you through your account email, create message */}
-					</Content>
+					</ScrollView>
 				</KeyboardAvoidingView>
 			</SafeAreaView>
 		);
@@ -434,27 +425,28 @@ const styles = {
 	titleStyle: {
 		color: 'black',
 		fontSize: 26,
-		margin: 20,
 		fontWeight: '600'
 	},
 	formStyle: {
 		width: '95%'
 	},
 	itemStyle: {
-		margin: 10
+		marginTop: 10
 	},
 	textAreaStyle: {
-		margin: 10,
 		marginTop: 30
 	},
 	buttonStyle: {
-		marginLeft: '67%',
-		marginTop: 10,
-		marginBottom: 20
+		marginTop: 30,
+		marginBottom: 20,
+		position: 'absolute',
+		right: 0
 	},
 	charCountStyle: {
-		marginLeft: '80%',
-		color: '#bfc6ea'
+		position: 'absolute',
+		right: 0,
+		color: '#bfc6ea',
+		marginBottom: 10
 	}
 };
 

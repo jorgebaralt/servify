@@ -189,5 +189,4 @@ const styles = {
 	}
 };
 
-
 export default LoginScreen;
