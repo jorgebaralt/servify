@@ -165,7 +165,7 @@ class PostServiceScreen extends Component {
 	};
 
 	// TODO: animate when the new picker appears
-	renderSubcategories() {
+	renderSubcategoriesPicker() {
 		if (this.state.selectedCategory) {
 			if (this.state.selectedCategory.subcategories) {
 				return (
@@ -219,7 +219,6 @@ class PostServiceScreen extends Component {
 						}}
 					>
 						<Text style={titleStyle}>Post a New Service</Text>
-						{/* TODO: new picker here */}
 						<ListPicker
 							onPress={() => this.setState({ categoryModalVisible: true })
 							}
@@ -238,7 +237,8 @@ class PostServiceScreen extends Component {
 							style={{ marginTop: 30 }}
 						/>
 						{/* If there is subcategory */}
-						{this.renderSubcategories()}
+						{this.renderSubcategoriesPicker()}
+						{/* Service Title */}
 						<FloatingLabelInput
 							value={this.state.title}
 							label="Service title"
@@ -250,7 +250,7 @@ class PostServiceScreen extends Component {
 							style={{ marginTop: 30 }}
 							maxLength={25}
 						/>
-
+						{/* Phone */}
 						<FloatingLabelInput
 							value={this.state.phone}
 							label="Contact phone"
@@ -262,7 +262,7 @@ class PostServiceScreen extends Component {
 							maxLength={16}
 							keyboardType="phone-pad"
 						/>
-
+						{/* Address */}
 						<FloatingLabelInput
 							value={this.state.location}
 							label="Address, Zip Code, or Location"
@@ -273,7 +273,7 @@ class PostServiceScreen extends Component {
 							}
 							style={{ marginTop: 30 }}
 						/>
-
+						{/* Miles */}
 						<FloatingLabelInput
 							value={this.state.miles}
 							label="Miles"
@@ -295,7 +295,7 @@ class PostServiceScreen extends Component {
 							placeholder={this.state.milesPlaceHolder}
 							keyboardType="numeric"
 						/>
-
+						{/* Description */}
 						<TextArea
 							style={{ marginTop: 30 }}
 							label="Description"
@@ -312,11 +312,13 @@ class PostServiceScreen extends Component {
 							onChangeText={(text) => this.descriptionChangeText(text)
 							}
 						/>
+						{/* Description char count */}
 						<View>
 							<Text style={charCountStyle}>
 								{this.state.descriptionCharCount}
 							</Text>
 						</View>
+						{/* Submit */}
 						<View style={{ height: 100 }}>
 							<Button
 								bordered
