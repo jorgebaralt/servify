@@ -4,18 +4,24 @@ import {
 	SafeAreaView,
 	KeyboardAvoidingView,
 	Keyboard,
-	Platform,
 	DeviceEventEmitter,
 	ScrollView,
 	ActivityIndicator,
 	Text
 } from 'react-native';
-import { Item, Picker, Icon, Toast } from 'native-base';
+import { Entypo } from '@expo/vector-icons';
+import { Toast } from 'native-base';
 import { connect } from 'react-redux';
 import { createService } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 import categories from '../../shared/categories';
-import { Button, FloatingLabelInput, TextArea } from '../../components/UI';
+import { formatPhone } from '../../shared/helpers';
+import {
+	Button,
+	FloatingLabelInput,
+	TextArea,
+	ListPicker
+} from '../../components/UI';
 import { colors } from '../../shared/styles';
 
 const maxCharCount = 150;
@@ -30,7 +36,9 @@ const initialState = {
 	loading: false,
 	descriptionCharCount: maxCharCount,
 	milesPlaceHolder: '',
-	categories
+	categories,
+	categoryModalVisible: false,
+	subcategoryModalVisible: false
 };
 
 let willFocusSubscription;
@@ -41,7 +49,7 @@ class PostServiceScreen extends Component {
 	static navigationOptions = {
 		title: 'Post',
 		tabBarIcon: ({ tintColor }) => (
-			<Icon type="Entypo" name="plus" style={{ color: tintColor }} />
+			<Entypo name="plus" size={32} style={{ color: tintColor }} />
 		)
 	};
 
@@ -96,9 +104,9 @@ class PostServiceScreen extends Component {
 		}
 	};
 
+	// On button submit
 	doPostService = async () => {
 		Keyboard.dismiss();
-
 		const {
 			selectedCategory,
 			selectedSubcategory,
@@ -116,6 +124,7 @@ class PostServiceScreen extends Component {
 			&& title
 			&& miles
 		) {
+			this.setState({ loading: true });
 			const { displayName } = this.props.user;
 			const servicePost = {
 				selectedCategory,
@@ -127,7 +136,6 @@ class PostServiceScreen extends Component {
 				miles,
 				displayName
 			};
-			this.setState({ loading: true });
 			await createService(
 				servicePost,
 				this.props.user.email,
@@ -139,22 +147,10 @@ class PostServiceScreen extends Component {
 		}
 	};
 
-	// text is only what I have typed, not value
+	// format phone text
 	phoneChangeText = (text) => {
-		const input = text.replace(/\D/g, '').substring(0, 10);
-		const left = input.substring(0, 3);
-		const middle = input.substring(3, 6);
-		const right = input.substring(6, 10);
-
-		if (input.length > 6) {
-			this.setState({ phone: `(${left}) ${middle} - ${right}` });
-		} else if (input.length > 3) {
-			this.setState({ phone: `(${left}) ${middle}` });
-		} else if (input.length > 1) {
-			this.setState({ phone: `(${left}` });
-		} else {
-			this.setState({ phone: left });
-		}
+		const result = formatPhone(text);
+		this.setState({ phone: result });
 	};
 
 	descriptionChangeText = (text) => {
@@ -168,95 +164,27 @@ class PostServiceScreen extends Component {
 		this.component = scroll;
 	};
 
-	renderPickerItemsCategories() {
-		const arr = [
-			{
-				id: '0.0',
-				title: 'Pick a category',
-				description: 'none',
-				dbReference: 'none',
-				color: ['#AD1457', '#F06292']
-			}
-		];
-		// add firt option for android
-		if (Platform.OS === 'android') {
-			const newArray = arr.concat(this.state.categories);
-			return newArray.map((category) => (
-				<Picker.Item
-					key={category.id}
-					label={category.title}
-					value={category}
-				/>
-			));
-		}
-		// ios works fine
-		return this.state.categories.map((category) => (
-			<Picker.Item
-				key={category.id}
-				label={category.title}
-				value={category}
-			/>
-		));
-	}
-
-	renderPickerItemsSubcategories() {
-		const arr = [
-			{
-				id: '0.0',
-				title: 'Pick a Subcategory',
-				description: 'none',
-				dbReference: 'none',
-				color: ['#AD1457', '#F06292']
-			}
-		];
-		if (Platform.OS === 'android') {
-			const newArray = arr.concat(
-				this.state.selectedCategory.subcategories
-			);
-			return newArray.map((category) => (
-				<Picker.Item
-					key={category.id}
-					label={category.title}
-					value={category}
-				/>
-			));
-		}
-		return this.state.selectedCategory.subcategories.map((subcategory) => (
-			<Picker.Item
-				key={subcategory.id}
-				label={subcategory.title}
-				value={subcategory}
-			/>
-		));
-	}
-
-	renderPickerIcon = () => (
-		<Icon
-			name={this.state.selectedSubcategory ? undefined : 'ios-arrow-down'}
-			type="Ionicons"
-		/>
-	);
-
 	// TODO: animate when the new picker appears
 	renderSubcategories() {
 		if (this.state.selectedCategory) {
 			if (this.state.selectedCategory.subcategories) {
 				return (
-					<Item picker>
-						<Picker
-							mode="dropdown"
-							iosIcon={this.renderPickerIcon()}
-							placeholder="Pick a Subcategory"
-							placeholderStyle={{ color: '#bfc6ea', left: -15 }}
-							selectedValue={this.state.selectedSubcategory}
-							onValueChange={(value) => {
-								this.setState({ selectedSubcategory: value });
-							}}
-							textStyle={{ left: -15 }}
-						>
-							{this.renderPickerItemsSubcategories()}
-						</Picker>
-					</Item>
+					<ListPicker
+						onPress={() => this.setState({ subcategoryModalVisible: true })
+						}
+						visible={this.state.subcategoryModalVisible}
+						callback={(selectedSubcategory) => this.setState({
+								subcategoryModalVisible: false,
+								selectedSubcategory
+							})
+						}
+						label="Subcategory"
+						selected={this.state.selectedSubcategory}
+						placeholder="Pick a subcategory"
+						title="Pick a subcategory"
+						data={this.state.selectedCategory.subcategories}
+						style={{ marginTop: 50 }}
+					/>
 				);
 			}
 		}
@@ -267,57 +195,48 @@ class PostServiceScreen extends Component {
 		if (this.state.loading) {
 			return (
 				<ActivityIndicator
-					style={{ marginTop: 100 }}
+					style={{ marginTop: 20 }}
 					size="large"
-					color={colors.white}
+					color={colors.primaryColor}
 				/>
 			);
 		}
-		return <View style={{ height: 80 }} />;
 	}
 
 	render() {
-		const {
-			titleStyle,
-			formStyle,
-			itemStyle,
-			textAreaStyle,
-			buttonStyle,
-			charCountStyle
-		} = styles;
+		const { titleStyle, buttonStyle, charCountStyle } = styles;
 		return (
 			<SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
 				<KeyboardAvoidingView
-					behavior={Platform.OS === 'android' ? 'padding' : null}
+					behavior="padding"
 					style={{ flex: 1, justifyContent: 'center' }}
 				>
 					<ScrollView
 						style={{ flex: 1, paddingLeft: 20, paddingRight: 20 }}
+						keyboardShouldPersistTaps="always"
 						ref={(scroll) => {
 							this.setReference(scroll);
 						}}
 					>
 						<Text style={titleStyle}>Post a New Service</Text>
-						<Item picker style={{ marginTop: 20 }}>
-							<Picker
-								mode="dropdown"
-								style={{ width: undefined }}
-								placeholder="Pick a Category"
-								placeholderStyle={{
-									color: '#bfc6ea',
-									left: -15
-								}}
-								iosIcon={this.renderPickerIcon()}
-								selectedValue={this.state.selectedCategory}
-								onValueChange={(value) => this.setState({
-										selectedCategory: value
-									})
-								}
-								textStyle={{ left: -15 }}
-							>
-								{this.renderPickerItemsCategories()}
-							</Picker>
-						</Item>
+						{/* TODO: new picker here */}
+						<ListPicker
+							onPress={() => this.setState({ categoryModalVisible: true })
+							}
+							visible={this.state.categoryModalVisible}
+							callback={(selectedCategory) => this.setState({
+								categoryModalVisible: false,
+								selectedCategory,
+								selectedSubcategory: undefined
+							})
+							}
+							label="Category"
+							selected={this.state.selectedCategory}
+							placeholder="Pick a category"
+							title="Pick a category"
+							data={this.state.categories}
+							style={{ marginTop: 30 }}
+						/>
 						{/* If there is subcategory */}
 						{this.renderSubcategories()}
 						<FloatingLabelInput
@@ -328,7 +247,7 @@ class PostServiceScreen extends Component {
 							fontColor={colors.black}
 							onChangeText={(text) => this.setState({ title: text })
 							}
-							style={{ marginTop: 20 }}
+							style={{ marginTop: 30 }}
 							maxLength={25}
 						/>
 
@@ -339,7 +258,7 @@ class PostServiceScreen extends Component {
 							secondColor={colors.primaryColor}
 							fontColor={colors.black}
 							onChangeText={(text) => this.phoneChangeText(text)}
-							style={{ marginTop: 20 }}
+							style={{ marginTop: 30 }}
 							maxLength={16}
 							keyboardType="phone-pad"
 						/>
@@ -352,7 +271,7 @@ class PostServiceScreen extends Component {
 							fontColor={colors.black}
 							onChangeText={(text) => this.setState({ location: text })
 							}
-							style={{ marginTop: 20 }}
+							style={{ marginTop: 30 }}
 						/>
 
 						<FloatingLabelInput
@@ -364,7 +283,7 @@ class PostServiceScreen extends Component {
 							onChangeText={(text) => this.setState({ miles: text })
 							}
 							maxLength={2}
-							style={{ marginTop: 20 }}
+							style={{ marginTop: 30 }}
 							onFocus={() => this.setState({
 									milesPlaceHolder: 'Up to 60 miles'
 								})
@@ -378,7 +297,7 @@ class PostServiceScreen extends Component {
 						/>
 
 						<TextArea
-							style={{ marginTop: 20 }}
+							style={{ marginTop: 30 }}
 							label="Description"
 							size={40}
 							firstColor={colors.darkGray}
@@ -398,23 +317,20 @@ class PostServiceScreen extends Component {
 								{this.state.descriptionCharCount}
 							</Text>
 						</View>
-
-						<View>
+						<View style={{ height: 100 }}>
 							<Button
 								bordered
 								color={colors.primaryColor}
 								style={buttonStyle}
 								onPress={() => {
 									this.doPostService();
-									this.component._root.scrollToEnd();
 								}}
 							>
 								Submit
 							</Button>
 						</View>
-						<View>{this.renderSpinner()}</View>
+						{this.renderSpinner()}
 						{/* TODO: Services should be first Submitted for approval. */}
-						{/* TODO: Users will also be able to contact you through your account email, create message */}
 					</ScrollView>
 				</KeyboardAvoidingView>
 			</SafeAreaView>
@@ -439,8 +355,8 @@ const styles = {
 	buttonStyle: {
 		marginTop: 30,
 		marginBottom: 20,
-		position: 'absolute',
-		right: 0
+		right: 0,
+		position: 'absolute'
 	},
 	charCountStyle: {
 		position: 'absolute',

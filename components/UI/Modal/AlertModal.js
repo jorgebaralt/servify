@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
 		shadowRadius: 2,
 		elevation: 1,
 		zIndex: 10,
-		overflow:'hidden'
+		overflow: 'hidden'
 	},
 });
 

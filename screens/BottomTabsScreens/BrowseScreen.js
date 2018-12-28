@@ -17,7 +17,7 @@ import {
 	Content
 } from 'native-base';
 import { connect } from 'react-redux';
-import { selectCategory, filterCategories, filterEmpty } from '../../actions';
+import { selectCategory } from '../../actions';
 import CategoryCard from '../../components/CategoryCard';
 import { pageHit } from '../../shared/ga_helper';
 import categories from '../../shared/categories';
