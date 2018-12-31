@@ -52,6 +52,7 @@ class LoginScreen extends Component {
 		if (type === 'success') {
 			this.clearState();
 		}
+		this.setState({ loading: false });
 	};
 
 	handleAndroidBack = () => {

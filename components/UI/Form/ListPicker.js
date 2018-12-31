@@ -15,7 +15,7 @@ export const ListPicker = (props) => {
 				{
 					borderBottomWidth: props.selected ? 1.5 : 1,
 					borderBottomColor: props.selected
-						? colors.primaryColor
+						? props.color
 						: colors.darkGray
 				},
 				props.style
@@ -24,7 +24,7 @@ export const ListPicker = (props) => {
 			{/* render selected item name OR placeholder */}
 			{selected ? (
 				<View>
-					<Text style={{ color: colors.primaryColor }}>
+					<Text style={{ color: props.color }}>
 						{props.label}
 					</Text>
 					<Text style={{ fontSize: 16, marginTop: 5 }}>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Animated, StyleSheet, View } from 'react-native';
 
-class ServiceImage extends Component {
+class FadeImage extends Component {
 	state = { fadeAnimation: new Animated.Value(0) };
 
 	onLoad = () => {
@@ -14,14 +14,14 @@ class ServiceImage extends Component {
 	render() {
 		return (
 			<View
-				style={styles.imageContainerStyle}
+				style={[styles.imageContainerStyle, this.props.style]}
 			>
 				<Animated.Image
-					source={require('../../assets/default/food/1.jpg')}
+					source={this.props.image}
 					style={{
 						width: 'auto',
 						height: '100%',
-						opacity: this.state.fadeAnimation
+						opacity: this.state.fadeAnimation,
 					}}
 					onLoad={this.onLoad}
 					resizeMode="cover"
@@ -34,9 +34,10 @@ class ServiceImage extends Component {
 const styles = StyleSheet.create({
 	imageContainerStyle: {
 		width: 'auto',
-		height: 100,
-		backgroundColor: '#EEEEEE'
+		height: 'auto',
+		backgroundColor: '#EEEEEE',
+		overflow: 'hidden'
 	}
 });
 
-export default ServiceImage;
+export default FadeImage;

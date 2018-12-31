@@ -51,7 +51,7 @@ class WelcomeScreen extends Component {
 			} else {
 				// No user is signed in.
 				this.setState({ authenticated: false });
-				this.props.navigation.navigate('auth');
+				this.props.navigation.navigate('welcome');
 			}
 		});
 	}

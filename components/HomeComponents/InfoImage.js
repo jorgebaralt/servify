@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Dimensions, ImageBackground, TouchableOpacity, Animated, Text } from 'react-native';
-import { Button } from '../UI';
+import {
+	View,
+	StyleSheet,
+	ImageBackground,
+	TouchableOpacity,
+	Animated,
+} from 'react-native';
 
-const { width } = Dimensions.get('window');
-
-class InfoImage extends Component{
-	state = { fadeAnimation: new Animated.Value(0) }
+class InfoImage extends Component {
+	state = { fadeAnimation: new Animated.Value(0) };
 
 	onLoad = () => {
 		Animated.timing(this.state.fadeAnimation, {
@@ -16,20 +19,25 @@ class InfoImage extends Component{
 
 	render() {
 		return (
-			<TouchableOpacity style={styles.content}>
+			<TouchableOpacity style={[styles.content, this.props.style, {borderRadius: this.props.rounded ? 8 : 0 }]} disabled={this.props.disablePress}>
 				<Animated.View style={{ opacity: this.state.fadeAnimation }}>
 					<ImageBackground
-						source={require('../../assets/backgrounds/yellow.jpg')}
+						source={this.props.image}
 						style={{ width: 'auto', height: '100%' }}
 						onLoad={this.onLoad}
 						resizeMode="cover"
 					>
-						<View style={{ position: 'absolute', left: 20, bottom: 20, right: 5 }}>
-							<Text style={{ fontSize: 30, color: 'white', fontWeight: '600', marginBottom: 50 }}>{this.props.text}</Text>
-
-							<Button bordered style={{ fontSize: 20 }}>
-								{this.props.buttonText}
-							</Button>
+						<View
+							style={[
+								styles.darkenImageStyle,
+								{
+									backgroundColor: `rgba(0,0,0,${
+										this.props.opacity ? this.props.opacity : 0
+									})`
+								}
+							]}
+						>
+							{this.props.children}
 						</View>
 					</ImageBackground>
 				</Animated.View>
@@ -41,13 +49,17 @@ class InfoImage extends Component{
 const styles = StyleSheet.create({
 	content: {
 		flex: 1,
+		width: '100%',
 		height: 300,
-		marginTop: 15,
-		width: width - 40,
-		marginLeft: 20,
 		overflow: 'hidden',
-		borderRadius: 8,
-		marginBottom: 40,
+		backgroundColor: '#EEEEEE'
+	},
+	darkenImageStyle: {
+		position: 'absolute',
+		left: 0,
+		bottom: 0,
+		right: 0,
+		top: 0
 	}
 });
 

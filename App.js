@@ -18,7 +18,7 @@ import CreateAccountScreen from './screens/AuthScreens/CreateAccountScreen';
 import LoginScreen from './screens/AuthScreens/LoginScreen';
 import HomeScreen from './screens/BottomTabsScreens/HomeScreen';
 import BrowseScreen from './screens/BottomTabsScreens/BrowseScreen';
-import PostServiceScreen from './screens/BottomTabsScreens/PostServiceScreen';
+import PublishServiceInfo from './screens/BottomTabsScreens/PublishServiceInfo';
 import ProfileScreen from './screens/BottomTabsScreens/ProfileScreen';
 import SettingsScreen from './screens/ProfileScreens/SettingsScreen';
 import ServicesListScreen from './screens/BrowseScreens/ServicesListScreen';
@@ -32,6 +32,7 @@ import ReviewsScreen from './screens/ServiceScreens/ReviewsScreen';
 import HelpScreen from './screens/ProfileScreens/HelpScreen';
 import SpecificFaqScreen from './screens/ProfileScreens/SpecificFaqScreen';
 import ReportScreen from './screens/ServiceScreens/ReportScreen';
+import PublishServiceScreen from './screens/BottomTabsScreens/PublishService/PublishServiceScreen';
 // Style
 import { colors } from './shared/styles';
 
@@ -54,7 +55,7 @@ export default class App extends React.Component {
 			{
 				home: { screen: HomeScreen },
 				browse: { screen: BrowseScreen },
-				postService: { screen: PostServiceScreen },
+				publishInfo: { screen: PublishServiceInfo },
 				profile: { screen: ProfileScreen }
 			},
 			{
@@ -105,7 +106,8 @@ export default class App extends React.Component {
 				reviews: { screen: ReviewsScreen },
 				help: { screen: HelpScreen },
 				specificFaq: { screen: SpecificFaqScreen },
-				report: { screen: ReportScreen }
+				report: { screen: ReportScreen },
+				publish: { screen: PublishServiceScreen }
 			},
 			{
 				headerMode: 'none'

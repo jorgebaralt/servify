@@ -17,11 +17,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import CategoryCard from '../../components/CategoryCard';
 import SpecificServiceCard from '../../components/HomeComponents/SpecificServiceCard';
 import InfoImage from '../../components/HomeComponents/InfoImage';
-import {
-	selectService,
-	getUserLocation,
-	selectCategory
-} from '../../actions';
+import { Button } from '../../components/UI';
+import { colors, globalStyles } from '../../shared/styles';
+import { selectService, getUserLocation, selectCategory } from '../../actions';
 import * as api from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 
@@ -129,7 +127,11 @@ class HomeScreen extends Component {
 				DISTANCE,
 				(popularNearServices) => this.setState({ popularNearServices })
 			);
-			if (this.state.popularCategories && this.state.newNearServices && this.state.popularNearServices) {
+			if (
+				this.state.popularCategories
+				&& this.state.newNearServices
+				&& this.state.popularNearServices
+			) {
 				this.setState({ dataLoaded: true });
 			}
 		}
@@ -163,8 +165,12 @@ class HomeScreen extends Component {
 	renderNewServicesNear = () => {
 		if (this.state.newNearServices.length > 0) {
 			return (
-				<View style={{ marginTop: 15 }}>
-					<Text style={styles.titleStyle}>New services near you</Text>
+				<View style={{ marginTop: 5 }}>
+					<Text
+						style={[globalStyles.sectionTitle, { marginLeft: 20 }]}
+					>
+						New services near you
+					</Text>
 					<FlatList
 						data={this.state.newNearServices}
 						renderItem={({ item, index }) => this.renderNearNearServices(item, index)
@@ -178,13 +184,13 @@ class HomeScreen extends Component {
 		if (this.state.newNearServices.length === 0) {
 			// TODO: change for image
 			return (
-				<View style={{ marginTop: 25, marginBottom: 20 }}>
+				<View style={{ marginTop: 10, marginBottom: 10 }}>
 					<Text style={styles.textStyle}>
 						No new services near you, be the first on creating new
 						services around your area on the
 						<Text
 							style={[styles.textStyle, { color: '#0277BD' }]}
-							onPress={() => this.props.navigation.navigate('postService')
+							onPress={() => this.props.navigation.navigate('publishInfo')
 							}
 						>
 							{' '}
@@ -207,20 +213,20 @@ class HomeScreen extends Component {
 	);
 
 	// make sure we can render popular categories
-	renderPopularCategories = () => {
-			return (
-				<View style={{ marginTop: 45 }}>
-					<Text style={styles.titleStyle}>Popular categories</Text>
-					<FlatList
-						data={this.state.popularCategories}
-						renderItem={({ item, index }) => this.renderPopularCategoriesList(item, index)
-						}
-						keyExtractor={(item) => item.title}
-						horizontal
-					/>
-				</View>
-			);
-	};
+	renderPopularCategories = () => (
+			<View style={{ marginTop: 45 }}>
+				<Text style={[globalStyles.sectionTitle, { marginLeft: 20 }]}>
+					Popular categories
+				</Text>
+				<FlatList
+					data={this.state.popularCategories}
+					renderItem={({ item, index }) => this.renderPopularCategoriesList(item, index)
+					}
+					keyExtractor={(item) => item.title}
+					horizontal
+				/>
+			</View>
+		);
 
 	// each item in popular near services
 	renderPopularNearServicesList = (service, i) => (
@@ -241,8 +247,12 @@ class HomeScreen extends Component {
 	renderPopularNearServices = () => {
 		if (this.state.popularNearServices.length > 0) {
 			return (
-				<View style={{ marginTop: 25 }}>
-					<Text style={styles.titleStyle}>Popular near services</Text>
+				<View style={{ marginTop: 5 }}>
+					<Text
+						style={[globalStyles.sectionTitle, { marginLeft: 20 }]}
+					>
+						Popular near services
+					</Text>
 					<FlatList
 						data={this.state.popularNearServices}
 						renderItem={({ item, index }) => this.renderPopularNearServicesList(item, index)
@@ -260,40 +270,81 @@ class HomeScreen extends Component {
 		if (this.state.dataLoaded) {
 			return (
 				<View>
-			
 					{this.renderPopularCategories()}
 					{this.renderNewServicesNear()}
 					{this.renderPopularNearServices()}
 					{/* Show image when last service list is rendered */}
-					<View>
-						<Text style={styles.titleStyle}>Keep growing</Text>
+					<View style={{ paddingLeft: 20, paddingRight: 20 }}>
+						<Text
+							style={[
+								globalStyles.sectionTitle,
+							]}
+						>
+							Keep growing
+						</Text>
 						<InfoImage
+							image={require('../../assets/backgrounds/yellow.jpg')}
 							text="Host your service near Orlando, FL "
 							buttonText="Post a service"
-						/>
+							style={{ marginTop: 5, height: 250 }}
+							rounded
+						>
+							<View
+								style={{
+									position: 'absolute',
+									left: 20,
+									bottom: 20,
+									right: 5
+								}}
+							>
+								<Text
+									style={{
+										fontSize: 30,
+										fontWeight: '600',
+										color: colors.white,
+										marginBottom: 40
+									}}
+								>
+									Host your service near Orlando, FL{' '}
+								</Text>
+								<Button bordered style={{ fontSize: 20 }}>
+									Publish your service
+								</Button>
+							</View>
+						</InfoImage>
 					</View>
-					
 				</View>
 			);
 		}
-		return <ActivityIndicator style={{ marginTop: 100 }} size="large" color="#FF7043" />;
+		return (
+			<ActivityIndicator
+				style={{ marginTop: 100 }}
+				size="large"
+				color="#FF7043"
+			/>
+		);
 	}
 
 	render() {
 		return (
-				<ScrollView
-					style={{ flex: 1, marginTop: 0, paddingTop: 0, backgroundColor: '#FFFFFF' }}
-					refreshControl={(
-						<RefreshControl
-							refreshing={this.state.refreshing}
-							onRefresh={async () => this.onRefresh()}
-							tintColor="orange"
-							colors={['orange']}
-						/>
-					)}
-				>
-					{this.renderContent()}
-				</ScrollView>
+			<ScrollView
+				style={{
+					flex: 1,
+					marginTop: 0,
+					paddingTop: 0,
+					backgroundColor: '#FFFFFF'
+				}}
+				refreshControl={(
+<RefreshControl
+						refreshing={this.state.refreshing}
+						onRefresh={async () => this.onRefresh()}
+						tintColor="orange"
+						colors={['orange']}
+/>
+)}
+			>
+				{this.renderContent()}
+			</ScrollView>
 		);
 	}
 }
@@ -303,12 +354,6 @@ const styles = {
 		backgroundColor: '#F5F5F5'
 	},
 	iosHeader: {},
-	titleStyle: {
-		fontSize: 26,
-		marginLeft: 20,
-		marginRight: 20,
-		fontWeight: '600'
-	},
 	textStyle: {
 		fontSize: 22,
 		marginLeft: 20,
@@ -321,7 +366,7 @@ const styles = {
 		shadowColor: 'black',
 		shadowOpacity: 0.2,
 		elevation: 1,
-		marginTop: 20,
+		marginTop: 10,
 		marginBottom: 20,
 		marginLeft: 20,
 		borderRadius: 8,
@@ -331,7 +376,7 @@ const styles = {
 
 function mapStateToProps(state) {
 	return {
-		userLocation: state.location.data,
+		userLocation: state.location.data
 	};
 }
 

@@ -3,7 +3,7 @@ import { View, TouchableOpacity, LayoutAnimation } from 'react-native';
 import { Text, Card, CardItem } from 'native-base';
 import { connect } from 'react-redux';
 import StarsRating from '../Ratings/StarsRating';
-import ServiceImage from './ServiceImage';
+import FadeImage from './FadeImage';
 
 class SpecificServiceCard extends Component {
 	// animate on appear
@@ -55,7 +55,7 @@ class SpecificServiceCard extends Component {
 				}}
 			>
 				<Card style={cardStyle}>
-					<ServiceImage />
+					<FadeImage image={require('../../assets/default/food/1.jpg')} style={{ height: 100 }} />
 					<CardItem header style={cardHeaderStyle}>
 						<Text style={titleStyleCard}>{service.title}</Text>
 						{this.renderContent()}

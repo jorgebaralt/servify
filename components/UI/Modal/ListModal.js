@@ -46,9 +46,9 @@ const ListModal = (props) => {
 					</Text>
 					<TouchableOpacity
 						onPress={() => props.callback()}
-						style={{ position: 'absolute', left: 5 }}
+						style={{ position: 'absolute', left: 10 }}
 					>
-						<Ionicons type="Ionicons" size={32} name="ios-arrow-back" />
+						<Ionicons type="Ionicons" size={32} name="md-close" />
 					</TouchableOpacity>
 				</View>
 				<FlatList

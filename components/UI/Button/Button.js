@@ -1,18 +1,16 @@
 /* eslint-disable no-dupe-keys */
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-
+import { colors } from '../../../shared/styles';
 
 export const Button = (props) => {
 	const styles = StyleSheet.create({
 		defaultButton: {
 			alignSelf: 'flex-start',
-			backgroundColor: props.color ? props.color : 'blue',
+			backgroundColor: props.disabled ? colors.darkGray : props.color ? props.color : 'blue',
 			padding: 10,
 			borderRadius: 5,
 			width: 'auto',
-			marginLeft: 5,
-			marginRight: 5,
 		},
 		defaultText: {
 			alignSelf: 'center',
@@ -20,7 +18,7 @@ export const Button = (props) => {
 			fontSize: props.style ? (props.style.fontSize ? props.style.fontSize : 16) : 16
 		},
 		borderedButtonStyle: {
-			borderColor: props.color ? props.color : 'white',
+			borderColor: props.disabled ? colors.darkGray : (props.color ? props.color : 'white'),
 			borderWidth: 1,
 			backgroundColor: 'transparent',
 		},
@@ -44,7 +42,7 @@ export const Button = (props) => {
 	}
 	
 	return (
-		<TouchableOpacity onPress={props.onPress} style={[buttonStyle, props.style]}>
+		<TouchableOpacity onPress={props.onPress} style={[buttonStyle, props.style]} disabled={props.disabled}>
 			<Text style={textStyle}>
 				{props.children}
 			</Text>
