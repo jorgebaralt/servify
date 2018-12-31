@@ -77,13 +77,15 @@ class PostServiceScreen extends Component {
 							position: 'absolute',
 							left: 10,
 							bottom: 20,
-							right: 0
+							right: 0,
+							justifyContent: 'space-between',
+							flexDirection: 'row'
 						}}
 					>
 						<Text
 							style={{
 								color: colors.white,
-								fontSize: 30,
+								fontSize: 26,
 								fontWeight: '600',
 								marginBottom: 10
 							}}
@@ -95,11 +97,7 @@ class PostServiceScreen extends Component {
 							onPress={() => {
 								this.props.navigation.navigate('publish');
 							}}
-							style={{
-								position: 'absolute',
-								right: 20,
-								bottom: 0
-							}}
+							style={{marginRight: 10}}
 						>
 							Get started
 						</Button>
