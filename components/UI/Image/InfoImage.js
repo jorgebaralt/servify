@@ -63,4 +63,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default InfoImage;
+export { InfoImage };

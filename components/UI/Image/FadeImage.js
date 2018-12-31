@@ -40,4 +40,4 @@ const styles = StyleSheet.create({
 	}
 });
 
-export default FadeImage;
+export { FadeImage };

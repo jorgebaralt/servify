@@ -18,7 +18,7 @@ import {
 } from 'native-base';
 import { connect } from 'react-redux';
 import { selectCategory } from '../../actions';
-import CategoryCard from '../../components/CategoryCard';
+import { CategoryCard } from '../../components/UI';
 import { pageHit } from '../../shared/ga_helper';
 import categories from '../../shared/categories';
 
@@ -52,10 +52,13 @@ class BrowseScreen extends Component {
 				this.handleSearch();
 			}
 		);
-		willBlurSubscription = this.props.navigation.addListener('willBlur', () => {
-			this.setState({ filter: '' });
-			this.handleSearch();
-		});
+		willBlurSubscription = this.props.navigation.addListener(
+			'willBlur',
+			() => {
+				this.setState({ filter: '' });
+				this.handleSearch();
+			}
+		);
 		keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => this._keyboardDidHide());
 	}
 
@@ -141,7 +144,9 @@ class BrowseScreen extends Component {
 				<Header
 					searchBar
 					rounded
-					style={Platform.OS === 'android' ? androidHeader : iosHeader}
+					style={
+						Platform.OS === 'android' ? androidHeader : iosHeader
+					}
 				>
 					<Item>
 						<Icon name="ios-search" />

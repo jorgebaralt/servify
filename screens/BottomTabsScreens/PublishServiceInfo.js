@@ -3,12 +3,10 @@ import { View, DeviceEventEmitter, ScrollView, Text } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { pageHit } from '../../shared/ga_helper';
-import { Button } from '../../components/UI';
+import { Button, FadeImage, InfoImage } from '../../components/UI';
 import { colors, globalStyles } from '../../shared/styles';
-import InfoImage from '../../components/HomeComponents/InfoImage';
 import { One, Two, Three } from '../../assets/svg/Numbers';
 import { Checkmark } from '../../assets/svg';
-import FadeImage from '../../components/HomeComponents/FadeImage';
 
 let willFocusSubscription;
 let willBlurSubscription;

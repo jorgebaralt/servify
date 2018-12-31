@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, LayoutAnimation } from 'react-native';
 import { Text, Card, CardItem } from 'native-base';
-import { connect } from 'react-redux';
-import StarsRating from '../Ratings/StarsRating';
-import FadeImage from './FadeImage';
+import StarsRating from '../../Ratings/StarsRating';
+import { FadeImage } from '..';
 
-class SpecificServiceCard extends Component {
+class HomeServiceCard extends Component {
 	// animate on appear
 	componentWillMount() {
 		LayoutAnimation.easeInEaseOut();
@@ -55,7 +54,7 @@ class SpecificServiceCard extends Component {
 				}}
 			>
 				<Card style={cardStyle}>
-					<FadeImage image={require('../../assets/default/food/1.jpg')} style={{ height: 100 }} />
+					<FadeImage image={require('../../../assets/default/food/1.jpg')} style={{ height: 100 }} />
 					<CardItem header style={cardHeaderStyle}>
 						<Text style={titleStyleCard}>{service.title}</Text>
 						{this.renderContent()}
@@ -96,4 +95,4 @@ const styles = {
 	}
 };
 
-export default connect(null)(SpecificServiceCard);
+export { HomeServiceCard };

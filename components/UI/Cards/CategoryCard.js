@@ -34,4 +34,4 @@ class CategoryCard extends Component {
 	}
 }
 
-export default CategoryCard;
+export { CategoryCard };

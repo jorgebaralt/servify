@@ -14,10 +14,7 @@ import {
 import { connect } from 'react-redux';
 import { Permissions } from 'expo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import CategoryCard from '../../components/CategoryCard';
-import SpecificServiceCard from '../../components/HomeComponents/SpecificServiceCard';
-import InfoImage from '../../components/HomeComponents/InfoImage';
-import { Button } from '../../components/UI';
+import { Button, InfoImage, HomeServiceCard, CategoryCard } from '../../components/UI';
 import { colors, globalStyles } from '../../shared/styles';
 import { selectService, getUserLocation, selectCategory } from '../../actions';
 import * as api from '../../api';
@@ -150,7 +147,7 @@ class HomeScreen extends Component {
 
 	// each item new near services
 	renderNearNearServices = (service, i) => (
-		<SpecificServiceCard
+		<HomeServiceCard
 			last={this.state.newNearServices.length - 1 === i}
 			service={service}
 			showLocation
@@ -231,7 +228,7 @@ class HomeScreen extends Component {
 	// each item in popular near services
 	renderPopularNearServicesList = (service, i) => (
 		<View>
-			<SpecificServiceCard
+			<HomeServiceCard
 				last={this.state.popularNearServices.length - 1 === i}
 				service={service}
 				showRating
