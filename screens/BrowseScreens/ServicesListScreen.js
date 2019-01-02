@@ -1,28 +1,24 @@
 import React, { Component } from 'react';
 import {
-	ListView,
 	TouchableOpacity,
 	DeviceEventEmitter,
 	FlatList,
 	RefreshControl,
-	View
+	View,
+	SafeAreaView
 } from 'react-native';
 import {
-	Header,
 	Text,
 	Card,
 	CardItem,
 	Body,
-	Title,
-	Container,
-	Left,
-	Button,
 	Icon,
 	Right,
 	Spinner,
 	ActionSheet,
 	Content
 } from 'native-base';
+import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import {
 	getServicesCategory,
@@ -33,6 +29,8 @@ import {
 import EmptyListMessage from '../../components/ErrorMessage/EmptyListMessage';
 import { pageHit } from '../../shared/ga_helper';
 import StarsRating from '../../components/Ratings/StarsRating';
+import { CustomHeader } from '../../components/UI';
+import { colors } from '../../shared/styles';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -66,6 +64,17 @@ class ServicesListScreen extends Component {
 	componentWillUnmount() {
 		willFocusSubscription.remove();
 	}
+
+	headerLeftIcon = () => (
+		<Ionicons
+			name="ios-arrow-back"
+			size={32}
+			style={{ color: 'white' }}
+			onPress={() => {
+				this.onBackPress();
+			}}
+		/>
+	);
 
 	handleAndroidBack = () => {
 		backPressSubscriptions = new Set();
@@ -302,41 +311,31 @@ class ServicesListScreen extends Component {
 	}
 
 	render() {
-		const { headerTitleStyle } = styles;
 		const { subcategory, category } = this.props;
 		return (
-			<Container>
-				<Header style={{ backgroundColor: category.color[0] }}>
-					<Left>
-						<Button
-							transparent
-							onPress={() => {
-								this.onBackPress();
-							}}
-						>
-							<Icon
-								name="ios-arrow-back"
-								type="Ionicons"
-								style={{ color: 'white' }}
-							/>
-						</Button>
-					</Left>
-					<Body style={{ flex: 3 }}>
-						<Title style={headerTitleStyle}>
-							{subcategory ? subcategory.title : category.title}
-						</Title>
-					</Body>
-					<Right />
-				</Header>
-				{this.renderActionSheet()}
-				{this.renderListView()}
-			</Container>
+			<View style={{ flex: 1 }}>
+				{/* Handles SafeAreaView background color */}
+				<SafeAreaView
+					style={{ flex: 0, backgroundColor: category.color[0] }}
+				/>
+				<SafeAreaView
+					style={{ flex: 1, backgroundColor: colors.white }}
+				>
+					<CustomHeader
+						color={category.color[0]}
+						title={subcategory ? subcategory.title : category.title}
+						titleColor={colors.white}
+						left={this.headerLeftIcon()}
+					/>
+					{this.renderActionSheet()}
+					{this.renderListView()}
+				</SafeAreaView>
+			</View>
 		);
 	}
 }
 
 const styles = {
-	headerStyle: {},
 	cardStyle: {
 		width: '90%',
 		marginLeft: '5%',

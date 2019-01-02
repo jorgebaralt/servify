@@ -45,7 +45,7 @@ class SearchHeader extends Component {
 			width: this._animatedIsFocused.interpolate({
 				inputRange: [0, 1],
 				outputRange: ['100%', '70%']
-			})
+			}),
 		};
 
 		const cancelStyle = {
@@ -63,6 +63,10 @@ class SearchHeader extends Component {
 					borderBottomWidth: 0.5,
 					borderBottomColor: colors.lightGray,
 					justifyContent: 'center',
+					backgroundColor: colors.white,
+					shadowOpacity: 0.05,
+					shadowRadius: 5,
+					shadowOffset: { width: 0, height: 5 }
 				}}
 			>
 				<View
@@ -80,14 +84,7 @@ class SearchHeader extends Component {
 							onChangeText={this.props.onChangeText}
 							placeholder={this.props.placeholder}
 							placeholderTextColor={colors.darkGray}
-							style={{
-								borderWidth: 1,
-								borderRadius: 5,
-								fontSize: 18,
-								padding: 5,
-								borderColor: colors.darkGray,
-								color: colors.darkerGray
-							}}
+							style={styles.inputStyle}
 						/>
 					</Animated.View>
 					<Animated.View style={cancelStyle}>
@@ -103,5 +100,21 @@ class SearchHeader extends Component {
 		);
 	}
 }
+
+const styles = {
+	inputStyle: {
+		borderWidth: 1,
+		borderRadius: 5,
+		fontSize: 18,
+		padding: 5,
+		borderColor: colors.darkGray,
+		color: colors.darkerGray,
+		backgroundColor: colors.white,
+		shadowOpacity: 0.2,
+		shadowColor: colors.black,
+		shadowOffset: { width: 0, height: 0 },
+		shadowRadius: 5
+	}
+};
 
 export { SearchHeader };

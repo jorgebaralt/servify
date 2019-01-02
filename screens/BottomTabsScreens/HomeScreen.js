@@ -329,7 +329,7 @@ class HomeScreen extends Component {
 					flex: 1,
 					marginTop: 0,
 					paddingTop: 0,
-					backgroundColor: '#FFFFFF'
+					backgroundColor: '#FFFFFF',
 				}}
 				refreshControl={(
 <RefreshControl
