@@ -6,3 +6,5 @@ export * from './Image/FadeImage';
 export * from './Image/InfoImage';
 export * from './Cards/HomeServiceCard';
 export * from './Cards/CategoryCard';
+export * from './Header/CustomHeader';
+export * from './Header/SearchHeader';

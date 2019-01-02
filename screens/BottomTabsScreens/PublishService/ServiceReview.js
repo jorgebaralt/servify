@@ -132,6 +132,7 @@ class ServiceReview extends Component {
 						bordered
 						color={colors.primaryColor}
 						onPress={this.props.onBack()}
+						textColor={colors.primaryColor}
 					>
 						Edit
 					</Button>

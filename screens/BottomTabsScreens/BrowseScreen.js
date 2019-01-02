@@ -2,25 +2,17 @@ import React, { Component } from 'react';
 import {
 	Dimensions,
 	DeviceEventEmitter,
-	Platform,
 	FlatList,
-	Keyboard
+	Keyboard,
+	SafeAreaView
 } from 'react-native';
-import {
-	Text,
-	Icon,
-	Header,
-	Item,
-	Button,
-	Input,
-	Container,
-	Content
-} from 'native-base';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { selectCategory } from '../../actions';
-import { CategoryCard } from '../../components/UI';
+import { CategoryCard, SearchHeader } from '../../components/UI';
 import { pageHit } from '../../shared/ga_helper';
 import categories from '../../shared/categories';
+import { colors } from '../../shared/styles';
 
 let willFocusSubscription;
 let willBlurSubscription;
@@ -31,9 +23,9 @@ class BrowseScreen extends Component {
 	static navigationOptions = {
 		title: 'Browse',
 		tabBarIcon: ({ tintColor }) => (
-			<Icon
-				type="MaterialCommunityIcons"
+			<MaterialCommunityIcons
 				name="magnify"
+				size={32}
 				style={{ color: tintColor }}
 			/>
 		)
@@ -109,21 +101,22 @@ class BrowseScreen extends Component {
 	);
 
 	handleSearch = () => {
+		console.log(this.state.filter);
 		const filteredCategories = [];
 		const nameCheckCategory = [];
-
-		this.state.categories.forEach((category) => {
-			category.keyWords.forEach((key) => {
-				if (key.includes(this.state.filter.toLowerCase())) {
-					if (!nameCheckCategory.includes(category.title)) {
-						filteredCategories.push(category);
-						nameCheckCategory.push(category.title);
-					}
-				}
-			});
+		let inputArray = [this.state.filter];
+		if (this.state.filter.includes(' ')) {
+			inputArray = this.state.filter.split(' ');
+		}
+		categories.forEach((category) => {
+			const found = inputArray.some((input) => category.keyWords.includes(input.toLowerCase()));
+			if (found && !nameCheckCategory.includes(category.title)) {
+				filteredCategories.push(category);
+				nameCheckCategory.push(category.title);
+			}
 		});
 
-		if (filteredCategories.length < 1 || this.state.filter === '') {
+		if (filteredCategories.length < 1 || this.state.filter.length < 1) {
 			this.setState({ categories });
 		} else {
 			this.setState({ categories: filteredCategories });
@@ -138,52 +131,36 @@ class BrowseScreen extends Component {
 	}
 
 	render() {
-		const { androidHeader, iosHeader } = styles;
 		return (
-			<Container style={{ flex: 1 }}>
-				<Header
-					searchBar
-					rounded
-					style={
-						Platform.OS === 'android' ? androidHeader : iosHeader
+			<SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
+				<SearchHeader
+					placeholder="Where do you need help?"
+					value={this.state.filter}
+					onChangeText={async (text) => {
+						await this.setState({
+							filter: text
+						});
+						this.handleSearch();
+					}}
+					onCancel={() => {
+							this.setState({ filter: '' });
+							this.handleSearch();
+						}
 					}
-				>
-					<Item>
-						<Icon name="ios-search" />
-						<Input
-							placeholder="Where do you need help?"
-							value={this.state.filter}
-							onChangeText={(text) => {
-								this.setState({
-									filter: text
-								});
-								this.handleSearch();
-							}}
-						/>
-					</Item>
-					<Button transparent onPress={() => this.handleSearch()}>
-						<Text>Search</Text>
-					</Button>
-				</Header>
-				<Content>
-					<FlatList
-						data={this.state.categories}
-						renderItem={({ item }) => this.renderCategories(item)}
-						keyExtractor={(category) => category.title}
-						numColumns={2}
-						style={{ marginBottom: 10, marginTop: 10 }}
-					/>
-				</Content>
-			</Container>
+				/>
+
+				<FlatList
+					data={this.state.categories}
+					renderItem={({ item }) => this.renderCategories(item)}
+					keyExtractor={(category) => category.title}
+					numColumns={2}
+				/>
+			</SafeAreaView>
 		);
 	}
 }
 
 const styles = {
-	androidHeader: {
-		backgroundColor: '#F5F5F5'
-	},
-	iosHeader: {},
 	titleStyle: {
 		textAlign: 'center',
 		color: 'black',

@@ -1,67 +1,52 @@
 import React from 'react';
-import { Header } from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
 import {
-	View,
 	StyleSheet,
 	Text,
 	Modal,
 	SafeAreaView,
-	TouchableOpacity,
 	FlatList,
 	Dimensions
 } from 'react-native';
-import { colors } from '../../../shared/styles';
+import { CustomHeader } from '..';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 // TODO: new component here, without color
-const renderList = (item, props) => <Text style={styles.cardStyle} onPress={() => props.callback(item)}>{item.title}</Text>;
+const renderList = (item, props) => (
+	<Text style={styles.cardStyle} onPress={() => props.callback(item)}>
+		{item.title}
+	</Text>
+);
 
-const ListModal = (props) => {
-	return (
-		<Modal
-			transparent={false}
-			visible={props.visible}
-			onRequestClose={() => props.closeModal}
-			animationType="slide"
-		>
-			<SafeAreaView>
-				<View
-					style={{
-						height: Header.HEIGHT,
-						borderBottomWidth: 0.5,
-						borderBottomColor: colors.lightGray,
-						justifyContent: 'center'
-					}}
-				>
-					<Text
-						style={{
-							textAlign: 'center',
-							fontSize: 20,
-							fontWeight: 'bold'
-						}}
-					>
-						{props.title}
-					</Text>
-					<TouchableOpacity
-						onPress={() => props.callback()}
-						style={{ position: 'absolute', left: 10 }}
-					>
-						<Ionicons type="Ionicons" size={32} name="md-close" />
-					</TouchableOpacity>
-				</View>
-				<FlatList
-					data={props.data}
-					renderItem={({ item }) => renderList(item, props)}
-					numColumns={2}
-					keyExtractor={(category) => category.title}
-					style={{ marginTop: 10, marginBottom: 10 }}
-				/>
-			</SafeAreaView>
-		</Modal>
+const renderIcon = (props) => (
+		<Ionicons
+			type="Ionicons"
+			size={32}
+			name="md-close"
+			onPress={() => props.callback()}
+		/>
 	);
-};
+
+const ListModal = (props) => (
+	<Modal
+		transparent={false}
+		visible={props.visible}
+		onRequestClose={() => props.closeModal}
+		animationType="slide"
+	>
+		<SafeAreaView>
+			<CustomHeader title={props.title} left={renderIcon(props)} />
+			<FlatList
+				data={props.data}
+				renderItem={({ item }) => renderList(item, props)}
+				numColumns={2}
+				keyExtractor={(category) => category.title}
+				style={{ marginTop: 10, marginBottom: 10 }}
+			/>
+		</SafeAreaView>
+	</Modal>
+);
 
 const styles = StyleSheet.create({
 	cardStyle: {

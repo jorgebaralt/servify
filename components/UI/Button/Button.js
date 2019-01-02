@@ -11,39 +11,36 @@ export const Button = (props) => {
 			padding: 10,
 			borderRadius: 5,
 			width: 'auto',
-		},
-		defaultText: {
-			alignSelf: 'center',
-			color: 'white',
-			fontSize: props.style ? (props.style.fontSize ? props.style.fontSize : 16) : 16
+			alignItems: 'center'
 		},
 		borderedButtonStyle: {
 			borderColor: props.disabled ? colors.darkGray : (props.color ? props.color : 'white'),
 			borderWidth: 1,
 			backgroundColor: 'transparent',
 		},
-		borderedTextStyle: {
+		transparentButtonStyle: {
+			backgroundColor: 'transparent'
+		},
+		textStyle: {
 			alignSelf: 'center',
-			fontSize: 20,
-			color: props.color ? props.color : 'white',
+			color: props.textColor ? props.textColor : 'white',
 			fontSize: props.style ? (props.style.fontSize ? props.style.fontSize : 16) : 16
-		}
+		},
 	});
 
 	let buttonStyle;
-	let textStyle;
 
 	if (props.bordered) {
 		buttonStyle = [styles.defaultButton, styles.borderedButtonStyle, props.style];
-		textStyle = styles.borderedTextStyle;
-	} else {
+	} else if (props.transparent) {
+		buttonStyle = [styles.defaultButton, styles.transparentButtonStyle, props.style];
+	}else{
 		buttonStyle = [styles.defaultButton, props.style];
-		textStyle = styles.defaultText;
 	}
 	
 	return (
 		<TouchableOpacity onPress={props.onPress} style={[buttonStyle, props.style]} disabled={props.disabled}>
-			<Text style={textStyle}>
+			<Text style={styles.textStyle}>
 				{props.children}
 			</Text>
 		</TouchableOpacity>

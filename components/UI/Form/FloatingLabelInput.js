@@ -22,6 +22,7 @@ export class FloatingLabelInput extends Component {
 
 	handleFocus = () => {
 		this.setState({ isFocused: true });
+		// if there is anything else that needs to be done onFocus (coming from props)
 		if (this.props.onFocus) {
 			this.props.onFocus();
 		}
@@ -29,6 +30,7 @@ export class FloatingLabelInput extends Component {
 
 	handleBlur = () => {
 		this.setState({ isFocused: false });
+				// if there is anything else that needs to be done onBlur (coming from props)
 		if (this.props.onBlur) {
 			this.props.onBlur();
 		}
@@ -82,7 +84,7 @@ export class FloatingLabelInput extends Component {
 			<View style={[{ paddingTop: 18 }, this.props.style]}>
 				{/* Apply animation to label text */}
 				<Animated.Text style={labelStyle}>{label}</Animated.Text>
-				<Animated.View>
+				<View>
 					<TextInput
 						{...props}
 						style={{
@@ -100,7 +102,7 @@ export class FloatingLabelInput extends Component {
 					<View style={styles.RightIconStyle}>{props.rightIcon}</View>
 					<Animated.View style={initialBorderBottom} />
 					<Animated.View style={borderBottomAnimation} />
-				</Animated.View>
+				</View>
 			</View>
 		);
 	}

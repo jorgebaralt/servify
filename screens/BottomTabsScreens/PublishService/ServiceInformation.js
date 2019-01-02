@@ -86,6 +86,7 @@ const ServiceInformation = (props) => (
 				bordered
 				color={colors.primaryColor}
 				onPress={props.onBack()}
+				textColor={colors.primaryColor}
 			>
 				Back
 			</Button>

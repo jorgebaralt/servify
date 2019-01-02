@@ -188,7 +188,7 @@ class PostServiceScreen extends Component {
 						<View style={{ width: '50%', height: 'auto' }}>
 							<FadeImage
 								image={require('../../assets/backgrounds/happy.jpg')}
-								style={{ height: 270, borderRadius: 8 }}
+								style={{ height: 280, borderRadius: 8 }}
 							/>
 						</View>
 
