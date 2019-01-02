@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, LayoutAnimation } from 'react-native';
-import { Text, Card, CardItem } from 'native-base';
+import { View, TouchableOpacity, LayoutAnimation, Text } from 'react-native';
 import StarsRating from '../../Ratings/StarsRating';
 import { FadeImage } from '..';
+import { colors } from '../../../shared/styles';
 
 class HomeServiceCard extends Component {
 	// animate on appear
@@ -15,7 +15,7 @@ class HomeServiceCard extends Component {
 		const { displayNameStyle } = styles;
 
 		return (
-			<View style={{ marginTop: 5 }}>
+			<View style={{ marginTop: 5}}>
 				<Text style={displayNameStyle}>
 					{service.displayName}
 				</Text>
@@ -48,18 +48,18 @@ class HomeServiceCard extends Component {
 		const { cardStyle, cardHeaderStyle, titleStyleCard } = styles;
 		return (
 			<TouchableOpacity
-				style={{ marginBottom: 10, borderRadius: 8, marginRight: this.props.last ? 20 : 0 }}
+				style={[cardStyle,{ marginBottom: 10, borderRadius: 8, marginRight: this.props.last ? 20 : 0 }]}
 				onPress={() => {
 					this.props.onPress();
 				}}
 			>
-				<Card style={cardStyle}>
+				<View>
 					<FadeImage image={require('../../../assets/default/food/1.jpg')} style={{ height: 100 }} />
-					<CardItem header style={cardHeaderStyle}>
+					<View style={[cardHeaderStyle, {borderWidth: 0.5, borderBottomStartRadius: 8, borderBottomEndRadius: 8, borderTopWidth: 0, padding: 5, borderColor: colors.lightGray }]}>
 						<Text style={titleStyleCard}>{service.title}</Text>
 						{this.renderContent()}
-					</CardItem>
-				</Card>
+					</View>
+				</View>
 			</TouchableOpacity>
 		);
 	}
@@ -68,17 +68,14 @@ const styles = {
 	cardStyle: {
 		width: 170,
 		height: 175,
-		shadowOffset: { width: 1, height: 1 },
-		shadowColor: 'black',
-		shadowOpacity: 0.5,
-		elevation: 1,
 		marginLeft: 20,
 		marginTop: 20,
 		borderRadius: 8,
 		overflow: 'hidden'
 	},
 	titleStyleCard: {
-		fontSize: 12
+		fontSize: 12,
+		fontWeight: '600'
 	},
 	headerTitleStyle: {
 		color: 'white'
@@ -87,7 +84,7 @@ const styles = {
 		flexDirection: 'column',
 		display: 'flex',
 		alignItems: 'flex-start',
-		borderRadius: 8
+		overflow: 'hidden',
 	},
 	displayNameStyle: {
 		fontSize: 12,

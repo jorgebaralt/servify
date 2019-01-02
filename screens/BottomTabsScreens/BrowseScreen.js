@@ -101,7 +101,6 @@ class BrowseScreen extends Component {
 	);
 
 	handleSearch = () => {
-		console.log(this.state.filter);
 		const filteredCategories = [];
 		const nameCheckCategory = [];
 		let inputArray = [this.state.filter];
@@ -172,7 +171,7 @@ const styles = {
 		height: 90,
 		borderRadius: 8,
 		marginLeft: 10,
-		marginTop: 5,
+		marginTop: 10,
 		width: SCREEN_WIDTH / 2 - 15,
 		overflow: 'hidden'
 	}

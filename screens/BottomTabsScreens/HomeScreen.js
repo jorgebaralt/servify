@@ -357,16 +357,12 @@ const styles = {
 		marginRight: 20
 	},
 	cardStyle: {
-		width: 140,
 		height: 70,
-		shadowOffset: { width: 0, height: 0 },
-		shadowColor: 'black',
-		shadowOpacity: 0.2,
-		elevation: 1,
-		marginTop: 10,
-		marginBottom: 20,
-		marginLeft: 20,
 		borderRadius: 8,
+		marginLeft: 20,
+		marginTop: 10,
+		marginBottom: 10,
+		width: 140,
 		overflow: 'hidden'
 	}
 };
