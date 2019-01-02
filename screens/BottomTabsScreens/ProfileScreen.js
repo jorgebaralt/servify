@@ -1,20 +1,17 @@
 import React, { Component } from 'react';
-import { FlatList, DeviceEventEmitter, Platform, Linking } from 'react-native';
+import { Entypo, MaterialIcons, Feather } from '@expo/vector-icons';
 import {
-	Container,
-	Header,
-	Right,
-	Button,
-	Icon,
-	Title,
-	Text,
-	Content,
-	ListItem,
-	Left
-} from 'native-base';
+	FlatList,
+	DeviceEventEmitter,
+	Linking,
+	SafeAreaView,
+	Text
+} from 'react-native';
 import { connect } from 'react-redux';
 import { pageHit } from '../../shared/ga_helper';
 import { profileList } from '../../shared/data';
+import { CustomHeader, ListIcon } from '../../components/UI';
+import { colors } from '../../shared/styles';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -24,11 +21,11 @@ class ProfileScreen extends Component {
 	static navigationOptions = {
 		title: 'Profile',
 		tabBarIcon: ({ tintColor }) => (
-			<Icon type="Feather" name="user" style={{ color: tintColor }} />
+			<Feather size={32} name="user" style={{ color: tintColor }} />
 		)
 	};
 
-	state={ profileList }
+	state = { profileList };
 
 	componentWillMount() {
 		willFocusSubscription = this.props.navigation.addListener(
@@ -38,7 +35,10 @@ class ProfileScreen extends Component {
 	}
 
 	componentDidMount() {
-		willBlurSubscriptions = this.props.navigation.addListener('willBlur', () => DeviceEventEmitter.removeAllListeners('hardwareBackPress'));
+		willBlurSubscriptions = this.props.navigation.addListener(
+			'willBlur',
+			() => DeviceEventEmitter.removeAllListeners('hardwareBackPress')
+		);
 		pageHit('Profile Screen');
 	}
 
@@ -75,73 +75,66 @@ class ProfileScreen extends Component {
 		}
 	};
 
+	rightList = (item) => {
+		return (
+			<MaterialIcons
+				name={item.iconName}
+				style={{ color: 'black' }}
+				size={24}
+			/>
+		);
+	}
+
+	leftList = (item) => (
+		<Text style={{ fontSize: 20 }}>{item.title}</Text>
+	)
+
 	renderListItems = (item) => (
-		<ListItem
+		<ListIcon 
+			style={{ marginTop: 50 }} 
+			left={this.leftList(item)} 
+			right={this.rightList(item)} 
 			onPress={() => this.goSelectedScreen(item)}
-			style={{ marginTop: 30, marginRight: 10 }}
-		>
-			<Left>
-				<Text>{item.title}</Text>
-			</Left>
-			<Right>
-				<Icon
-					type={item.iconType}
-					name={item.iconName}
-					style={{ color: 'black', fontSize: 28 }}
-				/>
-			</Right>
-		</ListItem>
+		/>
+	);
+
+	leftHeader = () => (
+		<Text style={{ fontWeight: '600', fontSize: 18 }}>
+			{this.props.user.displayName}
+		</Text>
+	);
+
+	rightHeader = () => (
+		<Entypo
+			name="dots-three-horizontal"
+			style={{ color: 'black' }}
+			size={32}
+			onPress={() => this.props.navigation.navigate('settings')}
+		/>
 	);
 
 	render() {
-		const { androidHeader, iosHeader } = styles;
 		return (
-			<Container>
-				<Header style={Platform.OS === 'android' ? androidHeader : iosHeader}>
-					<Left style={{ flex: 4 }}>
-						<Title style={{ color: 'black', marginLeft: 10 }}>
-							{this.props.user.displayName}
-						</Title>
-					</Left>
-					<Right>
-						<Button
-							transparent
-							title="Settings"
-							onPress={() => this.props.navigation.navigate('settings')}
-						>
-							<Icon
-								type="Entypo"
-								name="dots-three-horizontal"
-								style={{ color: 'black' }}
-							/>
-						</Button>
-					</Right>
-				</Header>
-				<Content>
-					<FlatList
-						data={this.state.profileList}
-						renderItem={({ item }) => this.renderListItems(item)}
-						keyExtractor={(item) => item.title}
-					/>
-				</Content>
-			</Container>
+			<SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
+				<CustomHeader
+					left={this.leftHeader()}
+					right={this.rightHeader()}
+				/>
+
+				<FlatList
+					data={this.state.profileList}
+					renderItem={({ item }) => this.renderListItems(item)}
+					keyExtractor={(item) => item.title}
+				/>
+			</SafeAreaView>
 		);
 	}
 }
 
-const styles = {
-	androidHeader: {
-		backgroundColor: '#F5F5F5'
-	},
-	iosHeader: {}
-};
-
 function mapStateToProps(state) {
 	return {
-		user: state.auth.user,
+		user: state.auth.user
 	};
 }
 
-export default connect(
-	mapStateToProps,
-)(ProfileScreen);
+export default connect(mapStateToProps)(ProfileScreen);

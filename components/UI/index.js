@@ -8,3 +8,5 @@ export * from './Cards/HomeServiceCard';
 export * from './Cards/CategoryCard';
 export * from './Header/CustomHeader';
 export * from './Header/SearchHeader';
+
+export * from './List/ListIcon';

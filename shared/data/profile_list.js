@@ -3,14 +3,14 @@ export const profileList = [
 		id: 'my_services',
 		title: 'My Services',
 		iconType: 'MaterialIcons',
-		iconName: 'folder-open',
+		iconName: 'folder',
 		isList: true
 	},
 	{
 		id: 'favorites',
 		title: 'Favorite Services',
 		iconType: 'MaterialIcons',
-		iconName: 'favorite-border',
+		iconName: 'favorite',
 		isList: true
 	},
 	// {
@@ -24,21 +24,21 @@ export const profileList = [
 		id: 'help',
 		title: 'Help',
 		iconType: 'MaterialIcons',
-		iconName: 'help-outline',
+		iconName: 'help',
 		isList: false
 	},
 	{
 		id: 'feedback',
 		title: 'Give some Feedback',
-		iconType: 'FontAwesome',
-		iconName: 'send-o',
+		iconType: 'MaterialIcons',
+		iconName: 'send',
 		isList: false
 	},
 	{
 		id: 'contactUs',
 		title: 'Contact us',
-		iconType: 'MaterialCommunityIcons',
-		iconName: 'email-outline',
+		iconType: 'MaterialIcons',
+		iconName: 'email',
 		isList: false
 	}
 ];
