@@ -134,14 +134,14 @@ class ServiceReview extends Component {
 						onPress={this.props.onBack()}
 						textColor={colors.primaryColor}
 					>
-						Edit
+						<Text>Edit</Text>
 					</Button>
 					<Button
 						color={colors.primaryColor}
 						onPress={() => this.onNext()}
 						style={{ width: '40%' }}
 					>
-						Submit
+						<Text>Submit</Text>
 					</Button>
 				</View>
 				{this.renderSpinner()}

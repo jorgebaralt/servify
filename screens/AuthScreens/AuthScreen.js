@@ -76,6 +76,7 @@ class AuthScreen extends Component {
 					{/* log in with facebook */}
 					<View style={styles.buttonStyle}>
 						<Button bordered onPress={this.loginWithFacebook} style={{ fontSize: 18 }}>
+							<Text>
 							<MaterialCommunityIcons
 								style={{
 									color: 'white',
@@ -85,6 +86,8 @@ class AuthScreen extends Component {
 								name="facebook-box"
 							/>{' '}
 							Log in with Facebook
+							</Text>
+							
 						</Button>
 					</View>
 					{/* Create account with email */}
@@ -97,7 +100,7 @@ class AuthScreen extends Component {
 								this.props.navigation.navigate('createAccount');
 							}}
 						>
-							Create account with Email
+							<Text>Create account with Email</Text>
 						</Button>
 					</View>
 					{/* // go to login screen */}

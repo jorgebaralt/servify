@@ -132,7 +132,7 @@ class forgotPassword extends Component {
 								style={{ marginTop: 40 }}
 								onPress={() => this.resetPassword()}
 							>
-								Get reset link
+								<Text>Get reset link</Text>
 							</Button>
 
 					</View>

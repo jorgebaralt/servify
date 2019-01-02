@@ -86,7 +86,7 @@ class ServiceCategory extends Component {
 						onPress={props.onBack}
 						textColor={colors.primaryColor}
 					>
-						Cancel
+						<Text>Cancel</Text>
 					</Button>
 					<Button
 						color={colors.primaryColor}
@@ -94,7 +94,7 @@ class ServiceCategory extends Component {
 						style={{ width: '40%' }}
 						disabled={this.props.state.selectedCategory === undefined || this.props.state.selectedCategory.subcategories ? this.props.state.selectedSubcategory === undefined : false}
 					>
-						Next
+						<Text>Next</Text>
 					</Button>
 				</View>
 			</ScrollView>

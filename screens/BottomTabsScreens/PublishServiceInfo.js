@@ -104,7 +104,7 @@ class PostServiceScreen extends Component {
 							}}
 							style={{marginRight: 10}}
 						>
-							Get started
+							<Text>Get started</Text>
 						</Button>
 					</View>
 				</InfoImage>
@@ -255,7 +255,7 @@ class PostServiceScreen extends Component {
 							this.props.navigation.navigate('publish');
 						}}
 					>
-						Publish a service
+						<Text>Publish a service</Text>
 					</Button>
 				</View>
 			</ScrollView>

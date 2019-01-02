@@ -88,7 +88,7 @@ const ServiceInformation = (props) => (
 				onPress={props.onBack()}
 				textColor={colors.primaryColor}
 			>
-				Back
+				<Text>Back</Text>
 			</Button>
 			<Button
 				color={colors.primaryColor}
@@ -100,7 +100,7 @@ const ServiceInformation = (props) => (
 					|| props.state.description === ''
 				}
 			>
-				Next
+				<Text>Next</Text>
 			</Button>
 		</View>
 	</ScrollView>

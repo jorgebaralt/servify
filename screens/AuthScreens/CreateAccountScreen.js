@@ -177,7 +177,7 @@ class CreateAccountScreen extends Component {
 									style={{ marginTop: 40 }}
 									onPress={this.createAccount}
 								>
-									Create Account
+									<Text>Create Account</Text>
 								</Button>
 								{this.renderSpinner()}
 

@@ -48,7 +48,7 @@ class ProfileServicesScreen extends Component {
 			'willFocus',
 			() => {
 				this.handleAndroidBack();
-				this.props.getFavorites(this.props.user.email);
+				// this.props.getFavorites(this.props.user.email);
 			}
 		);
 		if (currentItem.id === 'favorites') {

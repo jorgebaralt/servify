@@ -181,7 +181,7 @@ class ServiceLocation extends Component {
 						onPress={props.onBack()}
 						textColor={colors.primaryColor}
 					>
-						Back
+						<Text>Back</Text>
 					</Button>
 					<Button
 						color={colors.primaryColor}
@@ -189,7 +189,7 @@ class ServiceLocation extends Component {
 						style={{ width: '40%' }}
 						disabled={this.props.state.location === ''}
 					>
-						Next
+						<Text>Next</Text>
 					</Button>
 				</View>
 			</ScrollView>

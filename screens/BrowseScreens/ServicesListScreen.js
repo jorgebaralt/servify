@@ -5,31 +5,23 @@ import {
 	FlatList,
 	RefreshControl,
 	View,
-	SafeAreaView
-} from 'react-native';
-import {
+	SafeAreaView,
 	Text,
-	Card,
-	CardItem,
-	Body,
-	Icon,
-	Right,
-	Spinner,
-	ActionSheet,
-	Content
-} from 'native-base';
+	ActionSheetIOS,
+	Platform,
+	ActivityIndicator
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import {
 	getServicesCategory,
 	getServicesSubcategory,
 	selectService,
-	cancelAxiosServices
+	cancelAxiosServices,
 } from '../../actions';
 import EmptyListMessage from '../../components/ErrorMessage/EmptyListMessage';
 import { pageHit } from '../../shared/ga_helper';
-import StarsRating from '../../components/Ratings/StarsRating';
-import { CustomHeader } from '../../components/UI';
+import { CustomHeader, DetailedServiceCard } from '../../components/UI';
 import { colors } from '../../shared/styles';
 
 let willFocusSubscription;
@@ -39,6 +31,7 @@ const POPULARITY = 'Popularity';
 const NEWEST = 'Newest';
 const OLDEST = 'Oldest';
 const sortByOptions = [DISTANCE, POPULARITY, NEWEST, OLDEST, 'Cancel'];
+
 
 class ServicesListScreen extends Component {
 	state = {
@@ -54,17 +47,18 @@ class ServicesListScreen extends Component {
 				this.handleAndroidBack();
 			}
 		);
-		await this.decideGetService();
 	};
 
-	componentDidMount() {
+	async componentDidMount() {
 		pageHit('Services List Screen');
+		await this.decideGetService();
 	}
 
 	componentWillUnmount() {
 		willFocusSubscription.remove();
 	}
 
+	// Icon on left header
 	headerLeftIcon = () => (
 		<Ionicons
 			name="ios-arrow-back"
@@ -120,215 +114,149 @@ class ServicesListScreen extends Component {
 		this.setState({ dataLoaded: true, refreshing: false });
 	};
 
-	renderRating = (service) => {
-		if (service.ratingCount > 0) {
-			return (
-				<Text>
-					{(service.ratingSum / service.ratingCount).toFixed(1)}
-				</Text>
-			);
-		}
-		return <Text>(0)</Text>;
-	};
-
-	// if we are sorting by distance, show it
-	renderMilesToService = (service) => {
-		if (this.state.sortBy === 'Distance' && service.distance) {
-			return (
-				<Right>
-					<Text style={{ color: 'gray' }}>
-						{Math.floor(service.distance)} mile(s)
-					</Text>
-				</Right>
-			);
-		}
-	};
-
 	// Handles click and render of action sheet
 	// TODO: animate on scroll down dissapear, show on scroll up
-	renderActionSheet = () => {
+	renderSortBy = () => {
 		const { sortByStyle, iconSortStyle, viewSortStyle } = styles;
-		return this.props.servicesList != null
-			&& this.props.servicesList.length !== 0 ? (
-			<View style={viewSortStyle}>
-				<TouchableOpacity
-					style={{ flexDirection: 'row', marginRight: 10 }}
-					onPress={() => ActionSheet.show(
-							{
-								options: sortByOptions,
-								title:
-									'How would you like to sort the services?',
-								cancelButtonIndex: sortByOptions.length - 1
-							},
-							(selectedButtonIndex) => {
-								if (
-									selectedButtonIndex
-									!== sortByOptions.length - 1
-								) {
-									this.setState({
-										sortBy:
-											sortByOptions[selectedButtonIndex]
-									});
+		// if there are services
+		if (
+			this.props.servicesList != null
+			&& this.props.servicesList.length !== 0
+			&& Platform.OS === 'ios'
+		) {
+			return (
+				<View style={viewSortStyle}>
+					<TouchableOpacity
+						style={{ flexDirection: 'row', marginRight: 10 }}
+						onPress={() => ActionSheetIOS.showActionSheetWithOptions(
+								{
+									options: sortByOptions,
+									title:
+										'How would you like to sort the services?',
+									cancelButtonIndex: sortByOptions.length - 1
+								},
+								(selectedButtonIndex) => {
+									if (
+										selectedButtonIndex
+										!== sortByOptions.length - 1
+									) {
+										this.setState({
+											sortBy:
+												sortByOptions[
+													selectedButtonIndex
+												]
+										});
+									}
+									this.decideGetService();
 								}
-								this.decideGetService();
-							}
-						)
-					}
-				>
-					<Text style={sortByStyle}>
-						Sort by: {this.state.sortBy}
-					</Text>
-					<Icon name="ios-arrow-down" style={iconSortStyle} />
-				</TouchableOpacity>
-			</View>
-		) : (
-			<View />
-		);
+							)
+						}
+					>
+						<Text style={sortByStyle}>
+							Sort by: {this.state.sortBy}
+						</Text>
+						<Ionicons size={18} name="ios-arrow-down" style={iconSortStyle} />
+					</TouchableOpacity>
+				</View>
+			);
+		}
 	};
 
-	// TODO: move to component
-	renderServices = (service) => {
-		const {
-			cardStyle,
-			titleStyle,
-			phoneLocationStyle,
-			displayNameStyle,
-			cardHeaderStyle,
-			cardItemStyle,
-			reviewLocationStyle
-		} = styles;
-
-		const displayDescription = service.description.substring(0, 15) + '...';
-		return (
-			<View>
-				<TouchableOpacity
-					onPress={() => {
-						this.props.selectService(service);
-						this.props.navigation.navigate('service');
-					}}
-				>
-					<Card style={cardStyle}>
-						<CardItem header style={cardHeaderStyle}>
-							<Text style={titleStyle}>{service.title}</Text>
-							<View style={reviewLocationStyle}>
-								<Text style={displayNameStyle}>
-									by: {service.displayName}
-								</Text>
-								<View
-									style={{
-										marginLeft: 5
-									}}
-								>
-									<StarsRating
-										width={15}
-										height={15}
-										spacing={5}
-										rating={service.rating}
-									/>
-								</View>
-								<Text
-									style={[
-										displayNameStyle,
-										{ marginTop: -2, marginLeft: 3 }
-									]}
-								>
-									{/* Avg rating text */}
-									{this.renderRating(service)}
-								</Text>
-							</View>
-						</CardItem>
-						<CardItem style={cardItemStyle}>
-							<Body style={phoneLocationStyle}>
-								<Text>{service.phone}</Text>
-								<Text style={{ marginLeft: '5%' }}>
-									{service.locationData.city}
-								</Text>
-							</Body>
-							<Right>
-								<Icon
-									name="ios-arrow-forward"
-									type="Ionicons"
-									style={{
-										color: this.props.category.color[0]
-									}}
-								/>
-							</Right>
-						</CardItem>
-						<CardItem style={cardItemStyle}>
-							<Body>
-								<Text>{displayDescription}</Text>
-							</Body>
-							{this.renderMilesToService(service)}
-						</CardItem>
-					</Card>
-				</TouchableOpacity>
-			</View>
-		);
-	};
+	// Each service card
+	renderServices = (service) => (
+		<DetailedServiceCard
+			service={service}
+			onPress={() => {
+				this.props.selectService(service);
+				this.props.navigation.navigate('service');
+			}}
+			color={this.props.category.color[0]}
+			distance={this.state.sortBy === DISTANCE}
+		/>
+	);
+	
+	// handles refresh control of services
+	serviceListRefreshControl = () => (
+		<RefreshControl
+			refreshing={this.state.refreshing}
+			onRefresh={() => this.decideGetService()}
+			tintColor={this.props.category.color[0]}
+			colors={[
+				this.props.category.color[0],
+				this.props.category.color[1]
+			]}
+		/>
+	);
 
 	renderListView() {
-		if (this.state.dataLoaded) {
-			if (
-				this.props.servicesList
-				&& this.props.servicesList.length !== 0
-			) {
+			if (this.props.servicesList.length !== 0) {
 				return (
-					<Content>
-						<View>
-							{/* TODO: Dynamic size each card */}
-							<FlatList
-								style={{ marginTop: 10, marginBottom: 40 }}
-								data={this.props.servicesList}
-								renderItem={({ item }) => this.renderServices(item)
-								}
-								keyExtractor={(item) => item.title}
-								enableEmptySections
-								refreshControl={(
-<RefreshControl
-										refreshing={this.state.refreshing}
-										onRefresh={() => this.decideGetService()
-										}
-										tintColor={this.props.category.color[0]}
-										colors={[
-											this.props.category.color[0],
-											this.props.category.color[1]
-										]}
-/>
-)}
-							/>
-						</View>
-					</Content>
+					<FlatList
+						data={this.props.servicesList}
+						renderItem={({ item }) => this.renderServices(item)}
+						keyExtractor={(item) => item.title}
+						enableEmptySections
+						refreshControl={this.serviceListRefreshControl()}
+					/>
 				);
 			}
 			return (
 				<EmptyListMessage buttonPress={this.onBackPress}>
-					Unfortunetly there are no services posted for this category,
-					we are working on getting more people to post services!
+					Unfortunetly there are no services published for this
+					category, we are working on getting more people to publish
+					services!
 				</EmptyListMessage>
 			);
+	}
+
+	renderContent = () => {
+		if (this.state.dataLoaded) {
+			// if it is category / subcategory
+			if (this.props.category) {
+				return (
+					<View
+						style={{ flex: 1, paddingLeft: 20, paddingRight: 20 }}
+					>
+						{this.renderSortBy()}
+						{this.renderListView()}
+					</View>
+				);
+			}
+			// else render the profile services
+			return (
+				<Text>This is profile services</Text>
+			);
 		}
-		return <Spinner color={this.props.category.color[0]} />;
+		return (
+			<ActivityIndicator
+				style={{ marginTop: 20 }}
+				size="large"
+				color={this.props.category.color[0] || colors.primaryColor}
+			/>
+		);
 	}
 
 	render() {
 		const { subcategory, category } = this.props;
+		const mainColor = category ? category.color[0] : colors.white;
+
 		return (
 			<View style={{ flex: 1 }}>
 				{/* Handles SafeAreaView background color */}
 				<SafeAreaView
-					style={{ flex: 0, backgroundColor: category.color[0] }}
+					style={{ flex: 0, backgroundColor: mainColor }}
 				/>
 				<SafeAreaView
 					style={{ flex: 1, backgroundColor: colors.white }}
 				>
 					<CustomHeader
-						color={category.color[0]}
+						color={mainColor}
 						title={subcategory ? subcategory.title : category.title}
 						titleColor={colors.white}
 						left={this.headerLeftIcon()}
 					/>
-					{this.renderActionSheet()}
-					{this.renderListView()}
+					
+						{this.renderContent()}
 				</SafeAreaView>
 			</View>
 		);
@@ -336,47 +264,6 @@ class ServicesListScreen extends Component {
 }
 
 const styles = {
-	cardStyle: {
-		width: '90%',
-		marginLeft: '5%',
-		marginTop: '2.5%',
-		shadowOffset: { width: 0, height: 0 },
-		shadowColor: 'black',
-		shadowOpacity: 0.2,
-		elevation: 1,
-		height: 160,
-		borderRadius: 8
-	},
-	contentStyle: {},
-	titleStyle: {
-		fontSize: 18
-	},
-	phoneLocationStyle: {
-		flexDirection: 'row',
-		flex: 1
-	},
-	reviewLocationStyle: {
-		marginTop: 10,
-		diaplay: 'flex',
-		flexDirection: 'row'
-	},
-	headerTitleStyle: {
-		color: 'white'
-	},
-	cardHeaderStyle: {
-		flexDirection: 'column',
-		display: 'flex',
-		alignItems: 'flex-start',
-		borderRadius: 8
-	},
-	displayNameStyle: {
-		fontSize: 14,
-		color: 'black'
-	},
-	cardItemStyle: {
-		marginTop: -10,
-		borderRadius: 8
-	},
 	viewSortStyle: {
 		flexDirection: 'row-reverse',
 		marginBottom: 10
@@ -389,7 +276,6 @@ const styles = {
 	},
 	iconSortStyle: {
 		color: 'gray',
-		fontSize: 20,
 		marginTop: 10,
 		marginLeft: 2
 	}
@@ -399,7 +285,7 @@ const mapStateToProps = (state) => ({
 	subcategory: state.selectedCategory.subcategory,
 	category: state.selectedCategory.category,
 	servicesList: state.serviceResult.servicesList,
-	userLocation: state.location.data
+	userLocation: state.location.data,
 });
 
 export default connect(
@@ -408,6 +294,6 @@ export default connect(
 		getServicesCategory,
 		getServicesSubcategory,
 		selectService,
-		cancelAxiosServices
+		cancelAxiosServices,
 	}
 )(ServicesListScreen);

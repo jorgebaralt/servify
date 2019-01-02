@@ -151,7 +151,7 @@ class LoginScreen extends Component {
 							style={{ marginTop: 40 }}
 							onPress={this.loginUser}
 						>
-							Log in
+							<Text>Log in</Text>
 						</Button>
 
 						{this.renderSpinner()}

@@ -8,7 +8,7 @@ export const Button = (props) => {
 		defaultButton: {
 			alignSelf: 'flex-start',
 			backgroundColor: props.disabled ? colors.darkGray : props.color ? props.color : 'blue',
-			padding: 10,
+			padding: 10,	
 			borderRadius: 5,
 			width: 'auto',
 			alignItems: 'center'

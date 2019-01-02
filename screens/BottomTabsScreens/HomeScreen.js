@@ -283,7 +283,7 @@ class HomeScreen extends Component {
 							image={require('../../assets/backgrounds/yellow.jpg')}
 							text="Host your service near Orlando, FL "
 							buttonText="Post a service"
-							style={{ marginTop: 5, height: 250 }}
+							style={{ marginTop: 5, height: 250, marginBottom: 20 }}
 							rounded
 						>
 							<View
@@ -305,7 +305,7 @@ class HomeScreen extends Component {
 									Host your service near Orlando, FL{' '}
 								</Text>
 								<Button bordered style={{ fontSize: 20 }}>
-									Publish your service
+									<Text>Publish your service</Text>
 								</Button>
 							</View>
 						</InfoImage>

@@ -14,7 +14,7 @@ class Slides extends Component {
 						bordered
 						onPress={this.props.onComplete}
 					>
-						Lets Go!
+						<Text>Lets Go!</Text>
 					</Button>
 				</View>
 			);

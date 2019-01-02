@@ -89,9 +89,9 @@ class BrowseScreen extends Component {
 		// pick where to navigate
 		// FIXME: here
 		if (category.subcategories) {
-			this.props.navigation.navigate('subcategories');
+			this.props.navigation.navigate('subcategories', { category });
 		} else {
-			this.props.navigation.navigate('servicesList');
+			this.props.navigation.navigate('servicesList', { category });
 		}
 	};
 
@@ -159,6 +159,7 @@ class BrowseScreen extends Component {
 					ref={(listRef) => {
 						this.listRef = listRef;
 					}}
+					style={{ backgroundColor: colors.white }}
 				/>
 			</SafeAreaView>
 		);
