@@ -47,8 +47,11 @@ class BrowseScreen extends Component {
 		willBlurSubscription = this.props.navigation.addListener(
 			'willBlur',
 			() => {
+				// clean state and handle search to restore filter
 				this.setState({ filter: '' });
 				this.handleSearch();
+				// Scroll to top on blur
+				this.listRef.scrollToOffset({ x: 0, y: 0, animated: true });
 			}
 		);
 		keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => this._keyboardDidHide());
@@ -153,6 +156,9 @@ class BrowseScreen extends Component {
 					renderItem={({ item }) => this.renderCategories(item)}
 					keyExtractor={(category) => category.title}
 					numColumns={2}
+					ref={(listRef) => {
+						this.listRef = listRef;
+					}}
 				/>
 			</SafeAreaView>
 		);

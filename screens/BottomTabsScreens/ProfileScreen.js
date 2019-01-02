@@ -79,14 +79,14 @@ class ProfileScreen extends Component {
 		return (
 			<MaterialIcons
 				name={item.iconName}
-				style={{ color: 'black' }}
+				style={{ color: colors.black }}
 				size={24}
 			/>
 		);
 	}
 
 	leftList = (item) => (
-		<Text style={{ fontSize: 20 }}>{item.title}</Text>
+		<Text style={{ fontSize: 20, color: colors.black }}>{item.title}</Text>
 	)
 
 	renderListItems = (item) => (
@@ -99,7 +99,7 @@ class ProfileScreen extends Component {
 	);
 
 	leftHeader = () => (
-		<Text style={{ fontWeight: '600', fontSize: 18 }}>
+		<Text style={{ fontWeight: '600', fontSize: 22 }}>
 			{this.props.user.displayName}
 		</Text>
 	);

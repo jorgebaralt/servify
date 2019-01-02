@@ -25,10 +25,12 @@ class PostServiceScreen extends Component {
 			'willFocus',
 			this.handleAndroidBack
 		);
-		//
 		willBlurSubscription = this.props.navigation.addListener(
 			'willBlur',
-			() => {}
+			() => {
+				// Scroll to top on blur
+				this.scrollRef.scrollTo({ x: 0, y: 0, animated: true });
+			}
 		);
 	}
 
@@ -62,6 +64,9 @@ class PostServiceScreen extends Component {
 			<ScrollView
 				style={{ backgroundColor: '#FFFFFF' }}
 				keyboardShouldPersistTaps="always"
+				ref={(scrollRef) => {
+					this.scrollRef = scrollRef;
+				}}
 			>
 				<InfoImage
 					image={require('../../assets/backgrounds/overview.jpeg')}
