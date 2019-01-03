@@ -1,33 +1,32 @@
 import React, { Component } from 'react';
+import { Toast } from 'native-base';
+import { Ionicons } from '@expo/vector-icons';
 import {
-	Container,
-	Header,
-	Body,
-	Right,
-	Button,
-	Icon,
-	Title,
+	View,
+	DeviceEventEmitter,
+	SafeAreaView,
+	ActivityIndicator,
 	Text,
-	Left,
-	Content,
-	Item,
-	Textarea,
-	Toast,
-	Spinner,
-	Form,
-	Picker
-} from 'native-base';
-import { Platform, View, DeviceEventEmitter } from 'react-native';
+	ScrollView
+} from 'react-native';
 import { connect } from 'react-redux';
 import { reportService } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
+import { colors } from '../../shared/styles';
+import {
+	CustomHeader,
+	ListPicker,
+	Button,
+	TextArea
+} from '../../components/UI';
 
 let willFocusSubscription;
 let backPressSubscriptions;
 const initialState = {
 	selectedOption: undefined,
 	description: '',
-	loading: false
+	loading: false,
+	modalVisible: false
 };
 
 class ReportScreen extends Component {
@@ -68,9 +67,9 @@ class ReportScreen extends Component {
 		this.props.navigation.goBack(null);
 	};
 
+	// send report to database
 	sendReport = async () => {
 		this.setState({ loading: true });
-
 		const report = {
 			reason: this.state.selectedOption,
 			description: this.state.description,
@@ -88,55 +87,64 @@ class ReportScreen extends Component {
 		this.onBackPress();
 	};
 
-	renderPicker = () => {
-		let pickerArr;
-		if (Platform.OS === 'android') {
-			pickerArr = [
-				{ label: 'Pick an option', value: 'none' },
-				{ label: 'Fake information', value: 'fake' },
-				{ label: 'Offensive information', value: 'offensive' }
-			];
-		} else {
-			pickerArr = [
-				{ label: 'Offensive information', value: 'offensive' },
-				{ label: 'Fake information', value: 'fake' }
-			];
-		}
-		return pickerArr.map((picker, i) => (
-			<Picker.Item key={i} label={picker.label} value={picker.value} />
-		));
-	};
+	headerLeftIcon = () => (
+		<Ionicons
+			name="ios-arrow-back"
+			size={32}
+			style={{ color: colors.black }}
+			onPress={() => {
+				this.props.navigation.navigate('browse');
+			}}
+		/>
+	);
 
 	renderSpinner() {
 		if (this.state.loading) {
-			return <Spinner color="orange" />;
+			return (
+				<ActivityIndicator
+					style={{ marginTop: 10 }}
+					size="large"
+					color={colors.primaryColor}
+				/>
+			);
 		}
 		return <View />;
 	}
 
+	// after user has picked an option, we render description
 	renderDescription() {
-		const { textAreaStyle, buttonStyle } = styles;
 		if (this.state.selectedOption) {
 			return (
 				<View>
-					<Textarea
-						style={textAreaStyle}
-						rowSpan={5}
+					<TextArea
+						style={{ marginTop: 30 }}
+						label="Description"
+						size={40}
+						firstColor={colors.darkGray}
+						secondColor={colors.secondaryColor}
+						fontColor={colors.black}
+						multiline
 						bordered
-						placeholder="Describe here..."
+						numberOfLines={3}
+						placeholder="Enter thoughts here..."
 						value={this.state.description}
-						onChangeText={(text) => this.setState({ description: text })}
+						onChangeText={(text) => this.setState({ description: text })
+						}
 					/>
-					{this.renderSpinner()}
 					<Button
 						bordered
-						dark
-						disabled={this.state.loading}
-						style={buttonStyle}
+						disabled={
+							this.state.loading
+							|| this.state.description.length < 2
+						}
+						style={{ marginTop: 20 }}
+						color={colors.primaryColor}
 						onPress={() => this.sendReport()}
+						textColor={colors.primaryColor}
 					>
-						<Text style={{ color: '#FF7043' }}>Report</Text>
+						<Text>Submit</Text>
 					</Button>
+					{this.renderSpinner()}
 				</View>
 			);
 		}
@@ -144,114 +152,77 @@ class ReportScreen extends Component {
 
 	render() {
 		const {
-			formStyle,
 			DescriptionStyle,
 			titleStyle,
-			androidHeader,
-			iosHeader
 		} = styles;
 
 		return (
-			<Container style={{ flex: 1 }}>
-				<Header style={Platform.OS === 'android' ? androidHeader : iosHeader}>
-					<Left>
-						<Button
-							transparent
-							onPress={() => {
-								this.onBackPress();
-							}}
-						>
-							<Icon
-								name="ios-arrow-back"
-								type="Ionicons"
-								style={{ color: 'black' }}
-							/>
-						</Button>
-					</Left>
-					<Body>
-						<Title style={{ color: 'black', marginLeft: 10 }}>Report</Title>
-					</Body>
-					<Right />
-				</Header>
-				<Content>
-					<Text style={titleStyle}>Report a service</Text>
-					<Text style={DescriptionStyle}>
-						Does
-						<Text style={{ fontWeight: 'bold' }}>
-							{' '}
-							{this.props.service.title}{' '}
+			<View style={{ flex: 1, backgroundColor: 'white' }}>
+				<SafeAreaView
+					style={{
+						flex: 0,
+						backgroundColor: colors.white
+					}}
+				/>
+				<SafeAreaView style={{ flex: 1}}>
+					<CustomHeader
+						color={colors.white}
+						title="Report"
+						left={this.headerLeftIcon()}
+					/>
+					<ScrollView style={{ flex: 1, paddingLeft: 20, paddingRight: 20 }}>
+						<Text style={titleStyle}>Report a service</Text>
+						<Text style={DescriptionStyle}>
+							Does
+							<Text style={{ fontWeight: 'bold' }}>
+								{' '}
+								{this.props.service.title}{' '}
+							</Text>
+							contains anything offensive, innapropiate, or fake?
+							please report it as soon as possible so we can take
+							a closer look.
 						</Text>
-						contains anything offensive, innapropiate, or fake? please report it
-						as soon as possible so we can take a closer look.
-					</Text>
-					<View style={{ flex: 1, alignItems: 'center' }}>
-						<Form style={formStyle}>
-							<Item picker style={{ margin: 20, width: '100%' }}>
-								<Picker
-									mode="dropdown"
-									style={{ width: undefined }}
-									placeholder="Pick an Option"
-									placeholderStyle={{ color: '#bfc6ea', left: -15 }}
-									iosIcon={(
-<Icon
-											name={
-												this.state.selectedOption
-													? undefined
-													: 'ios-arrow-down'
-											}
-/>
-)}
-									selectedValue={this.state.selectedOption}
-									onValueChange={(value) => this.setState({ selectedOption: value })
-									}
-									textStyle={{ left: -15 }}
-								>
-									{this.renderPicker()}
-								</Picker>
-							</Item>
-							{this.renderDescription()}
-						</Form>
-					</View>
-				</Content>
-			</Container>
+						<ListPicker
+							onPress={() => this.setState({ modalVisible: true })
+							}
+							visible={this.state.modalVisible}
+							callback={(selectedOption) => {
+								this.setState({
+									modalVisible: false,
+									selectedOption
+								});
+							}}
+							label="Report type"
+							selected={this.state.selectedOption}
+							placeholder="Pick an option"
+							title="Pick an option"
+							color={colors.secondaryColor}
+							data={[
+								{ title: 'Offensive information' },
+								{ title: 'Fake information' }
+							]}
+							style={{ marginTop: 30 }}
+						/>
+						{this.renderDescription()}
+					</ScrollView>
+				</SafeAreaView>
+			</View>
 		);
 	}
 }
 
 const styles = {
-	androidHeader: {
-		backgroundColor: '#F5F5F5'
-	},
-	iosHeader: {},
-	formStyle: {
-		width: '80%'
-	},
-	textAreaStyle: {
-		marginTop: 10,
-		fontSize: 16
-	},
 	DescriptionStyle: {
 		marginTop: 20,
-		marginLeft: '10%',
-		marginRight: '10%',
 		fontSize: 16
 	},
 	titleStyle: {
-		marginLeft: '10%',
-		marginRight: '10%',
 		marginTop: 20,
 		fontSize: 20,
 		fontWeight: 'bold'
 	},
-	buttonStyle: {
-		top: 20,
-		borderColor: '#FF7043',
-		marginBottom: 20
-	}
 };
 
 const mapStateToProps = (state) => ({ service: state.selectedService.service });
 
-export default connect(
-	mapStateToProps
-)(ReportScreen);
+export default connect(mapStateToProps)(ReportScreen);

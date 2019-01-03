@@ -5,7 +5,8 @@ import {
 	ActivityIndicator,
 	SafeAreaView,
 	Text,
-	Keyboard
+	Keyboard,
+	ScrollView
 } from 'react-native';
 import { Toast } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
@@ -165,13 +166,13 @@ class FeedbackScreen extends Component {
 						backgroundColor: colors.white
 					}}
 				/>
-				<SafeAreaView>
+				<SafeAreaView style={{ flex: 1}}>
 					<CustomHeader
 						color={colors.white}
 						title="Feedback"
 						left={this.headerLeftIcon()}
 					/>
-					<View style={{ paddingLeft: 20, paddingRight: 20 }}>
+					<ScrollView style={{ paddingLeft: 20, paddingRight: 20 }}>
 						<Text style={titleStyle}>How can we improve?</Text>
 						<Text style={DescriptionStyle}>
 							We are always looking for ways to improve, so we
@@ -201,7 +202,7 @@ class FeedbackScreen extends Component {
 							style={{ marginTop: 30 }}
 						/>
 						{this.renderDescription()}
-					</View>
+					</ScrollView>
 				</SafeAreaView>
 			</View>
 		);
