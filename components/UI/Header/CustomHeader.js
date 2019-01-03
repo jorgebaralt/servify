@@ -36,7 +36,7 @@ export const CustomHeader = (props) => {
 						fontSize: props.span ? 24 : 20,
 						fontWeight: 'bold',
 						color: props.titleColor ? props.titleColor : colors.black,
-						marginTop: props.span ? props.height - props.titleBottomMargin : null,
+						marginTop: props.span ? props.height - props.titleBottomMargin : 5,
 						marginLeft: props.span ? 50 : null,
 						paddingRight: props.span ? 10 : null
 					}}

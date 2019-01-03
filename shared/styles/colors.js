@@ -6,4 +6,5 @@ export const colors = {
 	black: '#212121',
 	white: '#FFFFFF',
 	secondaryColor: '#1EA3CC',
+	danger: '#F44336'
 };
