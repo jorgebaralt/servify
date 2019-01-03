@@ -29,9 +29,5 @@ export const globalStyles = {
 		color: colors.darkerGray,
 		fontSize: 18,
 		marginTop: 10
-	},
-	whiteHeader: {
-		flex: 1,
-		backgroundColor: colors.white
 	}
 };

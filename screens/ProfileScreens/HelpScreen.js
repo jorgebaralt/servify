@@ -10,7 +10,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { pageHit } from '../../shared/ga_helper';
 import { faqList } from '../../shared/data';
-import { colors, globalStyles } from '../../shared/styles';
+import { colors } from '../../shared/styles';
 import { ListIcon, CustomHeader } from '../../components/UI';
 
 let willFocusSubscription;
@@ -83,29 +83,8 @@ class HelpScreen extends Component {
 	);
 
 	render() {
-		const { androidHeader, iosHeader } = styles;
 		return (
-			<View style={globalStyles.whiteHeader}>
-				{/* <Header style={Platform.OS === 'android' ? androidHeader : iosHeader}>
-					<Left>
-						<Button
-							transparent
-							onPress={() => {
-								this.props.navigation.goBack();
-							}}
-						>
-							<Icon
-								name="ios-arrow-back"
-								type="Ionicons"
-								style={{ color: 'black' }}
-							/>
-						</Button>
-					</Left>
-					<Body style={{ flex: 3 }}>
-						<Title style={{ color: 'black' }}>Help</Title>
-					</Body>
-					<Right />
-				</Header> */}
+			<View style={{ flex: 1, backgroundColor: colors.white }}>
 				<SafeAreaView
 					style={{
 						flex: 0,
@@ -132,12 +111,5 @@ class HelpScreen extends Component {
 		);
 	}
 }
-
-const styles = {
-	androidHeader: {
-		backgroundColor: '#F5F5F5'
-	},
-	iosHeader: {}
-};
 
 export default HelpScreen;

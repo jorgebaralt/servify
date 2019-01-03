@@ -4,7 +4,6 @@ import { View, Text, TouchableOpacity } from 'react-native';
 import { colors } from '../../../shared/styles';
 
 export const CustomHeader = (props) => {
-
 	const defaultStyle = {
 		height: Header.HEIGHT,
 		borderBottomWidth: 0.5,
@@ -21,8 +20,6 @@ export const CustomHeader = (props) => {
 		borderBottomWidth: 0.5,
 		borderBottomColor: colors.lightGray,
 		backgroundColor: props.color ? props.color : colors.white,
-		// borderBottomLeftRadius: 30,
-		// borderBottomRightRadius: 30,
 		shadowOpacity: 0.05,
 		shadowRadius: 5,
 		shadowOffset: { width: 0, height: 5 },
@@ -36,11 +33,12 @@ export const CustomHeader = (props) => {
 				<Text
 					style={{
 						textAlign: props.span ? 'left' : 'center',
-						fontSize: props.span ? 28 : 20,
+						fontSize: props.span ? 24 : 20,
 						fontWeight: 'bold',
 						color: props.titleColor ? props.titleColor : colors.black,
-						marginTop: props.span ? props.height - Header.HEIGHT * 2 : null,
-						marginLeft: props.span ? 50 : null
+						marginTop: props.span ? props.height - props.titleBottomMargin : null,
+						marginLeft: props.span ? 50 : null,
+						paddingRight: props.span ? 10 : null
 					}}
 				>
 					{props.title ? props.title : null}
@@ -52,7 +50,6 @@ export const CustomHeader = (props) => {
 					{props.right}
 				</TouchableOpacity>
 			</View>
-
 		</View>
 	);
 };

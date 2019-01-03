@@ -1,18 +1,17 @@
 import React, { Component } from 'react';
-import { DeviceEventEmitter, Platform } from 'react-native';
 import {
-	Container,
-	Header,
-	Body,
-	Right,
-	Button,
-	Icon,
-	Title,
+	View,
+	DeviceEventEmitter,
+	SafeAreaView,
 	Text,
-	Left,
-	Content,
-} from 'native-base';
+	ScrollView
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { pageHit } from '../../shared/ga_helper';
+import { colors } from '../../shared/styles';
+import {
+	CustomHeader,
+} from '../../components/UI';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -52,56 +51,50 @@ class SpecificFaqScreen extends Component {
 		backPressSubscriptions.add(() => this.props.navigation.pop());
 	};
 
+	headerLeftIcon = () => (
+		<Ionicons
+			name="ios-arrow-back"
+			size={32}
+			style={{ color: colors.white }}
+			onPress={() => {
+				this.props.navigation.pop();
+			}}
+		/>
+	);
+
 	render() {
-		const { androidHeader, iosHeader, questionStyle, answerStyle } = styles;
+		const { answerStyle } = styles;
 
 		return (
-			<Container>
-				<Header style={Platform.OS === 'android' ? androidHeader : iosHeader}>
-					<Left>
-						<Button
-							transparent
-							onPress={() => {
-								this.props.navigation.pop();
-							}}
-						>
-							<Icon
-								name="ios-arrow-back"
-								type="Ionicons"
-								style={{ color: 'black' }}
-							/>
-						</Button>
-					</Left>
-					<Body style={{ flex: 3 }}>
-						<Title style={{ color: 'black' }} />
-					</Body>
-					<Right />
-				</Header>
-				<Content>
-					<Text style={questionStyle}>{this.state.selectedFaq.question}</Text>
-					<Text style={answerStyle}>{this.state.selectedFaq.answer}</Text>
-				</Content>
-			</Container>
+			<View style={{flex: 1, backgorundColor: colors.white }}>
+				<SafeAreaView
+					style={{
+						flex: 0,
+						backgroundColor: colors.secondaryColor
+					}}
+				/>
+				<SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
+					<CustomHeader
+						color={colors.secondaryColor}
+						left={this.headerLeftIcon()}
+						span
+						height={150}
+						title={this.state.selectedFaq.question}
+						titleColor={colors.white}
+						titleBottomMargin={90}
+					/>
+					<ScrollView style={{ paddingLeft: 20, paddingRight: 20 }}>
+						<Text style={answerStyle}>{this.state.selectedFaq.answer}</Text>
+					</ScrollView>
+				</SafeAreaView>
+			</View>
 		);
 	}
 }
 
 const styles = {
-	androidHeader: {
-		backgroundColor: '#F5F5F5'
-	},
-	iosHeader: {},
-	questionStyle: {
-		fontWeight: 'bold',
-		marginTop: 10,
-		fontSize: 22,
-		marginLeft: 20,
-		marginRight: 20
-	},
 	answerStyle: {
-		fontSize: 16,
-		marginLeft: 20,
-		marginRight: 20,
+		fontSize: 20,
 		marginTop: 40
 	}
 };

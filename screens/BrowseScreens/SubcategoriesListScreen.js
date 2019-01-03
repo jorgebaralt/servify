@@ -98,6 +98,7 @@ class SubcategoriesListScreen extends Component {
 						title={this.state.category.title}
 						titleColor={colors.white}
 						left={this.headerLeftIcon()}
+						titleBottomMargin={120}
 						span
 						height={200}
 					/>
