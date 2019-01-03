@@ -49,7 +49,7 @@ class BrowseScreen extends Component {
 				this.setState({ filter: '' });
 				this.handleSearch();
 				// Scroll to top on blur
-				this.listRef.scrollToOffset({ x: 0, y: 0, animated: true });
+				setTimeout(() => this.listRef.scrollToOffset({ x: 0, y: 0, animated: true }), 400);
 			}
 		);
 		keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => this._keyboardDidHide());

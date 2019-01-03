@@ -1,20 +1,17 @@
 import React, { Component } from 'react';
-import { DeviceEventEmitter, FlatList, Platform } from 'react-native';
 import {
-	Container,
-	Header,
-	Body,
-	Right,
-	Button,
-	Icon,
-	Title,
-	Text,
-	Left,
-	Content,
-	ListItem
-} from 'native-base';
+	DeviceEventEmitter,
+	FlatList,
+	View,
+	ScrollView,
+	SafeAreaView,
+	Text
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { pageHit } from '../../shared/ga_helper';
 import { faqList } from '../../shared/data';
+import { colors, globalStyles } from '../../shared/styles';
+import { ListIcon, CustomHeader } from '../../components/UI';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -51,41 +48,45 @@ class HelpScreen extends Component {
 		backPressSubscriptions.add(() => this.props.navigation.pop());
 	};
 
+	listText = (faq) => (
+		<Text style={{ fontSize: 20, marginRight: 30 }}>{faq.question}</Text>
+	);
+
+	rightIcon = () => (
+		<Ionicons
+			name="ios-arrow-forward"
+			style={{ color: colors.secondaryColor }}
+			size={24}
+		/>
+	);
+
 	renderQuestion = (faq) => (
-		<ListItem
-			style={{ marginTop: 30, marginRight: 10 }}
+		<ListIcon
+			left={this.listText(faq)}
+			right={this.rightIcon()}
 			onPress={() => {
 				this.props.navigation.navigate('specificFaq', { faq });
 			}}
-		>
-			<Left>
-				<Text>{faq.question}</Text>
-			</Left>
-			<Right>
-				<Icon
-					name="ios-arrow-forward"
-					type="Ionicons"
-					style={{ color: 'gray', fontSize: 28 }}
-				/>
-			</Right>
-		</ListItem>
+			style={{ marginTop: 40 }}
+		/>
 	);
 
-	renderQuestions = () => (
-		<FlatList
-			style={{ marginTop: 10, marginBottom: 40 }}
-			data={faqList}
-			renderItem={({ item }) => this.renderQuestion(item)}
-			keyExtractor={(item) => item.id}
-			enableEmptySections
+	headerLeftIcon = () => (
+		<Ionicons
+			name="ios-arrow-back"
+			size={32}
+			style={{ color: colors.black }}
+			onPress={() => {
+				this.props.navigation.goBack();
+			}}
 		/>
 	);
 
 	render() {
 		const { androidHeader, iosHeader } = styles;
 		return (
-			<Container>
-				<Header style={Platform.OS === 'android' ? androidHeader : iosHeader}>
+			<View style={globalStyles.whiteHeader}>
+				{/* <Header style={Platform.OS === 'android' ? androidHeader : iosHeader}>
 					<Left>
 						<Button
 							transparent
@@ -104,9 +105,30 @@ class HelpScreen extends Component {
 						<Title style={{ color: 'black' }}>Help</Title>
 					</Body>
 					<Right />
-				</Header>
-				<Content>{this.renderQuestions()}</Content>
-			</Container>
+				</Header> */}
+				<SafeAreaView
+					style={{
+						flex: 0,
+						backgroundColor: colors.white
+					}}
+				/>
+				<SafeAreaView style={{ flex: 1 }}>
+					<CustomHeader
+						color={colors.white}
+						title="Help"
+						left={this.headerLeftIcon()}
+					/>
+					<ScrollView style={{ flex: 1 }}>
+						<FlatList
+							style={{ marginTop: 10, marginBottom: 40 }}
+							data={faqList}
+							renderItem={({ item }) => this.renderQuestion(item)}
+							keyExtractor={(item) => item.id}
+							enableEmptySections
+						/>
+					</ScrollView>
+				</SafeAreaView>
+			</View>
 		);
 	}
 }
@@ -117,6 +139,5 @@ const styles = {
 	},
 	iosHeader: {}
 };
-
 
 export default HelpScreen;

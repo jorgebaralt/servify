@@ -29,7 +29,7 @@ class PostServiceScreen extends Component {
 			'willBlur',
 			() => {
 				// Scroll to top on blur
-				this.scrollRef.scrollTo({ x: 0, y: 0, animated: true });
+				setTimeout(() => this.scrollRef.scrollTo({ x: 0, y: 0, animated: true }), 400);
 			}
 		);
 	}
