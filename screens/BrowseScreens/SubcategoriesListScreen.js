@@ -3,13 +3,14 @@ import {
 	DeviceEventEmitter,
 	FlatList,
 	View,
-	SafeAreaView,
 	StyleSheet
 } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
 import { pageHit } from '../../shared/ga_helper';
 import { CustomHeader, SubcategoryCard } from '../../components/UI';
 import { colors } from '../../shared/styles';
+
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -92,6 +93,7 @@ class SubcategoriesListScreen extends Component {
 				/>
 				<SafeAreaView
 					style={{ flex: 1, backgroundColor: colors.white }}
+					forceInset={{ bottom: 'never' }}
 				>
 					<CustomHeader
 						color={this.state.category.color[0]}

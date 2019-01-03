@@ -4,9 +4,9 @@ import {
 	FlatList,
 	View,
 	ScrollView,
-	SafeAreaView,
 	Text
 } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
 import { pageHit } from '../../shared/ga_helper';
 import { faqList } from '../../shared/data';
@@ -91,7 +91,7 @@ class HelpScreen extends Component {
 						backgroundColor: colors.white
 					}}
 				/>
-				<SafeAreaView style={{ flex: 1 }}>
+				<SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: 'never' }}>
 					<CustomHeader
 						color={colors.white}
 						title="Help"
