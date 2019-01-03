@@ -101,9 +101,9 @@ class BrowseScreen extends Component {
 	handleSearch = () => {
 		const filteredCategories = [];
 		const nameCheckCategory = [];
-		let inputArray = [this.state.filter];
+		let inputArray = [this.state.filter.toLowerCase()];
 		if (this.state.filter.includes(' ')) {
-			inputArray = this.state.filter.split(' ');
+			inputArray = this.state.filter.toLowerCase().split(' ');
 		}
 		categories.forEach((category) => {
 			const found = inputArray.some((input) => category.keyWords.includes(input.toLowerCase()));
@@ -112,6 +112,18 @@ class BrowseScreen extends Component {
 				nameCheckCategory.push(category.title);
 			}
 		});
+
+		// Option 2, while writing fetches
+		// categories.forEach((category) => {
+		// 	inputArray.forEach((input) => {
+		// 		category.keyWords.forEach(keyword => {
+		// 			if ((keyword.includes(input) || keyword === input) && !nameCheckCategory.includes(category.title)) {
+		// 				filteredCategories.push(category);
+		// 				nameCheckCategory.push(category.title);
+		// 			}
+		// 		});
+		// 	});
+		// });
 
 		if (filteredCategories.length < 1 || this.state.filter.length < 1) {
 			this.setState({ categories });
