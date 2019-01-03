@@ -12,9 +12,18 @@ class FadeImage extends Component {
 	};
 
 	render() {
+		const { width, height } = this.props.style;
+		const imageContainerStyle = {
+			width,
+			height,
+			backgroundColor: '#EEEEEE',
+			overflow: 'hidden',
+			borderRadius: this.props.circle ? width / 2 : null
+		};
+
 		return (
 			<View
-				style={[styles.imageContainerStyle, this.props.style]}
+				style={[imageContainerStyle, this.props.style]}
 			>
 				<Animated.Image
 					source={this.props.image}
@@ -22,6 +31,7 @@ class FadeImage extends Component {
 						width: 'auto',
 						height: '100%',
 						opacity: this.state.fadeAnimation,
+						borderRadius: this.props.circle ? width / 2 : null
 					}}
 					onLoad={this.onLoad}
 					resizeMode="cover"
@@ -30,14 +40,5 @@ class FadeImage extends Component {
 		);
 	}
 }
-
-const styles = StyleSheet.create({
-	imageContainerStyle: {
-		width: 'auto',
-		height: 'auto',
-		backgroundColor: '#EEEEEE',
-		overflow: 'hidden'
-	}
-});
 
 export { FadeImage };

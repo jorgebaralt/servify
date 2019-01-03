@@ -52,6 +52,7 @@ module.exports = {
         "prefer-const": [1],
         "consistent-return": [0],
         "react/button-has-type": [0],
-        "no-nested-ternary": [0]
+        "no-nested-ternary": [0],
+        "import/no-dynamic-require" : [0]
     }
 };

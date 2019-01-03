@@ -1,30 +1,25 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, DeviceEventEmitter, FlatList } from 'react-native';
 import {
-	Text,
-	Card,
-	CardItem,
-	Header,
-	Body,
-	Title,
-	Container,
-	Left,
-	Button,
-	Icon,
-	Right,
-	Content
-} from 'native-base';
+	DeviceEventEmitter,
+	FlatList,
+	View,
+	SafeAreaView,
+	StyleSheet
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { pageHit } from '../../shared/ga_helper';
+import { CustomHeader, SubcategoryCard } from '../../components/UI';
+import { colors } from '../../shared/styles';
 
 let willFocusSubscription;
 let backPressSubscriptions;
 
 class SubcategoriesListScreen extends Component {
 	state = { category: null };
-	
+
 	async componentWillMount() {
 		await this.setState({
-			category: this.props.navigation.getParam('category'),
+			category: this.props.navigation.getParam('category')
 		});
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
@@ -61,84 +56,96 @@ class SubcategoriesListScreen extends Component {
 	};
 
 	doSelectSubcategory = async (subcategory) => {
-		await this.props.navigation.navigate('servicesList', { subcategory, category: this.state.category });
+		await this.props.navigation.navigate('servicesList', {
+			subcategory,
+			category: this.state.category
+		});
 	};
 
 	renderSubcategories = (subcategory) => (
-		<TouchableOpacity
-			key={subcategory.id}
+		<SubcategoryCard
+			subcategory={subcategory}
 			onPress={() => this.doSelectSubcategory(subcategory)}
-		>
-			<Card style={styles.cardStyle}>
-				<CardItem header style={{ borderRadius: 8 }}>
-					<Text>{subcategory.title}</Text>
-					<Right>
-						<Icon
-							name="ios-arrow-forward"
-							type="Ionicons"
-							style={{ color: this.state.category.color[0] }}
-						/>
-					</Right>
-				</CardItem>
-				<CardItem>
-					<Body style={{ marginBottom: -15 }}>
-						<Text>{subcategory.description}</Text>
-					</Body>
-				</CardItem>
-			</Card>
-		</TouchableOpacity>
+			color={this.state.category.color[0]}
+		/>
+	);
+
+	headerLeftIcon = () => (
+		<Ionicons
+			name="ios-arrow-back"
+			size={32}
+			style={{ color: 'white' }}
+			onPress={() => {
+				this.props.navigation.navigate('browse');
+			}}
+		/>
 	);
 
 	render() {
 		return (
-			<Container>
-				<Header style={{ backgroundColor: this.state.category.color[0] }}>
-					<Left>
-						<Button
-							transparent
-							onPress={() => {
-								this.props.navigation.navigate('browse');
-							}}
-						>
-							<Icon
-								name="ios-arrow-back"
-								type="Ionicons"
-								style={{ color: 'white' }}
-							/>
-						</Button>
-					</Left>
-					<Body style={{ flex: 3 }}>
-						<Title style={{ color: 'white' }}>
-							{this.state.category.title}
-						</Title>
-					</Body>
-					<Right />
-				</Header>
-				<Content>
-					<FlatList
-						data={this.state.category.subcategories}
-						renderItem={({ item }) => this.renderSubcategories(item)}
-						keyExtractor={(item) => item.title}
+			<View style={{ flex: 1, overflow: 'hidden' }}>
+				<SafeAreaView
+					style={{
+						flex: 0,
+						backgroundColor: this.state.category.color[0]
+					}}
+				/>
+				<SafeAreaView
+					style={{ flex: 1, backgroundColor: colors.white }}
+				>
+					<CustomHeader
+						color={this.state.category.color[0]}
+						title={this.state.category.title}
+						titleColor={colors.white}
+						left={this.headerLeftIcon()}
+						span
+						height={200}
 					/>
-				</Content>
-			</Container>
+					<View
+						style={{
+							flex: 1,
+							justifyContent: 'center',
+							alignItems: 'center',
+							marginTop: -60,
+							// overflow: 'hidden'
+						}}
+					>
+						<FlatList
+							data={this.state.category.subcategories}
+							renderItem={({ item }) => this.renderSubcategories(item)
+							}
+							keyExtractor={(item) => item.title}
+						/>
+						<View style={[styles.bigCircleStyle, { backgroundColor: this.state.category.color[0] }]} />
+						<View style={[styles.smallCircleStyle , { backgroundColor: this.state.category.color[0] }]} />
+					</View>
+				</SafeAreaView>
+			</View>
 		);
 	}
 }
 
-const styles = {
-	cardStyle: {
-		width: '80%',
-		marginLeft: '10%',
-		marginTop: '2.5%',
-		shadowOffset: { width: 0, height: 0 },
-		shadowColor: 'black',
-		shadowOpacity: 0.2,
-		elevation: 1,
-		height: 100,
-		borderRadius: 8
+const styles = StyleSheet.create({
+	bigCircleStyle: {
+		position: 'absolute',
+		height: 400,
+		width: 400,
+		borderRadius: 200,
+		zIndex: -1,
+		right: -150,
+		bottom: -180,
+		opacity: 0.3
 	},
-	contentStyle: {}
-};
+	smallCircleStyle: {
+		position: 'absolute',
+		height: 300,
+		width: 300,
+		borderRadius: 150,
+		zIndex: -1,
+		left: -50,
+		bottom: -180,
+		opacity: 0.3
+	}
+});
 
 export default SubcategoriesListScreen;

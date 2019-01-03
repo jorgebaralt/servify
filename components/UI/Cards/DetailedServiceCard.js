@@ -23,7 +23,7 @@ export const DetailedServiceCard = (props) => {
 						style={styles.imageStyle}
 					/>
 				</View>
-				<View style={{ paddingLeft: 10, marginLeft: 80, marginRight: 20 }}>
+				<View style={{ paddingLeft: 15, marginLeft: 80, marginRight: 20 }}>
 					<Text
 						style={[styles.titleStyle, { color: props.color }]}
 					>
@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
 		shadowOffset: { width: 0, height: 0 }
 	},
 	imageContainerStyle: {
+		marginLeft: 5,
 		position: 'absolute',
 		left: -20,
 		height: 100,

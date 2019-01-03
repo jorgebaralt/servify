@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, LayoutAnimation, Text } from 'react-native';
+import { Asset } from 'expo';
 import StarsRating from '../../Ratings/StarsRating';
 import { FadeImage } from '..';
 import { colors } from '../../../shared/styles';
 
 class HomeServiceCard extends Component {
 	// animate on appear
-	componentWillMount() {
+	async componentWillMount() {
 		LayoutAnimation.easeInEaseOut();
+		await Asset.loadAsync([
+			this.props.image
+		]);
 	}
 
 	renderContent = () => {
@@ -54,7 +58,7 @@ class HomeServiceCard extends Component {
 				}}
 			>
 				<View>
-					<FadeImage image={require('../../../assets/default/food/1.jpg')} style={{ height: 100 }} />
+					<FadeImage image={this.props.image} style={{ height: 100 }} />
 					<View style={[cardHeaderStyle, {borderWidth: 0.5, borderBottomStartRadius: 8, borderBottomEndRadius: 8, borderTopWidth: 0, padding: 5, borderColor: colors.lightGray }]}>
 						<Text style={titleStyleCard}>{service.title}</Text>
 						{this.renderContent()}

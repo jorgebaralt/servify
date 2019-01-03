@@ -11,3 +11,4 @@ export * from './Header/SearchHeader';
 
 export * from './List/ListIcon';
 export * from './Cards/DetailedServiceCard';
+export * from './Cards/SubcategoryCard';
