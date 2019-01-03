@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { View, TouchableOpacity, LayoutAnimation, Text } from 'react-native';
-import { Asset } from 'expo';
 import StarsRating from '../../Ratings/StarsRating';
 import { FadeImage } from '..';
 import { colors } from '../../../shared/styles';
@@ -9,9 +8,6 @@ class HomeServiceCard extends Component {
 	// animate on appear
 	async componentWillMount() {
 		LayoutAnimation.easeInEaseOut();
-		await Asset.loadAsync([
-			this.props.image
-		]);
 	}
 
 	renderContent = () => {
