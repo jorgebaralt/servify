@@ -42,16 +42,26 @@ class SettingsScreen extends Component {
 					}}
 				/>
 				<SafeAreaView
-					style={{ flex: 1, }}
-					forceInset={{ bottom: 'never' }}
+					style={{ flex: 1, backgroundColor: colors.white }}
 				>
 					<CustomHeader
-						color={colors.white}
 						title="Settings"
 						left={this.headerLeftIcon()}
 					/>
-					<ScrollView style={{ flex: 1, backgroundColor: colors.white, paddingLeft: 20, paddingRight: 20 }}>
-						<Button color={colors.danger} style={{ width: '100%'}} onPress={this.doLogOut}>
+					<ScrollView
+						style={{
+							flex: 1,
+							backgroundColor: colors.white,
+							paddingLeft: 20,
+							paddingRight: 20,
+							zIndex: -1
+						}}
+					>
+						<Button
+							color={colors.danger}
+							style={{ width: '100%' }}
+							onPress={this.doLogOut}
+						>
 							<Text>Log out</Text>
 						</Button>
 					</ScrollView>

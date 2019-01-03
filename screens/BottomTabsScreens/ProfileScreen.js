@@ -5,7 +5,8 @@ import {
 	DeviceEventEmitter,
 	Linking,
 	SafeAreaView,
-	Text
+	Text,
+	View
 } from 'react-native';
 import { connect } from 'react-redux';
 import { pageHit } from '../../shared/ga_helper';
@@ -75,25 +76,23 @@ class ProfileScreen extends Component {
 		}
 	};
 
-	rightList = (item) => {
-		return (
+	rightList = (item) => (
 			<MaterialIcons
 				name={item.iconName}
 				style={{ color: colors.black }}
 				size={24}
 			/>
 		);
-	}
 
 	leftList = (item) => (
 		<Text style={{ fontSize: 20, color: colors.black }}>{item.title}</Text>
-	)
+	);
 
 	renderListItems = (item) => (
-		<ListIcon 
-			style={{ marginTop: 50 }} 
-			left={this.leftList(item)} 
-			right={this.rightList(item)} 
+		<ListIcon
+			style={{ marginTop: 50 }}
+			left={this.leftList(item)}
+			right={this.rightList(item)}
 			onPress={() => this.goSelectedScreen(item)}
 		/>
 	);
@@ -115,18 +114,28 @@ class ProfileScreen extends Component {
 
 	render() {
 		return (
-			<SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
-				<CustomHeader
-					left={this.leftHeader()}
-					right={this.rightHeader()}
+			<View style={{ flex: 1}}>
+				<SafeAreaView
+					style={{
+						flex: 0,
+						backgroundColor: colors.white
+					}}
 				/>
+				<SafeAreaView
+					style={{ flex: 1, backgroundColor: colors.white }}
+				>
+					<CustomHeader
+						left={this.leftHeader()}
+						right={this.rightHeader()}
+					/>
 
-				<FlatList
-					data={this.state.profileList}
-					renderItem={({ item }) => this.renderListItems(item)}
-					keyExtractor={(item) => item.title}
-				/>
-			</SafeAreaView>
+					<FlatList
+						data={this.state.profileList}
+						renderItem={({ item }) => this.renderListItems(item)}
+						keyExtractor={(item) => item.title}
+					/>
+				</SafeAreaView>
+			</View>
 		);
 	}
 }
