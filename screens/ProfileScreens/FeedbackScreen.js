@@ -1,26 +1,24 @@
 import React, { Component } from 'react';
-import { View, Platform, DeviceEventEmitter, ActivityIndicator } from 'react-native';
 import {
-	Content,
-	Header,
+	View,
+	DeviceEventEmitter,
+	ActivityIndicator,
+	SafeAreaView,
 	Text,
-	Body,
-	Title,
-	Container,
-	Left,
-	Button,
-	Icon,
-	Right,
-	Form,
-	Item,
-	Picker,
-	Textarea,
-	Toast
-} from 'native-base';
+	Keyboard
+} from 'react-native';
+import { Toast } from 'native-base';
+import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { submitFeedback } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 import { colors } from '../../shared/styles';
+import {
+	CustomHeader,
+	ListPicker,
+	Button,
+	TextArea
+} from '../../components/UI';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -28,7 +26,8 @@ let backPressSubscriptions;
 const initialState = {
 	selectedOption: undefined,
 	description: '',
-	loading: false
+	loading: false,
+	modalVisible: false
 };
 class FeedbackScreen extends Component {
 	state = initialState;
@@ -66,7 +65,7 @@ class FeedbackScreen extends Component {
 
 	clearState = () => {
 		this.setState(initialState);
-	}
+	};
 
 	showToast = (text, type) => {
 		Toast.show({
@@ -85,6 +84,7 @@ class FeedbackScreen extends Component {
 	};
 
 	sendFeedback = async () => {
+		Keyboard.dismiss();
 		this.setState({ loading: true });
 		const feedback = {
 			email: this.props.user.email,
@@ -94,32 +94,24 @@ class FeedbackScreen extends Component {
 		await submitFeedback(feedback, (text, type) => this.showToast(text, type));
 	};
 
-	renderPicker = () => {
-		let pickerArr;
-		if (Platform.OS === 'android') {
-			pickerArr = [
-				{ label: 'Pick an option', value: 'none' },
-				{ label: 'Give some feedback', value: 'feedback' },
-				{ label: 'Report a bug', value: 'bug' }
-			];
-		} else {
-			pickerArr = [
-				{ label: 'Give some feedback', value: 'feedback' },
-				{ label: 'Report a bug', value: 'bug' }
-			];
-		}
-		return pickerArr.map((picker, i) => (
-			<Picker.Item key={i} label={picker.label} value={picker.value} />
-		));
-	};
+	headerLeftIcon = () => (
+		<Ionicons
+			name="ios-arrow-back"
+			size={32}
+			style={{ color: colors.black }}
+			onPress={() => {
+				this.props.navigation.navigate('browse');
+			}}
+		/>
+	);
 
 	renderSpinner() {
 		if (this.state.loading) {
 			return (
 				<ActivityIndicator
-					style={{ marginTop: 100 }}
+					style={{ marginTop: 10 }}
 					size="large"
-					color={colors.white}
+					color={colors.primaryColor}
 				/>
 			);
 		}
@@ -127,27 +119,32 @@ class FeedbackScreen extends Component {
 	}
 
 	renderDescription() {
-		const { textAreaStyle, buttonStyle } = styles;
 		if (this.state.selectedOption) {
 			return (
 				<View>
-					<Textarea
-						style={textAreaStyle}
-						rowSpan={5}
+					<TextArea
+						style={{ marginTop: 30 }}
+						label="Description"
+						size={40}
+						firstColor={colors.darkGray}
+						secondColor={colors.secondaryColor}
+						fontColor={colors.black}
+						multiline
 						bordered
-						placeholder="Describe here..."
+						numberOfLines={3}
+						placeholder="Enter thoughts here..."
 						value={this.state.description}
-						onChangeText={(text) => this.setState({ description: text })
-						}
+						onChangeText={(text) => this.setState({description: text})}
 					/>
 					<Button
 						bordered
-						dark
-						disabled={this.state.loading}
-						style={buttonStyle}
+						disabled={this.state.loading || this.state.description.length < 2}
+						style={{ marginTop: 20 }}
+						color={colors.primaryColor}
 						onPress={() => this.sendFeedback()}
+						textColor={colors.primaryColor}
 					>
-						<Text style={{ color: '#FF7043' }}>Submit</Text>
+						<Text>Submit</Text>
 					</Button>
 					{this.renderSpinner()}
 				</View>
@@ -157,113 +154,69 @@ class FeedbackScreen extends Component {
 
 	render() {
 		const {
-			formStyle,
 			DescriptionStyle,
 			titleStyle,
-			androidHeader,
-			iosHeader
 		} = styles;
 		return (
-			<Container style={{ flex: 1 }}>
-				<Header
-					style={
-						Platform.OS === 'android' ? androidHeader : iosHeader
-					}
-				>
-					<Left>
-						<Button
-							transparent
-							onPress={() => {
-								this.onBackPress();
+			<View style={{ flex: 1, backgroundColor: colors.white }}>
+				<SafeAreaView
+					style={{
+						flex: 0,
+						backgroundColor: colors.white
+					}}
+				/>
+				<SafeAreaView>
+					<CustomHeader
+						color={colors.white}
+						title="Feedback"
+						left={this.headerLeftIcon()}
+					/>
+					<View style={{ paddingLeft: 20, paddingRight: 20 }}>
+						<Text style={titleStyle}>How can we improve?</Text>
+						<Text style={DescriptionStyle}>
+							We are always looking for ways to improve, so we
+							listen very close to every feedback. Please tell us
+							what you love or where to get better.
+						</Text>
+
+						<ListPicker
+							onPress={() => this.setState({ modalVisible: true })
+							}
+							visible={this.state.modalVisible}
+							callback={(selectedOption) => {
+								this.setState({
+									modalVisible: false,
+									selectedOption
+								});
 							}}
-						>
-							<Icon
-								name="ios-arrow-back"
-								type="Ionicons"
-								style={{ color: 'black' }}
-							/>
-						</Button>
-					</Left>
-					<Body>
-						<Title style={{ color: 'black', marginLeft: 10 }}>
-							Feedback
-						</Title>
-					</Body>
-					<Right />
-				</Header>
-				<Content>
-					<Text style={titleStyle}>How can we improve?</Text>
-					<Text style={DescriptionStyle}>
-						We are always looking for ways to improve, so we listen
-						very close to every feedback. Please tell us what you
-						love or where to improve.
-					</Text>
-					<View style={{ flex: 1, alignItems: 'center' }}>
-						<Form style={formStyle}>
-							<Item picker style={{ margin: 20, width: '100%' }}>
-								<Picker
-									mode="dropdown"
-									style={{ width: undefined }}
-									placeholder="Pick an Option"
-									placeholderStyle={{
-										color: '#bfc6ea',
-										left: -15
-									}}
-									iosIcon={(
-<Icon
-											name={
-												this.state.selectedOption
-													? undefined
-													: 'ios-arrow-down'
-											}
-/>
-)}
-									selectedValue={this.state.selectedOption}
-									onValueChange={(value) => this.setState({ selectedOption: value })
-									}
-									textStyle={{ left: -15 }}
-								>
-									{this.renderPicker()}
-								</Picker>
-							</Item>
-							{this.renderDescription()}
-						</Form>
+							label="Feedback type"
+							selected={this.state.selectedOption}
+							placeholder="Pick an option"
+							title="Pick an option"
+							color={colors.secondaryColor}
+							data={[
+								{ title: 'Give some feedback' },
+								{ title: 'Report a bug' }
+							]}
+							style={{ marginTop: 30 }}
+						/>
+						{this.renderDescription()}
 					</View>
-				</Content>
-			</Container>
+				</SafeAreaView>
+			</View>
 		);
 	}
 }
 
 const styles = {
-	androidHeader: {
-		backgroundColor: '#F5F5F5'
-	},
-	iosHeader: {},
-	formStyle: {
-		width: '80%'
-	},
-	textAreaStyle: {
-		marginTop: 10,
-		fontSize: 16
-	},
 	DescriptionStyle: {
 		marginTop: 20,
-		marginLeft: '10%',
-		marginRight: '10%',
 		fontSize: 16
 	},
 	titleStyle: {
-		marginLeft: '10%',
-		marginRight: '10%',
 		marginTop: 20,
 		fontSize: 20,
 		fontWeight: 'bold'
-	},
-	buttonStyle: {
-		top: 20,
-		borderColor: '#FF7043',
-		marginBottom: 20
 	}
 };
 

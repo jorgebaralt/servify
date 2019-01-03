@@ -41,7 +41,7 @@ const ListModal = (props) => (
 				data={props.data}
 				renderItem={({ item }) => renderList(item, props)}
 				numColumns={2}
-				keyExtractor={(category) => category.title}
+				keyExtractor={(item) => item.title}
 				style={{ marginTop: 10, marginBottom: 10 }}
 			/>
 		</SafeAreaView>
@@ -55,7 +55,8 @@ const styles = StyleSheet.create({
 		marginLeft: 10,
 		marginTop: 5,
 		width: SCREEN_WIDTH / 2 - 15,
-		overflow: 'hidden'
+		overflow: 'hidden',
+		fontSize: 20
 	}
 });
 

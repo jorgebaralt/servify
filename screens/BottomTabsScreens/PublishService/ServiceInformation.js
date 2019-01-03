@@ -4,8 +4,6 @@ import { Button, FloatingLabelInput, TextArea } from '../../../components/UI';
 import { colors, globalStyles } from '../../../shared/styles';
 import { formatPhone } from '../../../shared/helpers';
 
-const maxCharCount = 150;
-
 // format phone text
 const phoneChangeText = (text, props) => {
 	const result = formatPhone(text);
@@ -70,7 +68,6 @@ const ServiceInformation = (props) => (
 			bordered
 			numberOfLines={6}
 			placeholder="Describe your Service Here"
-			maxLength={maxCharCount}
 			value={props.state.description}
 			onChangeText={(text) => props.descriptionChange(text)}
 		/>

@@ -24,10 +24,10 @@ import {
 import { connect } from 'react-redux';
 import {
 	selectService,
-} from '../actions';
-import { getServicesByEmail, getFavorites } from '../api';
-import EmptyListMessage from '../components/ErrorMessage/EmptyListMessage';
-import { pageHit } from '../shared/ga_helper';
+} from '../../actions';
+import { getServicesByEmail, getFavorites } from '../../api';
+import EmptyListMessage from '../../components/ErrorMessage/EmptyListMessage';
+import { pageHit } from '../../shared/ga_helper';
 
 let errorMessage;
 let currentItem;

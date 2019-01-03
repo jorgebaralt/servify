@@ -23,7 +23,7 @@ export const Button = (props) => {
 		},
 		textStyle: {
 			alignSelf: 'center',
-			color: props.textColor ? props.textColor : 'white',
+			color: props.disabled ? colors.darkGray : props.textColor ? props.textColor : 'white',
 			fontSize: props.style ? (props.style.fontSize ? props.style.fontSize : 16) : 16
 		},
 	});

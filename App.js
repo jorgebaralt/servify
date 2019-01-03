@@ -24,7 +24,7 @@ import SettingsScreen from './screens/ProfileScreens/SettingsScreen';
 import ServicesListScreen from './screens/BrowseScreens/ServicesListScreen';
 import SubcategoriesListScreen from './screens/BrowseScreens/SubcategoriesListScreen';
 import SpecificServiceScreen from './screens/ServiceScreens/SpecificServiceScreen';
-import ProfileServicesScreen from './screens/ProfileServicesScreen';
+import ProfileServicesScreen from './screens/ProfileScreens/ProfileServicesScreen';
 import FeedbackScreen from './screens/ProfileScreens/FeedbackScreen';
 import EditServiceScreen from './screens/ServiceScreens/EditServiceScreen';
 import ForgotPasswordScreen from './screens/AuthScreens/ForgotPasswordScreen';
