@@ -25,8 +25,8 @@ import {
 	DeviceEventEmitter
 } from 'react-native';
 import { connect } from 'react-redux';
-import { deleteService, resetMessageService, updateService } from '../../actions';
 import { pageHit } from '../../shared/ga_helper';
+import { deleteService, updateService } from '../../api';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -60,26 +60,13 @@ class EditServiceScreen extends Component {
 		willFocusSubscription.remove();
 	}
 
-	componentWillUpdate = (nextProps) => {
-		const { result } = nextProps;
-		const { success, error } = result;
-		if (success) {
-			Toast.show({
-				text: success,
-				buttonText: 'OK',
-				duration: 3000,
-				type: 'success'
-			});
-			this.props.resetMessageService();
-		} else if (error) {
-			Toast.show({
-				text: error,
-				buttonText: 'OK',
-				duration: 3000,
-				type: 'warning'
-			});
-			this.props.resetMessageService();
-		}
+	showToast = (text, type) => {
+		this.setState({ loading: false });
+		Toast.show({
+			text,
+			duration: 2000,
+			type
+		});
 	};
 
 	handleAndroidBack = () => {
@@ -101,7 +88,7 @@ class EditServiceScreen extends Component {
 	deleteService = async () => {
 		Keyboard.dismiss();
 		this.setState({ loading: true });
-		await this.props.deleteService(this.props.service);
+		await deleteService(this.props.service);
 		this.setState({
 			title: '',
 			description: '',
@@ -143,8 +130,7 @@ class EditServiceScreen extends Component {
 			rating: this.props.service.rating,
 			favUsers: this.props.service.favUsers
 		};
-		await this.props.updateService(updatedService);
-		this.setState({ loading: false });
+		await updateService(updatedService, (text, type) => this.showToast(text, type));
 		this.props.navigation.pop(3);
 	};
 
@@ -310,11 +296,9 @@ const styles = {
 
 const mapStateToProps = (state) => ({
 	service: state.selectedService.service,
-	result: state.serviceResult,
 	user: state.auth.user
 });
 
 export default connect(
-	mapStateToProps,
-	{ deleteService, resetMessageService, updateService }
+	mapStateToProps
 )(EditServiceScreen);

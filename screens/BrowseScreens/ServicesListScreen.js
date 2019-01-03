@@ -14,15 +14,13 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import {
-	getServicesCategory,
-	getServicesSubcategory,
 	selectService,
-	cancelAxiosServices,
 } from '../../actions';
 import EmptyListMessage from '../../components/ErrorMessage/EmptyListMessage';
 import { pageHit } from '../../shared/ga_helper';
 import { CustomHeader, DetailedServiceCard } from '../../components/UI';
 import { colors } from '../../shared/styles';
+import { getServicesCategory, getServicesSubcategory, cancelAxios } from '../../api';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -32,29 +30,36 @@ const NEWEST = 'Newest';
 const OLDEST = 'Oldest';
 const sortByOptions = [DISTANCE, POPULARITY, NEWEST, OLDEST, 'Cancel'];
 
-
 class ServicesListScreen extends Component {
 	state = {
 		dataLoaded: undefined,
 		refreshing: false,
-		sortBy: DISTANCE
+		sortBy: DISTANCE,
+		category: null,
+		subcategory: null,
+		servicesList: null
 	};
 
-	componentWillMount = async () => {
+	async componentWillMount(){
+		await this.setState({
+			category: this.props.navigation.getParam('category'),
+			subcategory: this.props.navigation.getParam('subcategory')
+		});
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
-			() => {
+			async () => {
 				this.handleAndroidBack();
+				await this.decideGetService();
 			}
 		);
-	};
+	}
 
 	async componentDidMount() {
-		pageHit('Services List Screen');
 		await this.decideGetService();
 	}
 
 	componentWillUnmount() {
+		pageHit('Services list screen');
 		willFocusSubscription.remove();
 	}
 
@@ -86,33 +91,36 @@ class ServicesListScreen extends Component {
 		backPressSubscriptions.add(() => this.props.navigation.pop());
 	};
 
-	onBackPress = () => {
-		this.props.cancelAxiosServices();
+	onBackPress = async () => {
+		await cancelAxios();
 		this.props.navigation.goBack(null);
 	};
 
 	decideGetService = async () => {
 		this.setState({ refreshing: true });
-		const { category, subcategory } = this.props;
+		const { category, subcategory } = this.state;
 		const categoryRef = category.dbReference;
 		if (this.props.userLocation) {
 			if (subcategory) {
 				const subcategoryRef = subcategory.dbReference;
-				await this.props.getServicesSubcategory(
+				await getServicesSubcategory(
 					subcategoryRef,
 					this.props.userLocation,
-					this.state.sortBy
+					this.state.sortBy,
+					(data) => this.setState({ servicesList: data, dataLoaded: true, refreshing: false })
 				);
 			} else {
-				await this.props.getServicesCategory(
+				await getServicesCategory(
 					categoryRef,
 					this.props.userLocation,
-					this.state.sortBy
+					this.state.sortBy,
+					(data) => this.setState({ servicesList: data, dataLoaded: true, refreshing: false })
 				);
 			}
 		}
-		this.setState({ dataLoaded: true, refreshing: false });
 	};
+
+	// TODO: sorting function here, after actin sheet **** IMPORTANT ****
 
 	// Handles click and render of action sheet
 	// TODO: animate on scroll down dissapear, show on scroll up
@@ -120,8 +128,8 @@ class ServicesListScreen extends Component {
 		const { sortByStyle, iconSortStyle, viewSortStyle } = styles;
 		// if there are services
 		if (
-			this.props.servicesList != null
-			&& this.props.servicesList.length !== 0
+			this.state.servicesList != null
+			&& this.state.servicesList.length !== 0
 			&& Platform.OS === 'ios'
 		) {
 			return (
@@ -155,7 +163,11 @@ class ServicesListScreen extends Component {
 						<Text style={sortByStyle}>
 							Sort by: {this.state.sortBy}
 						</Text>
-						<Ionicons size={18} name="ios-arrow-down" style={iconSortStyle} />
+						<Ionicons
+							size={18}
+							name="ios-arrow-down"
+							style={iconSortStyle}
+						/>
 					</TouchableOpacity>
 				</View>
 			);
@@ -168,51 +180,50 @@ class ServicesListScreen extends Component {
 			service={service}
 			onPress={() => {
 				this.props.selectService(service);
-				this.props.navigation.navigate('service');
+				this.props.navigation.navigate('service', { service });
 			}}
-			color={this.props.category.color[0]}
+			color={this.state.category.color[0]}
 			distance={this.state.sortBy === DISTANCE}
 		/>
 	);
-	
+
 	// handles refresh control of services
 	serviceListRefreshControl = () => (
 		<RefreshControl
 			refreshing={this.state.refreshing}
 			onRefresh={() => this.decideGetService()}
-			tintColor={this.props.category.color[0]}
+			tintColor={this.state.category.color[0]}
 			colors={[
-				this.props.category.color[0],
-				this.props.category.color[1]
+				this.state.category.color[0],
+				this.state.category.color[1]
 			]}
 		/>
 	);
 
 	renderListView() {
-			if (this.props.servicesList.length !== 0) {
-				return (
-					<FlatList
-						data={this.props.servicesList}
-						renderItem={({ item }) => this.renderServices(item)}
-						keyExtractor={(item) => item.title}
-						enableEmptySections
-						refreshControl={this.serviceListRefreshControl()}
-					/>
-				);
-			}
+		if (this.state.servicesList.length !== 0) {
 			return (
-				<EmptyListMessage buttonPress={this.onBackPress}>
-					Unfortunetly there are no services published for this
-					category, we are working on getting more people to publish
-					services!
-				</EmptyListMessage>
+				<FlatList
+					data={this.state.servicesList}
+					renderItem={({ item }) => this.renderServices(item)}
+					keyExtractor={(item) => item.title}
+					enableEmptySections
+					refreshControl={this.serviceListRefreshControl()}
+				/>
 			);
+		}
+		return (
+			<EmptyListMessage buttonPress={this.onBackPress}>
+				Unfortunetly there are no services published for this category,
+				we are working on getting more people to publish services!
+			</EmptyListMessage>
+		);
 	}
 
 	renderContent = () => {
 		if (this.state.dataLoaded) {
 			// if it is category / subcategory
-			if (this.props.category) {
+			if (this.state.category) {
 				return (
 					<View
 						style={{ flex: 1, paddingLeft: 20, paddingRight: 20 }}
@@ -223,29 +234,25 @@ class ServicesListScreen extends Component {
 				);
 			}
 			// else render the profile services
-			return (
-				<Text>This is profile services</Text>
-			);
+			return <Text>This is profile services</Text>;
 		}
 		return (
 			<ActivityIndicator
 				style={{ marginTop: 20 }}
 				size="large"
-				color={this.props.category.color[0] || colors.primaryColor}
+				color={this.state.category.color[0] || colors.primaryColor}
 			/>
 		);
-	}
+	};
 
 	render() {
-		const { subcategory, category } = this.props;
+		const { category, subcategory } = this.state;
 		const mainColor = category ? category.color[0] : colors.white;
 
 		return (
 			<View style={{ flex: 1 }}>
 				{/* Handles SafeAreaView background color */}
-				<SafeAreaView
-					style={{ flex: 0, backgroundColor: mainColor }}
-				/>
+				<SafeAreaView style={{ flex: 0, backgroundColor: mainColor }} />
 				<SafeAreaView
 					style={{ flex: 1, backgroundColor: colors.white }}
 				>
@@ -255,8 +262,8 @@ class ServicesListScreen extends Component {
 						titleColor={colors.white}
 						left={this.headerLeftIcon()}
 					/>
-					
-						{this.renderContent()}
+
+					{this.renderContent()}
 				</SafeAreaView>
 			</View>
 		);
@@ -282,18 +289,12 @@ const styles = {
 };
 
 const mapStateToProps = (state) => ({
-	subcategory: state.selectedCategory.subcategory,
-	category: state.selectedCategory.category,
-	servicesList: state.serviceResult.servicesList,
-	userLocation: state.location.data,
+	userLocation: state.location.data
 });
 
 export default connect(
 	mapStateToProps,
 	{
-		getServicesCategory,
-		getServicesSubcategory,
 		selectService,
-		cancelAxiosServices,
 	}
 )(ServicesListScreen);

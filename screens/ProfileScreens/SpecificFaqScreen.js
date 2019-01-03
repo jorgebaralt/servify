@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { DeviceEventEmitter, FlatList, Platform } from 'react-native';
+import { DeviceEventEmitter, Platform } from 'react-native';
 import {
 	Container,
 	Header,
@@ -12,16 +11,17 @@ import {
 	Text,
 	Left,
 	Content,
-	ListItem
 } from 'native-base';
-import { deselectFaq } from '../../actions';
 import { pageHit } from '../../shared/ga_helper';
 
 let willFocusSubscription;
 let backPressSubscriptions;
 
 class SpecificFaqScreen extends Component {
+	state = { selectedFaq: null };
+	
 	async componentWillMount() {
+		await this.setState({ selectedFaq: this.props.navigation.getParam('faq') });
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			this.handleAndroidBack
@@ -78,8 +78,8 @@ class SpecificFaqScreen extends Component {
 					<Right />
 				</Header>
 				<Content>
-					<Text style={questionStyle}>{this.props.selectedFaq.question}</Text>
-					<Text style={answerStyle}>{this.props.selectedFaq.answer}</Text>
+					<Text style={questionStyle}>{this.state.selectedFaq.question}</Text>
+					<Text style={answerStyle}>{this.state.selectedFaq.answer}</Text>
 				</Content>
 			</Container>
 		);
@@ -106,11 +106,4 @@ const styles = {
 	}
 };
 
-const mapStateToProps = (state) => ({
-	selectedFaq: state.selectedFaq.faq
-});
-
-export default connect(
-	mapStateToProps,
-	{ deselectFaq }
-)(SpecificFaqScreen);
+export default SpecificFaqScreen;

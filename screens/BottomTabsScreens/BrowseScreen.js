@@ -7,8 +7,6 @@ import {
 	SafeAreaView
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { connect } from 'react-redux';
-import { selectCategory } from '../../actions';
 import { CategoryCard, SearchHeader } from '../../components/UI';
 import { pageHit } from '../../shared/ga_helper';
 import categories from '../../shared/categories';
@@ -84,10 +82,7 @@ class BrowseScreen extends Component {
 	};
 
 	doSelectCategory = async (category) => {
-		// FIXME: remove this from props pass it down as parameter, use it for search on next screen
-		await this.props.selectCategory(category);
 		// pick where to navigate
-		// FIXME: here
 		if (category.subcategories) {
 			this.props.navigation.navigate('subcategories', { category });
 		} else {
@@ -184,7 +179,4 @@ const styles = {
 	}
 };
 
-export default connect(
-	null,
-	{ selectCategory }
-)(BrowseScreen);
+export default BrowseScreen;

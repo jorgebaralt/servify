@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { View, DeviceEventEmitter, FlatList, Platform } from 'react-native';
+import { DeviceEventEmitter, FlatList, Platform } from 'react-native';
 import {
 	Container,
 	Header,
@@ -14,8 +13,8 @@ import {
 	Content,
 	ListItem
 } from 'native-base';
-import { selectFaq } from '../../actions';
 import { pageHit } from '../../shared/ga_helper';
+import { faqList } from '../../shared/data';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -56,8 +55,7 @@ class HelpScreen extends Component {
 		<ListItem
 			style={{ marginTop: 30, marginRight: 10 }}
 			onPress={() => {
-				this.props.selectFaq(faq);
-				this.props.navigation.navigate('specificFaq');
+				this.props.navigation.navigate('specificFaq', { faq });
 			}}
 		>
 			<Left>
@@ -76,7 +74,7 @@ class HelpScreen extends Component {
 	renderQuestions = () => (
 		<FlatList
 			style={{ marginTop: 10, marginBottom: 40 }}
-			data={this.props.faq}
+			data={faqList}
 			renderItem={({ item }) => this.renderQuestion(item)}
 			keyExtractor={(item) => item.id}
 			enableEmptySections
@@ -120,11 +118,5 @@ const styles = {
 	iosHeader: {}
 };
 
-const mapStateToProps = (state) => ({
-	faq: state.help
-});
 
-export default connect(
-	mapStateToProps,
-	{ selectFaq }
-)(HelpScreen);
+export default HelpScreen;

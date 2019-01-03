@@ -16,7 +16,7 @@ import { Permissions } from 'expo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Button, InfoImage, HomeServiceCard, CategoryCard } from '../../components/UI';
 import { colors, globalStyles } from '../../shared/styles';
-import { selectService, getUserLocation, selectCategory } from '../../actions';
+import { getUserLocation, selectService } from '../../actions';
 import * as api from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 
@@ -136,12 +136,11 @@ class HomeScreen extends Component {
 
 	// on category selected
 	doSelectCategory = async (category) => {
-		await this.props.selectCategory(category);
 		if (category.subcategories) {
 			// FIXME: never happening, because is not on back-end
-			this.props.navigation.navigate('subcategories');
+			this.props.navigation.navigate('subcategories', {category});
 		} else {
-			this.props.navigation.navigate('servicesList');
+			this.props.navigation.navigate('servicesList', {category});
 		}
 	};
 
@@ -378,6 +377,5 @@ export default connect(
 	{
 		selectService,
 		getUserLocation,
-		selectCategory
 	}
 )(HomeScreen);

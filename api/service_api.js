@@ -4,12 +4,13 @@ import _ from 'lodash';
 
 const { CancelToken } = axios;
 let source;
+const GET_URL =	'https://us-central1-servify-716c6.cloudfunctions.net/getServices';
 
 // Create a service
 export const createService = async (servicePost, email, callback) => {
 	let isEmpty;
-	const createServiceURL = 'https://us-central1-servify-716c6.cloudfunctions.net/postService';
-	const checkDuplicateBaseUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/getServicesCount/';
+	const createServiceURL =		'https://us-central1-servify-716c6.cloudfunctions.net/postService';
+	const checkDuplicateBaseUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getServicesCount/';
 	const {
 		selectedCategory,
 		selectedSubcategory,
@@ -22,9 +23,12 @@ export const createService = async (servicePost, email, callback) => {
 	} = servicePost;
 
 	if (miles > 60) {
-		return callback('No more than 60 miles for local services, we are working on services across states', 'warning');
+		return callback(
+			'No more than 60 miles for local services, we are working on services across states',
+			'warning'
+		);
 	}
-	
+
 	// Get geoLocation based on location data
 	const geolocationData = await Location.geocodeAsync(location);
 	const geolocation = geolocationData[0];
@@ -39,7 +43,10 @@ export const createService = async (servicePost, email, callback) => {
 		delete geolocation.altitude;
 	} catch (e) {
 		console.log(e);
-		callback('We could not find your address, please provide a correct address', 'warning');
+		callback(
+			'We could not find your address, please provide a correct address',
+			'warning'
+		);
 	}
 
 	// service to be posted, if everything is fine
@@ -57,7 +64,6 @@ export const createService = async (servicePost, email, callback) => {
 		displayName,
 		zipCode: locationData.postalCode
 	};
-	
 
 	// if there is subcategory option, and didnt pick one
 	if (selectedCategory.subcategories && !selectedSubcategory) {
@@ -68,7 +74,7 @@ export const createService = async (servicePost, email, callback) => {
 	if (selectedSubcategory) {
 		newServicePost.subcategory = selectedSubcategory.dbReference;
 		// Check duplicate service using subcategory
-		const checkURL = checkDuplicateBaseUrl
+		const checkURL =			checkDuplicateBaseUrl
 			+ '/?email='
 			+ email
 			+ '&subcategory='
@@ -77,19 +83,29 @@ export const createService = async (servicePost, email, callback) => {
 			const response = await axios.get(checkURL);
 			isEmpty = response.data;
 			if (!isEmpty) {
-				return callback('This account already have a Service under this Subcategory, Only 1 service per subcategory is allowed', 'warning');
+				return callback(
+					'This account already have a Service under this Subcategory, Only 1 service per subcategory is allowed',
+					'warning'
+				);
 			}
 		} catch (e) {
 			return callback('Error connecting to server', 'warning');
 		}
 	} else {
 		// Check duplicate using category
-		const checkURL =			checkDuplicateBaseUrl + '/?email=' + email + '&category=' + category;
+		const checkURL =			checkDuplicateBaseUrl
+			+ '/?email='
+			+ email
+			+ '&category='
+			+ category;
 		try {
 			const response = await axios.get(checkURL);
 			isEmpty = response.data;
 			if (!isEmpty) {
-				return callback('This account already have a Service under this category, Only 1 service per category is allowed', 'warning');
+				return callback(
+					'This account already have a Service under this category, Only 1 service per category is allowed',
+					'warning'
+				);
 			}
 		} catch (error) {
 			return callback('Error connecting to server', 'warning');
@@ -104,9 +120,9 @@ export const createService = async (servicePost, email, callback) => {
 	}
 };
 
-// Get popular categories 
+// Get popular categories
 export const getPopularCategories = async (callback) => {
-	const popularCategoryUrl =	'https://us-central1-servify-716c6.cloudfunctions.net/getPopularCategories';
+	const popularCategoryUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getPopularCategories';
 	try {
 		source = CancelToken.source();
 		const { data } = await axios.get(popularCategoryUrl, {
@@ -119,7 +135,11 @@ export const getPopularCategories = async (callback) => {
 };
 
 // Get popular near services
-export const getPopularNearServices = async (currentLocation, distance, callback) => {
+export const getPopularNearServices = async (
+	currentLocation,
+	distance,
+	callback
+) => {
 	const getNearUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getNearService';
 	try {
 		source = CancelToken.source();
@@ -142,7 +162,11 @@ export const getPopularNearServices = async (currentLocation, distance, callback
 };
 
 // get new near services
-export const getNewNearServices = async (currentLocation, distance, callback) => {
+export const getNewNearServices = async (
+	currentLocation,
+	distance,
+	callback
+) => {
 	const getNearUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getNearService';
 	try {
 		source = CancelToken.source();
@@ -163,6 +187,138 @@ export const getNewNearServices = async (currentLocation, distance, callback) =>
 	}
 };
 
+// Get service by category
+export const getServicesCategory = async (
+	category,
+	userLocation,
+	sortBy,
+	callback
+) => {
+	const url = GET_URL + '/?category=' + category;
+	try {
+		source = CancelToken.source();
+		let { data } = await axios.get(url, { cancelToken: source.token });
+		// TODO: DECIDE SORTING
+		switch (sortBy) {
+			case 'Distance':
+				data = sortByDistance(data, userLocation);
+				break;
+			case 'Popularity':
+				data = sortByPopularity(data);
+				break;
+			case 'Newest':
+				data = sortByNewest(data);
+				break;
+			case 'Oldest':
+				data = sortByOldest(data);
+				break;
+			default:
+				data = sortByDistance(data, userLocation);
+		}
+		callback(data);
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+// get services by subcategory
+export const getServicesSubcategory = async (
+	subcategory,
+	userLocation,
+	sortBy,
+	callback
+) => {
+	const url = GET_URL + '/?subcategory=' + subcategory;
+	try {
+		source = CancelToken.source();
+		let { data } = await axios.get(url, { cancelToken: source.token });
+		// TODO: DECIDE SORTING
+		switch (sortBy) {
+			case 'Distance':
+				data = sortByDistance(data, userLocation);
+				break;
+			case 'Popularity':
+				data = sortByPopularity(data);
+				break;
+			case 'Newest':
+				data = sortByNewest(data);
+				break;
+			case 'Oldest':
+				data = sortByOldest(data);
+				break;
+			default:
+				data = sortByDistance(data, userLocation);
+		}
+		callback(data);
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+// Get services by email 
+export const getServicesByEmail = async (email, callback) => {
+	const url = GET_URL + '/?email=' + email;
+	try {
+		source = CancelToken.source();
+		const { data } = await axios.get(url, { cancelToken: source.token });
+		callback(data);
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+// DELETE-SERVICE
+export const deleteService = async (service) => {
+	const deleteUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/deleteService';
+	try {
+		await axios.delete(deleteUrl, { data: service });
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+// UPDATE-SERVICE
+export const updateService = async (service, callback) => {
+	const updateUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/updateService';
+	const newService = service;
+	let locationData;
+	try {
+		const geolocationData = await Location.geocodeAsync(service.location);
+		const geolocation = geolocationData[0];
+		const locationInfo = await Location.reverseGeocodeAsync({
+			latitude: geolocation.latitude,
+			longitude: geolocation.longitude
+		});
+		[locationData] = locationInfo;
+
+		delete geolocation.altitude;
+		delete geolocation.accuracy;
+
+		newService.locationData = locationData;
+		newService.geolocation = geolocation;
+		newService.zipCode = locationData.postalCode;
+	} catch (e) {
+		callback('We could not find your address, please provide a correct address', 'warning');
+	}
+	try {
+		await axios.post(updateUrl, newService);
+		callback('Service hace been updated', 'success');
+	} catch (e) {
+		console.log(e);
+		callback('error updating your service, Try again later', 'warning');
+	}
+};
+
+// REPORT-SERVICE
+export const reportService = async (report) => {
+	const reportUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/reportService';
+	try {
+		await axios.post(reportUrl, report);
+	} catch (e) {
+		console.log(e);
+	}
+};
+
 // sort array by distance
 // TODO: handle better on back end.
 const sortByDistance = (data, userLocation) => {
@@ -170,7 +326,7 @@ const sortByDistance = (data, userLocation) => {
 	// for each service, calculate distance from user to service
 	data.forEach((service) => {
 		const newService = service;
-		
+
 		const distance = calculateDistance(
 			userLocation.coords.latitude,
 			userLocation.coords.longitude,
@@ -217,3 +373,7 @@ const sortByOldest = (data) => _.sortBy(data, 'timestamp');
 
 // sort by newest
 const sortByNewest = (data) => _.sortBy(data, 'timestamp').reverse();
+
+export const cancelAxios = async () => {
+	await source.cancel();
+};

@@ -23,12 +23,9 @@ import {
 } from 'native-base';
 import { connect } from 'react-redux';
 import {
-	getServicesByEmail,
 	selectService,
-	getFavorites,
-	cancelAxiosServices,
-	cleanPopularNearServices
 } from '../actions';
+import { getServicesByEmail, getFavorites } from '../api';
 import EmptyListMessage from '../components/ErrorMessage/EmptyListMessage';
 import { pageHit } from '../shared/ga_helper';
 
@@ -39,29 +36,21 @@ let backPressSubscriptions;
 
 class ProfileServicesScreen extends Component {
 	state = {
-		loading: false
+		loading: false,
+		servicesList: null,
+		favorites: null
 	};
 
 	async componentWillMount() {
 		currentItem = this.props.navigation.getParam('item');
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
-			() => {
+			async () => {
 				this.handleAndroidBack();
-				// this.props.getFavorites(this.props.user.email);
+				await this.decideFetchData();
 			}
 		);
-		if (currentItem.id === 'favorites') {
-			errorMessage =				'There is nothing in this list, Make sure that you add Services to Favorite by cliking on the top right icon, when looking at services.';
-			this.setState({ loading: true });
-			await this.props.getFavorites(this.props.user.email);
-			this.setState({ loading: false });
-		} else if (currentItem.id === 'my_services') {
-			errorMessage =				'There is nothing in this list, Make sure that you create a Service from our Post screen, then you will be able to modify it here';
-			this.setState({ loading: true });
-			await this.props.getServicesByEmail(this.props.user.email);
-			this.setState({ loading: false });
-		}
+		
 	}
 
 	componentDidMount() {
@@ -70,6 +59,20 @@ class ProfileServicesScreen extends Component {
 
 	componentWillUnmount() {
 		willFocusSubscription.remove();
+	}
+
+	decideFetchData = async () => {
+		if (currentItem.id === 'favorites') {
+			errorMessage =				'There is nothing in this list, Make sure that you add Services to Favorite by cliking on the top right icon, when looking at services.';
+			this.setState({ loading: true });
+			await getFavorites(this.props.user.email, (data) => this.setState({ favorites: data }));
+			this.setState({ loading: false });
+		} else if (currentItem.id === 'my_services') {
+			errorMessage =				'There is nothing in this list, Make sure that you create a Service from our Post screen, then you will be able to modify it here';
+			this.setState({ loading: true });
+			await getServicesByEmail(this.props.user.email, (data) => this.setState({servicesList: data}) );
+			this.setState({ loading: false });
+		}
 	}
 
 	handleAndroidBack = () => {
@@ -89,11 +92,7 @@ class ProfileServicesScreen extends Component {
 	};
 
 	onBackPress = async () => {
-		this.props.cancelAxiosServices();
 		await this.props.navigation.goBack();
-		setTimeout(() => {
-			// this.props.cleanPopularNearServices();
-		}, 250);
 	};
 
 	renderServices = (service) => {
@@ -164,13 +163,13 @@ class ProfileServicesScreen extends Component {
 		}
 		if (
 			currentItem.id === 'favorites'
-			&& this.props.favorites
-			&& this.props.favorites.length > 0
+			&& this.state.favorites
+			&& this.state.favorites.length > 0
 		) {
 			return (
 				<Content>
 					<FlatList
-						data={this.props.favorites}
+						data={this.state.favorites}
 						renderItem={({ item }) => this.renderServices(item)}
 						keyExtractor={(item) => item.title}
 					/>
@@ -179,14 +178,14 @@ class ProfileServicesScreen extends Component {
 		}
 		if (
 			currentItem.id === 'my_services'
-			&& this.props.servicesList
-			&& this.props.servicesList.length > 0
+			&& this.state.servicesList
+			&& this.state.servicesList.length > 0
 		) {
 			return (
 				<Content>
 					<FlatList
 						style={{ marginBottom: 40 }}
-						data={this.props.servicesList}
+						data={this.state.servicesList}
 						renderItem={({ item }) => this.renderServices(item)}
 						keyExtractor={(item) => item.title}
 					/>
@@ -286,8 +285,6 @@ const styles = {
 
 function mapStateToProps(state) {
 	return {
-		favorites: state.favoriteServices,
-		servicesList: state.serviceResult.servicesList,
 		user: state.auth.user
 	};
 }
@@ -295,10 +292,6 @@ function mapStateToProps(state) {
 export default connect(
 	mapStateToProps,
 	{
-		getServicesByEmail,
 		selectService,
-		getFavorites,
-		cancelAxiosServices,
-		cleanPopularNearServices
 	}
 )(ProfileServicesScreen);

@@ -14,16 +14,18 @@ import {
 	Right,
 	Content
 } from 'native-base';
-import { connect } from 'react-redux';
-import { LinearGradient } from 'expo';
-import { deselectCategory, selectSubcategory } from '../../actions';
 import { pageHit } from '../../shared/ga_helper';
 
 let willFocusSubscription;
 let backPressSubscriptions;
 
 class SubcategoriesListScreen extends Component {
-	componentWillMount() {
+	state = { category: null };
+	
+	async componentWillMount() {
+		await this.setState({
+			category: this.props.navigation.getParam('category'),
+		});
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			this.handleAndroidBack
@@ -55,13 +57,11 @@ class SubcategoriesListScreen extends Component {
 	};
 
 	onBackPressed = () => {
-		this.props.deselectCategory();
 		this.props.navigation.goBack('browse');
 	};
 
 	doSelectSubcategory = async (subcategory) => {
-		await this.props.selectSubcategory(subcategory);
-		await this.props.navigation.navigate('servicesList');
+		await this.props.navigation.navigate('servicesList', { subcategory, category: this.state.category });
 	};
 
 	renderSubcategories = (subcategory) => (
@@ -76,7 +76,7 @@ class SubcategoriesListScreen extends Component {
 						<Icon
 							name="ios-arrow-forward"
 							type="Ionicons"
-							style={{ color: this.props.category.color[0] }}
+							style={{ color: this.state.category.color[0] }}
 						/>
 					</Right>
 				</CardItem>
@@ -92,7 +92,7 @@ class SubcategoriesListScreen extends Component {
 	render() {
 		return (
 			<Container>
-				<Header style={{ backgroundColor: this.props.category.color[0] }}>
+				<Header style={{ backgroundColor: this.state.category.color[0] }}>
 					<Left>
 						<Button
 							transparent
@@ -109,14 +109,14 @@ class SubcategoriesListScreen extends Component {
 					</Left>
 					<Body style={{ flex: 3 }}>
 						<Title style={{ color: 'white' }}>
-							{this.props.category.title}
+							{this.state.category.title}
 						</Title>
 					</Body>
 					<Right />
 				</Header>
 				<Content>
 					<FlatList
-						data={this.props.category.subcategories}
+						data={this.state.category.subcategories}
 						renderItem={({ item }) => this.renderSubcategories(item)}
 						keyExtractor={(item) => item.title}
 					/>
@@ -140,10 +140,5 @@ const styles = {
 	},
 	contentStyle: {}
 };
-const mapStateToProps = (state) => ({
-	category: state.selectedCategory.category
-});
-export default connect(
-	mapStateToProps,
-	{ deselectCategory, selectSubcategory }
-)(SubcategoriesListScreen);
+
+export default SubcategoriesListScreen;

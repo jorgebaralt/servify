@@ -19,7 +19,7 @@ import {
 } from 'native-base';
 import { Platform, View, DeviceEventEmitter } from 'react-native';
 import { connect } from 'react-redux';
-import { reportService } from '../../actions';
+import { reportService } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 
 let willFocusSubscription;
@@ -77,7 +77,7 @@ class ReportScreen extends Component {
 			serviceTitle: this.props.service.title,
 			serviceOwner: this.props.service.email
 		};
-		await this.props.reportService(report);
+		await reportService(report);
 		this.setState({ loading: false });
 		Toast.show({
 			text: 'Service reported',
@@ -253,6 +253,5 @@ const styles = {
 const mapStateToProps = (state) => ({ service: state.selectedService.service });
 
 export default connect(
-	mapStateToProps,
-	{ reportService }
+	mapStateToProps
 )(ReportScreen);

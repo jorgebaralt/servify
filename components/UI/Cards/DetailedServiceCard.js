@@ -29,23 +29,23 @@ export const DetailedServiceCard = (props) => {
 					>
 						{service.title}
 					</Text>
-					<Text style={{ fontSize: 12 }}>{service.displayName}</Text>
+					<Text style={{marginTop:5, fontSize: 12 }}>{service.displayName}</Text>
 					<View style={{ flexDirection: 'row' }}>
 						<StarsRating
 							width={15}
 							height={15}
-							spacing={5}
+							spacing={2}
 							rating={service.rating}
 						/>
 						<Text style={{ color: colors.darkGray }}>
-							({service.rating})
+							({service.rating.toFixed(1)})
 						</Text>
 					</View>
-					<Text style={{ fontSize: 12, color: colors.darkerGray }}>
-						{service.description.substring(0, 30) + '...'}
+					<Text style={{ marginTop: 5, fontSize: 12, color: colors.darkerGray }}>
+						{service.description.length > 30 ? service.description.substring(0, 30) + '...' : service.description}
 					</Text>
 					<View>
-						{props.distance ? <Text style={{marginTop: 10, fontSize: 12, color: colors.darkGray }}>{Math.floor(service.distance)} miles</Text> : null}
+						{props.distance ? <Text style={{ fontSize: 12, color: colors.darkGray }}>{Math.floor(service.distance)} miles</Text> : null}
 					</View>
 				</View>
 				<View style={{ position: 'absolute', right: -15 }}>

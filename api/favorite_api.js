@@ -1,18 +1,17 @@
 import axios from 'axios';
-import { UPDATE_FAVORITE } from './types';
 
 const getFavURL =	'https://us-central1-servify-716c6.cloudfunctions.net/getFavorite';
 const addFavURL =	'https://us-central1-servify-716c6.cloudfunctions.net/addFavorite';
 const removeFavURL =	'https://us-central1-servify-716c6.cloudfunctions.net/removeFavorite';
 
-export const addFavorite = (email, service) => async () => {
+export const addFavorite = async (email, service) => {
 	try {
 		await axios.post(addFavURL, { email, service });
 	} catch (e) {
 		console.log(e);
 	}
 };
-export const removeFavorite = (email, service) => async () => {
+export const removeFavorite = async (email, service) => {
 	try {
 		await axios.post(removeFavURL, { email, service });
 	} catch (e) {
@@ -20,10 +19,10 @@ export const removeFavorite = (email, service) => async () => {
 	}
 };
 
-export const getFavorites = (email) => async (dispatch) => {
+export const getFavorites = async (email, callback) => {
 	try {
 		const { data } = await axios.post(getFavURL, { email });
-		dispatch({ type: UPDATE_FAVORITE, payload: data });
+		callback(data);
 	} catch (e) {
 		console.log(e);
 	}

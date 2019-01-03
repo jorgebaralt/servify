@@ -29,14 +29,13 @@ import { connect } from 'react-redux';
 import { MapView, Linking } from 'expo';
 import { AnimatedRegion, Animated } from 'react-native-maps';
 import {
-	addFavorite,
 	submitReview,
 	getReviews,
 	resetReview,
 	deleteReview,
-	removeFavorite,
 	cancelAxiosRating
 } from '../../actions';
+import { addFavorite, removeFavorite } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 import StarsRating from '../../components/Ratings/StarsRating';
 import StarsRatingPick from '../../components/Ratings/StarsRatingPick';
@@ -144,12 +143,12 @@ class SpecificServiceScreen extends Component {
 
 	addFavorite = async (email) => {
 		this.setState({ isFav: true });
-		await this.props.addFavorite(email, this.props.service);
+		await addFavorite(email, this.props.service);
 	};
 
 	removeFavorite = async (email) => {
 		this.setState({ isFav: false });
-		await this.props.removeFavorite(email, this.props.service);
+		await removeFavorite(email, this.props.service);
 	};
 
 	favPressed = async () => {
@@ -801,12 +800,10 @@ const mapStateToProps = (state) => ({
 export default connect(
 	mapStateToProps,
 	{
-		addFavorite,
 		submitReview,
 		getReviews,
 		resetReview,
 		deleteReview,
-		removeFavorite,
 		cancelAxiosRating
 	}
 )(SpecificServiceScreen);

@@ -1,4 +1,4 @@
-export default () => [
+export const faqList = [
 	{
 		id: '1',
 		question: 'How can I post a service?',
