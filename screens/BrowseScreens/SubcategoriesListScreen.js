@@ -63,14 +63,6 @@ class SubcategoriesListScreen extends Component {
 		});
 	};
 
-	renderSubcategories = (subcategory) => (
-		<SubcategoryCard
-			subcategory={subcategory}
-			onPress={() => this.doSelectSubcategory(subcategory)}
-			color={this.state.category.color[0]}
-		/>
-	);
-
 	headerLeftIcon = () => (
 		<Ionicons
 			name="ios-arrow-back"
@@ -79,6 +71,14 @@ class SubcategoriesListScreen extends Component {
 			onPress={() => {
 				this.props.navigation.navigate('browse');
 			}}
+		/>
+	);
+
+	renderSubcategories = (subcategory) => (
+		<SubcategoryCard
+			subcategory={subcategory}
+			onPress={() => this.doSelectSubcategory(subcategory)}
+			color={this.state.category.color[0]}
 		/>
 	);
 

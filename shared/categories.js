@@ -102,6 +102,12 @@ const categories = [
 				title: 'Mechanic',
 				description: 'Avoid crashing',
 				dbReference: 'mechanic'
+			},
+			{
+				id: 1.4,
+				title: 'Other',
+				description: 'Something else',
+				dbReference: 'other'
 			}
 		]
 	},
@@ -143,6 +149,12 @@ const categories = [
 				title: 'Moving Help',
 				description: 'Move out quickly',
 				dbReference: 'moving'
+			},
+			{
+				id: 2.4,
+				title: 'Other',
+				description: 'Something else',
+				dbReference: 'other'
 			}
 		]
 	},
@@ -206,9 +218,9 @@ const categories = [
 			},
 			{
 				id: 4.4,
-				title: 'All Plumbing services',
-				description: 'All you need',
-				dbReference: 'all_plumbing'
+				title: 'Other',
+				description: 'Something else',
+				dbReference: 'other'
 			}
 		]
 	},
@@ -361,10 +373,10 @@ const categories = [
 	},
 	{
 		id: 13,
-		title: 'Real state',
+		title: 'Real Estate',
 		description: 'Get your dream house',
-		dbReference: 'real_state',
-		keyWords: ['house', 'buy', 'realtor', 'broker', 'real', 'state'],
+		dbReference: 'real_estate',
+		keyWords: ['house', 'buy', 'realtor', 'broker', 'real', 'estate'],
 		color: ['#006064', '#00838F']
 	},
 	{

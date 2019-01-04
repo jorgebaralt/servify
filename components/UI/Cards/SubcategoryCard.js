@@ -12,7 +12,7 @@ import { colors } from '../../../shared/styles';
 import { FadeImage } from '..';
 import { getImagePath } from '../../../assets/default/subcategories';
 
-const WIDTH = Dimensions.get('window').width - 120;
+const WIDTH = Dimensions.get('window').width - 140;
 
 export const SubcategoryCard = (props) => {
 	const { subcategory } = props;
@@ -35,7 +35,7 @@ export const SubcategoryCard = (props) => {
 					<FadeImage
 						circle
 						image={getImagePath(subcategory.dbReference)}
-						style={{ width: 100, height: 100 }}
+						style={{ width: 90, height: 90 }}
 					/>
 				</View>
 
