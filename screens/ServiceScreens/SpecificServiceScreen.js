@@ -337,8 +337,7 @@ class SpecificServiceScreen extends Component {
 									</Text>
 									<View style={{ marginTop: 10 }}>
 										<StarsRatingPick
-											width={30}
-											height={30}
+											size={30}
 											spacing={5}
 											rating={this.state.starCount}
 											selectRating={(count) => this.setState({ starCount: count })}
@@ -402,8 +401,7 @@ class SpecificServiceScreen extends Component {
 									}}
 								>
 									<StarsRating
-										width={20}
-										height={20}
+										size={20}
 										spacing={5}
 										rating={currentUserReview.rating}
 									/>
@@ -455,8 +453,7 @@ class SpecificServiceScreen extends Component {
 							</Text>
 							<View style={{ flexDirection: 'row' }}>
 								<StarsRating
-									width={15}
-									height={15}
+									size={15}
 									spacing={5}
 									rating={review.rating}
 								/>
@@ -519,8 +516,7 @@ class SpecificServiceScreen extends Component {
 					<Text>{this.props.service.rating.toFixed(1)}</Text>
 					<View style={{ marginTop: 2, marginLeft: 5 }}>
 						<StarsRating
-							width={15}
-							height={15}
+							size={15}
 							spacing={5}
 							rating={this.props.service.rating}
 						/>

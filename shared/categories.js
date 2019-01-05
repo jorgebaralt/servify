@@ -400,7 +400,7 @@ const categories = [
 	},
 	{
 		id: 16,
-		title: 'Insurance ',
+		title: 'Insurance',
 		description: 'Insurance description',
 		dbReference: 'insurance',
 		keyWords: ['insurance', 'health', 'car', 'auto', 'policy', 'claim'],
@@ -408,6 +408,14 @@ const categories = [
 	},
 	{
 		id: 17,
+		title: 'Handmade',
+		description: 'Built with love',
+		dbReference: 'handmade',
+		keyWords: ['hand', 'made', 'handmade', 'bags', 'cloth', 'claim'],
+		color: ['#AD1457', '#880E4F']
+	},
+	{
+		id: 18,
 		title: 'Other',
 		description: 'Something else',
 		dbReference: 'other',

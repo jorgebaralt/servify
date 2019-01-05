@@ -49,7 +49,7 @@ class ServicesListScreen extends Component {
 			'willFocus',
 			async () => {
 				this.handleAndroidBack();
-				await this.decideGetService();
+				await this.fetchData();
 			}
 		);
 	}
@@ -98,27 +98,31 @@ class ServicesListScreen extends Component {
 
 	decideGetService = async () => {
 		this.setState({ refreshing: true });
-		const { category, subcategory } = this.state;
-		const categoryRef = category.dbReference;
 		if (this.props.userLocation) {
-			if (subcategory) {
-				const subcategoryRef = subcategory.dbReference;
-				await getServicesSubcategory(
-					subcategoryRef,
-					this.props.userLocation,
-					this.state.sortBy,
-					(data) => this.setState({ servicesList: data, dataLoaded: true, refreshing: false })
-				);
-			} else {
-				await getServicesCategory(
-					categoryRef,
-					this.props.userLocation,
-					this.state.sortBy,
-					(data) => this.setState({ servicesList: data, dataLoaded: true, refreshing: false })
-				);
-			}
+			await this.fetchData();
 		}
 	};
+
+	fetchData = async () => {
+		const { category, subcategory } = this.state;
+		const categoryRef = category.dbReference;
+		if (subcategory) {
+			const subcategoryRef = subcategory.dbReference;
+			await getServicesSubcategory(
+				subcategoryRef,
+				this.props.userLocation,
+				this.state.sortBy,
+				(data) => this.setState({ servicesList: data, dataLoaded: true, refreshing: false })
+			);
+		} else {
+			await getServicesCategory(
+				categoryRef,
+				this.props.userLocation,
+				this.state.sortBy,
+				(data) => this.setState({ servicesList: data, dataLoaded: true, refreshing: false })
+			);
+		}
+	}
 
 	// TODO: sorting function here, after actin sheet **** IMPORTANT ****
 
@@ -191,7 +195,7 @@ class ServicesListScreen extends Component {
 	serviceListRefreshControl = () => (
 		<RefreshControl
 			refreshing={this.state.refreshing}
-			onRefresh={() => this.decideGetService()}
+			onRefresh={() => this.fetchData()}
 			tintColor={this.state.category.color[0]}
 			colors={[
 				this.state.category.color[0],
@@ -233,8 +237,6 @@ class ServicesListScreen extends Component {
 					</View>
 				);
 			}
-			// else render the profile services
-			return <Text>This is profile services</Text>;
 		}
 		return (
 			<ActivityIndicator

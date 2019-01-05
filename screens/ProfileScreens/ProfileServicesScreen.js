@@ -1,35 +1,20 @@
 import React, { Component } from 'react';
 import {
 	View,
-	TouchableOpacity,
 	DeviceEventEmitter,
-	Platform,
-	FlatList
+	FlatList,
+	RefreshControl,
+	ActivityIndicator
 } from 'react-native';
-import {
-	Header,
-	Text,
-	Card,
-	CardItem,
-	Body,
-	Title,
-	Container,
-	Left,
-	Button,
-	Icon,
-	Right,
-	Spinner,
-	Content
-} from 'native-base';
+import { Ionicons } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
-import {
-	selectService,
-} from '../../actions';
-import { getServicesByEmail, getFavorites } from '../../api';
-import EmptyListMessage from '../../components/ErrorMessage/EmptyListMessage';
+import { selectService } from '../../actions';
+import { getServicesByEmail, getFavorites, removeFavorite } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
+import { colors } from '../../shared/styles';
+import { CustomHeader, ProfileServiceCard } from '../../components/UI';
 
-let errorMessage;
 let currentItem;
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -37,8 +22,8 @@ let backPressSubscriptions;
 class ProfileServicesScreen extends Component {
 	state = {
 		loading: false,
-		servicesList: null,
-		favorites: null
+		myServices: null,
+		favorites: null,
 	};
 
 	async componentWillMount() {
@@ -47,14 +32,14 @@ class ProfileServicesScreen extends Component {
 			'willFocus',
 			async () => {
 				this.handleAndroidBack();
-				await this.decideFetchData();
+				this.decideFetchData();
 			}
 		);
-		
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		pageHit('Profile Services Screen');
+		await this.decideFetchData();
 	}
 
 	componentWillUnmount() {
@@ -62,18 +47,10 @@ class ProfileServicesScreen extends Component {
 	}
 
 	decideFetchData = async () => {
-		if (currentItem.id === 'favorites') {
-			errorMessage =				'There is nothing in this list, Make sure that you add Services to Favorite by cliking on the top right icon, when looking at services.';
-			this.setState({ loading: true });
-			await getFavorites(this.props.user.email, (data) => this.setState({ favorites: data }));
-			this.setState({ loading: false });
-		} else if (currentItem.id === 'my_services') {
-			errorMessage =				'There is nothing in this list, Make sure that you create a Service from our Post screen, then you will be able to modify it here';
-			this.setState({ loading: true });
-			await getServicesByEmail(this.props.user.email, (data) => this.setState({servicesList: data}) );
-			this.setState({ loading: false });
-		}
-	}
+		this.setState({ loading: true });
+		await this.refreshData();
+		this.setState({ loading: false });
+	};
 
 	handleAndroidBack = () => {
 		backPressSubscriptions = new Set();
@@ -95,193 +72,126 @@ class ProfileServicesScreen extends Component {
 		await this.props.navigation.goBack();
 	};
 
-	renderServices = (service) => {
-		const {
-			cardStyle,
-			titleStyle,
-			phoneLocationStyle,
-			displayNameStyle,
-			cardHeaderStyle,
-			cardItemStyle
-		} = styles;
-		const displayDescription = service.description.substring(0, 25) + '...';
-
-		let categoryName = service.category.split('_');
-		for (let i = 0; i < categoryName.length; i++) {
-			categoryName[i] =				categoryName[i].charAt(0).toUpperCase() + categoryName[i].substring(1);
+	refreshData = async () => {
+		if (currentItem.id === 'favorites') {
+			await getFavorites(this.props.user.email, (data) => this.setState({ favorites: data }));
+		} else if (currentItem.id === 'my_services') {
+			await getServicesByEmail(this.props.user.email, (data) => this.setState({ myServices: data }));
 		}
-		categoryName = categoryName.join(' ');
-		return (
-			<TouchableOpacity
-				key={service.id}
-				onPress={() => {
-					this.props.selectService(service);
-					this.props.navigation.navigate('service');
-				}}
-			>
-				<Card style={cardStyle}>
-					<CardItem header style={cardHeaderStyle}>
-						<Text style={titleStyle}>{service.title}</Text>
-						<Text style={displayNameStyle}>by: {service.displayName}</Text>
-						<Text style={displayNameStyle}>Category: {categoryName}</Text>
-					</CardItem>
-					<CardItem style={cardItemStyle}>
-						<Body style={phoneLocationStyle}>
-							<Text>{service.phone}</Text>
-							<Text style={{ marginLeft: '15%' }}>
-								{/* {service.locationData.city} */}
-							</Text>
-						</Body>
-						<Right>
-							<Icon
-								name="ios-arrow-forward"
-								type="Ionicons"
-								style={{ color: '#FF7043' }}
-							/>
-						</Right>
-					</CardItem>
-					<CardItem style={cardItemStyle}>
-						<Body>
-							<Text>{displayDescription}</Text>
-						</Body>
-					</CardItem>
-				</Card>
-			</TouchableOpacity>
-		);
+	};
+
+	removeFavorite = async (service) => {
+		this.setState({ loading: true });
+		await removeFavorite(this.props.user.email, service);
+		await this.refreshData();
+		this.setState({ loading: false });
+	};
+
+	editService = (service) => {
+		this.props.navigation.navigate('editService', { service });
+	}
+
+	renderServices = (service) => (
+		<ProfileServiceCard
+			service={service}
+			type={currentItem.id}
+			currentUser={this.props.user}
+			image={require('../../assets/default/subcategories/home_cleaning.jpg')}
+			onPress={() => {
+				this.props.selectService(service);
+				this.props.navigation.navigate('service');
+			}}
+			onRemoveFavorite={async () => {
+				await this.removeFavorite(service);
+			}}
+			onEditService={() => this.editService(service)}
+		/>
+	);
+
+	headerLeftIcon = () => (
+		<Ionicons
+			name="ios-arrow-back"
+			size={32}
+			style={{ color: colors.black }}
+			onPress={() => {
+				this.onBackPress();
+			}}
+		/>
+	);
+
+	flatListRefreshControl = () => (
+		<RefreshControl
+			refreshing={this.state.loading}
+			onRefresh={async () => this.refreshData()}
+			tintColor={colors.primaryColor}
+			colors={[colors.primaryColor]}
+		/>
+	);
+
+	decideRenderData = () => {
+		let data;
+		if (this.state.favorites || this.state.myServices) {
+			if (
+				currentItem.id === 'favorites'
+				&& this.state.favorites.length > 0
+			) {
+				data = this.state.favorites;
+			}
+			if (
+				currentItem.id === 'my_services'
+				&& this.state.myServices.length > 0
+			) {
+				data = this.state.myServices;
+			}
+			return (
+				<FlatList
+					data={data}
+					renderItem={({ item }) => this.renderServices(item)}
+					keyExtractor={(item) => item.title}
+					refreshControl={this.flatListRefreshControl()}
+					style={{ paddingLeft: 20, paddingRight: 20 }}
+				/>
+			);
+		}
+		return this.renderSpinner();
 	};
 
 	renderSpinner() {
 		if (this.state.loading) {
-			return <Spinner color="orange" />;
+			return (
+				<ActivityIndicator
+					style={{ marginTop: 20 }}
+					size="large"
+					color={colors.primaryColor}
+				/>
+			);
 		}
 		return <View />;
 	}
 
-	renderListView = () => {
-		if (this.state.loading) {
-			return this.renderSpinner();
-		}
-		if (
-			currentItem.id === 'favorites'
-			&& this.state.favorites
-			&& this.state.favorites.length > 0
-		) {
-			return (
-				<Content>
-					<FlatList
-						data={this.state.favorites}
-						renderItem={({ item }) => this.renderServices(item)}
-						keyExtractor={(item) => item.title}
-					/>
-				</Content>
-			);
-		}
-		if (
-			currentItem.id === 'my_services'
-			&& this.state.servicesList
-			&& this.state.servicesList.length > 0
-		) {
-			return (
-				<Content>
-					<FlatList
-						style={{ marginBottom: 40 }}
-						data={this.state.servicesList}
-						renderItem={({ item }) => this.renderServices(item)}
-						keyExtractor={(item) => item.title}
-					/>
-				</Content>
-			);
-		}
-		return (
-			<EmptyListMessage buttonPress={this.onBackPress}>
-				{errorMessage}
-			</EmptyListMessage>
-		);
-	};
-
 	render() {
-		const { androidHeader, iosHeader, androidTitle, iosTitle } = styles;
 		return (
-			<Container>
-				<Header style={Platform.OS === 'android' ? androidHeader : iosHeader}>
-					<Left>
-						<Button
-							transparent
-							onPress={() => {
-								this.onBackPress();
-							}}
-						>
-							<Icon
-								name="ios-arrow-back"
-								type="Ionicons"
-								style={{ color: 'black' }}
-							/>
-						</Button>
-					</Left>
-					<Body style={{ flex: 3 }}>
-						<Title style={Platform.Os === 'android' ? androidTitle : iosTitle}>
-							{' '}
-							{currentItem.title}{' '}
-						</Title>
-					</Body>
-					<Right />
-				</Header>
-				{this.renderListView()}
-			</Container>
+			<SafeAreaView
+				style={{ flex: 1, backgroundColor: colors.white }}
+				forceInset={{ bottom: 'never' }}
+			>
+				<CustomHeader
+					left={this.headerLeftIcon()}
+					title={currentItem.title}
+				/>
+				<View
+					style={{
+						flex: 1,
+						backgroundColor: colors.white,
+						zIndex: -1
+					}}
+				>
+					{this.decideRenderData()}
+				</View>
+			</SafeAreaView>
 		);
 	}
 }
-
-const styles = {
-	androidHeader: {
-		backgroundColor: '#F5F5F5'
-	},
-	iosHeader: {},
-	iosTitle: {
-		color: 'black'
-	},
-	androidTitle: {
-		color: 'black',
-		marginLeft: 10
-	},
-	cardStyle: {
-		width: '80%',
-		marginLeft: '10%',
-		marginTop: '2.5%',
-		shadowOffset: { width: 0, height: 0 },
-		shadowColor: 'black',
-		shadowOpacity: 0.2,
-		elevation: 1,
-		height: 165,
-		borderRadius: 8
-	},
-	contentStyle: {},
-	titleStyle: {
-		fontSize: 18
-	},
-	phoneLocationStyle: {
-		flexDirection: 'row',
-		flex: 1
-	},
-	headerTitleStyle: {
-		color: 'white',
-		borderRadius: 8
-	},
-	cardHeaderStyle: {
-		flexDirection: 'column',
-		display: 'flex',
-		alignItems: 'flex-start',
-		borderRadius: 8
-	},
-	displayNameStyle: {
-		fontSize: 14,
-		fontWeight: undefined
-	},
-	cardItemStyle: {
-		marginTop: -10,
-		borderRadius: 8
-	}
-};
 
 function mapStateToProps(state) {
 	return {
@@ -292,6 +202,6 @@ function mapStateToProps(state) {
 export default connect(
 	mapStateToProps,
 	{
-		selectService,
+		selectService
 	}
 )(ProfileServicesScreen);

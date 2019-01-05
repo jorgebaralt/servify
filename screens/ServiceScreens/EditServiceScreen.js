@@ -22,7 +22,9 @@ import {
 	Platform,
 	View,
 	Keyboard,
-	DeviceEventEmitter
+	DeviceEventEmitter,
+	ActivityIndicator,
+	SafeAreaView
 } from 'react-native';
 import { connect } from 'react-redux';
 import { pageHit } from '../../shared/ga_helper';

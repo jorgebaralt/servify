@@ -120,7 +120,7 @@ class SubcategoriesListScreen extends Component {
 							keyExtractor={(item) => item.title}
 						/>
 						<View style={[styles.bigCircleStyle, { backgroundColor: this.state.category.color[0] }]} />
-						<View style={[styles.smallCircleStyle , { backgroundColor: this.state.category.color[0] }]} />
+						<View style={[styles.smallCircleStyle, { backgroundColor: this.state.category.color[0] }]} />
 					</View>
 				</SafeAreaView>
 			</View>
@@ -131,22 +131,22 @@ class SubcategoriesListScreen extends Component {
 const styles = StyleSheet.create({
 	bigCircleStyle: {
 		position: 'absolute',
-		height: 400,
-		width: 400,
-		borderRadius: 200,
-		zIndex: -1,
-		right: -150,
-		bottom: -180,
-		opacity: 0.3
-	},
-	smallCircleStyle: {
-		position: 'absolute',
 		height: 300,
 		width: 300,
 		borderRadius: 150,
 		zIndex: -1,
+		right: -120,
+		bottom: -140,
+		opacity: 0.3
+	},
+	smallCircleStyle: {
+		position: 'absolute',
+		height: 200,
+		width: 200,
+		borderRadius: 100,
+		zIndex: -1,
 		left: -50,
-		bottom: -180,
+		bottom: -130,
 		opacity: 0.3
 	}
 });

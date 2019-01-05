@@ -1,12 +1,21 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity, LayoutAnimation, Text } from 'react-native';
+import {
+	View,
+	TouchableOpacity,
+	LayoutAnimation,
+	Text,
+	Dimensions
+} from 'react-native';
 import StarsRating from '../../Ratings/StarsRating';
 import { FadeImage } from '..';
 import { colors } from '../../../shared/styles';
 
+const WIDTH = Dimensions.get('window').width;
+
+
 class HomeServiceCard extends Component {
 	// animate on appear
-	async componentWillMount() {
+	componentWillMount() {
 		LayoutAnimation.easeInEaseOut();
 	}
 
@@ -15,10 +24,8 @@ class HomeServiceCard extends Component {
 		const { displayNameStyle } = styles;
 
 		return (
-			<View style={{ marginTop: 5}}>
-				<Text style={displayNameStyle}>
-					{service.displayName}
-				</Text>
+			<View style={{ marginTop: 5 }}>
+				<Text style={displayNameStyle}>{service.displayName}</Text>
 				{/* Show rating */}
 				{this.props.showRating ? (
 					<View style={{ flexDirection: 'row' }}>
@@ -29,7 +36,7 @@ class HomeServiceCard extends Component {
 					</View>
 				) : (
 					<View />
-					)}
+				)}
 				{/* Show location */}
 				{this.props.showLocation ? (
 					<Text style={displayNameStyle}>
@@ -37,7 +44,7 @@ class HomeServiceCard extends Component {
 					</Text>
 				) : (
 					<View />
-					)}
+				)}
 				{/* TODO: Show price */}
 			</View>
 		);
@@ -45,17 +52,20 @@ class HomeServiceCard extends Component {
 
 	render() {
 		const { service } = this.props;
-		const { cardStyle, cardHeaderStyle, titleStyleCard } = styles;
+		const { cardStyle, cardContentStyle, titleStyleCard } = styles;
 		return (
 			<TouchableOpacity
-				style={[cardStyle,{ marginBottom: 10, borderRadius: 8, marginRight: this.props.last ? 20 : 0 }]}
+				style={[cardStyle, { marginRight: this.props.last ? 20 : 0 }]}
 				onPress={() => {
 					this.props.onPress();
 				}}
 			>
 				<View>
-					<FadeImage image={this.props.image} style={{ height: 100 }} />
-					<View style={[cardHeaderStyle, {borderWidth: 0.5, borderBottomStartRadius: 8, borderBottomEndRadius: 8, borderTopWidth: 0, padding: 5, borderColor: colors.lightGray }]}>
+					<FadeImage
+						image={this.props.image}
+						style={{ height: 100 }}
+					/>
+					<View style={cardContentStyle}>
 						<Text style={titleStyleCard}>{service.title}</Text>
 						{this.renderContent()}
 					</View>
@@ -66,12 +76,13 @@ class HomeServiceCard extends Component {
 }
 const styles = {
 	cardStyle: {
-		width: 170,
+		width: (WIDTH - 15) * 0.4,
 		height: 175,
 		marginLeft: 20,
 		marginTop: 20,
 		borderRadius: 8,
-		overflow: 'hidden'
+		overflow: 'hidden',
+		marginBottom: 10
 	},
 	titleStyleCard: {
 		fontSize: 12,
@@ -80,11 +91,17 @@ const styles = {
 	headerTitleStyle: {
 		color: 'white'
 	},
-	cardHeaderStyle: {
+	cardContentStyle: {
 		flexDirection: 'column',
 		display: 'flex',
 		alignItems: 'flex-start',
 		overflow: 'hidden',
+		borderWidth: 0.5,
+		borderBottomStartRadius: 8,
+		borderBottomEndRadius: 8,
+		borderTopWidth: 0,
+		padding: 5,
+		borderColor: colors.lightGray
 	},
 	displayNameStyle: {
 		fontSize: 12,

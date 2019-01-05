@@ -7,9 +7,9 @@ const Star = (props) => (
 	<Svg
 		viewBox="0 0 1000 1000"
 		aria-hidden="true"
-		width={props.width ? props.width : 12}
-		height={props.height ? props.height : 12}
-		style={{ marginRight: props.spacing ? props.spacing : 2 }}
+		width={props.size ? props.size : 12}
+		height={props.size ? props.size : 12}
+		style={[{ marginRight: props.spacing ? props.spacing : 2 }, props.style]}
 		fill="#330"
 	>
 		<Defs>

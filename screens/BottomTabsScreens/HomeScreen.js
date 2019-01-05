@@ -9,7 +9,8 @@ import {
 	Linking,
 	ScrollView,
 	ActivityIndicator,
-	Text
+	Text,
+	Dimensions
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Permissions } from 'expo';
@@ -24,6 +25,7 @@ let backPressSubscriptions;
 let willFocusSubscription;
 let didFocusSubscription;
 const DISTANCE = 30;
+const WIDTH = Dimensions.get('window').width;
 
 class HomeScreen extends Component {
 	static navigationOptions = {
@@ -336,8 +338,8 @@ class HomeScreen extends Component {
 <RefreshControl
 						refreshing={this.state.refreshing}
 						onRefresh={async () => this.onRefresh()}
-						tintColor="orange"
-						colors={['orange']}
+						tintColor={colors.primaryColor}
+						colors={[colors.primaryColor]}
 />
 )}
 			>
@@ -363,7 +365,7 @@ const styles = {
 		marginLeft: 20,
 		marginTop: 10,
 		marginBottom: 10,
-		width: 140,
+		width: (WIDTH - 60) * 0.45,
 		overflow: 'hidden'
 	}
 };

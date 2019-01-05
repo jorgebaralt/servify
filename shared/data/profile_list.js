@@ -8,7 +8,7 @@ export const profileList = [
 	},
 	{
 		id: 'favorites',
-		title: 'Favorite Services',
+		title: 'Favorites',
 		iconType: 'MaterialIcons',
 		iconName: 'favorite',
 		isList: true

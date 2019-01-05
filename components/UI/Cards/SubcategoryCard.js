@@ -17,7 +17,7 @@ const WIDTH = Dimensions.get('window').width - 140;
 export const SubcategoryCard = (props) => {
 	const { subcategory } = props;
 	return (
-		<TouchableOpacity style={{ margin: 5 }} onPress={props.onPress}>
+		<TouchableOpacity style={{ margin: 5, marginTop: 20 }} onPress={props.onPress}>
 			<View
 				style={{
 					flexDirection: 'row',
@@ -44,12 +44,12 @@ export const SubcategoryCard = (props) => {
 						padding: 8,
 						borderWidth: 1,
 						borderColor: colors.lightGray,
-						borderRadius: 8,
-						marginLeft: -20,
+						borderRadius: 10,
+						marginLeft: -50,
 						backgroundColor: colors.white,
 						width: WIDTH,
 						zIndex: -1,
-						paddingLeft: 24,
+						paddingLeft: 60,
 						shadowOpacity: 0.3,
 						shadowColor: colors.darkerGray,
 						shadowRadius: 2,
@@ -59,13 +59,13 @@ export const SubcategoryCard = (props) => {
 					<Text
 						style={{
 							fontSize: 20,
-							fontWeight: '600',
-							color: props.color
+							fontWeight: '500',
+							color: colors.black
 						}}
 					>
 						{subcategory.title}
 					</Text>
-					<Text style={{ fontSize: 16, color: colors.darkGray }}>
+					<Text style={{ fontSize: 16, color: colors.darkGray, marginTop: 10 }}>
 						{subcategory.description}
 					</Text>
 				</View>
