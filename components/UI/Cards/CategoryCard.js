@@ -3,7 +3,7 @@ import { TouchableOpacity, LayoutAnimation, View, Text } from 'react-native';
 import { LinearGradient } from 'expo';
 
 class CategoryCard extends Component {
-	componentWillMount() {
+	componentWillUpdate() {
 		LayoutAnimation.easeInEaseOut();
 	}
 	

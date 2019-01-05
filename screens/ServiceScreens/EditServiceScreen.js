@@ -1,34 +1,34 @@
 import React, { Component } from 'react';
-import {
-	Container,
-	Header,
-	Body,
-	Right,
-	Button,
-	Icon,
-	Title,
-	Text,
-	Left,
-	Content,
-	Input,
-	Item,
-	Textarea,
-	Toast,
-	Spinner
-} from 'native-base';
+import { Toast } from 'native-base';
 import {
 	Alert,
 	KeyboardAvoidingView,
-	Platform,
 	View,
 	Keyboard,
 	DeviceEventEmitter,
 	ActivityIndicator,
-	SafeAreaView
+	SafeAreaView,
+	ScrollView,
+	Text,
+	Slider
 } from 'react-native';
+import { MapView } from 'expo';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { pageHit } from '../../shared/ga_helper';
-import { deleteService, updateService } from '../../api';
+import {
+	deleteService,
+	updateService,
+	getLocationFromAddress
+} from '../../api';
+import {
+	CustomHeader,
+	FloatingLabelInput,
+	TextArea,
+	Button
+} from '../../components/UI';
+import { colors, globalStyles } from '../../shared/styles';
+import { formatPhone } from '../../shared/helpers';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -44,6 +44,17 @@ class EditServiceScreen extends Component {
 			+ ' '
 			+ this.props.service.locationData.postalCode,
 		miles: this.props.service.miles,
+		region: {
+			latitude: this.props.service.geolocation.latitude,
+			longitude: this.props.service.geolocation.longitude,
+			latitudeDelta: 0.03215 * this.props.service.miles,
+			longitudeDelta: 0.0683 * this.props.service.miles
+		},
+		radius: this.props.service.miles * 1609.34,
+		center: {
+			latitude: this.props.service.geolocation.latitude,
+			longitude: this.props.service.geolocation.longitude
+		},
 		loading: false
 	};
 
@@ -61,6 +72,62 @@ class EditServiceScreen extends Component {
 	componentWillUnmount() {
 		willFocusSubscription.remove();
 	}
+
+	// Location handlers
+	updateLocation = async (text) => {
+		// if empty the text box, go to current location
+		if (text.length < 2) {
+			const { coords } = this.props.userLocation;
+			this.setState((prevState) => ({
+				region: {
+					latitude: coords.latitude,
+					longitude: coords.longitude,
+					latitudeDelta: prevState.latitudeDelta,
+					longitudeDelta: prevState.longitudeDelta
+				},
+				center: {
+					latitude: coords.latitude,
+					longitude: coords.longitude
+				}
+			}));
+		} else {
+			// update map to new location
+			const newAddress = await getLocationFromAddress(text);
+			if (newAddress.longitude && newAddress.latitude) {
+				this.setState((prevState) => ({
+					region: {
+						latitude: newAddress.latitude,
+						longitude: newAddress.longitude,
+						latitudeDelta: prevState.latitudeDelta,
+						longitudeDelta: prevState.longitudeDelta
+					},
+					center: {
+						latitude: newAddress.latitude,
+						longitude: newAddress.longitude
+					}
+				}));
+			}
+		}
+	};
+
+	onLocationChange = async (location) => {
+		this.setState({ location });
+		this.updateLocation(location);
+	};
+
+	// update map with miles
+	onMilesChange = (value) => {
+		this.setState({ miles: value });
+		this.setState((prevState) => ({
+			radius: value * 1609.34,
+			region: {
+				latitude: prevState.region.latitude,
+				longitude: prevState.region.longitude,
+				latitudeDelta: 0.03215 * value,
+				longitudeDelta: 0.0683 * value
+			}
+		}));
+	};
 
 	showToast = (text, type) => {
 		this.setState({ loading: false });
@@ -102,11 +169,12 @@ class EditServiceScreen extends Component {
 		this.props.navigation.pop(3);
 	};
 
-	openAlert = () => {
+	deleteAlert = () => {
 		Alert.alert('Delete', 'Are you sure you want to delete this service?', [
 			{
 				text: 'Delete',
-				onPress: () => this.deleteService()
+				onPress: () => this.deleteService(),
+				style: 'destructive'
 			},
 			{
 				text: 'Cancel'
@@ -116,6 +184,7 @@ class EditServiceScreen extends Component {
 
 	updateService = async () => {
 		Keyboard.dismiss();
+		this.scrollRef.scrollTo(0);
 		this.setState({ loading: true });
 		const updatedService = {
 			category: this.props.service.category,
@@ -136,163 +205,177 @@ class EditServiceScreen extends Component {
 		this.props.navigation.pop(3);
 	};
 
+	// format phone text
 	phoneChangeText = (text) => {
-		const input = text.replace(/\D/g, '').substring(0, 10);
-		const left = input.substring(0, 3);
-		const middle = input.substring(3, 6);
-		const right = input.substring(6, 10);
-
-		if (input.length > 6) {
-			this.setState({ phone: `(${left}) ${middle} - ${right}` });
-		} else if (input.length > 3) {
-			this.setState({ phone: `(${left}) ${middle}` });
-		} else if (input.length > 0) {
-			this.setState({ phone: `(${left}` });
-		}
+		const result = formatPhone(text);
+		this.setState({ phone: result });
 	};
+
+	// Icon on left header
+	headerLeftIcon = () => (
+		<Ionicons
+			name="ios-arrow-back"
+			size={32}
+			style={{ color: colors.black }}
+			onPress={() => this.props.navigation.pop(2)}
+			disabled={this.state.loading}
+		/>
+	);
+
+	headerRightIcon = () => (
+		<MaterialIcons
+			name="delete"
+			size={32}
+			style={{ color: colors.danger }}
+			onPress={() => this.deleteAlert()}
+			disabled={this.state.loading}
+		/>
+	);
 
 	renderSpinner() {
 		if (this.state.loading) {
-			return <Spinner color="orange" />;
+			return (
+				<ActivityIndicator
+					size="large"
+					color="#FF7043"
+					style={{ marginTop: 10 }}
+				/>
+			);
 		}
 		return <View />;
 	}
 
 	render() {
-		const {
-			subtitleStyle,
-			contentStyle,
-			itemStyle,
-			buttonStyle,
-			editingTextStyle
-		} = styles;
+		const { contentStyle, buttonStyle } = styles;
+		// TODO: WORKING HERE
 		return (
-			<Container>
-				<Header>
-					<Left>
-						<Button
-							transparent
-							disabled={this.state.loading}
-							onPress={() => {
-								this.props.navigation.goBack();
-							}}
-						>
-							<Icon
-								name="ios-arrow-back"
-								type="Ionicons"
-								style={{ color: 'black' }}
-							/>
-						</Button>
-					</Left>
-					<Body style={{ flex: 3 }}>
-						<Title>Edit your Service</Title>
-					</Body>
-					<Right>
-						<Button
-							transparent
-							title="Settings"
-							onPress={() => this.openAlert()}
-							disabled={this.state.loading}
-						>
-							<Icon
-								type="MaterialIcons"
-								name="delete"
-								style={{ color: '#D84315' }}
-							/>
-						</Button>
-					</Right>
-				</Header>
+			<SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
+				<CustomHeader
+					title="Edit your Service"
+					left={this.headerLeftIcon()}
+					right={this.headerRightIcon()}
+				/>
 				<KeyboardAvoidingView
-					behavior={Platform.OS === 'android' ? 'padding' : null}
+					behavior="padding"
 					style={{ flex: 1, justifyContent: 'center' }}
 				>
-					<Content style={contentStyle}>
-						<Text style={subtitleStyle}>Title</Text>
-						<Item bordered regular style={itemStyle}>
-							<Input
-								style={editingTextStyle}
-								value={this.state.title}
-								onChangeText={(text) => this.setState({ title: text })}
-								maxLength={25}
-							/>
-						</Item>
-						<Text style={subtitleStyle}>Description</Text>
-						<Item bordered regular style={itemStyle}>
-							<Textarea
-								style={editingTextStyle}
-								value={this.state.description}
-								rowSpan={3}
-								onChangeText={(text) => this.setState({ description: text })}
-								maxLength={120}
-							/>
-						</Item>
-						<Text style={subtitleStyle}>Contact Phone</Text>
-						<Item bordered regular style={itemStyle}>
-							<Input
-								style={editingTextStyle}
-								value={this.state.phone}
-								keyboardType="phone-pad"
-								onChangeText={(text) => this.phoneChangeText(text)}
-								maxLength={16}
-							/>
-						</Item>
-						<Text style={subtitleStyle}>Location</Text>
-						<Item bordered regular style={itemStyle}>
-							<Input
-								style={editingTextStyle}
-								value={this.state.location}
-								onChangeText={(text) => this.setState({ location: text })}
-							/>
-						</Item>
-						<Text style={subtitleStyle}>Miles</Text>
-						<Item bordered regular style={itemStyle}>
-							<Input
-								style={editingTextStyle}
-								value={this.state.miles}
-								keyboardType="numeric"
-								onChangeText={(text) => this.setState({ miles: text })}
-							/>
-						</Item>
+					<ScrollView
+						style={contentStyle}
+						keyboardShouldPersistTaps="handled"
+						ref={(scrollRef) => { this.scrollRef = scrollRef; }}
+					>
+						{this.renderSpinner()}
+						<FloatingLabelInput
+							label="Service title"
+							value={this.state.title}
+							firstColor={colors.darkGray}
+							secondColor={colors.secondaryColor}
+							onChangeText={(title) => this.setState({ title })}
+							fontColor={colors.black}
+							maxLength={25}
+							style={{ marginTop: 20 }}
+						/>
+						<TextArea
+							style={{ marginTop: 20 }}
+							label="Description"
+							size={40}
+							firstColor={colors.darkGray}
+							secondColor={colors.secondaryColor}
+							fontColor={colors.black}
+							multiline
+							bordered
+							numberOfLines={6}
+							placeholder="Describe your Service Here"
+							value={this.state.description}
+							onChangeText={(description) => this.setState({ description })
+							}
+						/>
+
+						<FloatingLabelInput
+							value={this.state.phone}
+							label="Contact phone"
+							firstColor={colors.darkGray}
+							secondColor={colors.secondaryColor}
+							fontColor={colors.black}
+							onChangeText={(phone) => this.phoneChangeText(phone)
+							}
+							style={{ marginTop: 20 }}
+							maxLength={16}
+							keyboardType="phone-pad"
+						/>
+						<FloatingLabelInput
+							value={this.state.location}
+							label="Address, Zip Code, or Location"
+							firstColor={colors.darkGray}
+							secondColor={colors.secondaryColor}
+							fontColor={colors.black}
+							onChangeText={(text) => this.onLocationChange(text)}
+							style={{ marginTop: 20 }}
+						/>
+						<Text
+							style={[
+								globalStyles.sectionTitle,
+								{ marginTop: 10, fontWeight: '300' }
+							]}
+						>
+							Distance:{' '}
+							<Text style={{ fontWeight: '400' }}>
+								{this.state.miles} miles
+							</Text>
+						</Text>
+						<Slider
+							onValueChange={(value) => this.onMilesChange(value)}
+							value={this.state.miles}
+							step={1}
+							minimumValue={1}
+							maximumValue={60}
+							minimumTrackTintColor={colors.secondaryColor}
+							thumbTintColor={colors.secondaryColor}
+						/>
+						<View pointerEvents="none">
+							<MapView
+								style={{
+									height: 200,
+									width: '100%',
+									marginTop: 20,
+									borderRadius: 8
+								}}
+								region={this.state.region}
+							>
+								<MapView.Circle
+									center={this.state.center}
+									radius={this.state.radius}
+									strokeColor="#FF7043"
+								/>
+							</MapView>
+						</View>
 						<Button
 							bordered
-							dark
 							disabled={this.state.loading}
 							style={buttonStyle}
 							onPress={() => this.updateService()}
+							color={colors.primaryColor}
+							textColor={colors.primaryColor}
 						>
-							<Text style={{ color: '#FF7043' }}>Update Service</Text>
+							<Text>Update Service</Text>
 						</Button>
-						{this.renderSpinner()}
-					</Content>
+					</ScrollView>
 				</KeyboardAvoidingView>
-			</Container>
+			</SafeAreaView>
 		);
 	}
 }
 const styles = {
 	contentStyle: {
 		flex: 1,
-		marginTop: 10
-	},
-	subtitleStyle: {
-		marginLeft: '7%',
 		marginTop: 10,
-		fontWeight: 'bold',
-		color: '#4DB6AC',
-		fontSize: 16
-	},
-	itemStyle: {
-		marginLeft: '7%',
-		marginRight: '7%'
+		paddingLeft: 20,
+		paddingRight: 20
 	},
 	buttonStyle: {
 		top: 20,
-		borderColor: '#FF7043',
-		left: '6%',
-		marginBottom: 20
-	},
-	editingTextStyle: {
-		fontSize: 14
+		marginBottom: 30,
+		width: '100%'
 	}
 };
 
@@ -301,6 +384,4 @@ const mapStateToProps = (state) => ({
 	user: state.auth.user
 });
 
-export default connect(
-	mapStateToProps
-)(EditServiceScreen);
+export default connect(mapStateToProps)(EditServiceScreen);

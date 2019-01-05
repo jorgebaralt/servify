@@ -81,7 +81,7 @@ class FeedbackScreen extends Component {
 	};
 
 	onBackPress = () => {
-		this.props.navigation.goBack(null);
+		this.props.navigation.pop();
 	};
 
 	sendFeedback = async () => {
@@ -100,9 +100,7 @@ class FeedbackScreen extends Component {
 			name="ios-arrow-back"
 			size={32}
 			style={{ color: colors.black }}
-			onPress={() => {
-				this.props.navigation.navigate('browse');
-			}}
+			onPress={() => this.onBackPress()}
 		/>
 	);
 
