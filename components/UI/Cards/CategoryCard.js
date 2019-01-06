@@ -3,7 +3,7 @@ import { TouchableOpacity, LayoutAnimation, View, Text } from 'react-native';
 import { LinearGradient } from 'expo';
 
 class CategoryCard extends Component {
-	componentWillUpdate() {
+	componentWillMount() {
 		LayoutAnimation.easeInEaseOut();
 	}
 	
@@ -22,7 +22,7 @@ class CategoryCard extends Component {
 						style={{ flex: 1 }}
 					>
 						<View header style={{ backgroundColor: 'transparent', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-							<Text style={{ color: 'white', fontSize: 17, alignItems: 'center' }}>
+							<Text style={{ color: 'white', fontSize: 16, alignItems: 'center' }}>
 								{category.title}
 							</Text>
 						</View>	

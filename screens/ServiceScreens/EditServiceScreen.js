@@ -262,7 +262,9 @@ class EditServiceScreen extends Component {
 					<ScrollView
 						style={contentStyle}
 						keyboardShouldPersistTaps="handled"
-						ref={(scrollRef) => { this.scrollRef = scrollRef; }}
+						ref={(scrollRef) => {
+							this.scrollRef = scrollRef;
+						}}
 					>
 						{this.renderSpinner()}
 						<FloatingLabelInput

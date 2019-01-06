@@ -1,24 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, DeviceEventEmitter, FlatList, Platform } from 'react-native';
 import {
-	Container,
-	Header,
-	Body,
-	Right,
-	Button,
-	Icon,
-	Title,
-	Text,
-	Left,
-	Content,
-	Spinner,
-	CardItem,
-	Card
-} from 'native-base';
+	DeviceEventEmitter,
+	FlatList,
+	ActivityIndicator,
+	ScrollView,
+	SafeAreaView
+} from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { getServiceReviews, cancelAxiosRating } from '../../actions';
 import { pageHit } from '../../shared/ga_helper';
-import StarsRating from '../../components/Ratings/StarsRating';
+import { CustomHeader, ReviewCard } from '../../components/UI';
+import { colors } from '../../shared/styles';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -60,65 +53,26 @@ class ReviewsScreen extends Component {
 		backPressSubscriptions.add(() => this.props.navigation.pop());
 	};
 
-	renderReviewsList = (review) => {
-		const { commentDateStyle, cardStyle } = styles;
-		const date = new Date(review.timestamp);
-		const monthNames = [
-			'January',
-			'February',
-			'March',
-			'April',
-			'May',
-			'June',
-			'July',
-			'August',
-			'September',
-			'October',
-			'November',
-			'December'
-		];
-		const day = date.getDate();
-		const monthIndex = date.getMonth();
-		const year = date.getFullYear();
-		const reviewDate = day + ' ' + monthNames[monthIndex] + ' ' + year;
+	headerLeftIcon = () => (
+		<Ionicons
+			name="ios-arrow-back"
+			size={32}
+			style={{ color: colors.black }}
+			onPress={() => {
+				this.props.navigation.goBack();
+				// this.props.cancelAxiosRating();
+			}}
+			disabled={this.state.loading}
+		/>
+	);
 
-		return (
-			<View>
-				<Card style={cardStyle}>
-					<CardItem>
-						<Body>
-							<Text style={{ fontSize: 15 }}>{review.reviewerDisplayName}</Text>
-							<View style={{ marginLeft: 0, flexDirection: 'row' }}>
-								<StarsRating
-									width={15}
-									height={15}
-									spacing={5}
-									rating={review.rating}
-								/>
-								<Text style={commentDateStyle}>{reviewDate}</Text>
-							</View>
-							<Text style={{ fontSize: 14, marginTop: 5, marginBottom: 5 }}>
-								{review.comment}
-							</Text>
-						</Body>
-					</CardItem>
-				</Card>
-			</View>
-		);
-	};
-
-	renderSpinner() {
-		if (this.state.loading) {
-			return <Spinner color="orange" />;
-		}
-		return <View />;
-	}
+	renderReviewsList = (review) => <ReviewCard review={review} />;
 
 	renderReviews = () => {
 		if (this.props.reviews) {
 			return (
 				<FlatList
-					style={{ marginTop: 10, marginBottom: 40 }}
+					style={{ paddingLeft: 20, paddingRight: 20 }}
 					data={this.props.reviews}
 					renderItem={({ item }) => this.renderReviewsList(item)}
 					keyExtractor={(item) => item.reviewerEmail}
@@ -128,45 +82,32 @@ class ReviewsScreen extends Component {
 		}
 	};
 
+	renderSpinner() {
+		if (this.state.loading) {
+			return (
+				<ActivityIndicator
+					size="large"
+					color="#FF7043"
+					style={{ marginTop: 10 }}
+				/>
+			);
+		}
+	}
+
 	render() {
-		const { androidHeader, iosHeader } = styles;
 		return (
-			<Container>
-				<Header style={Platform.OS === 'android' ? androidHeader : iosHeader}>
-					<Left>
-						<Button
-							transparent
-							onPress={() => {
-								this.props.navigation.goBack();
-								this.props.cancelAxiosRating();
-							}}
-						>
-							<Icon
-								name="ios-arrow-back"
-								type="Ionicons"
-								style={{ color: 'black' }}
-							/>
-						</Button>
-					</Left>
-					<Body style={{ flex: 3 }}>
-						<Title style={{ color: 'black' }}>Reviews</Title>
-					</Body>
-					<Right />
-				</Header>
-				<Content>
+			<SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
+				<CustomHeader title="Reviews" left={this.headerLeftIcon()} />
+				<ScrollView style={{ flex: 1 }}>
 					{this.renderSpinner()}
 					{this.renderReviews()}
-				</Content>
-			</Container>
+				</ScrollView>
+			</SafeAreaView>
 		);
 	}
 }
 
 const styles = {
-	androidHeader: {
-		backgroundColor: '#F5F5F5'
-	},
-	iosHeader: {},
 	commentDateStyle: {
 		fontSize: 13,
 		color: 'gray',
