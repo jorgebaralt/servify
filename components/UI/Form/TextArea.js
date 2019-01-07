@@ -45,7 +45,7 @@ export class TextArea extends Component {
 		const labelStyle = {
 			fontSize: this._animatedIsFocused.interpolate({
 				inputRange: [0, 1],
-				outputRange: [20, 14]
+				outputRange: [18, 14]
 			}),
 			color: this._animatedIsFocused.interpolate({
 				inputRange: [0, 1],

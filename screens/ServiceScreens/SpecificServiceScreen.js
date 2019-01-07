@@ -1,33 +1,18 @@
 import React, { Component } from 'react';
 import {
 	View,
-	Dimensions,
-	Platform,
 	KeyboardAvoidingView,
 	DeviceEventEmitter,
 	FlatList,
 	Alert,
-	TouchableOpacity
-} from 'react-native';
-import {
-	Container,
-	Header,
-	Body,
-	Right,
-	Button,
-	Icon,
-	Title,
+	ScrollView,
 	Text,
-	Left,
-	Content,
-	Card,
-	CardItem,
-	Textarea,
-	Spinner
-} from 'native-base';
+	ActivityIndicator
+} from 'react-native';
+import { Ionicons, Entypo, MaterialIcons, Feather } from '@expo/vector-icons';
+import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { MapView, Linking } from 'expo';
-import { AnimatedRegion, Animated } from 'react-native-maps';
 import {
 	submitReview,
 	getReviews,
@@ -40,14 +25,18 @@ import { pageHit } from '../../shared/ga_helper';
 import StarsRating from '../../components/Ratings/StarsRating';
 import StarsRatingPick from '../../components/Ratings/StarsRatingPick';
 import DollarRatingPick from '../../components/Ratings/DollarRatingPick';
+import { colors } from '../../shared/styles';
+import {
+	CustomHeader,
+	ReviewCard,
+	Button,
+	TextArea
+} from '../../components/UI';
+import { formatDate } from '../../shared/helpers';
+import { Category, Subcategory, Location, Description } from '../../assets/svg';
 
-const SCREEN_WIDTH = Dimensions.get('window').width;
 const maxCharCount = 100;
 
-let coords;
-let meters;
-let latitudeDelta;
-let fixedRegion;
 let willFocusSubscription;
 let backPressSubscriptions;
 
@@ -55,7 +44,6 @@ class SpecificServiceScreen extends Component {
 	state = {
 		isFav: false,
 		favLoading: false,
-		region: undefined,
 		comment: '',
 		commentCharCount: maxCharCount,
 		starCount: 0,
@@ -73,37 +61,17 @@ class SpecificServiceScreen extends Component {
 
 		const { service } = this.props;
 
-		const { latitude, longitude } = service.geolocation;
-		coords = { latitude, longitude };
-		meters = service.miles * 1609.34;
-		latitudeDelta = 0.0922;
-
-		// Map according to miles around the service
-		if (service.miles <= 3) {
-			latitudeDelta = 0.0799;
-		} else if (service.miles <= 10 && service.miles > 3) {
-			latitudeDelta = 0.45;
-		} else if (service.miles <= 30 && service.miles > 10) {
-			latitudeDelta = 0.8;
-		} else if (service.miles <= 60 && service.miles > 30) {
-			latitudeDelta = 2;
-		}
-		fixedRegion = {
-			latitude,
-			longitude,
-			latitudeDelta,
-			longitudeDelta: 0.0421
-		};
-
+		// Starting search of current user review
 		this.setState({
-			region: new AnimatedRegion(fixedRegion),
 			loadingUserComment: true
 		});
+		// if current user, is in the service favUser, then we he cant add another review
 		if (service.favUsers.includes(this.props.user.email)) {
 			this.setState({ isFav: true });
 		}
-
+		// get all reviews, except for current user
 		await this.props.getReviews(service, this.props.user.email);
+		// change loading comment state
 		this.setState({ loadingUserComment: false });
 	};
 
@@ -183,57 +151,6 @@ class SpecificServiceScreen extends Component {
 		]);
 	};
 
-	renderIcon = () => {
-		if (this.props.user.email === this.props.service.email) {
-			return (
-				<Icon
-					type="Entypo"
-					name="dots-three-horizontal"
-					style={{ color: 'black' }}
-					onPress={() => this.props.navigation.navigate('editService')
-					}
-				/>
-			);
-		}
-		return (
-			<View style={{ flexDirection: 'row' }}>
-				<Icon
-					type="MaterialIcons"
-					name="info-outline"
-					style={{
-						color: 'black',
-						fontSize: 26,
-						marginLeft: 5,
-						marginRight: 10
-					}}
-					onPress={() => this.reportAlert()}
-					disabled={this.state.favLoading}
-				/>
-				<Icon
-					type="MaterialIcons"
-					name={this.state.isFav ? 'favorite' : 'favorite-border'}
-					style={{ color: '#D84315', fontSize: 26 }}
-					onPress={() => this.favPressed()}
-					disabled={this.state.favLoading}
-				/>
-			</View>
-		);
-	};
-
-	renderSubcategoryName = () => {
-		const { service } = this.props;
-		const { descriptionStyle } = styles;
-		if (service.subcategory) {
-			let subcategoryName = service.subcategory.split('_');
-			for (let i = 0; i < subcategoryName.length; i++) {
-				subcategoryName[i] =					subcategoryName[i].charAt(0).toUpperCase()
-					+ subcategoryName[i].substring(1);
-			}
-			subcategoryName = subcategoryName.join(' ');
-			return <Text style={descriptionStyle}> - {subcategoryName}</Text>;
-		}
-	};
-
 	commentChangeText = (text) => {
 		this.setState({
 			comment: text,
@@ -256,25 +173,7 @@ class SpecificServiceScreen extends Component {
 	};
 
 	renderCommentDate = (currentUserReview) => {
-		const date = new Date(currentUserReview.timestamp);
-		const monthNames = [
-			'January',
-			'February',
-			'March',
-			'April',
-			'May',
-			'June',
-			'July',
-			'August',
-			'September',
-			'October',
-			'November',
-			'December'
-		];
-		const day = date.getDate();
-		const monthIndex = date.getMonth();
-		const year = date.getFullYear();
-		const reviewDate = day + ' ' + monthNames[monthIndex] + ' ' + year;
+		const reviewDate = formatDate(currentUserReview.timestamp);
 
 		if (currentUserReview.timestamp) {
 			return (
@@ -296,10 +195,14 @@ class SpecificServiceScreen extends Component {
 			this.props.service,
 			this.props.currentUserReview
 		);
-		this.setState({ loadingUserComment: false, starCount: 0, dollarCount: 0 });
+		this.setState({
+			loadingUserComment: false,
+			starCount: 0,
+			dollarCount: 0
+		});
 	};
 
-	openAlert = () => {
+	editReviewAlert = () => {
 		Alert.alert('Delete', 'Do you want to delete your review?', [
 			{
 				text: 'Delete',
@@ -313,173 +216,149 @@ class SpecificServiceScreen extends Component {
 
 	// Current user review
 	renderCurrentUserReview = () => {
-		const {
-			cardStyle,
-			textAreaStyle,
-			charCountStyle,
-			subtitleStyle,
-			commentDateStyle
-		} = styles;
+		const { commentBorder } = styles;
 		const { currentUserReview } = this.props;
 		if (this.state.loadingUserComment) {
-			return <Spinner color="orange" />;
+			return (
+				<ActivityIndicator
+					size="large"
+					color={colors.primaryColor}
+					style={{ marginTop: 10 }}
+				/>
+			);
 		}
 		if (this.props.user.email !== this.props.service.email) {
 			// User have not added a review yet
 			if (!currentUserReview) {
 				return (
 					<View>
-						<Card style={cardStyle}>
-							<CardItem>
-								<Body>
-									<Text style={{ fontSize: 17 }}>
-										{this.props.user.displayName}
-									</Text>
-									<View style={{ marginTop: 10 }}>
-										<StarsRatingPick
-											size={30}
-											spacing={5}
-											rating={this.state.starCount}
-											selectRating={(count) => this.setState({ starCount: count })}
-										/>
-									</View>
-									<View style={{ marginTop: 10 }}>
-										<DollarRatingPick rating={this.state.dollarCount} selectRating={(count) => this.setState({ dollarCount: count })} />
-									</View>
-									<Textarea
-										style={textAreaStyle}
-										rowSpan={2}
-										placeholder="Add your comments here"
-										maxLength={maxCharCount}
-										value={this.state.comment}
-										onChangeText={(text) => this.commentChangeText(text)
-										}
-									/>
-									<Text style={charCountStyle}>
-										{this.state.commentCharCount}
-									</Text>
-								</Body>
-							</CardItem>
-						</Card>
-						<Button
-							bordered
-							style={{ marginLeft: '60%', marginTop: 0 }}
-							onPress={() => this.submitReview()}
-							disabled={this.state.starCount === 0}
-						>
-							<Text style={{ fontSize: 15 }}>Submit review</Text>
-						</Button>
+						<Text style={styles.titleStyle}>Leave a review</Text>
+						<View style={[commentBorder, { marginTop: 10 }]}>
+							<Text style={{ fontSize: 20, color: colors.black }}>
+								{this.props.user.displayName}
+							</Text>
+							<StarsRatingPick
+								style={{ marginTop: 5 }}
+								size={20}
+								spacing={5}
+								rating={this.state.starCount}
+								selectRating={(count) => this.setState({
+										starCount: count
+									})
+								}
+							/>
+							<DollarRatingPick
+								style={{ marginTop: 5 }}
+								size={16}
+								rating={this.state.dollarCount}
+								selectRating={(count) => this.setState({
+										dollarCount: count
+									})
+								}
+							/>
+							<TextArea
+								label="Comment"
+								size={30}
+								firstColor={colors.darkGray}
+								secondColor={colors.secondaryColor}
+								fontColor={colors.black}
+								multiline
+								bordered
+								numberOfLines={3}
+								placeholder="Write your review here"
+								value={this.state.comment}
+								onChangeText={(comment) => this.commentChangeText(comment)
+								}
+								style={{ marginTop: 10 }}
+							/>
+							<Text
+								style={{
+									color: colors.darkGray,
+									fontSize: 14,
+									alignSelf: 'flex-end'
+								}}
+							>
+								{this.state.commentCharCount}
+							</Text>
+							<Button
+								bordered
+								onPress={() => this.submitReview()}
+								disabled={
+									this.state.starCount === 0
+									|| this.state.comment === ''
+								}
+								style={{
+									marginTop: 5,
+									alignSelf: 'flex-end'
+								}}
+								color={colors.primaryColor}
+								textColor={colors.primaryColor}
+							>
+								<Text style={{ fontSize: 15 }}>
+									Submit review
+								</Text>
+							</Button>
+						</View>
+						<View style={styles.divideLine} />
 					</View>
 				);
 			}
 			// User sees his own review
 			return (
 				<View>
-					<Text style={subtitleStyle}>Your review</Text>
-					<Card style={cardStyle}>
-						<CardItem>
-							<Icon
-								name="dots-three-horizontal"
-								type="Entypo"
+					<Text style={styles.titleStyle}>Your review</Text>
+					<View style={[commentBorder, { marginTop: 10 }]}>
+						<View
+							style={[
+								styles.rowStyle,
+								{ justifyContent: 'space-between' }
+							]}
+						>
+							<Text
 								style={{
-									position: 'absolute',
-									right: 0,
-									top: 0,
-									color: 'gray'
+									fontSize: 16,
+									color: colors.black
 								}}
-								onPress={() => this.openAlert()}
+							>
+								{this.props.user.displayName}
+							</Text>
+							<Entypo
+								name="dots-three-horizontal"
+								size={24}
+								onPress={() => this.editReviewAlert()}
 							/>
-
-							<Body>
-								<Text style={{ fontSize: 15 }}>
-									{this.props.user.displayName}
-								</Text>
-								<View
-									style={{
-										marginLeft: 0,
-										flexDirection: 'row'
-									}}
-								>
-									<StarsRating
-										size={20}
-										spacing={5}
-										rating={currentUserReview.rating}
-									/>
-									<Text style={commentDateStyle}>
-										{this.renderCommentDate(
-											currentUserReview
-										)}
-									</Text>
-								</View>
-								<Text style={{ fontSize: 14, marginTop: 5 }}>
-									{currentUserReview.comment}
-								</Text>
-							</Body>
-						</CardItem>
-					</Card>
+						</View>
+						<View style={styles.rowStyle}>
+							<StarsRating
+								size={16}
+								spacing={5}
+								rating={currentUserReview.rating}
+							/>
+							<Text
+								style={{
+									marginLeft: 10,
+									color: colors.darkGray,
+									fontSize: 14
+								}}
+							>
+								{this.renderCommentDate(currentUserReview)}
+							</Text>
+						</View>
+					</View>
+					<View style={styles.divideLine} />
 				</View>
 			);
 		}
 	};
 
-	renderReviews = (review) => {
-		const { commentDateStyle, cardStyle } = styles;
-		const date = new Date(review.timestamp);
-		const monthNames = [
-			'January',
-			'February',
-			'March',
-			'April',
-			'May',
-			'June',
-			'July',
-			'August',
-			'September',
-			'October',
-			'November',
-			'December'
-		];
-		const day = date.getDate();
-		const monthIndex = date.getMonth();
-		const year = date.getFullYear();
-		const reviewDate = day + ' ' + monthNames[monthIndex] + ' ' + year;
-		return (
-			<View>
-				<Card style={[cardStyle, { marginBottom: 2 }]}>
-					<CardItem>
-						<Body>
-							<Text style={{ fontSize: 15 }}>
-								{review.reviewerDisplayName}
-							</Text>
-							<View style={{ flexDirection: 'row' }}>
-								<StarsRating
-									size={15}
-									spacing={5}
-									rating={review.rating}
-								/>
-								<Text style={commentDateStyle}>
-									{reviewDate}
-								</Text>
-							</View>
-							<Text style={{ fontSize: 14, marginTop: 5 }}>
-								{review.comment}
-							</Text>
-						</Body>
-					</CardItem>
-				</Card>
-			</View>
-		);
-	};
+	renderReviews = (review) => <ReviewCard review={review} />;
 
 	renderAllReviews = () => {
-		const { subtitleStyle } = styles;
 		if (this.props.reviews) {
 			if (this.props.reviews.length !== 0) {
 				return (
 					<View>
-						<Text style={subtitleStyle}>All reviews</Text>
 						<FlatList
-							style={{ marginTop: 10 }}
 							data={this.props.reviews}
 							renderItem={({ item }) => this.renderReviews(item)}
 							keyExtractor={(item) => item.reviewerEmail}
@@ -506,281 +385,291 @@ class SpecificServiceScreen extends Component {
 		);
 	};
 
-	renderRatingAvg = () => {
-		if (this.props.service) {
-			return (
-				<TouchableOpacity
-					onPress={() => this.props.navigation.navigate('reviews')}
-					style={{ flexDirection: 'row', marginLeft: 5 }}
-				>
-					<Text>{this.props.service.rating.toFixed(1)}</Text>
-					<View style={{ marginTop: 2, marginLeft: 5 }}>
-						<StarsRating
-							size={15}
-							spacing={5}
-							rating={this.props.service.rating}
-						/>
-					</View>
+	headerLeftIcon = () => (
+		<Ionicons
+			name="ios-arrow-back"
+			size={32}
+			style={{ color: colors.black }}
+			onPress={() => {
+				this.onBackPress();
+			}}
+		/>
+	);
 
-					<Text> ({this.props.service.ratingCount})</Text>
-				</TouchableOpacity>
+	headerRightIcon = () => {
+		if (this.props.user.email === this.props.service.email) {
+			return (
+				<Entypo
+					size={32}
+					name="dots-three-horizontal"
+					style={{ color: 'black' }}
+					onPress={() => this.props.navigation.navigate('editService', {
+							service: this.props.service
+						})
+					}
+				/>
 			);
 		}
+		return (
+			<View style={{ flexDirection: 'row', marginTop: 5 }}>
+				<MaterialIcons
+					name="info-outline"
+					style={{
+						color: 'black',
+						marginRight: 10
+					}}
+					size={26}
+					onPress={() => this.reportAlert()}
+					disabled={this.state.favLoading}
+				/>
+				<MaterialIcons
+					name={this.state.isFav ? 'favorite' : 'favorite-border'}
+					style={{ color: colors.danger }}
+					onPress={() => this.favPressed()}
+					disabled={this.state.favLoading}
+					size={26}
+				/>
+			</View>
+		);
+	};
+
+	renderMap = () => {
+		const { service } = this.props;
+		const { latitude, longitude } = service.geolocation;
+		const center = { latitude, longitude };
+		const radius = service.miles * 1609.34;
+		const fixedRegion = {
+			latitude,
+			longitude,
+			latitudeDelta: 0.03215 * service.miles,
+			longitudeDelta: 0.0683 * service.miles
+		};
+		return (
+			<View pointerEvents="none">
+				<MapView
+					style={{
+						height: 200,
+						width: '100%',
+						marginTop: 20,
+						borderRadius: 8
+					}}
+					region={fixedRegion}
+				>
+					<MapView.Circle
+						center={center}
+						radius={radius}
+						strokeColor={colors.primaryColor}
+					/>
+				</MapView>
+				<View style={styles.divideLine} />
+			</View>
+		);
 	};
 
 	render() {
 		const { service } = this.props;
 		const {
-			androidHeader,
-			iosHeader,
 			descriptionStyle,
-			cardStyle,
-			mapStyle,
-			subtitleStyle,
-			infoStyle,
 			contentStyle,
-			buttonStyle,
-			buttonViewStyle
+			rowStyle,
+			divideLine,
+			titleStyle
 		} = styles;
 
+		// Category and subcategory name format
 		let categoryName = service.category.split('_');
 		for (let i = 0; i < categoryName.length; i++) {
 			categoryName[i] =				categoryName[i].charAt(0).toUpperCase()
 				+ categoryName[i].substring(1);
 		}
 		categoryName = categoryName.join(' ');
+		let subcategoryName = '';
+		if (service.subcategory) {
+			subcategoryName = service.subcategory.split('_');
+			for (let i = 0; i < subcategoryName.length; i++) {
+				subcategoryName[i] =					subcategoryName[i].charAt(0).toUpperCase()
+					+ subcategoryName[i].substring(1);
+			}
+			subcategoryName = subcategoryName.join(' ');
+		}
 
 		return (
-			<Container style={{ flex: 1 }}>
-				<Header
-					style={
-						Platform.OS === 'android' ? androidHeader : iosHeader
-					}
-				>
-					<Left>
-						<Button
-							transparent
-							onPress={() => {
-								this.onBackPress();
-							}}
-							disabled={this.state.favLoading}
-						>
-							<Icon
-								name="ios-arrow-back"
-								type="Ionicons"
-								style={{ color: 'black', flex: 1, width: 50 }}
-							/>
-						</Button>
-					</Left>
-					<Body style={styles.titleStyle}>
-						<Title style={{ color: 'black' }}>
-							{service.title}
-						</Title>
-					</Body>
-
-					<Right>
-						<Button transparent title="Settings">
-							{this.renderIcon()}
-						</Button>
-					</Right>
-				</Header>
+			<SafeAreaView
+				style={{ flex: 1, backgroundColor: colors.white }}
+				forceInset={{ bottom: 'never' }}
+			>
+				<CustomHeader
+					title={service.title}
+					left={this.headerLeftIcon()}
+					right={this.headerRightIcon()}
+				/>
 				<KeyboardAvoidingView
-					behavior={Platform.OS === 'android' ? 'padding' : null}
-					style={{ flex: 1, justifyContent: 'center' }}
+					behavior="padding"
+					style={{
+						flex: 1,
+						zIndex: -1,
+						backgroundColor: colors.white
+					}}
 				>
-					<Content style={contentStyle} padder>
-						<Text style={subtitleStyle}>Rating </Text>
-						<View style={{ marginTop: 5 }}>
-							{this.renderRatingAvg()}
+					<ScrollView
+						style={contentStyle}
+						padder
+						keyboardShouldPersistTaps="handled"
+					>
+						<Text style={titleStyle}>Service Information</Text>
+						<View style={rowStyle}>
+							<Category
+								height={18}
+								width={18}
+								style={{ marginTop: 2 }}
+							/>
+							<Text style={descriptionStyle}>{categoryName}</Text>
 						</View>
-						<Text style={[subtitleStyle, { marginTop: 5 }]}>
-							Category
-						</Text>
-						<Card style={cardStyle}>
-							<CardItem>
-								<Body style={{ flexDirection: 'row' }}>
-									<Text style={descriptionStyle}>
-										{categoryName}
-									</Text>
-									{this.renderSubcategoryName()}
-								</Body>
-							</CardItem>
-						</Card>
+						{/* if there is subcategory */}
+						{/* TODO:  */}
+						{service.subcategory ? (
+							<View style={{ flexDirection: 'row' }}>
+								<Subcategory
+									height={18}
+									width={18}
+									style={{ marginTop: 5 }}
+								/>
+								<Text style={descriptionStyle}>
+									{subcategoryName}
+								</Text>
+							</View>
+						) : null}
+						<View style={rowStyle}>
+							<Description
+								height={18}
+								width={18}
+								style={{ marginTop: 0 }}
+							/>
+							<Text style={descriptionStyle}>
+								{service.description}
+							</Text>
+						</View>
+						<View style={divideLine} />
 
-						<Text style={subtitleStyle}>Service Description </Text>
-						<Card style={cardStyle}>
-							<CardItem>
-								<Body>
-									<Text style={descriptionStyle}>
-										{service.description}
-									</Text>
-								</Body>
-							</CardItem>
-						</Card>
-						<Text style={subtitleStyle}>Contact Information </Text>
-						<Card style={cardStyle}>
-							<CardItem>
-								<Body>
-									<Text selectable style={descriptionStyle}>
-										{service.displayName}
-									</Text>
-									<Text selectable style={infoStyle}>
-										{service.email}
-									</Text>
-									<Text selectable style={infoStyle}>
-										{service.phone}
-									</Text>
-								</Body>
-							</CardItem>
-						</Card>
-						<Text style={subtitleStyle}>
-							{service.locationData.city},{' '}
-							{service.locationData.region}
-						</Text>
-						<Card style={cardStyle}>
-							<CardItem>
-								<Body>
-									<Text style={descriptionStyle}>
-										We cover the following area
-									</Text>
-									<Animated
-										style={mapStyle}
-										region={this.state.region}
-									>
-										<MapView.Circle
-											center={coords}
-											radius={meters}
-											strokeColor="#FF7043"
-										/>
-									</Animated>
-									<Button
-										transparent
-										style={{
-											position: 'absolute',
-											marginTop: 20,
-											marginLeft: 5
-										}}
-									>
-										<Icon
-											type="MaterialIcons"
-											name="my-location"
-											style={{ color: 'black' }}
-											onPress={() => {
-												this.setState({
-													region: fixedRegion
-												});
-											}}
-										/>
-									</Button>
-								</Body>
-							</CardItem>
-						</Card>
-						<View style={buttonViewStyle}>
+						<Text style={titleStyle}>Contact Information </Text>
+						<View style={rowStyle}>
+							<Feather
+								name="user"
+								size={18}
+								style={{ color: colors.secondaryColor }}
+							/>
+							<Text style={descriptionStyle}>
+								{service.displayName}
+							</Text>
+						</View>
+						<View style={rowStyle}>
+							<MaterialIcons
+								name="email"
+								size={18}
+								style={{ color: colors.secondaryColor }}
+							/>
+							<Text style={descriptionStyle}>
+								{service.email}
+							</Text>
+						</View>
+						<View style={rowStyle}>
+							<MaterialIcons
+								name="phone"
+								size={18}
+								style={{ color: colors.secondaryColor }}
+							/>
+							<Text style={descriptionStyle}>
+								{service.phone}
+							</Text>
+						</View>
+						<View
+							style={[
+								rowStyle,
+								{ justifyContent: 'space-evenly' }
+							]}
+						>
 							<Button
 								bordered
-								style={buttonStyle}
 								onPress={() => this.callPressed()}
+								color={colors.primaryColor}
+								textColor={colors.primaryColor}
 							>
-								<Text
-									style={{ color: '#FF7043', fontSize: 15 }}
-								>
-									Call Now
-								</Text>
+								<Text>Call Now</Text>
 							</Button>
 							<Button
 								bordered
-								style={[buttonStyle, { marginLeft: '5%' }]}
 								onPress={() => this.openEmail()}
+								color={colors.primaryColor}
+								textColor={colors.primaryColor}
 							>
-								<Text
-									style={{ color: '#FF7043', fontSize: 15 }}
-								>
-									Email Now
-								</Text>
+								<Text>Email Now</Text>
 							</Button>
 						</View>
+						<View style={divideLine} />
+						<Text style={titleStyle}>Location</Text>
+						<View style={rowStyle}>
+							<Location
+								height={18}
+								width={18}
+								style={{ color: colors.secondaryColor }}
+							/>
+							<Text style={descriptionStyle}>
+								This service is located at{' '}
+								{service.locationData.city},{' '}
+								{service.locationData.region}
+							</Text>
+						</View>
+						{this.renderMap()}
 						{this.renderCurrentUserReview()}
+						<Text style={styles.titleStyle}>Reviews</Text>
 						{this.renderAllReviews()}
-					</Content>
+					</ScrollView>
 				</KeyboardAvoidingView>
-			</Container>
+			</SafeAreaView>
 		);
 	}
 }
 const styles = {
-	androidHeader: {
-		backgroundColor: '#F5F5F5'
-	},
-	iosHeader: {},
-	titleStyle: {
-		flex: 4
-	},
 	contentStyle: {
 		flex: 1,
-		margin: 10
+		backgroundColor: colors.white,
+		paddingLeft: 20,
+		paddingRight: 20
 	},
-	cardStyle: {
-		shadowColor: null,
-		shadowOffset: null,
-		shadowOpacity: null,
-		elevation: null,
-		marginBottom: 5
-	},
+	rowStyle: { flexDirection: 'row', marginTop: 10 },
 	descriptionStyle: {
-		fontSize: 15
+		fontSize: 16,
+		fontWeight: '500',
+		marginLeft: 10,
+		color: colors.darkerGray
 	},
-	subtitleStyle: {
-		marginTop: 10,
-		fontWeight: 'bold',
-		color: '#4DB6AC',
-		fontSize: 17
-	},
-	footerBarStyle: {
-		position: 'absolute',
-		bottom: 30
-	},
-	categoryStyle: {
-		marginTop: 10,
-		color: '#FF7043'
-	},
-	mapStyle: {
-		width: SCREEN_WIDTH - ((SCREEN_WIDTH * 10) / 100) * 2,
-		height: 200,
+	divideLine: {
+		height: 1,
+		backgroundColor: colors.lightGray,
+		width: '100%',
 		marginTop: 10
 	},
-	infoStyle: {
-		marginTop: 5,
-		fontSize: 15
+	titleStyle: {
+		fontSize: 22,
+		fontWeight: '600',
+		marginTop: 20,
+		color: colors.secondaryColor
 	},
-	buttonViewStyle: {
-		marginTop: 10,
-		flexDirection: 'row',
-		width: '80%',
-		alignItems: 'center',
-		marginBottom: 10
-	},
-	buttonStyle: {
-		borderColor: '#FF7043'
-	},
-	textAreaStyle: {
-		marginTop: 10,
-		marginLeft: -10,
-		width: '100%'
-	},
-	charCountStyle: {
-		color: '#bfc6ea',
-		textAlign: 'right',
-		marginLeft: '88%',
-		marginBottom: 2
+	commentBorder: {
+		borderWidth: 1,
+		borderColor: colors.lightGray,
+		borderRadius: 8,
+		padding: 10,
+		marginBottom: 10,
+		shadowOpacity: 0.3,
+		shadowOffset: { width: 0, height: 0 },
+		shadowColor: colors.darkGray,
+		shadowRadius: 3,
+		backgroundColor: colors.white
 	},
 	showMoreStyle: {
 		color: '#03A9F4',
 		fontSize: 15
-	},
-	commentDateStyle: {
-		fontSize: 13,
-		color: 'gray',
-		marginLeft: 10
 	}
 };
 

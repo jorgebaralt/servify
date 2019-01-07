@@ -2,33 +2,16 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { colors } from '../../../shared/styles';
 import StarsRating from '../../Ratings/StarsRating';
+import { formatDate } from '../../../shared/helpers';
 
 export const ReviewCard = (props) => {
 	const { review } = props;
-	const date = new Date(review.timestamp);
-	const monthNames = [
-		'January',
-		'February',
-		'March',
-		'April',
-		'May',
-		'June',
-		'July',
-		'August',
-		'September',
-		'October',
-		'November',
-		'December'
-	];
-	const day = date.getDate();
-	const monthIndex = date.getMonth();
-	const year = date.getFullYear();
-	const reviewDate = day + ' ' + monthNames[monthIndex] + ' ' + year;
+	const reviewDate = formatDate(review.timestamp);
 
 	return (
 		<View
 			style={{
-				marginTop: 20,
+				marginTop: 10,
 				marginBottom: 10,
 				borderWidth: 1,
 				padding: 10,

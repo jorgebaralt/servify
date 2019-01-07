@@ -6,3 +6,5 @@ export * from './Phone';
 export * from './Description';
 export * from './Tools';
 export * from './Checkmark';
+export * from './User';
+export * from './Email';

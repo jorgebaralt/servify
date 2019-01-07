@@ -7,9 +7,9 @@ const Dollar = (props) => (
 	<Svg
 		viewBox="0 0 484.184 484.184"
 		aria-hidden="true"
-		width={props.width ? props.width : 16}
-		height={props.height ? props.height : 16}
-		style={{ marginRight: props.spacing ? props.spacing : 0 }}
+		width={props.size ? props.size : 16}
+		height={props.size ? props.size : 16}
+		style={[{ marginRight: props.spacing ? props.spacing : 0 }, props.style]}
 		fill="#007791"
 	>
 		<Defs>

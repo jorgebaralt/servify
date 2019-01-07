@@ -64,7 +64,7 @@ class ReportScreen extends Component {
 	};
 
 	onBackPress = () => {
-		this.props.navigation.goBack(null);
+		this.props.navigation.goBack();
 	};
 
 	// send report to database

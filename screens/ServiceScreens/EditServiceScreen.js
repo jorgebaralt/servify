@@ -237,7 +237,7 @@ class EditServiceScreen extends Component {
 			return (
 				<ActivityIndicator
 					size="large"
-					color="#FF7043"
+					color={colors.primaryColor}
 					style={{ marginTop: 10 }}
 				/>
 			);
