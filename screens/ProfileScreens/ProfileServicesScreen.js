@@ -4,7 +4,9 @@ import {
 	DeviceEventEmitter,
 	FlatList,
 	RefreshControl,
-	ActivityIndicator
+	ActivityIndicator,
+	Text,
+	ScrollView
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-navigation';
@@ -12,7 +14,12 @@ import { connect } from 'react-redux';
 import { getServicesByEmail, getFavorites, removeFavorite } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 import { colors } from '../../shared/styles';
-import { CustomHeader, ProfileServiceCard } from '../../components/UI';
+import {
+	CustomHeader,
+	ProfileServiceCard,
+	InfoImage,
+	Button
+} from '../../components/UI';
 
 let currentItem;
 let willFocusSubscription;
@@ -22,7 +29,7 @@ class ProfileServicesScreen extends Component {
 	state = {
 		loading: false,
 		myServices: null,
-		favorites: null,
+		favorites: null
 	};
 
 	async componentWillMount() {
@@ -88,7 +95,7 @@ class ProfileServicesScreen extends Component {
 
 	editService = (service) => {
 		this.props.navigation.navigate('editService', { service });
-	}
+	};
 
 	renderServices = (service) => (
 		<ProfileServiceCard
@@ -134,12 +141,105 @@ class ProfileServicesScreen extends Component {
 				&& this.state.favorites.length > 0
 			) {
 				data = this.state.favorites;
-			}
-			if (
+			} else if (
 				currentItem.id === 'my_services'
 				&& this.state.myServices.length > 0
 			) {
 				data = this.state.myServices;
+			} else if (
+				currentItem.id === 'favorites'
+				&& this.state.favorites < 1
+			) {
+				return (
+					<ScrollView style={{ paddingLeft: 20, paddingRight: 20}}>
+						<Text style={{ fontSize: 16 , marginTop: 10}}>
+							You have not added any service to favorite list, press below to browse some services, if you see something you like, you can add it to favorite
+						</Text>
+						<View style={{ height: 300, marginTop: 10 }}>
+							<InfoImage
+								image={require('../../assets/backgrounds/plant.jpg')}
+								style={{
+									marginTop: 5,
+									height: 250,
+									marginBottom: 20
+								}}
+								rounded
+								onPress={()=> this.props.navigation.navigate('browse')}
+							>
+								<View
+									style={{
+										position: 'absolute',
+										left: 20,
+										bottom: 20,
+										right: 5
+									}}
+								>
+									<Text
+										style={{
+											fontSize: 30,
+											fontWeight: '600',
+											color: colors.secondaryColor,
+											marginBottom: 80
+										}}
+									>
+										Search for services
+									</Text>
+									<Button bordered color={colors.secondaryColor} textColor={colors.secondaryColor} style={{ fontSize: 20 }} onPress={() => this.props.navigation.navigate('browse')}>
+										<Text>Browse</Text>
+									</Button>
+								</View>
+							</InfoImage>
+						</View>
+					</ScrollView>
+				);
+			} else if (
+				currentItem.id === 'my_services'
+				&& this.state.myServices < 1
+			) {
+				return (
+					<ScrollView style={{ paddingLeft: 20, paddingRight: 20}}>
+						<Text style={{ fontSize: 16 , marginTop: 10}}>
+							You have not created any service yet, click bellow to create your first service
+						</Text>
+						<View style={{ height: 300, marginTop: 10 }}>
+							<InfoImage
+								image={require('../../assets/backgrounds/plant2.jpg')}
+								style={{
+									marginTop: 5,
+									height: 250,
+									marginBottom: 20
+								}}
+								rounded
+								onPress={()=> this.props.navigation.navigate('publishInfo')}
+							>
+								<View
+									style={{
+										position: 'absolute',
+										left: 20,
+										bottom: 20,
+										right: 20,
+										justifyContent: 'flex-end'
+									}}
+								>
+									<Text
+										style={{
+											fontSize: 30,
+											fontWeight: '600',
+											color: colors.primaryColor,
+											marginBottom: 80,
+											alignSelf: 'flex-end'
+										}}
+									>
+										Create a service
+									</Text>
+									<Button bordered color={colors.primaryColor} textColor={colors.primaryColor} style={{ fontSize: 20, alignSelf: 'flex-end' }} onPress={() => this.props.navigation.navigate('publishInfo')}>
+										<Text>Create</Text>
+									</Button>
+								</View>
+							</InfoImage>
+						</View>
+					</ScrollView>
+				);
 			}
 			return (
 				<FlatList
@@ -151,6 +251,7 @@ class ProfileServicesScreen extends Component {
 				/>
 			);
 		}
+
 		return this.renderSpinner();
 	};
 
@@ -197,6 +298,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(
-	mapStateToProps,
-)(ProfileServicesScreen);
+export default connect(mapStateToProps)(ProfileServicesScreen);

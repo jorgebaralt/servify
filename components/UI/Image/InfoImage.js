@@ -19,7 +19,7 @@ class InfoImage extends Component {
 
 	render() {
 		return (
-			<TouchableOpacity style={[styles.content, this.props.style, {borderRadius: this.props.rounded ? 8 : 0 }]} disabled={this.props.disablePress}>
+			<TouchableOpacity style={[styles.content, this.props.style, {borderRadius: this.props.rounded ? 8 : 0 }]} disabled={this.props.disablePress} onPress={this.props.onPress}>
 				<Animated.View style={{ opacity: this.state.fadeAnimation }}>
 					<ImageBackground
 						source={this.props.image}
