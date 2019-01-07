@@ -6,8 +6,8 @@ import {
 	ActivityIndicator,
 	StyleSheet
 } from 'react-native';
-import { Button } from '../../../components/UI';
-import { colors, globalStyles } from '../../../shared/styles';
+import { Button } from '../../components/UI';
+import { colors, globalStyles } from '../../shared/styles';
 import {
 	Category,
 	Subcategory,
@@ -16,7 +16,7 @@ import {
 	Phone,
 	Description,
 	Tools
-} from '../../../assets/svg';
+} from '../../assets/svg';
 
 class ServiceReview extends Component {
 	onNext = async () => {

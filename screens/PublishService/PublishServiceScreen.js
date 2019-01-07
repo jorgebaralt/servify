@@ -9,9 +9,9 @@ import {
 import { Toast } from 'native-base';
 import { Entypo } from '@expo/vector-icons';
 import { connect } from 'react-redux';
-import { pageHit } from '../../../shared/ga_helper';
-import categories from '../../../shared/categories';
-import { createService } from '../../../api';
+import { pageHit } from '../../shared/ga_helper';
+import categories from '../../shared/categories';
+import { createService } from '../../api';
 
 // Screens
 import ServiceCategory from './ServiceCategory';

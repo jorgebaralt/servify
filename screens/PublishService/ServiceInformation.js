@@ -1,8 +1,8 @@
 import React from 'react';
 import { ScrollView, Text, View, Keyboard } from 'react-native';
-import { Button, FloatingLabelInput, TextArea } from '../../../components/UI';
-import { colors, globalStyles } from '../../../shared/styles';
-import { formatPhone } from '../../../shared/helpers';
+import { Button, FloatingLabelInput, TextArea } from '../../components/UI';
+import { colors, globalStyles } from '../../shared/styles';
+import { formatPhone } from '../../shared/helpers';
 
 // format phone text
 const phoneChangeText = (text, props) => {

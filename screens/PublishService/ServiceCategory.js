@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, Text, View } from 'react-native';
-import { Button, ListPicker } from '../../../components/UI';
-import { colors, globalStyles } from '../../../shared/styles';
+import { Button, ListPicker } from '../../components/UI';
+import { colors, globalStyles } from '../../shared/styles';
 
 class ServiceCategory extends Component {
 	state = {

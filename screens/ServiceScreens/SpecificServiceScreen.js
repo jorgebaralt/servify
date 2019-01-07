@@ -55,7 +55,6 @@ class SpecificServiceScreen extends Component {
 	};
 
 	componentWillMount = async () => {
-		console.log(this.state.service);
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			() => {

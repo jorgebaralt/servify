@@ -32,7 +32,7 @@ import ReviewsScreen from './screens/ServiceScreens/ReviewsScreen';
 import HelpScreen from './screens/ProfileScreens/HelpScreen';
 import SpecificFaqScreen from './screens/ProfileScreens/SpecificFaqScreen';
 import ReportScreen from './screens/ServiceScreens/ReportScreen';
-import PublishServiceScreen from './screens/BottomTabsScreens/PublishService/PublishServiceScreen';
+import PublishServiceScreen from './screens/PublishService/PublishServiceScreen';
 // Style
 import { colors } from './shared/styles';
 

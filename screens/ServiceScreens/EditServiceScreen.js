@@ -34,31 +34,37 @@ let willFocusSubscription;
 let backPressSubscriptions;
 class EditServiceScreen extends Component {
 	state = {
-		title: this.props.service.title,
-		description: this.props.service.description,
-		phone: this.props.service.phone,
-		location:
-			this.props.service.locationData.city
-			+ ', '
-			+ this.props.service.locationData.region
-			+ ' '
-			+ this.props.service.locationData.postalCode,
-		miles: this.props.service.miles,
-		region: {
-			latitude: this.props.service.geolocation.latitude,
-			longitude: this.props.service.geolocation.longitude,
-			latitudeDelta: 0.03215 * this.props.service.miles,
-			longitudeDelta: 0.0683 * this.props.service.miles
-		},
-		radius: this.props.service.miles * 1609.34,
-		center: {
-			latitude: this.props.service.geolocation.latitude,
-			longitude: this.props.service.geolocation.longitude
-		},
-		loading: false
+		service: this.props.navigation.getParam('service'),
+		loading: false,
 	};
 
 	componentWillMount() {
+		this.setState((prevState) => {
+			return {
+				title: prevState.service.title,
+				description: prevState.service.description,
+				phone: prevState.service.phone,
+				location:
+					prevState.service.locationData.city
+					+ ', '
+					+ prevState.service.locationData.region
+					+ ' '
+					+ prevState.service.locationData.postalCode,
+				miles: prevState.service.miles,
+				region: {
+					latitude: prevState.service.geolocation.latitude,
+					longitude: prevState.service.geolocation.longitude,
+					latitudeDelta: 0.03215 * prevState.service.miles,
+					longitudeDelta: 0.0683 * prevState.service.miles
+				},
+				radius: prevState.service.miles * 1609.34,
+				center: {
+					latitude: prevState.service.geolocation.latitude,
+					longitude: prevState.service.geolocation.longitude
+				},
+			};
+		});
+
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			this.handleAndroidBack
@@ -157,7 +163,7 @@ class EditServiceScreen extends Component {
 	deleteService = async () => {
 		Keyboard.dismiss();
 		this.setState({ loading: true });
-		await deleteService(this.props.service);
+		await deleteService(this.state.service);
 		this.setState({
 			title: '',
 			description: '',
@@ -184,11 +190,12 @@ class EditServiceScreen extends Component {
 
 	updateService = async () => {
 		Keyboard.dismiss();
-		this.scrollRef.scrollTo(0);
+		this.scrollRef.scrollTo({ x: 0, y: 0, animated: true });
 		this.setState({ loading: true });
+		const { service } = this.state;
 		const updatedService = {
-			category: this.props.service.category,
-			subcategory: this.props.service.subcategory,
+			category: service.category,
+			subcategory: service.subcategory,
 			title: this.state.title,
 			phone: this.state.phone,
 			location: this.state.location,
@@ -196,10 +203,10 @@ class EditServiceScreen extends Component {
 			description: this.state.description,
 			displayName: this.props.user.displayName,
 			email: this.props.user.email,
-			ratingCount: this.props.service.ratingCount,
-			ratingSum: this.props.service.ratingSum,
-			rating: this.props.service.rating,
-			favUsers: this.props.service.favUsers
+			ratingCount: service.ratingCount,
+			ratingSum: service.ratingSum,
+			rating: service.rating,
+			favUsers: service.favUsers
 		};
 		await updateService(updatedService, (text, type) => this.showToast(text, type));
 		this.props.navigation.pop(3);
@@ -382,7 +389,6 @@ const styles = {
 };
 
 const mapStateToProps = (state) => ({
-	service: state.selectedService.service,
 	user: state.auth.user
 });
 

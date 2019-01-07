@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { ScrollView, Text, View, Slider, Keyboard } from 'react-native';
 import { MapView } from 'expo';
 import { connect } from 'react-redux';
-import { Button, FloatingLabelInput } from '../../../components/UI';
-import { colors, globalStyles } from '../../../shared/styles';
-import { getLocationFromAddress } from '../../../api';
+import { Button, FloatingLabelInput } from '../../components/UI';
+import { colors, globalStyles } from '../../shared/styles';
+import { getLocationFromAddress } from '../../api';
 
 
 class ServiceLocation extends Component {
