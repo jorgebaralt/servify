@@ -13,14 +13,7 @@ import { Ionicons, Entypo, MaterialIcons, Feather } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { MapView, Linking } from 'expo';
-import {
-	submitReview,
-	getReviews,
-	resetReview,
-	deleteReview,
-	cancelAxiosRating
-} from '../../actions';
-import { addFavorite, removeFavorite } from '../../api';
+import { addFavorite, removeFavorite, submitReview, getReviews, deleteReview, cancelAxiosRating } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 import StarsRating from '../../components/Ratings/StarsRating';
 import StarsRatingPick from '../../components/Ratings/StarsRatingPick';
@@ -48,7 +41,9 @@ class SpecificServiceScreen extends Component {
 		commentCharCount: maxCharCount,
 		starCount: 0,
 		dollarCount: 0,
-		loadingUserComment: false
+		loadingUserComment: false,
+		currentUserReview: null,
+		reviews: null
 	};
 
 	componentWillMount = async () => {
@@ -70,7 +65,12 @@ class SpecificServiceScreen extends Component {
 			this.setState({ isFav: true });
 		}
 		// get all reviews, except for current user
-		await this.props.getReviews(service, this.props.user.email);
+		await getReviews(
+			service,
+			this.props.user.email,
+			(currentUserReview, reviews) => this.setState({ currentUserReview, reviews })
+		);
+
 		// change loading comment state
 		this.setState({ loadingUserComment: false });
 	};
@@ -79,8 +79,8 @@ class SpecificServiceScreen extends Component {
 		pageHit('Specific Service Screen');
 	}
 
-	componentWillUnmount() {
-		this.props.cancelAxiosRating();
+	async componentWillUnmount() {
+		await cancelAxiosRating();
 		willFocusSubscription.remove();
 	}
 
@@ -104,8 +104,7 @@ class SpecificServiceScreen extends Component {
 	};
 
 	onBackPress = async () => {
-		await this.props.resetReview();
-		this.props.cancelAxiosRating();
+		await cancelAxiosRating();
 		this.props.navigation.goBack();
 	};
 
@@ -167,8 +166,12 @@ class SpecificServiceScreen extends Component {
 				reviewerDisplayName: this.props.user.displayName,
 				reviewerEmail: this.props.user.email
 			};
-			await this.props.submitReview(this.props.service, review);
-			this.setState({ loadingUserComment: false });
+			await submitReview(
+				this.props.service,
+				review,
+				(currentUserReview) => this.setState({ loadingUserComment: false, currentUserReview })
+			);
+			
 		}
 	};
 
@@ -191,9 +194,10 @@ class SpecificServiceScreen extends Component {
 
 	deleteComment = async () => {
 		this.setState({ loadingUserComment: true });
-		await this.props.deleteReview(
+		await deleteReview(
 			this.props.service,
-			this.props.currentUserReview
+			this.state.currentUserReview,
+			() => this.setState({ currentUserReview: null })
 		);
 		this.setState({
 			loadingUserComment: false,
@@ -217,7 +221,7 @@ class SpecificServiceScreen extends Component {
 	// Current user review
 	renderCurrentUserReview = () => {
 		const { commentBorder } = styles;
-		const { currentUserReview } = this.props;
+		const { currentUserReview } = this.state;
 		if (this.state.loadingUserComment) {
 			return (
 				<ActivityIndicator
@@ -311,7 +315,7 @@ class SpecificServiceScreen extends Component {
 						<View
 							style={[
 								styles.rowStyle,
-								{ justifyContent: 'space-between' }
+								{ justifyContent: 'space-between', marginTop: 0 }
 							]}
 						>
 							<Text
@@ -344,6 +348,9 @@ class SpecificServiceScreen extends Component {
 								{this.renderCommentDate(currentUserReview)}
 							</Text>
 						</View>
+						<Text style={{ color: colors.darkGray }}>
+							{currentUserReview.comment}
+						</Text>
 					</View>
 					<View style={styles.divideLine} />
 				</View>
@@ -354,12 +361,13 @@ class SpecificServiceScreen extends Component {
 	renderReviews = (review) => <ReviewCard review={review} />;
 
 	renderAllReviews = () => {
-		if (this.props.reviews) {
-			if (this.props.reviews.length !== 0) {
+		if (this.state.reviews) {
+			if (this.state.reviews.length !== 0) {
 				return (
 					<View>
+						<Text style={styles.titleStyle}>Reviews</Text>
 						<FlatList
-							data={this.props.reviews}
+							data={this.state.reviews}
 							renderItem={({ item }) => this.renderReviews(item)}
 							keyExtractor={(item) => item.reviewerEmail}
 							enableEmptySections
@@ -377,7 +385,7 @@ class SpecificServiceScreen extends Component {
 			<View style={{ marginTop: 10, marginBottom: 40 }}>
 				<Text
 					style={showMoreStyle}
-					onPress={() => this.props.navigation.navigate('reviews')}
+					onPress={() => this.props.navigation.navigate('reviews', { service: this.props.service })}
 				>
 					Show more
 				</Text>
@@ -602,7 +610,7 @@ class SpecificServiceScreen extends Component {
 								color={colors.primaryColor}
 								textColor={colors.primaryColor}
 							>
-								<Text>Email Now</Text>
+								<Text>Send an Email</Text>
 							</Button>
 						</View>
 						<View style={divideLine} />
@@ -621,7 +629,6 @@ class SpecificServiceScreen extends Component {
 						</View>
 						{this.renderMap()}
 						{this.renderCurrentUserReview()}
-						<Text style={styles.titleStyle}>Reviews</Text>
 						{this.renderAllReviews()}
 					</ScrollView>
 				</KeyboardAvoidingView>
@@ -675,20 +682,9 @@ const styles = {
 
 const mapStateToProps = (state) => ({
 	service: state.selectedService.service,
-	favorites: state.favoriteServices,
 	user: state.auth.user,
-	displayName: state.auth.displayName,
-	reviews: state.ratings.reviews,
-	currentUserReview: state.ratings.currentUserReview
 });
 
 export default connect(
-	mapStateToProps,
-	{
-		submitReview,
-		getReviews,
-		resetReview,
-		deleteReview,
-		cancelAxiosRating
-	}
+	mapStateToProps
 )(SpecificServiceScreen);

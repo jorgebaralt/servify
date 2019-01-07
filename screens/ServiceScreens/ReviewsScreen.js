@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import {
 	DeviceEventEmitter,
 	FlatList,
@@ -8,16 +7,16 @@ import {
 	SafeAreaView
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { getServiceReviews, cancelAxiosRating } from '../../actions';
 import { pageHit } from '../../shared/ga_helper';
 import { CustomHeader, ReviewCard } from '../../components/UI';
 import { colors } from '../../shared/styles';
+import { cancelAxiosRating, getServiceReviews } from '../../api';
 
 let willFocusSubscription;
 let backPressSubscriptions;
 
 class ReviewsScreen extends Component {
-	state = { loading: true };
+	state = { loading: true, reviews: null, service: this.props.navigation.getParam('service')};
 
 	async componentWillMount() {
 		willFocusSubscription = this.props.navigation.addListener(
@@ -25,8 +24,7 @@ class ReviewsScreen extends Component {
 			this.handleAndroidBack
 		);
 
-		await this.props.getServiceReviews(this.props.service);
-		this.setState({ loading: false });
+		await getServiceReviews(this.state.service, (reviews) => this.setState({ loading: false, reviews }));
 	}
 
 	componentDidMount() {
@@ -58,9 +56,9 @@ class ReviewsScreen extends Component {
 			name="ios-arrow-back"
 			size={32}
 			style={{ color: colors.black }}
-			onPress={() => {
+			onPress={async () => {
+				await cancelAxiosRating();
 				this.props.navigation.goBack();
-				// this.props.cancelAxiosRating();
 			}}
 			disabled={this.state.loading}
 		/>
@@ -69,11 +67,11 @@ class ReviewsScreen extends Component {
 	renderReviewsList = (review) => <ReviewCard review={review} />;
 
 	renderReviews = () => {
-		if (this.props.reviews) {
+		if (this.state.reviews) {
 			return (
 				<FlatList
 					style={{ paddingLeft: 20, paddingRight: 20 }}
-					data={this.props.reviews}
+					data={this.state.reviews}
 					renderItem={({ item }) => this.renderReviewsList(item)}
 					keyExtractor={(item) => item.reviewerEmail}
 					enableEmptySections
@@ -126,12 +124,4 @@ const styles = {
 	}
 };
 
-const mapStateToProps = (state) => ({
-	reviews: state.ratings.serviceReviews,
-	service: state.selectedService.service
-});
-
-export default connect(
-	mapStateToProps,
-	{ getServiceReviews, cancelAxiosRating }
-)(ReviewsScreen);
+export default ReviewsScreen;

@@ -4,7 +4,7 @@ import _ from 'lodash';
 const { CancelToken } = axios;
 let source;
 
-export const submitReview = async (service, review) => {
+export const submitReview = async (service, review, callback) => {
 	const data = {
 		service,
 		review
@@ -12,14 +12,14 @@ export const submitReview = async (service, review) => {
 	const submitReviewUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/postRating';
 	try {
 		await axios.post(submitReviewUrl, data);
-		return review;
+		return callback(review);
 	} catch (e) {
 		console.log(e);
 	}
 };
 
 // get all reviews by service
-export const getServiceReviews = async (service) => {
+export const getServiceReviews = async (service, callback) => {
 	const getReviewsUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getRatings';
 	try {
 		source = CancelToken.source();
@@ -27,13 +27,13 @@ export const getServiceReviews = async (service) => {
 			params: service,
 			cancelToken: source.token
 		});
-		return data;
+		return callback(data);
 	} catch (e) {
 		console.log(e);
 	}
 };
 
-export const getReviews = (service, userEmail) => async (dispatch) => {
+export const getReviews = async (service, userEmail, callback) => {
 	const getReviewsUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getRatings';
 	try {
 		source = CancelToken.source();
@@ -43,21 +43,12 @@ export const getReviews = (service, userEmail) => async (dispatch) => {
 		});
 		const newData = handleData(data, userEmail);
 		if (newData.currentUserReview) {
-			// dispatch({
-			// 	type: USER_ALREADY_REVIEW,
-			// 	payload: newData.currentUserReview
-			// });
-			// dispatch({ type: GET_REVIEWS_SUCCESS, payload: newData.data });
-			return {
-				currentUSerReview: newData.currentUSerReview,
-				reviews: newData.data
-			};
+			return callback(
+				newData.currentUserReview,
+				newData.data
+			);
 		} 
-			// dispatch({
-			// 	type: USER_NEVER_REVIEW
-			// });
-			// dispatch({ type: GET_REVIEWS_SUCCESS, payload: newData });
-			return { currentUserReview: null, reviews: newData };
+		return callback(null, newData);
 	} catch (e) {
 		console.log(e);
 	}
@@ -86,7 +77,7 @@ const handleData = (data, userEmail) => {
 	return data;
 };
 
-export const deleteReview = async (service, review) => {
+export const deleteReview = async (service, review, callback) => {
 	const deleteReviewUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/deleteRating';
 	const data = {
 		service,
@@ -95,11 +86,12 @@ export const deleteReview = async (service, review) => {
 
 	try {
 		await axios.delete(deleteReviewUrl, { data });
+		callback();
 	} catch (e) {
 		console.log(e);
 	}
 };
 
-export const cancelAxiosRating = () => async (dispatch) => {
+export const cancelAxiosRating = async () => {
 	await source.cancel();
 };
