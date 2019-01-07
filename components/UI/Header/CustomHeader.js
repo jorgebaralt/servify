@@ -12,7 +12,7 @@ export const CustomHeader = (props) => {
 		backgroundColor: props.color ? props.color : colors.white,
 		shadowOpacity: 0.05,
 		shadowRadius: 5,
-		shadowOffset: { width: 0, height: 5 }
+		shadowOffset: { width: 0, height: 5 },
 	};
 
 	const spanStyle = {

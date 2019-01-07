@@ -13,7 +13,14 @@ import { Ionicons, Entypo, MaterialIcons, Feather } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { MapView, Linking } from 'expo';
-import { addFavorite, removeFavorite, submitReview, getReviews, deleteReview, cancelAxiosRating } from '../../api';
+import {
+	addFavorite,
+	removeFavorite,
+	submitReview,
+	getReviews,
+	deleteReview,
+	cancelAxiosRating
+} from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 import StarsRating from '../../components/Ratings/StarsRating';
 import StarsRatingPick from '../../components/Ratings/StarsRatingPick';
@@ -43,10 +50,12 @@ class SpecificServiceScreen extends Component {
 		dollarCount: 0,
 		loadingUserComment: false,
 		currentUserReview: null,
-		reviews: null
+		reviews: null,
+		service: this.props.navigation.getParam('service')
 	};
 
 	componentWillMount = async () => {
+		console.log(this.state.service);
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			() => {
@@ -54,7 +63,7 @@ class SpecificServiceScreen extends Component {
 			}
 		);
 
-		const { service } = this.props;
+		const { service } = this.state;
 
 		// Starting search of current user review
 		this.setState({
@@ -98,24 +107,23 @@ class SpecificServiceScreen extends Component {
 			}
 		});
 		backPressSubscriptions.add(() => {
-			this.props.navigation.pop();
-			this.props.cancelAxiosRating();
+			this.onBackPress();
 		});
 	};
 
 	onBackPress = async () => {
 		await cancelAxiosRating();
-		this.props.navigation.goBack();
+		this.props.navigation.pop();
 	};
 
 	addFavorite = async (email) => {
 		this.setState({ isFav: true });
-		await addFavorite(email, this.props.service);
+		await addFavorite(email, this.state.service);
 	};
 
 	removeFavorite = async (email) => {
 		this.setState({ isFav: false });
-		await removeFavorite(email, this.props.service);
+		await removeFavorite(email, this.state.service);
 	};
 
 	favPressed = async () => {
@@ -130,19 +138,19 @@ class SpecificServiceScreen extends Component {
 	};
 
 	callPressed = async () => {
-		const { phone } = this.props.service;
+		const { phone } = this.state.service;
 		await Linking.openURL('tel:+1' + phone.replace(/\D/g, ''));
 	};
 
 	openEmail = async () => {
-		Linking.openURL(`mailto:${this.props.service.email}`);
+		Linking.openURL(`mailto:${this.state.service.email}`);
 	};
 
 	reportAlert = () => {
 		Alert.alert('Report', 'Do you want to report this service?', [
 			{
 				text: 'Report',
-				onPress: () => this.props.navigation.navigate('report')
+				onPress: () => this.props.navigation.navigate('report', { service: this.state.service })
 			},
 			{
 				text: 'Cancel'
@@ -167,11 +175,13 @@ class SpecificServiceScreen extends Component {
 				reviewerEmail: this.props.user.email
 			};
 			await submitReview(
-				this.props.service,
+				this.state.service,
 				review,
-				(currentUserReview) => this.setState({ loadingUserComment: false, currentUserReview })
+				(currentUserReview) => this.setState({
+						loadingUserComment: false,
+						currentUserReview
+					})
 			);
-			
 		}
 	};
 
@@ -195,7 +205,7 @@ class SpecificServiceScreen extends Component {
 	deleteComment = async () => {
 		this.setState({ loadingUserComment: true });
 		await deleteReview(
-			this.props.service,
+			this.state.service,
 			this.state.currentUserReview,
 			() => this.setState({ currentUserReview: null })
 		);
@@ -231,7 +241,7 @@ class SpecificServiceScreen extends Component {
 				/>
 			);
 		}
-		if (this.props.user.email !== this.props.service.email) {
+		if (this.props.user.email !== this.state.service.email) {
 			// User have not added a review yet
 			if (!currentUserReview) {
 				return (
@@ -315,7 +325,10 @@ class SpecificServiceScreen extends Component {
 						<View
 							style={[
 								styles.rowStyle,
-								{ justifyContent: 'space-between', marginTop: 0 }
+								{
+									justifyContent: 'space-between',
+									marginTop: 0
+								}
 							]}
 						>
 							<Text
@@ -385,7 +398,10 @@ class SpecificServiceScreen extends Component {
 			<View style={{ marginTop: 10, marginBottom: 40 }}>
 				<Text
 					style={showMoreStyle}
-					onPress={() => this.props.navigation.navigate('reviews', { service: this.props.service })}
+					onPress={() => this.props.navigation.navigate('reviews', {
+							service: this.state.service
+						})
+					}
 				>
 					Show more
 				</Text>
@@ -405,14 +421,14 @@ class SpecificServiceScreen extends Component {
 	);
 
 	headerRightIcon = () => {
-		if (this.props.user.email === this.props.service.email) {
+		if (this.props.user.email === this.state.service.email) {
 			return (
 				<Entypo
 					size={32}
 					name="dots-three-horizontal"
 					style={{ color: 'black' }}
 					onPress={() => this.props.navigation.navigate('editService', {
-							service: this.props.service
+							service: this.state.service
 						})
 					}
 				/>
@@ -442,7 +458,7 @@ class SpecificServiceScreen extends Component {
 	};
 
 	renderMap = () => {
-		const { service } = this.props;
+		const { service } = this.state;
 		const { latitude, longitude } = service.geolocation;
 		const center = { latitude, longitude };
 		const radius = service.miles * 1609.34;
@@ -475,7 +491,7 @@ class SpecificServiceScreen extends Component {
 	};
 
 	render() {
-		const { service } = this.props;
+		const { service } = this.state;
 		const {
 			descriptionStyle,
 			contentStyle,
@@ -502,137 +518,141 @@ class SpecificServiceScreen extends Component {
 		}
 
 		return (
-			<SafeAreaView
-				style={{ flex: 1, backgroundColor: colors.white }}
-				forceInset={{ bottom: 'never' }}
-			>
-				<CustomHeader
-					title={service.title}
-					left={this.headerLeftIcon()}
-					right={this.headerRightIcon()}
-				/>
-				<KeyboardAvoidingView
-					behavior="padding"
-					style={{
-						flex: 1,
-						zIndex: -1,
-						backgroundColor: colors.white
-					}}
+			<View style={{ flex: 1 }}>
+				<SafeAreaView
+					style={{ flex: 1, backgroundColor: colors.white }}
+					forceInset={{ bottom: 'never' }}
 				>
-					<ScrollView
-						style={contentStyle}
-						padder
-						keyboardShouldPersistTaps="handled"
+					<CustomHeader
+						title={service.title}
+						left={this.headerLeftIcon()}
+						right={this.headerRightIcon()}
+					/>
+					<KeyboardAvoidingView
+						behavior="padding"
+						style={{
+							flex: 1,
+							zIndex: -1,
+							backgroundColor: colors.white
+						}}
 					>
-						<Text style={titleStyle}>Service Information</Text>
-						<View style={rowStyle}>
-							<Category
-								height={18}
-								width={18}
-								style={{ marginTop: 2 }}
-							/>
-							<Text style={descriptionStyle}>{categoryName}</Text>
-						</View>
-						{/* if there is subcategory */}
-						{/* TODO:  */}
-						{service.subcategory ? (
-							<View style={{ flexDirection: 'row' }}>
-								<Subcategory
+						<ScrollView
+							style={contentStyle}
+							padder
+							keyboardShouldPersistTaps="handled"
+						>
+							<Text style={titleStyle}>Service Information</Text>
+							<View style={rowStyle}>
+								<Category
 									height={18}
 									width={18}
-									style={{ marginTop: 5 }}
+									style={{ marginTop: 2 }}
 								/>
 								<Text style={descriptionStyle}>
-									{subcategoryName}
+									{categoryName}
 								</Text>
 							</View>
-						) : null}
-						<View style={rowStyle}>
-							<Description
-								height={18}
-								width={18}
-								style={{ marginTop: 0 }}
-							/>
-							<Text style={descriptionStyle}>
-								{service.description}
-							</Text>
-						</View>
-						<View style={divideLine} />
+							{/* if there is subcategory */}
+							{/* TODO:  */}
+							{service.subcategory ? (
+								<View style={{ flexDirection: 'row' }}>
+									<Subcategory
+										height={18}
+										width={18}
+										style={{ marginTop: 5 }}
+									/>
+									<Text style={descriptionStyle}>
+										{subcategoryName}
+									</Text>
+								</View>
+							) : null}
+							<View style={rowStyle}>
+								<Description
+									height={18}
+									width={18}
+									style={{ marginTop: 0 }}
+								/>
+								<Text style={descriptionStyle}>
+									{service.description}
+								</Text>
+							</View>
+							<View style={divideLine} />
 
-						<Text style={titleStyle}>Contact Information </Text>
-						<View style={rowStyle}>
-							<Feather
-								name="user"
-								size={18}
-								style={{ color: colors.secondaryColor }}
-							/>
-							<Text style={descriptionStyle}>
-								{service.displayName}
-							</Text>
-						</View>
-						<View style={rowStyle}>
-							<MaterialIcons
-								name="email"
-								size={18}
-								style={{ color: colors.secondaryColor }}
-							/>
-							<Text style={descriptionStyle}>
-								{service.email}
-							</Text>
-						</View>
-						<View style={rowStyle}>
-							<MaterialIcons
-								name="phone"
-								size={18}
-								style={{ color: colors.secondaryColor }}
-							/>
-							<Text style={descriptionStyle}>
-								{service.phone}
-							</Text>
-						</View>
-						<View
-							style={[
-								rowStyle,
-								{ justifyContent: 'space-evenly' }
-							]}
-						>
-							<Button
-								bordered
-								onPress={() => this.callPressed()}
-								color={colors.primaryColor}
-								textColor={colors.primaryColor}
+							<Text style={titleStyle}>Contact Information </Text>
+							<View style={rowStyle}>
+								<Feather
+									name="user"
+									size={18}
+									style={{ color: colors.secondaryColor }}
+								/>
+								<Text style={descriptionStyle}>
+									{service.displayName}
+								</Text>
+							</View>
+							<View style={rowStyle}>
+								<MaterialIcons
+									name="email"
+									size={18}
+									style={{ color: colors.secondaryColor }}
+								/>
+								<Text style={descriptionStyle}>
+									{service.email}
+								</Text>
+							</View>
+							<View style={rowStyle}>
+								<MaterialIcons
+									name="phone"
+									size={18}
+									style={{ color: colors.secondaryColor }}
+								/>
+								<Text style={descriptionStyle}>
+									{service.phone}
+								</Text>
+							</View>
+							<View
+								style={[
+									rowStyle,
+									{ justifyContent: 'space-evenly' }
+								]}
 							>
-								<Text>Call Now</Text>
-							</Button>
-							<Button
-								bordered
-								onPress={() => this.openEmail()}
-								color={colors.primaryColor}
-								textColor={colors.primaryColor}
-							>
-								<Text>Send an Email</Text>
-							</Button>
-						</View>
-						<View style={divideLine} />
-						<Text style={titleStyle}>Location</Text>
-						<View style={rowStyle}>
-							<Location
-								height={18}
-								width={18}
-								style={{ color: colors.secondaryColor }}
-							/>
-							<Text style={descriptionStyle}>
-								This service is located at{' '}
-								{service.locationData.city},{' '}
-								{service.locationData.region}
-							</Text>
-						</View>
-						{this.renderMap()}
-						{this.renderCurrentUserReview()}
-						{this.renderAllReviews()}
-					</ScrollView>
-				</KeyboardAvoidingView>
-			</SafeAreaView>
+								<Button
+									bordered
+									onPress={() => this.callPressed()}
+									color={colors.primaryColor}
+									textColor={colors.primaryColor}
+								>
+									<Text>Call Now</Text>
+								</Button>
+								<Button
+									bordered
+									onPress={() => this.openEmail()}
+									color={colors.primaryColor}
+									textColor={colors.primaryColor}
+								>
+									<Text>Send an Email</Text>
+								</Button>
+							</View>
+							<View style={divideLine} />
+							<Text style={titleStyle}>Location</Text>
+							<View style={rowStyle}>
+								<Location
+									height={18}
+									width={18}
+									style={{ color: colors.secondaryColor }}
+								/>
+								<Text style={descriptionStyle}>
+									This service is located at{' '}
+									{service.locationData.city},{' '}
+									{service.locationData.region}
+								</Text>
+							</View>
+							{this.renderMap()}
+							{this.renderCurrentUserReview()}
+							{this.renderAllReviews()}
+						</ScrollView>
+					</KeyboardAvoidingView>
+				</SafeAreaView>
+			</View>
 		);
 	}
 }
@@ -681,10 +701,7 @@ const styles = {
 };
 
 const mapStateToProps = (state) => ({
-	service: state.selectedService.service,
-	user: state.auth.user,
+	user: state.auth.user
 });
 
-export default connect(
-	mapStateToProps
-)(SpecificServiceScreen);
+export default connect(mapStateToProps)(SpecificServiceScreen);

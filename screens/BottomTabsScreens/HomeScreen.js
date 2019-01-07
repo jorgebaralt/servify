@@ -17,7 +17,7 @@ import { Permissions } from 'expo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Button, InfoImage, HomeServiceCard, CategoryCard } from '../../components/UI';
 import { colors, globalStyles } from '../../shared/styles';
-import { getUserLocation, selectService } from '../../actions';
+import { getUserLocation } from '../../actions';
 import * as api from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 
@@ -154,8 +154,7 @@ class HomeScreen extends Component {
 			service={service}
 			showLocation
 			onPress={() => {
-				this.props.selectService(service);
-				this.props.navigation.navigate('service');
+				this.props.navigation.navigate('service', {service});
 			}}
 		/>
 	);
@@ -236,8 +235,7 @@ class HomeScreen extends Component {
 				service={service}
 				showRating
 				onPress={() => {
-					this.props.selectService(service);
-					this.props.navigation.navigate('service');
+					this.props.navigation.navigate('service', { service });
 				}}
 			/>
 		</View>
@@ -379,7 +377,6 @@ function mapStateToProps(state) {
 export default connect(
 	mapStateToProps,
 	{
-		selectService,
 		getUserLocation,
 	}
 )(HomeScreen);

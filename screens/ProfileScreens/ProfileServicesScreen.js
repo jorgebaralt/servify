@@ -9,7 +9,6 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
-import { selectService } from '../../actions';
 import { getServicesByEmail, getFavorites, removeFavorite } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 import { colors } from '../../shared/styles';
@@ -98,8 +97,7 @@ class ProfileServicesScreen extends Component {
 			currentUser={this.props.user}
 			image={require('../../assets/default/subcategories/home_cleaning.jpg')}
 			onPress={() => {
-				this.props.selectService(service);
-				this.props.navigation.navigate('service');
+				this.props.navigation.navigate('service', { service });
 			}}
 			onRemoveFavorite={async () => {
 				await this.removeFavorite(service);
@@ -201,7 +199,4 @@ function mapStateToProps(state) {
 
 export default connect(
 	mapStateToProps,
-	{
-		selectService
-	}
 )(ProfileServicesScreen);

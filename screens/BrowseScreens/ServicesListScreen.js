@@ -13,9 +13,6 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
-import {
-	selectService,
-} from '../../actions';
 import EmptyListMessage from '../../components/ErrorMessage/EmptyListMessage';
 import { pageHit } from '../../shared/ga_helper';
 import { CustomHeader, DetailedServiceCard } from '../../components/UI';
@@ -183,7 +180,6 @@ class ServicesListScreen extends Component {
 		<DetailedServiceCard
 			service={service}
 			onPress={() => {
-				this.props.selectService(service);
 				this.props.navigation.navigate('service', { service });
 			}}
 			color={this.state.category.color[0]}
@@ -296,7 +292,4 @@ const mapStateToProps = (state) => ({
 
 export default connect(
 	mapStateToProps,
-	{
-		selectService,
-	}
 )(ServicesListScreen);

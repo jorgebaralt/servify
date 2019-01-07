@@ -9,7 +9,6 @@ import {
 	Text,
 	ScrollView
 } from 'react-native';
-import { connect } from 'react-redux';
 import { reportService } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 import { colors } from '../../shared/styles';
@@ -22,15 +21,15 @@ import {
 
 let willFocusSubscription;
 let backPressSubscriptions;
-const initialState = {
-	selectedOption: undefined,
-	description: '',
-	loading: false,
-	modalVisible: false
-};
 
 class ReportScreen extends Component {
-	state = initialState;
+	state = {
+		selectedOption: undefined,
+		description: '',
+		loading: false,
+		modalVisible: false,
+		service: this.props.navigation.getParam('service')
+	}
 
 	componentWillMount() {
 		willFocusSubscription = this.props.navigation.addListener(
@@ -73,8 +72,8 @@ class ReportScreen extends Component {
 		const report = {
 			reason: this.state.selectedOption,
 			description: this.state.description,
-			serviceTitle: this.props.service.title,
-			serviceOwner: this.props.service.email
+			serviceTitle: this.state.service.title,
+			serviceOwner: this.state.service.email
 		};
 		await reportService(report);
 		this.setState({ loading: false });
@@ -176,7 +175,7 @@ class ReportScreen extends Component {
 							Does
 							<Text style={{ fontWeight: 'bold' }}>
 								{' '}
-								{this.props.service.title}{' '}
+								{this.state.service.title}{' '}
 							</Text>
 							contains anything offensive, innapropiate, or fake?
 							please report it as soon as possible so we can take
@@ -223,6 +222,5 @@ const styles = {
 	},
 };
 
-const mapStateToProps = (state) => ({ service: state.selectedService.service });
 
-export default connect(mapStateToProps)(ReportScreen);
+export default ReportScreen;
