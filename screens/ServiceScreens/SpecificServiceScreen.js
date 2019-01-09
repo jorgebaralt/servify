@@ -7,7 +7,8 @@ import {
 	Alert,
 	ScrollView,
 	Text,
-	ActivityIndicator
+	ActivityIndicator,
+	Dimensions
 } from 'react-native';
 import { Ionicons, Entypo, MaterialIcons, Feather } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-navigation';
@@ -27,18 +28,26 @@ import StarsRatingPick from '../../components/Ratings/StarsRatingPick';
 import DollarRatingPick from '../../components/Ratings/DollarRatingPick';
 import { colors } from '../../shared/styles';
 import {
-	CustomHeader,
 	ReviewCard,
 	Button,
-	TextArea
+	TextArea,
+	AnimatedHeader,
+	FadeImage
 } from '../../components/UI';
 import { formatDate } from '../../shared/helpers';
 import { Category, Subcategory, Location, Description } from '../../assets/svg';
 
 const maxCharCount = 100;
 
+const WIDTH = Dimensions.get('window').width;
+
 let willFocusSubscription;
 let backPressSubscriptions;
+const images = [
+	'https://images.unsplash.com/photo-1543363136-3fdb62e11be5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80',
+	'https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
+	'https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
+];
 
 class SpecificServiceScreen extends Component {
 	state = {
@@ -51,7 +60,8 @@ class SpecificServiceScreen extends Component {
 		loadingUserComment: false,
 		currentUserReview: null,
 		reviews: null,
-		service: this.props.navigation.getParam('service')
+		service: this.props.navigation.getParam('service'),
+		transparentHeader: true
 	};
 
 	componentWillMount = async () => {
@@ -90,6 +100,14 @@ class SpecificServiceScreen extends Component {
 	async componentWillUnmount() {
 		await cancelAxiosRating();
 		willFocusSubscription.remove();
+	}
+
+	handleScroll = (event) => {
+		if (event.nativeEvent.contentOffset.y > 200) {
+			this.setState({ transparentHeader: false });
+		} else {
+			this.setState({ transparentHeader: true });
+		}
 	}
 
 	handleAndroidBack = () => {
@@ -149,7 +167,9 @@ class SpecificServiceScreen extends Component {
 		Alert.alert('Report', 'Do you want to report this service?', [
 			{
 				text: 'Report',
-				onPress: () => this.props.navigation.navigate('report', { service: this.state.service })
+				onPress: () => this.props.navigation.navigate('report', {
+						service: this.state.service
+					})
 			},
 			{
 				text: 'Cancel'
@@ -413,7 +433,7 @@ class SpecificServiceScreen extends Component {
 		<Ionicons
 			name="ios-arrow-back"
 			size={32}
-			style={{ color: colors.black }}
+			style={{ color: this.state.transparentHeader ? colors.white : colors.black }}
 			onPress={() => {
 				this.onBackPress();
 			}}
@@ -426,7 +446,7 @@ class SpecificServiceScreen extends Component {
 				<Entypo
 					size={32}
 					name="dots-three-horizontal"
-					style={{ color: 'black' }}
+					style={{ color: this.state.transparentHeader ? colors.white : colors.black }}
 					onPress={() => this.props.navigation.navigate('editService', {
 							service: this.state.service
 						})
@@ -439,7 +459,7 @@ class SpecificServiceScreen extends Component {
 				<MaterialIcons
 					name="info-outline"
 					style={{
-						color: 'black',
+						color: this.state.transparentHeader ? colors.white : colors.black,
 						marginRight: 10
 					}}
 					size={26}
@@ -490,6 +510,10 @@ class SpecificServiceScreen extends Component {
 		);
 	};
 
+	renderHeaderImages = (imageUri) => (
+			<FadeImage uri={imageUri} style={{ height: 300, width: WIDTH }} />
+		);
+
 	render() {
 		const { service } = this.state;
 		const {
@@ -518,148 +542,157 @@ class SpecificServiceScreen extends Component {
 		}
 
 		return (
-			<View style={{ flex: 1 }}>
-				<SafeAreaView
-					style={{ flex: 1, backgroundColor: colors.white }}
-					forceInset={{ bottom: 'never' }}
-				>
-					<CustomHeader
-						title={service.title}
-						left={this.headerLeftIcon()}
-						right={this.headerRightIcon()}
-					/>
-					<KeyboardAvoidingView
-						behavior="padding"
-						style={{
-							flex: 1,
-							zIndex: -1,
-							backgroundColor: colors.white
-						}}
-					>
-						<ScrollView
-							style={contentStyle}
-							padder
-							keyboardShouldPersistTaps="handled"
-						>
-							<Text style={titleStyle}>Service Information</Text>
-							<View style={rowStyle}>
-								<Category
-									height={18}
-									width={18}
-									style={{ marginTop: 2 }}
-								/>
-								<Text style={descriptionStyle}>
-									{categoryName}
-								</Text>
-							</View>
-							{/* if there is subcategory */}
-							{/* TODO:  */}
-							{service.subcategory ? (
-								<View style={{ flexDirection: 'row' }}>
-									<Subcategory
-										height={18}
-										width={18}
-										style={{ marginTop: 5 }}
-									/>
-									<Text style={descriptionStyle}>
-										{subcategoryName}
-									</Text>
-								</View>
-							) : null}
-							<View style={rowStyle}>
-								<Description
-									height={18}
-									width={18}
-									style={{ marginTop: 0 }}
-								/>
-								<Text style={descriptionStyle}>
-									{service.description}
-								</Text>
-							</View>
-							<View style={divideLine} />
+			// <View style={{ flex: 1, backgroundColor: colors.secondaryColor }}>
+			// <SafeAreaView
+			// 	style={{ flex: 1, backgroundColor: colors.white }}
+			// 	forceInset={{ bottom: 'never' }}
+			// >
+			<KeyboardAvoidingView
+				behavior="padding"
+				style={{
+					// flex: 1,
+					zIndex: -1,
+					backgroundColor: colors.black
+				}}
+			>
+				{/* <View style={{ position: 'absolute' ,top: 0, right: 0, left: 0, height: 100, backgroundColor: colors.primaryColor, zIndex: 10, opacity: 0.5 }}> */}
+				<AnimatedHeader
+					title={service.title}
+					left={this.headerLeftIcon()}
+					right={this.headerRightIcon()}
+					transparent={this.state.transparentHeader}
+				/>
+				{/* </View> */}
 
-							<Text style={titleStyle}>Contact Information </Text>
-							<View style={rowStyle}>
-								<Feather
-									name="user"
-									size={18}
-									style={{ color: colors.secondaryColor }}
-								/>
-								<Text style={descriptionStyle}>
-									{service.displayName}
-								</Text>
-							</View>
-							<View style={rowStyle}>
-								<MaterialIcons
-									name="email"
-									size={18}
-									style={{ color: colors.secondaryColor }}
-								/>
-								<Text style={descriptionStyle}>
-									{service.email}
-								</Text>
-							</View>
-							<View style={rowStyle}>
-								<MaterialIcons
-									name="phone"
-									size={18}
-									style={{ color: colors.secondaryColor }}
-								/>
-								<Text style={descriptionStyle}>
-									{service.phone}
-								</Text>
-							</View>
-							<View
-								style={rowStyle}
-							>
-								<Button
-									bordered
-									onPress={() => this.callPressed()}
-									color={colors.primaryColor}
-									textColor={colors.primaryColor}
-								>
-									<Text>Call Now</Text>
-								</Button>
-								<Button
-									bordered
-									onPress={() => this.openEmail()}
-									color={colors.primaryColor}
-									textColor={colors.primaryColor}
-									style={{ marginLeft: 10 }}
-								>
-									<Text>Send an Email</Text>
-								</Button>
-							</View>
-							<View style={divideLine} />
-							<Text style={titleStyle}>Location</Text>
-							<View style={rowStyle}>
-								<Location
+				<ScrollView
+					style={contentStyle}
+					padder
+					keyboardShouldPersistTaps="handled"
+					onScroll={(event) => this.handleScroll(event)}
+					scrollEventThrottle={10}
+				>
+					<FlatList
+						horizontal
+						data={images}
+						renderItem={({ item }) => this.renderHeaderImages(item)}
+						keyExtractor={(item) => item.reviewerEmail}
+						pagingEnabled
+					/>
+					<View style={{ paddingLeft: 20, paddingRight: 20, backgroundColor: colors.white }}>
+						<Text style={titleStyle}>Service Information</Text>
+						<View style={rowStyle}>
+							<Category
+								height={18}
+								width={18}
+								style={{ marginTop: 2 }}
+							/>
+							<Text style={descriptionStyle}>{categoryName}</Text>
+						</View>
+						{/* if there is subcategory */}
+						{/* TODO:  */}
+						{service.subcategory ? (
+							<View style={{ flexDirection: 'row' }}>
+								<Subcategory
 									height={18}
 									width={18}
-									style={{ color: colors.secondaryColor }}
+									style={{ marginTop: 5 }}
 								/>
 								<Text style={descriptionStyle}>
-									This service is located at{' '}
-									{service.locationData.city},{' '}
-									{service.locationData.region}
+									{subcategoryName}
 								</Text>
 							</View>
-							{this.renderMap()}
-							{this.renderCurrentUserReview()}
-							{this.renderAllReviews()}
-						</ScrollView>
-					</KeyboardAvoidingView>
-				</SafeAreaView>
-			</View>
+						) : null}
+						<View style={rowStyle}>
+							<Description
+								height={18}
+								width={18}
+								style={{ marginTop: 0 }}
+							/>
+							<Text style={descriptionStyle}>
+								{service.description}
+							</Text>
+						</View>
+						<View style={divideLine} />
+
+						<Text style={titleStyle}>Contact Information </Text>
+						<View style={rowStyle}>
+							<Feather
+								name="user"
+								size={18}
+								style={{ color: colors.secondaryColor }}
+							/>
+							<Text style={descriptionStyle}>
+								{service.displayName}
+							</Text>
+						</View>
+						<View style={rowStyle}>
+							<MaterialIcons
+								name="email"
+								size={18}
+								style={{ color: colors.secondaryColor }}
+							/>
+							<Text style={descriptionStyle}>
+								{service.email}
+							</Text>
+						</View>
+						<View style={rowStyle}>
+							<MaterialIcons
+								name="phone"
+								size={18}
+								style={{ color: colors.secondaryColor }}
+							/>
+							<Text style={descriptionStyle}>
+								{service.phone}
+							</Text>
+						</View>
+						<View style={rowStyle}>
+							<Button
+								bordered
+								onPress={() => this.callPressed()}
+								color={colors.primaryColor}
+								textColor={colors.primaryColor}
+							>
+								<Text>Call Now</Text>
+							</Button>
+							<Button
+								bordered
+								onPress={() => this.openEmail()}
+								color={colors.primaryColor}
+								textColor={colors.primaryColor}
+								style={{ marginLeft: 10 }}
+							>
+								<Text>Send an Email</Text>
+							</Button>
+						</View>
+						<View style={divideLine} />
+						<Text style={titleStyle}>Location</Text>
+						<View style={rowStyle}>
+							<Location
+								height={18}
+								width={18}
+								style={{ color: colors.secondaryColor }}
+							/>
+							<Text style={descriptionStyle}>
+								This service is located at{' '}
+								{service.locationData.city},{' '}
+								{service.locationData.region}
+							</Text>
+						</View>
+						{this.renderMap()}
+						{this.renderCurrentUserReview()}
+						{this.renderAllReviews()}
+					</View>
+				</ScrollView>
+			</KeyboardAvoidingView>
+			// </SafeAreaView>
+			// {/* </View> */}
 		);
 	}
 }
 const styles = {
 	contentStyle: {
-		flex: 1,
-		backgroundColor: colors.white,
-		paddingLeft: 20,
-		paddingRight: 20
+		backgroundColor: colors.black,
+		zIndex: -1
 	},
 	rowStyle: { flexDirection: 'row', marginTop: 10 },
 	descriptionStyle: {

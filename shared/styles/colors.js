@@ -8,5 +8,6 @@ export const colors = {
 	secondaryColor: '#1EA3CC',
 	danger: '#F44336',
 	warning: '#FF6F00',
-	success: '#43A047'
+	success: '#43A047',
+	transparent: 'transparent'
 };
