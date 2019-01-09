@@ -17,5 +17,6 @@ export * from './Cards/SortableRow';
 // Header
 export * from './Header/CustomHeader';
 export * from './Header/SearchHeader';
+export * from './Header/AnimatedHeader';
 // List
 export * from './List/ListIcon';

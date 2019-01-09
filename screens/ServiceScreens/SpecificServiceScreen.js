@@ -383,6 +383,7 @@ class SpecificServiceScreen extends Component {
 							renderItem={({ item }) => this.renderReviews(item)}
 							keyExtractor={(item) => item.reviewerEmail}
 							enableEmptySections
+							style={{ padding: 4 }}
 						/>
 						{this.showMoreComments()}
 					</View>
@@ -609,10 +610,7 @@ class SpecificServiceScreen extends Component {
 								</Text>
 							</View>
 							<View
-								style={[
-									rowStyle,
-									{ justifyContent: 'space-evenly' }
-								]}
+								style={rowStyle}
 							>
 								<Button
 									bordered
@@ -627,6 +625,7 @@ class SpecificServiceScreen extends Component {
 									onPress={() => this.openEmail()}
 									color={colors.primaryColor}
 									textColor={colors.primaryColor}
+									style={{ marginLeft: 10 }}
 								>
 									<Text>Send an Email</Text>
 								</Button>
