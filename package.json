@@ -8,7 +8,6 @@
     "firebase": "^5.5.1",
     "jshint": "^2.9.5",
     "lodash": "^4.17.11",
-    "native-base": "2.8.2",
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-31.0.1.tar.gz",
     "react-native-linear-gradient": "^2.4.2",
