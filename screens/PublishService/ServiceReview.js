@@ -105,7 +105,7 @@ class ServiceReview extends Component {
 					paddingRight: 20
 				}}
 			>
-				<Text style={globalStyles.stepStyle}>Step 4</Text>
+				<Text style={globalStyles.stepStyle}>Step 5</Text>
 				<Text style={[globalStyles.sectionTitle, { marginTop: 10 }]}>
 					Confirm the information
 				</Text>

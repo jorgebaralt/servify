@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import {
-	Toast,
-} from 'native-base';
 import { LinearGradient } from 'expo';
 import {
 	View,
@@ -15,6 +12,8 @@ import {
 	Text
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { connect } from 'react-redux';
+import { showToast } from '../../actions';
 import { Button, FloatingLabelInput } from '../../components/UI';
 import { createEmailAccount } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
@@ -28,7 +27,6 @@ const initialState = {
 	lastName: '',
 	email: '',
 	password: '',
-	showToast: false,
 	loading: false
 };
 class CreateAccountScreen extends Component {
@@ -50,11 +48,8 @@ class CreateAccountScreen extends Component {
 	}
 
 	showToast = (text, type) => {
-		Toast.show({
-			text,
-			duration: 2000,
-			type
-		});
+		this.setState({ loading: false });
+		this.props.showToast({ message: text, type, duration: 3000 });
 		if (type === 'success') {
 			this.clearState();
 		}
@@ -88,7 +83,6 @@ class CreateAccountScreen extends Component {
 			password
 		};
 		await createEmailAccount(user, (text, type) => this.showToast(text, type));
-		this.clearState();
 	};
 
 	clearState() {
@@ -123,7 +117,7 @@ class CreateAccountScreen extends Component {
 						}}
 					/>
 					<KeyboardAvoidingView
-						behavior={Platform.OS === 'android' ? 'padding' : null}
+						behavior="padding"
 						style={{ flex: 1, justifyContent: 'center' }}
 					>
 						<ScrollView>
@@ -205,4 +199,4 @@ const styles = {
 };
 
 
-export default CreateAccountScreen;
+export default connect(null, { showToast })(CreateAccountScreen);

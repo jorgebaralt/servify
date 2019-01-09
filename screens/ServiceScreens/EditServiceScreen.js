@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Toast } from 'native-base';
 import {
 	Alert,
 	KeyboardAvoidingView,
@@ -15,6 +14,7 @@ import {
 import { MapView } from 'expo';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
+import { showToast } from '../../actions';
 import { pageHit } from '../../shared/ga_helper';
 import {
 	deleteService,
@@ -35,12 +35,11 @@ let backPressSubscriptions;
 class EditServiceScreen extends Component {
 	state = {
 		service: this.props.navigation.getParam('service'),
-		loading: false,
+		loading: false
 	};
 
 	componentWillMount() {
-		this.setState((prevState) => {
-			return {
+		this.setState((prevState) => ({
 				title: prevState.service.title,
 				description: prevState.service.description,
 				phone: prevState.service.phone,
@@ -61,9 +60,8 @@ class EditServiceScreen extends Component {
 				center: {
 					latitude: prevState.service.geolocation.latitude,
 					longitude: prevState.service.geolocation.longitude
-				},
-			};
-		});
+				}
+			}));
 
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
@@ -137,11 +135,7 @@ class EditServiceScreen extends Component {
 
 	showToast = (text, type) => {
 		this.setState({ loading: false });
-		Toast.show({
-			text,
-			duration: 2000,
-			type
-		});
+		this.props.showToast({ message: text, type, duration: 1500 });
 	};
 
 	handleAndroidBack = () => {
@@ -392,4 +386,7 @@ const mapStateToProps = (state) => ({
 	user: state.auth.user
 });
 
-export default connect(mapStateToProps)(EditServiceScreen);
+export default connect(
+	mapStateToProps,
+	{ showToast }
+)(EditServiceScreen);

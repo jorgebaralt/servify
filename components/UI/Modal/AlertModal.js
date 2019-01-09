@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, StyleSheet, Modal, Dimensions } from 'react-native';
-import { Button, Text } from 'native-base';
+import { View, StyleSheet, Modal, Dimensions, Text } from 'react-native';
+import { Button } from '..';
 
 const {width} = Dimensions.get('window');
 

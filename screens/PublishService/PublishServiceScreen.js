@@ -6,9 +6,9 @@ import {
 	ScrollView,
 	Dimensions
 } from 'react-native';
-import { Toast } from 'native-base';
 import { Entypo } from '@expo/vector-icons';
 import { connect } from 'react-redux';
+import { showToast } from '../../actions';
 import { pageHit } from '../../shared/ga_helper';
 import categories from '../../shared/categories';
 import { createService } from '../../api';
@@ -88,11 +88,7 @@ class PublishServiceScreen extends Component {
 	};
 
 	showToast = (text, type) => {
-		Toast.show({
-			text,
-			duration: 2000,
-			type
-		});
+		this.props.showToast({ message: text, type, duration: 1500 });
 		if (type === 'success') {
 			this.setState(initialState);
 		}
@@ -234,24 +230,23 @@ class PublishServiceScreen extends Component {
 							onNext={this.scrollTo5}
 							onBack={() => this.scrollTo3}
 							addImage={(position, image) => this.setState((prevState) => {
-								let imageArray = prevState.images;
+									let imageArray = prevState.images;
 									if (imageArray === null) {
 										imageArray = [];
 									}
-								imageArray.push({ position, image });
+									imageArray.push({ position, image });
 									return { images: imageArray };
 								})
 							}
 							removeImage={(position) => this.setState((prevState) => {
-								const imageArray = prevState.images;
-								// filter, copy all but the same position (the one deleted)
+									const imageArray = prevState.images;
+									// filter, copy all but the same position (the one deleted)
 									const result = imageArray.filter(
 										(obj) => obj.position !== position
 									);
 									return { images: result };
 								})
 							}
-
 							changeOrder={(orderArray) => {
 								const reorderedImages = [];
 								this.setState((prevState) => {
@@ -290,4 +285,7 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps)(PublishServiceScreen);
+export default connect(
+	mapStateToProps,
+	{ showToast }
+)(PublishServiceScreen);

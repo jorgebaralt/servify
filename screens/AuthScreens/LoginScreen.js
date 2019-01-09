@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Toast } from 'native-base';
 import { LinearGradient } from 'expo';
 import {
 	View,
@@ -11,10 +10,13 @@ import {
 	Text
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { connect } from 'react-redux';
+import { showToast } from '../../actions';
 import { emailAndPasswordLogin } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 import { FloatingLabelInput, Button } from '../../components/UI';
 import { colors } from '../../shared/styles';
+
 
 let backPressSubscriptions;
 let willFocusSubscription;
@@ -22,7 +24,6 @@ let willFocusSubscription;
 const initialState = {
 	email: '',
 	password: '',
-	showToast: false,
 	loading: false
 };
 class LoginScreen extends Component {
@@ -44,11 +45,7 @@ class LoginScreen extends Component {
 	}
 
 	showToast = (text, type) => {
-		Toast.show({
-			text,
-			duration: 2000,
-			type
-		});
+		this.props.showToast({ message: text, type, duration: 1500 });
 		if (type === 'success') {
 			this.clearState();
 		}
@@ -190,4 +187,4 @@ const styles = {
 	}
 };
 
-export default LoginScreen;
+export default connect(null, { showToast })(LoginScreen);

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Toast } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import {
 	View,
@@ -9,6 +8,8 @@ import {
 	Text,
 	ScrollView
 } from 'react-native';
+import { connect } from 'react-redux';
+import { showToast } from '../../actions';
 import { reportService } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 import { colors } from '../../shared/styles';
@@ -77,12 +78,7 @@ class ReportScreen extends Component {
 		};
 		await reportService(report);
 		this.setState({ loading: false });
-		Toast.show({
-			text: 'Service reported',
-			buttonText: 'OK',
-			duration: 5000,
-			type: 'success'
-		});
+		this.props.showToast({ message: 'Service reported', type:'success', duration: 3000 });
 		this.onBackPress();
 	};
 
@@ -223,4 +219,4 @@ const styles = {
 };
 
 
-export default ReportScreen;
+export default connect(null, { showToast })(ReportScreen);

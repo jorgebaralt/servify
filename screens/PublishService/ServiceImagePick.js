@@ -61,6 +61,7 @@ class ServiceImagePick extends Component {
 						autoscrollAreaSize={-200}
 						onChangeOrder={(nextOrder) => this.props.changeOrder(nextOrder)}
 					/>
+					<Text style={{ fontSize: 12, color: colors.darkGray }}>Reorder images as you want them to be seen by customers (press and hold to reorder). the first image will be the main image of your service</Text>
 				</View>
 			);
 		}

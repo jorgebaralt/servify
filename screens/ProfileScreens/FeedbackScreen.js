@@ -8,9 +8,9 @@ import {
 	Keyboard,
 	ScrollView
 } from 'react-native';
-import { Toast } from 'native-base';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
+import { showToast } from '../../actions';
 import { submitFeedback } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 import { colors } from '../../shared/styles';
@@ -69,11 +69,7 @@ class FeedbackScreen extends Component {
 	};
 
 	showToast = (text, type) => {
-		Toast.show({
-			text,
-			duration: 2000,
-			type
-		});
+		this.props.showToast({ message: text, type, duration: 1500 });
 		if (type === 'success') {
 			this.clearState();
 			this.onBackPress();
@@ -223,4 +219,4 @@ const mapStateToProps = (state) => ({
 	user: state.auth.user
 });
 
-export default connect(mapStateToProps)(FeedbackScreen);
+export default connect(mapStateToProps, { showToast })(FeedbackScreen);

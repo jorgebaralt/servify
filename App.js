@@ -4,7 +4,6 @@ import {
 	createBottomTabNavigator,
 	createStackNavigator
 } from 'react-navigation';
-import { Root } from 'native-base';
 import { Provider } from 'react-redux';
 import { createStore, compose, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
@@ -35,6 +34,7 @@ import ReportScreen from './screens/ServiceScreens/ReportScreen';
 import PublishServiceScreen from './screens/PublishService/PublishServiceScreen';
 // Style
 import { colors } from './shared/styles';
+import Toast from './components/UI/Toast/Toast';
 
 const store = createStore(reducers, {}, compose(applyMiddleware(thunk)));
 export default class App extends React.Component {
@@ -125,9 +125,8 @@ export default class App extends React.Component {
 						}
 					]}
 				>
-					<Root>
-						<RootNavigation />
-					</Root>
+					<RootNavigation />
+					<Toast type="warning" message="Welcome back" />
 				</View>
 			</Provider>
 		);
