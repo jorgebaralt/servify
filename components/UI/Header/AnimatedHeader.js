@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Header } from 'react-navigation';
-import { View, Text, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import { colors } from '../../../shared/styles';
 
 class AnimatedHeader extends Component {
@@ -22,7 +21,6 @@ class AnimatedHeader extends Component {
 			top: 0,
 			left: 0,
 			right: 0,
-			zIndex: 100,
 		};
 
 		return (

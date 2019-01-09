@@ -11,7 +11,6 @@ import {
 	Dimensions
 } from 'react-native';
 import { Ionicons, Entypo, MaterialIcons, Feather } from '@expo/vector-icons';
-import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
 import { MapView, Linking } from 'expo';
 import {
@@ -542,28 +541,19 @@ class SpecificServiceScreen extends Component {
 		}
 
 		return (
-			// <View style={{ flex: 1, backgroundColor: colors.secondaryColor }}>
-			// <SafeAreaView
-			// 	style={{ flex: 1, backgroundColor: colors.white }}
-			// 	forceInset={{ bottom: 'never' }}
-			// >
+
 			<KeyboardAvoidingView
 				behavior="padding"
 				style={{
-					// flex: 1,
 					zIndex: -1,
 					backgroundColor: colors.black
 				}}
 			>
-				{/* <View style={{ position: 'absolute' ,top: 0, right: 0, left: 0, height: 100, backgroundColor: colors.primaryColor, zIndex: 10, opacity: 0.5 }}> */}
 				<AnimatedHeader
-					title={service.title}
 					left={this.headerLeftIcon()}
 					right={this.headerRightIcon()}
 					transparent={this.state.transparentHeader}
 				/>
-				{/* </View> */}
-
 				<ScrollView
 					style={contentStyle}
 					padder
@@ -579,7 +569,7 @@ class SpecificServiceScreen extends Component {
 						pagingEnabled
 					/>
 					<View style={{ paddingLeft: 20, paddingRight: 20, backgroundColor: colors.white }}>
-						<Text style={titleStyle}>Service Information</Text>
+						<Text style={titleStyle}>{service.title}</Text>
 						<View style={rowStyle}>
 							<Category
 								height={18}
@@ -684,8 +674,6 @@ class SpecificServiceScreen extends Component {
 					</View>
 				</ScrollView>
 			</KeyboardAvoidingView>
-			// </SafeAreaView>
-			// {/* </View> */}
 		);
 	}
 }
