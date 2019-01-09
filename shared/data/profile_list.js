@@ -13,13 +13,13 @@ export const profileList = [
 		iconName: 'favorite',
 		isList: true
 	},
-	// {
-	// 	id: 'invite',
-	// 	title: 'Invite a Friend',
-	// 	iconType: 'MaterialCommunityIcons',
-	// 	iconName: 'gift',
-	// 	isList: false
-	// },
+	{
+		id: 'share',
+		title: 'Share with a Friend',
+		iconType: 'MaterialIcons',
+		iconName: 'share',
+		isList: false
+	},
 	{
 		id: 'help',
 		title: 'Help',

@@ -286,6 +286,7 @@ class HomeScreen extends Component {
 							buttonText="Post a service"
 							style={{ marginTop: 5, height: 250, marginBottom: 20 }}
 							rounded
+							onPress={()=> this.props.navigation.navigate('publishInfo')}
 						>
 							<View
 								style={{
@@ -305,7 +306,7 @@ class HomeScreen extends Component {
 								>
 									Host your service near Orlando, FL{' '}
 								</Text>
-								<Button bordered style={{ fontSize: 20 }}>
+								<Button bordered style={{ fontSize: 20 }} onPress={() => this.props.navigation.navigate('publishInfo')}>
 									<Text>Publish your service</Text>
 								</Button>
 							</View>

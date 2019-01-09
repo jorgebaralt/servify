@@ -18,6 +18,7 @@ import ServiceCategory from './ServiceCategory';
 import ServiceInformation from './ServiceInformation';
 import ServiceLocation from './ServiceLocation';
 import ServiceReview from './ServiceReview';
+import ServiceImagePick from './ServiceImagePick';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -29,7 +30,8 @@ const initialState = {
 	location: '',
 	miles: 1,
 	description: '',
-	loading: false
+	loading: false,
+	images: null
 };
 
 let willFocusSubscription;
@@ -53,8 +55,8 @@ class PublishServiceScreen extends Component {
 		);
 		willBlurSubscription = this.props.navigation.addListener(
 			'willBlur',
-			() => {
-				this.setState(initialState);
+			async () => {
+				await this.setState(initialState);
 				this.scrollTo1();
 			}
 		);
@@ -163,6 +165,11 @@ class PublishServiceScreen extends Component {
 		this.scrollRef.scrollTo({ x: scrollXPos, y: 0 });
 	};
 
+	scrollTo5 = () => {
+		const scrollXPos = WIDTH * 4;
+		this.scrollRef.scrollTo({ x: scrollXPos, y: 0 });
+	};
+
 	render() {
 		return (
 			<SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
@@ -201,7 +208,8 @@ class PublishServiceScreen extends Component {
 							onBack={() => this.scrollTo1}
 							titleChange={(title) => this.setState({ title })}
 							phoneChange={(phone) => this.setState({ phone })}
-							descriptionChange={(description) => this.setState({ description })}
+							descriptionChange={(description) => this.setState({ description })
+							}
 							state={{
 								title: this.state.title,
 								phone: this.state.phone,
@@ -212,17 +220,59 @@ class PublishServiceScreen extends Component {
 							width={WIDTH}
 							onNext={this.scrollTo4}
 							onBack={() => this.scrollTo2}
-							locationChange={(location) => this.setState({ location })}
+							locationChange={(location) => this.setState({ location })
+							}
 							milesChange={(miles) => this.setState({ miles })}
 							state={{
 								location: this.state.location,
 								miles: this.state.miles
 							}}
 						/>
+
+						<ServiceImagePick
+							width={WIDTH}
+							onNext={this.scrollTo5}
+							onBack={() => this.scrollTo3}
+							addImage={(position, image) => this.setState((prevState) => {
+								let imageArray = prevState.images;
+									if (imageArray === null) {
+										imageArray = [];
+									}
+								imageArray.push({ position, image });
+									return { images: imageArray };
+								})
+							}
+							removeImage={(position) => this.setState((prevState) => {
+								const imageArray = prevState.images;
+								// filter, copy all but the same position (the one deleted)
+									const result = imageArray.filter(
+										(obj) => obj.position !== position
+									);
+									return { images: result };
+								})
+							}
+
+							changeOrder={(orderArray) => {
+								const reorderedImages = [];
+								this.setState((prevState) => {
+									const currentImagesArray = prevState.images;
+									// find and copy one by one, according to the order array received
+									orderArray.forEach((index) => {
+										const result = currentImagesArray.find(
+											(obj) => obj.position
+												=== parseInt(index, 10)
+										);
+										reorderedImages.push(result);
+									});
+									return { images: reorderedImages };
+								});
+							}}
+							state={{ images: this.state.images }}
+						/>
+
 						<ServiceReview
 							width={WIDTH}
-							// onNext={() => this.props.navigation.navigate('home')}
-							onBack={() => this.scrollTo3}
+							onBack={() => this.scrollTo4}
 							onComplete={this.doPostService}
 							loading={this.state.loading}
 							state={this.state}

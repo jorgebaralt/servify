@@ -150,10 +150,13 @@ class ProfileServicesScreen extends Component {
 				currentItem.id === 'favorites'
 				&& this.state.favorites < 1
 			) {
+				// Empty favorites
 				return (
-					<ScrollView style={{ paddingLeft: 20, paddingRight: 20}}>
-						<Text style={{ fontSize: 16 , marginTop: 10}}>
-							You have not added any service to favorite list, press below to browse some services, if you see something you like, you can add it to favorite
+					<ScrollView style={{ paddingLeft: 20, paddingRight: 20 }}>
+						<Text style={{ fontSize: 18, marginTop: 10, color: colors.black }}>
+							You have not added any service to favorite list,
+							press below to browse some services, if you see
+							something you like, you can add it to favorite
 						</Text>
 						<View style={{ height: 300, marginTop: 10 }}>
 							<InfoImage
@@ -164,7 +167,8 @@ class ProfileServicesScreen extends Component {
 									marginBottom: 20
 								}}
 								rounded
-								onPress={()=> this.props.navigation.navigate('browse')}
+								onPress={() => this.props.navigation.navigate('browse')
+								}
 							>
 								<View
 									style={{
@@ -184,7 +188,16 @@ class ProfileServicesScreen extends Component {
 									>
 										Search for services
 									</Text>
-									<Button bordered color={colors.secondaryColor} textColor={colors.secondaryColor} style={{ fontSize: 20 }} onPress={() => this.props.navigation.navigate('browse')}>
+									<Button
+										bordered
+										color={colors.secondaryColor}
+										textColor={colors.secondaryColor}
+										style={{ fontSize: 20 }}
+										onPress={() => this.props.navigation.navigate(
+												'browse'
+											)
+										}
+									>
 										<Text>Browse</Text>
 									</Button>
 								</View>
@@ -196,10 +209,12 @@ class ProfileServicesScreen extends Component {
 				currentItem.id === 'my_services'
 				&& this.state.myServices < 1
 			) {
+				// Empty my services
 				return (
-					<ScrollView style={{ paddingLeft: 20, paddingRight: 20}}>
-						<Text style={{ fontSize: 16 , marginTop: 10}}>
-							You have not created any service yet, click bellow to create your first service
+					<ScrollView style={{ paddingLeft: 20, paddingRight: 20 }}>
+						<Text style={{ fontSize: 18, marginTop: 10, color: colors.black }}>
+							You have not created any service yet, click bellow
+							to create your first service
 						</Text>
 						<View style={{ height: 300, marginTop: 10 }}>
 							<InfoImage
@@ -210,7 +225,10 @@ class ProfileServicesScreen extends Component {
 									marginBottom: 20
 								}}
 								rounded
-								onPress={()=> this.props.navigation.navigate('publishInfo')}
+								onPress={() => this.props.navigation.navigate(
+										'publishInfo'
+									)
+								}
 							>
 								<View
 									style={{
@@ -232,7 +250,19 @@ class ProfileServicesScreen extends Component {
 									>
 										Create a service
 									</Text>
-									<Button bordered color={colors.primaryColor} textColor={colors.primaryColor} style={{ fontSize: 20, alignSelf: 'flex-end' }} onPress={() => this.props.navigation.navigate('publishInfo')}>
+									<Button
+										bordered
+										color={colors.primaryColor}
+										textColor={colors.primaryColor}
+										style={{
+											fontSize: 20,
+											alignSelf: 'flex-end'
+										}}
+										onPress={() => this.props.navigation.navigate(
+												'publishInfo'
+											)
+										}
+									>
 										<Text>Create</Text>
 									</Button>
 								</View>

@@ -23,8 +23,8 @@ class ServiceLocation extends Component {
 	};
 
 	componentDidMount() {
-		const { coords } = this.props.userLocation;
-		if (coords) {
+		if (this.props.userLocation) {
+			const { coords } = this.props.userLocation;
 			const region = {
 				latitude: coords.latitude,
 				longitude: coords.longitude,

@@ -26,7 +26,7 @@ class FadeImage extends Component {
 				style={[imageContainerStyle, this.props.style]}
 			>
 				<Animated.Image
-					source={this.props.image}
+					source={this.props.uri ? { uri: this.props.uri } : this.props.image}
 					style={{
 						width: 'auto',
 						height: '100%',

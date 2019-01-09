@@ -4,9 +4,10 @@ import {
 	Text,
 	View,
 	ActivityIndicator,
-	StyleSheet
+	StyleSheet,
+	FlatList
 } from 'react-native';
-import { Button } from '../../components/UI';
+import { Button, FadeImage } from '../../components/UI';
 import { colors, globalStyles } from '../../shared/styles';
 import {
 	Category,
@@ -52,6 +53,43 @@ class ServiceReview extends Component {
 					<Text style={styles.textServiceStyle}>
 						{state.selectedSubcategory.title}
 					</Text>
+				</View>
+			);
+		}
+	};
+
+	renderEachImage = (item) => (
+		<FadeImage
+			style={{
+				height: 100,
+				width: 100,
+				marginHorizontal: 10,
+				borderRadius: 5
+			}}
+			uri={item.image}
+		/>
+	);
+
+	renderImages = () => {
+		const { state } = this.props;
+		if (state.images && state.images.length > 0) {
+			return (
+				<View>
+					<Text
+						style={{
+							color: colors.secondaryColor,
+							fontSize: 20,
+							marginVertical: 10
+						}}
+					>
+						Service Images
+					</Text>
+					<FlatList
+						data={state.images}
+						renderItem={({ item }) => this.renderEachImage(item)}
+						keyExtractor={(item) => item.title}
+						horizontal
+					/>
 				</View>
 			);
 		}
@@ -119,7 +157,7 @@ class ServiceReview extends Component {
 					<Miles height={20} width={20} style={{ marginTop: 0 }} />
 					<Text style={styles.textServiceStyle}>{state.miles}</Text>
 				</View>
-
+				{this.renderImages()}
 				<View
 					style={{
 						flexDirection: 'row',

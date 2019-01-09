@@ -30,7 +30,9 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.jorgebaralt.servify",
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Servify uses current location to find and display nearby services"
+        "NSLocationWhenInUseUsageDescription": "Servify uses current location to find and display nearby services",
+        "NSCameraUsageDescription": "Servify uses the camera to upload images of the services and display them to users",
+        "NSPhotoLibraryUsageDescription": "Servify uses the camera library to upload images to the services so users can see it"
       }
     },
     "android": {

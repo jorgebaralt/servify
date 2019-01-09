@@ -6,13 +6,16 @@ import {
 	Linking,
 	SafeAreaView,
 	Text,
-	View
+	View,
+	Share,
+	Platform
 } from 'react-native';
 import { connect } from 'react-redux';
 import { pageHit } from '../../shared/ga_helper';
 import { profileList } from '../../shared/data';
 import { CustomHeader, ListIcon } from '../../components/UI';
 import { colors } from '../../shared/styles';
+
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -73,6 +76,12 @@ class ProfileScreen extends Component {
 			Linking.openURL('mailto:servifyapp@gmail.com');
 		} else if (item.id === 'help') {
 			this.props.navigation.navigate('help');
+		} else if (item.id === 'share') {
+			Share.share({
+				title: 'Share Servify',
+				message: 'Download Servify, the best way to find local services in your area: ',
+				url: Platform.OS === 'ios' ? 'https://itunes.apple.com/us/app/servify-find-local-services/id1439203889?mt=8' : 'https://play.google.com/store/apps/details?id=com.jorgebaralt.servify'
+			});
 		}
 	};
 
