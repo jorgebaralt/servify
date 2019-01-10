@@ -112,7 +112,7 @@ export const createService = async (servicePost, email, callback) => {
 		}
 	}
 	try {
-		// Everything is fine, post the service
+		// Everything is fine, publish the service
 		await axios.post(createServiceURL, newServicePost);
 		return callback('Service has been published', 'success');
 	} catch (error) {
@@ -143,14 +143,13 @@ export const getPopularNearServices = async (
 	const getNearUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getNearService';
 	try {
 		source = CancelToken.source();
-		let { data } = await axios.post(
-			getNearUrl,
-			{
+		let { data } = await axios.get(getNearUrl, {
+			params: {
 				currentLocation,
 				distance
 			},
-			{ cancelToken: source.token }
-		);
+			cancelToken: source.token
+		});
 		// sort near services by popularity
 		data = sortByPopularity(data);
 		// get the top 5
@@ -170,14 +169,13 @@ export const getNewNearServices = async (
 	const getNearUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getNearService';
 	try {
 		source = CancelToken.source();
-		let { data } = await axios.post(
-			getNearUrl,
-			{
+		let { data } = await axios.get(getNearUrl, {
+			params: {
 				currentLocation,
 				distance
 			},
-			{ cancelToken: source.token }
-		);
+			cancelToken: source.token
+		});
 		data = _.sortBy(data, 'timestamp');
 		data = data.reverse();
 		data = data.slice(0, 5);
@@ -194,10 +192,14 @@ export const getServicesCategory = async (
 	sortBy,
 	callback
 ) => {
-	const url = GET_URL + '/?category=' + category;
 	try {
 		source = CancelToken.source();
-		let { data } = await axios.get(url, { cancelToken: source.token });
+		let { data } = await axios.get(GET_URL, {
+			params: {
+				category
+			},
+			cancelToken: source.token
+		});
 		// TODO: DECIDE SORTING
 		switch (sortBy) {
 			case 'Distance':
@@ -228,10 +230,14 @@ export const getServicesSubcategory = async (
 	sortBy,
 	callback
 ) => {
-	const url = GET_URL + '/?subcategory=' + subcategory;
 	try {
 		source = CancelToken.source();
-		let { data } = await axios.get(url, { cancelToken: source.token });
+		let { data } = await axios.get(GET_URL, {
+			params: {
+				subcategory
+			},
+			cancelToken: source.token
+		});
 		// TODO: DECIDE SORTING
 		switch (sortBy) {
 			case 'Distance':
@@ -255,12 +261,16 @@ export const getServicesSubcategory = async (
 	}
 };
 
-// Get services by email 
+// Get services by email
 export const getServicesByEmail = async (email, callback) => {
-	const url = GET_URL + '/?email=' + email;
 	try {
 		source = CancelToken.source();
-		const { data } = await axios.get(url, { cancelToken: source.token });
+		const { data } = await axios.get(GET_URL, {
+			params: {
+				email
+			},
+			cancelToken: source.token
+		});
 		callback(data);
 	} catch (e) {
 		console.log(e);
@@ -298,7 +308,10 @@ export const updateService = async (service, callback) => {
 		newService.geolocation = geolocation;
 		newService.zipCode = locationData.postalCode;
 	} catch (e) {
-		callback('We could not find your address, please provide a correct address', 'warning');
+		callback(
+			'We could not find your address, please provide a correct address',
+			'warning'
+		);
 	}
 	try {
 		await axios.post(updateUrl, newService);

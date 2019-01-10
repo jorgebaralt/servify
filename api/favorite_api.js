@@ -21,7 +21,9 @@ export const removeFavorite = async (email, service) => {
 
 export const getFavorites = async (email, callback) => {
 	try {
-		const { data } = await axios.post(getFavURL, { email });
+		const { data } = await axios.get(getFavURL, {
+			params: { email }
+		});
 		callback(data);
 	} catch (e) {
 		console.log(e);
