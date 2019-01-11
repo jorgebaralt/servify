@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { colors } from '../../../shared/styles';
 import StarsRating from '../../Ratings/StarsRating';
+import DollarRating from '../../Ratings/DollarRating';
 import { formatDate } from '../../../shared/helpers';
 
 export const ReviewCard = (props) => {
@@ -43,12 +44,16 @@ export const ReviewCard = (props) => {
 					{reviewDate}
 				</Text>
 			</View>
-			<StarsRating
-				rating={review.rating}
-				size={14}
-				spacing={5}
-				style={{ marginTop: 1 }}
-			/>
+			<View style={{ flexDirection: 'row'}}>
+				<StarsRating
+					rating={review.rating}
+					size={14}
+					spacing={5}
+					style={{ marginTop: 1 }}
+				/>
+				{review.price ? <DollarRating rating={review.price} size={14} style={{ marginTop: 1, marginLeft: 10}} /> : null}
+			</View>
+			
 			<Text style={{marginTop: 10, fontSize: 14, color: colors.darkGray }}>
 				{review.comment}
 			</Text>

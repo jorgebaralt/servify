@@ -249,7 +249,7 @@ class HomeScreen extends Component {
 					<Text
 						style={[globalStyles.sectionTitle, { marginLeft: 20 }]}
 					>
-						Popular near services
+						Top rated near service 
 					</Text>
 					<FlatList
 						data={this.state.popularNearServices}

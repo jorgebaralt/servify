@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import StarsRating from '../../Ratings/StarsRating';
+import DollarRating from '../../Ratings/DollarRating';
 import { colors } from '../../../shared/styles';
 import { FadeImage } from '..';
 
@@ -32,13 +33,20 @@ export const DetailedServiceCard = (props) => {
 					<Text style={{marginTop:5, fontSize: 12 }}>{service.displayName}</Text>
 					<View style={{ flexDirection: 'row' }}>
 						<StarsRating
-							width={15}
-							height={15}
-							spacing={2}
+							size={10}
 							rating={service.rating}
 						/>
-						<Text style={{ color: colors.darkGray }}>
+						<Text style={{ color: colors.darkGray, fontSize: 10 }}>
 							({service.rating.toFixed(1)})
+						</Text>
+					</View>
+					<View style={{ flexDirection: 'row', marginTop: 2 }}>
+						<DollarRating
+							size={10}
+							rating={service.price}
+						/>
+						<Text style={{ color: colors.darkGray, fontSize: 10 }}>
+							({service.price.toFixed(1)})
 						</Text>
 					</View>
 					<Text style={{ marginTop: 5, fontSize: 12, color: colors.darkerGray }}>

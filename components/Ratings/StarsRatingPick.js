@@ -12,7 +12,7 @@ const StarsRatingPick = (props) => {
 	for (let i = 1; i <= starsCount; i++) {
 		if (rating >= 1) {
 			stars.push(
-				<TouchableOpacity onPress={() => props.selectRating(i)}>
+				<TouchableOpacity key={i} onPress={() => props.selectRating(i)}>
 					<Star {...props} />
 				</TouchableOpacity>
 			); 
@@ -21,7 +21,7 @@ const StarsRatingPick = (props) => {
 		} else if (rating < 1 && rating > 0) {
 			const value = rating * 100;
 			stars.push(
-				<TouchableOpacity onPress={() => props.selectRating(i)}>
+				<TouchableOpacity key={i} onPress={() => props.selectRating(i)}>
 					<Star {...props} fill={value + '%'} />
 				</TouchableOpacity>
 			);
@@ -29,7 +29,7 @@ const StarsRatingPick = (props) => {
 			rating = 0;
 		} else if (rating === 0) {
 			stars.push(
-				<TouchableOpacity onPress={() => props.selectRating(i)}>
+				<TouchableOpacity key={i} onPress={() => props.selectRating(i)}>
 					<Star {...props} fill="0%" />
 				</TouchableOpacity>
 			);

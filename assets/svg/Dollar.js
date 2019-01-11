@@ -9,7 +9,7 @@ const Dollar = (props) => (
 		aria-hidden="true"
 		width={props.size ? props.size : 16}
 		height={props.size ? props.size : 16}
-		style={[{ marginRight: props.spacing ? props.spacing : 0 }, props.style]}
+		style={[{ marginRight: props.spacing ? props.spacing : -3 }, props.style]}
 		fill="#007791"
 	>
 		<Defs>

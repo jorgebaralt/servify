@@ -11,12 +11,12 @@ const DollarRating = (props) => {
 	// Depending on rating, push a SVG star to our array
 	for (let i = 1; i <= dollarCount; i++) {
 		if (rating >= 1) {
-			dollars.push(<Dollar {...props} />);
+			dollars.push(<Dollar key={i} {...props} />);
 			// substract 1 each time we render a full star
 			rating -= 1;
 		} else if (rating < 1) {
 			dollars.push(
-				<Dollar {...props} fill="0%" />
+				<Dollar key={i} {...props} fill="0%" />
 			);
 		}
 	}

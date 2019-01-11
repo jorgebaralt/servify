@@ -11,13 +11,14 @@ const StarsRating = (props) => {
 	// Depending on rating, push a SVG star to our array
 	for (let i = 1; i <= starsCount; i++) {
 		if (rating >= 1) {
-			stars.push(<Star {...props} />);
+			stars.push(<Star key={i} {...props} />);
 			// substract 1 each time we render a full star
 			rating -= 1;
 		} else if (rating < 1 && rating > 0) {
 			const value = rating * 100;
 			stars.push(
 				<Star
+					key={i}
 					{...props}
 					fill={value + '%'}
 				/>
@@ -26,7 +27,7 @@ const StarsRating = (props) => {
 			rating = 0;
 		} else if (rating === 0) {
 			stars.push(
-				<Star {...props} fill="0%" />
+				<Star key={i} {...props} fill="0%" />
 			);
 		}
 	}

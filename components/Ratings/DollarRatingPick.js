@@ -12,7 +12,7 @@ const StarsRatingPick = (props) => {
 	for (let i = 1; i <= dollarCount; i++) {
 		if (rating >= 1) {
 			dollars.push(
-				<TouchableOpacity onPress={() => props.selectRating(i)}>
+				<TouchableOpacity key={i} onPress={() => props.selectRating(i)}>
 					<Dollar {...props} />
 				</TouchableOpacity>
 			); 
@@ -20,7 +20,7 @@ const StarsRatingPick = (props) => {
 			rating -= 1;   
 		} else if (rating < 1) {
 			dollars.push(
-				<TouchableOpacity onPress={() => props.selectRating(i)}>
+				<TouchableOpacity key={i} onPress={() => props.selectRating(i)}>
 					<Dollar {...props} fill="0%" />
 				</TouchableOpacity>
 			);

@@ -35,6 +35,7 @@ import {
 } from '../../components/UI';
 import { formatDate } from '../../shared/helpers';
 import { Category, Subcategory, Location, Description } from '../../assets/svg';
+import DollarRating from '../../components/Ratings/DollarRating';
 
 const maxCharCount = 100;
 
@@ -188,6 +189,7 @@ class SpecificServiceScreen extends Component {
 		if (this.state.starCount > 0) {
 			const review = {
 				rating: this.state.starCount,
+				price: this.state.dollarCount,
 				comment: this.state.comment,
 				reviewerDisplayName: this.props.user.displayName,
 				reviewerEmail: this.props.user.email
@@ -255,7 +257,7 @@ class SpecificServiceScreen extends Component {
 				<ActivityIndicator
 					size="large"
 					color={colors.primaryColor}
-					style={{ marginTop: 10 }}
+					style={{ marginTop: 10, marginBottom: 40 }}
 				/>
 			);
 		}
@@ -265,7 +267,7 @@ class SpecificServiceScreen extends Component {
 				return (
 					<View>
 						<Text style={styles.titleStyle}>Leave a review</Text>
-						<View style={[commentBorder, { marginTop: 10 }]}>
+						<View style={[commentBorder, { marginTop: 10, marginBottom: 20 }]}>
 							<Text style={{ fontSize: 20, color: colors.black }}>
 								{this.props.user.displayName}
 							</Text>
@@ -318,6 +320,7 @@ class SpecificServiceScreen extends Component {
 								disabled={
 									this.state.starCount === 0
 									|| this.state.comment === ''
+									|| this.state.dollarCount === 0
 								}
 								style={{
 									marginTop: 5,
@@ -379,7 +382,8 @@ class SpecificServiceScreen extends Component {
 								{this.renderCommentDate(currentUserReview)}
 							</Text>
 						</View>
-						<Text style={{ color: colors.darkGray }}>
+						{currentUserReview.price ? <DollarRating rating={currentUserReview.price} size={16} style={{ marginTop: 4 }} /> : null}
+						<Text style={{ color: colors.darkGray, marginTop: 4 }}>
 							{currentUserReview.comment}
 						</Text>
 					</View>
@@ -510,7 +514,7 @@ class SpecificServiceScreen extends Component {
 	};
 
 	renderHeaderImages = (imageUri) => (
-			<FadeImage uri={imageUri} style={{ height: 300, width: WIDTH }} />
+			<FadeImage key={imageUri} uri={imageUri} style={{ height: 300, width: WIDTH }} />
 		);
 
 	render() {
@@ -546,7 +550,7 @@ class SpecificServiceScreen extends Component {
 				behavior="padding"
 				style={{
 					zIndex: -1,
-					backgroundColor: colors.black
+					backgroundColor: colors.white
 				}}
 			>
 				<AnimatedHeader
@@ -565,7 +569,7 @@ class SpecificServiceScreen extends Component {
 						horizontal
 						data={images}
 						renderItem={({ item }) => this.renderHeaderImages(item)}
-						keyExtractor={(item) => item.reviewerEmail}
+						keyExtractor={(item) => item}
 						pagingEnabled
 					/>
 					<View style={{ paddingLeft: 20, paddingRight: 20, backgroundColor: colors.white }}>
@@ -679,7 +683,7 @@ class SpecificServiceScreen extends Component {
 }
 const styles = {
 	contentStyle: {
-		backgroundColor: colors.black,
+		backgroundColor: colors.white,
 		zIndex: -1
 	},
 	rowStyle: { flexDirection: 'row', marginTop: 10 },
@@ -706,12 +710,13 @@ const styles = {
 		borderColor: colors.lightGray,
 		borderRadius: 8,
 		padding: 10,
-		marginBottom: 10,
-		shadowOpacity: 0.3,
-		shadowOffset: { width: 0, height: 0 },
-		shadowColor: colors.darkGray,
-		shadowRadius: 3,
-		backgroundColor: colors.white
+		marginBottom: 20,
+		// shadowOpacity: 0.3,
+		// shadowOffset: { width: 0, height: 0 },
+		// shadowColor: colors.darkGray,
+		// shadowRadius: 3,
+		backgroundColor: colors.white,
+		
 	},
 	showMoreStyle: {
 		color: '#03A9F4',
