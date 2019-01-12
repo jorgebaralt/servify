@@ -11,7 +11,7 @@ import { connect } from 'react-redux';
 import { showToast } from '../../actions';
 import { pageHit } from '../../shared/ga_helper';
 import categories from '../../shared/categories';
-import { createService } from '../../api';
+import { createService, uploadImages } from '../../api';
 
 // Screens
 import ServiceCategory from './ServiceCategory';
@@ -128,6 +128,7 @@ class PublishServiceScreen extends Component {
 				miles,
 				displayName
 			};
+			await uploadImages(this.state.images);
 			await createService(
 				servicePost,
 				this.props.user.email,
@@ -229,12 +230,12 @@ class PublishServiceScreen extends Component {
 							width={WIDTH}
 							onNext={this.scrollTo5}
 							onBack={() => this.scrollTo3}
-							addImage={(position, image) => this.setState((prevState) => {
+							addImage={(position, image, name, type) => this.setState((prevState) => {
 									let imageArray = prevState.images;
 									if (imageArray === null) {
 										imageArray = [];
 									}
-									imageArray.push({ position, image });
+									imageArray.push({ position, image, name, type });
 									return { images: imageArray };
 								})
 							}

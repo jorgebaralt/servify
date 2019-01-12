@@ -44,9 +44,9 @@ const WIDTH = Dimensions.get('window').width;
 let willFocusSubscription;
 let backPressSubscriptions;
 const images = [
-	'https://images.unsplash.com/photo-1543363136-3fdb62e11be5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80',
-	'https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
-	'https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
+	'https://storage.googleapis.com/servify-716c6.appspot.com/service_images%2F2019-01-12T22%3A21%3A20.401Z_CD46B5C0-ED9A-417C-A9B9-00943CD2BBCC.jpg?GoogleAccessId=firebase-adminsdk-a3e7c%40servify-716c6.iam.gserviceaccount.com&Expires=95623372800&Signature=ZjrdAYYD0Bt2iIU8VXs2Vw%2Fm1KoBGbrDM5NIRV3Z0swnDfMw3HrqNE2BNoOus1GU9N6nU%2Fp%2BvPfL24oDxiL3OfhaGtp8AH1si0wi%2FYlF32RwYlG9yhexhuCfCiO2e3YdFK%2BGq%2FKA%2BkY2WYhie7c16z3hg0RH%2Fy%2F79UFP1W4kX%2FMiDeSVB9gdpfwtE6DPc9oSG3%2BkmNMT%2FKjqgz0fuizDnKzqW6FBmV8LzBl%2FK2WSce6H559lqem6bVkgGa8PnQcWhMaqNeL157KzW0e2ajf9zVS0WDQltH03MRVDajbQ6BY35A7vk3j46VTRdnd1ApG64gGLdLZARQrPiURgoCSm3Q%3D%3D',
+	'https://storage.googleapis.com/servify-716c6.appspot.com/service_images%2F2019-01-12T22%3A32%3A21.801Z_296ABD76-2FB8-4510-9EF7-1B937820D0FA.jpg?GoogleAccessId=firebase-adminsdk-a3e7c%40servify-716c6.iam.gserviceaccount.com&Expires=95623372800&Signature=EKgjPRXqqEZwkrsfSI84k7gTf7tA0X3ANXiFXO%2BL7jgc8NrvyzTdeecGjt97RD7%2BCrU20WP5b12QjrTkChb7YgjBioHEvMPuaTOhDe%2FVCS3PTdxQQOjR8PE0bWQUrymXjyNCWZfmwx41waZOnGcNQIcUcXuUj84WyunDLsi300%2FTsrsYhnCGjn2IhF8cr7WqcU8dWUbINJ6tacZtvqjNQR%2BRstAMZL1UOfSj9hlFJu9Iq5xO9Sedxn90vbXVG8kw511VeB%2BHfm4mvnacLk5kCbs6utQQYEjXXZc4KNkEmi8MCnljaI9TD7IqWJISbMzv9htueC3UFkrth8OsT98KXw%3D%3D',
+	'https://storage.googleapis.com/servify-716c6.appspot.com/service_images%2F2019-01-12T22%3A33%3A59.713Z_2AD865B0-C9CD-44D9-88D9-976D5A913510.jpg?GoogleAccessId=firebase-adminsdk-a3e7c%40servify-716c6.iam.gserviceaccount.com&Expires=95623372800&Signature=TXEMNBWBZlDDfsqpJYNADHaOWnOEhjoiA04%2FPYpwCljfPQtglo7Coo0Ci5bBKMOrgIVzLetdJq9xdXRfuadiU2c4cxgORNXUwGynYi4xTm643YwRGNLdrSwG99GY5o4%2FwXmDlay9uT22czW8B4U7kpxhrX3BbenLsf%2Bt%2B9ZPQ4lmDap3iIcJHEIHIf3wRaQAMN1yA25Uy0ZLloP5Q3a0bawJdI1T0uxuHxe3FsI7SgCHsRZ3JlFURNYcH16P5MFCbxnVSO2fNL%2BEBQgVsT4l6gI4c3KeMInW632AUI3%2F3%2FEeRIs%2F736Me%2FD1A7%2FFSFBDqSPiwMEUxCKxkeke3gg7zQ%3D%3D',
 ];
 
 class SpecificServiceScreen extends Component {

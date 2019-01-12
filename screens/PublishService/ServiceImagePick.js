@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
-import {
-	ScrollView,
-	Text,
-	View,
-	StyleSheet,
-	Platform,
-} from 'react-native';
+import { ScrollView, Text, View, StyleSheet, Platform } from 'react-native';
 import { ImagePicker, Permissions } from 'expo';
 import SortableList from 'react-native-sortable-list';
 import _ from 'lodash';
 import { Button, SortableRow } from '../../components/UI';
 import { colors, globalStyles } from '../../shared/styles';
-
 
 class ServiceImagePick extends Component {
 	state = { imageCount: 0 };
@@ -31,10 +24,20 @@ class ServiceImagePick extends Component {
 
 		if (cameraPerm === 'granted' && cameraRollPerm === 'granted') {
 			const result = await ImagePicker.launchImageLibraryAsync({
-				allowsEditing: true
+				allowsEditing: true,
+				base64: true
 			});
 			if (!result.cancelled) {
-				this.props.addImage(this.state.imageCount, result.uri);
+				const filename = result.uri.split('/').pop();
+				// Infer the type of the image
+				const match = /\.(\w+)$/.exec(filename);
+				const type = match ? `image/${match[1]}` : 'image';
+				this.props.addImage(
+					this.state.imageCount,
+					result.uri,
+					filename,
+					type
+				);
 				this.setState((prevState) => {
 					const imageCount = prevState.imageCount + 1;
 					return { imageCount };
@@ -44,7 +47,13 @@ class ServiceImagePick extends Component {
 	};
 
 	_renderRow = ({ data, active }) => (
-		<SortableRow data={data} active={active} removeImage={(position, newData) => this.props.removeImage(position,newData)} />
+		<SortableRow
+			key={data.position}
+			data={data}
+			active={active}
+			removeImage={(position, newData) => this.props.removeImage(position, newData)
+			}
+		/>
 	);
 
 	renderImages = () => {
@@ -59,9 +68,14 @@ class ServiceImagePick extends Component {
 						contentContainerStyle={styles.contentContainer}
 						renderRow={this._renderRow}
 						autoscrollAreaSize={-200}
-						onChangeOrder={(nextOrder) => this.props.changeOrder(nextOrder)}
+						onChangeOrder={(nextOrder) => this.props.changeOrder(nextOrder)
+						}
 					/>
-					<Text style={{ fontSize: 12, color: colors.darkGray }}>Reorder images as you want them to be seen by customers (press and hold to reorder). the first image will be the main image of your service</Text>
+					<Text style={{ fontSize: 12, color: colors.darkGray }}>
+						Reorder images as you want them to be seen by customers
+						(press and hold to reorder). the first image will be the
+						main image of your service
+					</Text>
 				</View>
 			);
 		}
@@ -94,7 +108,10 @@ class ServiceImagePick extends Component {
 					color={colors.secondaryColor}
 					textColor={colors.secondaryColor}
 					onPress={() => this.pickImage()}
-					disabled={this.props.state.images && this.props.state.images.length >= 5}
+					disabled={
+						this.props.state.images
+						&& this.props.state.images.length >= 5
+					}
 					style={{ marginTop: 10 }}
 				>
 					<Text>Add image</Text>
