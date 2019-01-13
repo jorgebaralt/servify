@@ -141,8 +141,8 @@ class ServiceLocation extends Component {
 				</Text>
 
 				<Slider
-					onValueChange={(value) => this.onMilesChange(value)}
-					value={props.state.miles}
+					onValueChange={async (value) => this.onMilesChange(value)}
+					// value={props.state.miles}
 					step={1}
 					minimumValue={1}
 					maximumValue={60}

@@ -31,7 +31,8 @@ const initialState = {
 	miles: 1,
 	description: '',
 	loading: false,
-	images: null
+	images: null,
+	imageUrls: []
 };
 
 let willFocusSubscription;
@@ -117,6 +118,7 @@ class PublishServiceScreen extends Component {
 			&& miles
 		) {
 			this.setState({ loading: true });
+			await uploadImages(this.state.images, (imageUrls) => { this.setState({ imageUrls }); });
 			const { displayName } = this.props.user;
 			const servicePost = {
 				selectedCategory,
@@ -126,9 +128,9 @@ class PublishServiceScreen extends Component {
 				location,
 				description,
 				miles,
-				displayName
+				displayName,
+				imageUrls: this.state.imageUrls
 			};
-			await uploadImages(this.state.images);
 			await createService(
 				servicePost,
 				this.props.user.email,

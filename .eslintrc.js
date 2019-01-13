@@ -1,4 +1,7 @@
 module.exports = {
+    "globals": {
+        "FormData": true
+    },
     "extends": "airbnb",
     "parser": "babel-eslint",
     "rules" : {
