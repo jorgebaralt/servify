@@ -49,7 +49,10 @@ class ProfileServicesScreen extends Component {
 	}
 
 	async componentWillUnmount() {
-		await cancelAxiosFavs();
+		if (currentItem.id === 'favorites') {
+			await cancelAxiosFavs();
+		}
+		
 		willFocusSubscription.remove();
 	}
 
