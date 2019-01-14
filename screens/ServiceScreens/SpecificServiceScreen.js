@@ -44,9 +44,21 @@ const WIDTH = Dimensions.get('window').width;
 let willFocusSubscription;
 let backPressSubscriptions;
 const images = [
-	'https://storage.googleapis.com/servify-716c6.appspot.com/service_images%2F2019-01-12T22%3A21%3A20.401Z_CD46B5C0-ED9A-417C-A9B9-00943CD2BBCC.jpg?GoogleAccessId=firebase-adminsdk-a3e7c%40servify-716c6.iam.gserviceaccount.com&Expires=95623372800&Signature=ZjrdAYYD0Bt2iIU8VXs2Vw%2Fm1KoBGbrDM5NIRV3Z0swnDfMw3HrqNE2BNoOus1GU9N6nU%2Fp%2BvPfL24oDxiL3OfhaGtp8AH1si0wi%2FYlF32RwYlG9yhexhuCfCiO2e3YdFK%2BGq%2FKA%2BkY2WYhie7c16z3hg0RH%2Fy%2F79UFP1W4kX%2FMiDeSVB9gdpfwtE6DPc9oSG3%2BkmNMT%2FKjqgz0fuizDnKzqW6FBmV8LzBl%2FK2WSce6H559lqem6bVkgGa8PnQcWhMaqNeL157KzW0e2ajf9zVS0WDQltH03MRVDajbQ6BY35A7vk3j46VTRdnd1ApG64gGLdLZARQrPiURgoCSm3Q%3D%3D',
-	'https://storage.googleapis.com/servify-716c6.appspot.com/service_images%2F2019-01-12T22%3A32%3A21.801Z_296ABD76-2FB8-4510-9EF7-1B937820D0FA.jpg?GoogleAccessId=firebase-adminsdk-a3e7c%40servify-716c6.iam.gserviceaccount.com&Expires=95623372800&Signature=EKgjPRXqqEZwkrsfSI84k7gTf7tA0X3ANXiFXO%2BL7jgc8NrvyzTdeecGjt97RD7%2BCrU20WP5b12QjrTkChb7YgjBioHEvMPuaTOhDe%2FVCS3PTdxQQOjR8PE0bWQUrymXjyNCWZfmwx41waZOnGcNQIcUcXuUj84WyunDLsi300%2FTsrsYhnCGjn2IhF8cr7WqcU8dWUbINJ6tacZtvqjNQR%2BRstAMZL1UOfSj9hlFJu9Iq5xO9Sedxn90vbXVG8kw511VeB%2BHfm4mvnacLk5kCbs6utQQYEjXXZc4KNkEmi8MCnljaI9TD7IqWJISbMzv9htueC3UFkrth8OsT98KXw%3D%3D',
-	'https://storage.googleapis.com/servify-716c6.appspot.com/service_images%2F2019-01-12T22%3A33%3A59.713Z_2AD865B0-C9CD-44D9-88D9-976D5A913510.jpg?GoogleAccessId=firebase-adminsdk-a3e7c%40servify-716c6.iam.gserviceaccount.com&Expires=95623372800&Signature=TXEMNBWBZlDDfsqpJYNADHaOWnOEhjoiA04%2FPYpwCljfPQtglo7Coo0Ci5bBKMOrgIVzLetdJq9xdXRfuadiU2c4cxgORNXUwGynYi4xTm643YwRGNLdrSwG99GY5o4%2FwXmDlay9uT22czW8B4U7kpxhrX3BbenLsf%2Bt%2B9ZPQ4lmDap3iIcJHEIHIf3wRaQAMN1yA25Uy0ZLloP5Q3a0bawJdI1T0uxuHxe3FsI7SgCHsRZ3JlFURNYcH16P5MFCbxnVSO2fNL%2BEBQgVsT4l6gI4c3KeMInW632AUI3%2F3%2FEeRIs%2F736Me%2FD1A7%2FFSFBDqSPiwMEUxCKxkeke3gg7zQ%3D%3D',
+	{
+		fileName: '1',
+		url:
+			'https://images.unsplash.com/photo-1547380109-a2fffd5b9036?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60'
+	},
+	{
+		fileName: '2',
+		url:
+			'https://images.unsplash.com/photo-1543364195-077a16c30ff3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60'
+	},
+	{
+		fileName: '3',
+		url:
+			'https://images.unsplash.com/photo-1507682520764-93440a60e9b5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60'
+	}
 ];
 
 class SpecificServiceScreen extends Component {
@@ -108,7 +120,7 @@ class SpecificServiceScreen extends Component {
 		} else {
 			this.setState({ transparentHeader: true });
 		}
-	}
+	};
 
 	handleAndroidBack = () => {
 		backPressSubscriptions = new Set();
@@ -267,7 +279,12 @@ class SpecificServiceScreen extends Component {
 				return (
 					<View>
 						<Text style={styles.titleStyle}>Leave a review</Text>
-						<View style={[commentBorder, { marginTop: 10, marginBottom: 20 }]}>
+						<View
+							style={[
+								commentBorder,
+								{ marginTop: 10, marginBottom: 20 }
+							]}
+						>
 							<Text style={{ fontSize: 20, color: colors.black }}>
 								{this.props.user.displayName}
 							</Text>
@@ -382,7 +399,13 @@ class SpecificServiceScreen extends Component {
 								{this.renderCommentDate(currentUserReview)}
 							</Text>
 						</View>
-						{currentUserReview.price ? <DollarRating rating={currentUserReview.price} size={16} style={{ marginTop: 4 }} /> : null}
+						{currentUserReview.price ? (
+							<DollarRating
+								rating={currentUserReview.price}
+								size={16}
+								style={{ marginTop: 4 }}
+							/>
+						) : null}
 						<Text style={{ color: colors.darkGray, marginTop: 4 }}>
 							{currentUserReview.comment}
 						</Text>
@@ -393,7 +416,7 @@ class SpecificServiceScreen extends Component {
 		}
 	};
 
-	renderReviews = (review) => <ReviewCard review={review} />;
+	renderReviews = (review, i) => <ReviewCard review={review} />;
 
 	renderAllReviews = () => {
 		if (this.state.reviews) {
@@ -403,10 +426,11 @@ class SpecificServiceScreen extends Component {
 						<Text style={styles.titleStyle}>Reviews</Text>
 						<FlatList
 							data={this.state.reviews}
-							renderItem={({ item }) => this.renderReviews(item)}
-							keyExtractor={(item) => item.reviewerEmail}
+							renderItem={({ item, index }) => this.renderReviews(item, index)
+							}
 							enableEmptySections
 							style={{ padding: 4 }}
+							keyExtractor={(item) => item.timestamp}
 						/>
 						{this.showMoreComments()}
 					</View>
@@ -436,7 +460,11 @@ class SpecificServiceScreen extends Component {
 		<Ionicons
 			name="ios-arrow-back"
 			size={32}
-			style={{ color: this.state.transparentHeader ? colors.white : colors.black }}
+			style={{
+				color: this.state.transparentHeader
+					? colors.white
+					: colors.black
+			}}
 			onPress={() => {
 				this.onBackPress();
 			}}
@@ -449,7 +477,11 @@ class SpecificServiceScreen extends Component {
 				<Entypo
 					size={32}
 					name="dots-three-horizontal"
-					style={{ color: this.state.transparentHeader ? colors.white : colors.black }}
+					style={{
+						color: this.state.transparentHeader
+							? colors.white
+							: colors.black
+					}}
 					onPress={() => this.props.navigation.navigate('editService', {
 							service: this.state.service
 						})
@@ -462,7 +494,9 @@ class SpecificServiceScreen extends Component {
 				<MaterialIcons
 					name="info-outline"
 					style={{
-						color: this.state.transparentHeader ? colors.white : colors.black,
+						color: this.state.transparentHeader
+							? colors.white
+							: colors.black,
 						marginRight: 10
 					}}
 					size={26}
@@ -498,7 +532,8 @@ class SpecificServiceScreen extends Component {
 						height: 200,
 						width: '100%',
 						marginTop: 20,
-						borderRadius: 8
+						borderRadius: 8,
+						marginBottom: 40
 					}}
 					region={fixedRegion}
 				>
@@ -513,9 +548,9 @@ class SpecificServiceScreen extends Component {
 		);
 	};
 
-	renderHeaderImages = (imagesInfo) => (
-			<FadeImage key={imagesInfo.fileName} uri={imagesInfo.url} style={{ height: 300, width: WIDTH }} />
-		);
+	renderHeaderImages = (imagesInfo, i) => (
+		<FadeImage uri={imagesInfo.url} style={{ height: 300, width: WIDTH }} />
+	);
 
 	render() {
 		const { service } = this.state;
@@ -545,7 +580,6 @@ class SpecificServiceScreen extends Component {
 		}
 
 		return (
-
 			<KeyboardAvoidingView
 				behavior="padding"
 				style={{
@@ -567,12 +601,23 @@ class SpecificServiceScreen extends Component {
 				>
 					<FlatList
 						horizontal
-						data={this.state.service.imagesInfo ? this.state.service.imagesInfo : images}
-						renderItem={({ item }) => this.renderHeaderImages(item)}
-						keyExtractor={(item) => item}
+						data={
+							this.state.service.imagesInfo
+								? this.state.service.imagesInfo
+								: images
+						}
+						renderItem={({ item, index }) => this.renderHeaderImages(item, index)
+						}
+						keyExtractor={(item) => item.fileName}
 						pagingEnabled
 					/>
-					<View style={{ paddingLeft: 20, paddingRight: 20, backgroundColor: colors.white }}>
+					<View
+						style={{
+							paddingLeft: 20,
+							paddingRight: 20,
+							backgroundColor: colors.white
+						}}
+					>
 						<Text style={titleStyle}>{service.title}</Text>
 						<View style={rowStyle}>
 							<Category
@@ -715,8 +760,7 @@ const styles = {
 		// shadowOffset: { width: 0, height: 0 },
 		// shadowColor: colors.darkGray,
 		// shadowRadius: 3,
-		backgroundColor: colors.white,
-		
+		backgroundColor: colors.white
 	},
 	showMoreStyle: {
 		color: '#03A9F4',

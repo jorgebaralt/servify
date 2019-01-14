@@ -340,7 +340,7 @@ class HomeScreen extends Component {
 							Keep growing
 						</Text>
 						<InfoImage
-							uri="https://images.unsplash.com/photo-1472289065668-ce650ac443d2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+							uri="https://images.unsplash.com/photo-1518226203301-8e7f833c6a94?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
 							text="Host your service near Orlando, FL "
 							buttonText="Post a service"
 							style={{
@@ -351,6 +351,7 @@ class HomeScreen extends Component {
 							rounded
 							onPress={() => this.props.navigation.navigate('publishInfo')
 							}
+							opacity={0.4}
 						>
 							<View
 								style={{
@@ -364,14 +365,15 @@ class HomeScreen extends Component {
 									style={{
 										fontSize: 30,
 										fontWeight: '600',
-										color: colors.white,
-										marginBottom: 40
+										marginBottom: 40,
+										color: colors.white
 									}}
 								>
 									Publish a service near {this.state.currentCity}
 								</Text>
 								<Button
 									bordered
+
 									style={{ fontSize: 20 }}
 									onPress={() => this.props.navigation.navigate(
 											'publishInfo'
