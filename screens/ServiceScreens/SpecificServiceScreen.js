@@ -513,8 +513,8 @@ class SpecificServiceScreen extends Component {
 		);
 	};
 
-	renderHeaderImages = (imageUri) => (
-			<FadeImage key={imageUri} uri={imageUri} style={{ height: 300, width: WIDTH }} />
+	renderHeaderImages = (imagesInfo) => (
+			<FadeImage key={imagesInfo.fileName} uri={imagesInfo.url} style={{ height: 300, width: WIDTH }} />
 		);
 
 	render() {
@@ -567,7 +567,7 @@ class SpecificServiceScreen extends Component {
 				>
 					<FlatList
 						horizontal
-						data={this.state.service.imageUrls ? this.state.service.imageUrls : images}
+						data={this.state.service.imagesInfo ? this.state.service.imagesInfo : images}
 						renderItem={({ item }) => this.renderHeaderImages(item)}
 						keyExtractor={(item) => item}
 						pagingEnabled

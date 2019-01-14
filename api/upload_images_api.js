@@ -14,7 +14,7 @@ export const uploadImages = async (imagesDataArray, callback) => {
 				'https://us-central1-servify-716c6.cloudfunctions.net/uploadFile',
 				formData
 			);
-			return (data.signedUrls[0]);
+			return (data);
 		}));
 		
 		callback(promises);

@@ -119,6 +119,7 @@ class PublishServiceScreen extends Component {
 		) {
 			this.setState({ loading: true });
 			await uploadImages(this.state.images, (imageUrls) => { this.setState({ imageUrls }); });
+			console.log(this.state.imageUrls);
 			const { displayName } = this.props.user;
 			const servicePost = {
 				selectedCategory,
@@ -129,7 +130,7 @@ class PublishServiceScreen extends Component {
 				description,
 				miles,
 				displayName,
-				imageUrls: this.state.imageUrls
+				imagesInfo: this.state.imageUrls
 			};
 			await createService(
 				servicePost,

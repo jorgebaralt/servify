@@ -164,7 +164,7 @@ class HomeScreen extends Component {
 	renderNearNearServices = (service, i) => (
 		<HomeServiceCard
 			last={this.state.newNearServices.length - 1 === i}
-			uri={service.imageUrls ? service.imageUrls[0] : null}
+			uri={service.imagesInfo ? service.imagesInfo[0].url : null}
 			image={require('../../assets/default/food/1.jpg')}
 			service={service}
 			showLocation
@@ -247,7 +247,7 @@ class HomeScreen extends Component {
 			<HomeServiceCard
 				last={this.state.popularNearServices.length - 1 === i}
 				image={require('../../assets/default/food/1.jpg')}
-				uri={service.imageUrls ? service.imageUrls[0] : null}
+				uri={service.imagesInfo ? service.imagesInfo[0].url : null}
 				service={service}
 				showRating
 				onPress={() => {
