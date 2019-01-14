@@ -62,6 +62,7 @@ class HomeServiceCard extends Component {
 			>
 				<View>
 					<FadeImage
+						uri={this.props.uri}
 						image={this.props.image}
 						style={{ height: 100 }}
 					/>

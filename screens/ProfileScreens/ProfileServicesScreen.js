@@ -103,6 +103,7 @@ class ProfileServicesScreen extends Component {
 			type={currentItem.id}
 			currentUser={this.props.user}
 			image={require('../../assets/default/subcategories/home_cleaning.jpg')}
+			uri={service.imageUrls ? service.imageUrls[0] : null}
 			onPress={() => {
 				this.props.navigation.navigate('service', { service });
 			}}

@@ -150,6 +150,7 @@ class HomeScreen extends Component {
 	renderNearNearServices = (service, i) => (
 		<HomeServiceCard
 			last={this.state.newNearServices.length - 1 === i}
+			uri={service.imageUrls ? service.imageUrls[0] : null}
 			image={require('../../assets/default/food/1.jpg')}
 			service={service}
 			showLocation
@@ -227,19 +228,22 @@ class HomeScreen extends Component {
 		);
 
 	// each item in popular near services
-	renderPopularNearServicesList = (service, i) => (
-		<View>
-			<HomeServiceCard
-				last={this.state.popularNearServices.length - 1 === i}
-				image={require('../../assets/default/food/1.jpg')}
-				service={service}
-				showRating
-				onPress={() => {
-					this.props.navigation.navigate('service', { service });
-				}}
-			/>
-		</View>
-	);
+	renderPopularNearServicesList = (service, i) => {
+		return (
+			<View>
+				<HomeServiceCard
+					last={this.state.popularNearServices.length - 1 === i}
+					image={require('../../assets/default/food/1.jpg')}
+					uri={service.imageUrls ? service.imageUrls[0] : null}
+					service={service}
+					showRating
+					onPress={() => {
+						this.props.navigation.navigate('service', { service });
+					}}
+				/>
+			</View>
+		);
+	}
 
 	// make sure we can render popular near services
 	renderPopularNearServices = () => {

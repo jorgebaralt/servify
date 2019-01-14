@@ -61,6 +61,7 @@ class ProfileServiceCard extends Component {
 				onPress={props.onPress}
 			>
 				<FadeImage
+					uri={this.props.uri ? this.props.uri : null}
 					image={this.props.image}
 					style={{ height: (HEIGHT - 120) * 0.25, borderRadius: 5 }}
 				/>

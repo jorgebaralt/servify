@@ -567,7 +567,7 @@ class SpecificServiceScreen extends Component {
 				>
 					<FlatList
 						horizontal
-						data={images}
+						data={this.state.service.imageUrls ? this.state.service.imageUrls : images}
 						renderItem={({ item }) => this.renderHeaderImages(item)}
 						keyExtractor={(item) => item}
 						pagingEnabled
