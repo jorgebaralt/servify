@@ -11,7 +11,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
-import { getServicesByEmail, getFavorites, removeFavorite } from '../../api';
+import { getServicesByEmail, getFavorites, removeFavorite, cancelAxiosFavs } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 import { colors } from '../../shared/styles';
 import {
@@ -48,7 +48,8 @@ class ProfileServicesScreen extends Component {
 		await this.decideFetchData();
 	}
 
-	componentWillUnmount() {
+	async componentWillUnmount() {
+		await cancelAxiosFavs();
 		willFocusSubscription.remove();
 	}
 

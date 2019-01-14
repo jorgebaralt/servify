@@ -182,6 +182,7 @@ class ServicesListScreen extends Component {
 			onPress={() => {
 				this.props.navigation.navigate('service', { service });
 			}}
+			uri={service.imageUrls ? service.imageUrls[0] : null}
 			color={this.state.category.color[0]}
 			distance={this.state.sortBy === DISTANCE}
 		/>

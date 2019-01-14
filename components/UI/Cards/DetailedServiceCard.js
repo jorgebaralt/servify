@@ -20,6 +20,7 @@ export const DetailedServiceCard = (props) => {
 					style={styles.imageContainerStyle}
 				>
 					<FadeImage
+						uri={props.uri}
 						image={require('../../../assets/default/baby/1.jpg')}
 						style={styles.imageStyle}
 					/>

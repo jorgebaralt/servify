@@ -22,7 +22,7 @@ class InfoImage extends Component {
 			<TouchableOpacity style={[styles.content, this.props.style, {borderRadius: this.props.rounded ? 8 : 0 }]} disabled={this.props.disablePress} onPress={this.props.onPress}>
 				<Animated.View style={{ opacity: this.state.fadeAnimation }}>
 					<ImageBackground
-						source={this.props.image}
+						source={this.props.uri ? { uri: this.props.uri } : this.props.image}
 						style={{ width: 'auto', height: '100%' }}
 						onLoad={this.onLoad}
 						resizeMode="cover"

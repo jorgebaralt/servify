@@ -15,7 +15,12 @@ import {
 import { connect } from 'react-redux';
 import { Permissions } from 'expo';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Button, InfoImage, HomeServiceCard, CategoryCard } from '../../components/UI';
+import {
+	Button,
+	InfoImage,
+	HomeServiceCard,
+	CategoryCard
+} from '../../components/UI';
 import { colors, globalStyles } from '../../shared/styles';
 import { getUserLocation } from '../../actions';
 import * as api from '../../api';
@@ -24,6 +29,7 @@ import { pageHit } from '../../shared/ga_helper';
 let backPressSubscriptions;
 let willFocusSubscription;
 let didFocusSubscription;
+let currentCity;
 const DISTANCE = 30;
 const WIDTH = Dimensions.get('window').width;
 
@@ -44,7 +50,8 @@ class HomeScreen extends Component {
 		popularCategories: undefined,
 		popularNearServices: undefined,
 		newNearServices: undefined,
-		dataLoaded: false
+		dataLoaded: false,
+		currentCity: ''
 	};
 
 	async componentDidMount() {
@@ -114,6 +121,13 @@ class HomeScreen extends Component {
 			if (!this.props.userLocation) {
 				await this.props.getUserLocation();
 			}
+			// Loc info
+			await api.getLocationInfo({
+				latitude: this.props.userLocation.coords.latitude,
+				longitude: this.props.userLocation.coords.longitude
+			},(locInfo) => this.setState({ currentCity: locInfo.city + ' ' + locInfo.region }));
+
+			
 			// Get New Near Services
 			await api.getNewNearServices(
 				this.props.userLocation.coords,
@@ -140,9 +154,9 @@ class HomeScreen extends Component {
 	doSelectCategory = async (category) => {
 		if (category.subcategories) {
 			// FIXME: never happening, because is not on back-end
-			this.props.navigation.navigate('subcategories', {category});
+			this.props.navigation.navigate('subcategories', { category });
 		} else {
-			this.props.navigation.navigate('servicesList', {category});
+			this.props.navigation.navigate('servicesList', { category });
 		}
 	};
 
@@ -155,7 +169,7 @@ class HomeScreen extends Component {
 			service={service}
 			showLocation
 			onPress={() => {
-				this.props.navigation.navigate('service', {service});
+				this.props.navigation.navigate('service', { service });
 			}}
 		/>
 	);
@@ -213,37 +227,35 @@ class HomeScreen extends Component {
 
 	// make sure we can render popular categories
 	renderPopularCategories = () => (
-			<View style={{ marginTop: 45 }}>
-				<Text style={[globalStyles.sectionTitle, { marginLeft: 20 }]}>
-					Popular categories
-				</Text>
-				<FlatList
-					data={this.state.popularCategories}
-					renderItem={({ item, index }) => this.renderPopularCategoriesList(item, index)
-					}
-					keyExtractor={(item) => item.title}
-					horizontal
-				/>
-			</View>
-		);
+		<View style={{ marginTop: 45 }}>
+			<Text style={[globalStyles.sectionTitle, { marginLeft: 20 }]}>
+				Popular categories
+			</Text>
+			<FlatList
+				data={this.state.popularCategories}
+				renderItem={({ item, index }) => this.renderPopularCategoriesList(item, index)
+				}
+				keyExtractor={(item) => item.title}
+				horizontal
+			/>
+		</View>
+	);
 
 	// each item in popular near services
-	renderPopularNearServicesList = (service, i) => {
-		return (
-			<View>
-				<HomeServiceCard
-					last={this.state.popularNearServices.length - 1 === i}
-					image={require('../../assets/default/food/1.jpg')}
-					uri={service.imageUrls ? service.imageUrls[0] : null}
-					service={service}
-					showRating
-					onPress={() => {
-						this.props.navigation.navigate('service', { service });
-					}}
-				/>
-			</View>
-		);
-	}
+	renderPopularNearServicesList = (service, i) => (
+		<View>
+			<HomeServiceCard
+				last={this.state.popularNearServices.length - 1 === i}
+				image={require('../../assets/default/food/1.jpg')}
+				uri={service.imageUrls ? service.imageUrls[0] : null}
+				service={service}
+				showRating
+				onPress={() => {
+					this.props.navigation.navigate('service', { service });
+				}}
+			/>
+		</View>
+	);
 
 	// make sure we can render popular near services
 	renderPopularNearServices = () => {
@@ -253,7 +265,7 @@ class HomeScreen extends Component {
 					<Text
 						style={[globalStyles.sectionTitle, { marginLeft: 20 }]}
 					>
-						Top rated near service 
+						Top rated near service
 					</Text>
 					<FlatList
 						data={this.state.popularNearServices}
@@ -273,24 +285,20 @@ class HomeScreen extends Component {
 			return (
 				<View>
 					{this.renderPopularCategories()}
-					{this.renderNewServicesNear()}
-					{this.renderPopularNearServices()}
-					{/* Show image when last service list is rendered */}
 					<View style={{ paddingLeft: 20, paddingRight: 20 }}>
-						<Text
-							style={[
-								globalStyles.sectionTitle,
-							]}
-						>
-							Keep growing
-						</Text>
 						<InfoImage
-							image={require('../../assets/backgrounds/yellow.jpg')}
+							uri="https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
 							text="Host your service near Orlando, FL "
 							buttonText="Post a service"
-							style={{ marginTop: 5, height: 250, marginBottom: 20 }}
+							style={{
+								marginTop: 20,
+								height: 250,
+								marginBottom: 20
+							}}
 							rounded
-							onPress={()=> this.props.navigation.navigate('publishInfo')}
+							onPress={() => this.props.navigation.navigate('browse')
+							}
+							opacity={0.2}
 						>
 							<View
 								style={{
@@ -308,9 +316,68 @@ class HomeScreen extends Component {
 										marginBottom: 40
 									}}
 								>
-									Host your service near Orlando, FL{' '}
+									More categories
 								</Text>
-								<Button bordered style={{ fontSize: 20 }} onPress={() => this.props.navigation.navigate('publishInfo')}>
+								<Button
+									bordered
+									style={{ fontSize: 20 }}
+									onPress={() => this.props.navigation.navigate(
+											'publishInfo'
+										)
+									}
+								>
+									<Text>Browse</Text>
+								</Button>
+							</View>
+						</InfoImage>
+					</View>
+
+					{this.renderNewServicesNear()}
+					{this.renderPopularNearServices()}
+					{/* Show image when last service list is rendered */}
+					<View style={{ paddingLeft: 20, paddingRight: 20 }}>
+						<Text style={[globalStyles.sectionTitle]}>
+							Keep growing
+						</Text>
+						<InfoImage
+							uri="https://images.unsplash.com/photo-1472289065668-ce650ac443d2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+							text="Host your service near Orlando, FL "
+							buttonText="Post a service"
+							style={{
+								marginTop: 5,
+								height: 250,
+								marginBottom: 20
+							}}
+							rounded
+							onPress={() => this.props.navigation.navigate('publishInfo')
+							}
+						>
+							<View
+								style={{
+									position: 'absolute',
+									left: 20,
+									bottom: 20,
+									right: 5
+								}}
+							>
+								<Text
+									style={{
+										fontSize: 30,
+										fontWeight: '600',
+										color: colors.white,
+										marginBottom: 40
+									}}
+								>
+									Publish a service near {this.state.currentCity}
+								</Text>
+								<Button
+									bordered
+									style={{ fontSize: 20 }}
+									onPress={() => this.props.navigation.navigate(
+											'publishInfo'
+										)
+									}
+								>
 									<Text>Publish your service</Text>
 								</Button>
 							</View>
@@ -335,7 +402,7 @@ class HomeScreen extends Component {
 					flex: 1,
 					marginTop: 0,
 					paddingTop: 0,
-					backgroundColor: '#FFFFFF',
+					backgroundColor: '#FFFFFF'
 				}}
 				refreshControl={(
 <RefreshControl
@@ -382,6 +449,6 @@ function mapStateToProps(state) {
 export default connect(
 	mapStateToProps,
 	{
-		getUserLocation,
+		getUserLocation
 	}
 )(HomeScreen);

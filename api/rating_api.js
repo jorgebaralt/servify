@@ -93,5 +93,6 @@ export const deleteReview = async (service, review, callback) => {
 };
 
 export const cancelAxiosRating = async () => {
+	console.log('canceling');
 	await source.cancel();
 };

@@ -52,8 +52,8 @@ class ServiceLocation extends Component {
 				region: {
 					latitude: coords.latitude,
 					longitude: coords.longitude,
-					latitudeDelta: prevState.latitudeDelta,
-					longitudeDelta: prevState.longitudeDelta
+					latitudeDelta: prevState.region.latitudeDelta,
+					longitudeDelta: prevState.region.longitudeDelta
 				},
 				center: {
 					latitude: coords.latitude,
@@ -68,8 +68,8 @@ class ServiceLocation extends Component {
 					region: {
 						latitude: newAddress.latitude,
 						longitude: newAddress.longitude,
-						latitudeDelta: prevState.latitudeDelta,
-						longitudeDelta: prevState.longitudeDelta
+						latitudeDelta: prevState.region.latitudeDelta,
+						longitudeDelta: prevState.region.longitudeDelta
 					},
 					center: {
 						latitude: newAddress.latitude,
@@ -142,7 +142,6 @@ class ServiceLocation extends Component {
 
 				<Slider
 					onValueChange={async (value) => this.onMilesChange(value)}
-					// value={props.state.miles}
 					step={1}
 					minimumValue={1}
 					maximumValue={60}
@@ -157,6 +156,7 @@ class ServiceLocation extends Component {
 							marginTop: 20,
 							borderRadius: 8
 						}}
+						initialRegion={this.state.region}
 						region={this.state.region}
 					>
 						<MapView.Circle
