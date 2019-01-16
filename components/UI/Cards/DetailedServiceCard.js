@@ -9,34 +9,26 @@ import { FadeImage } from '..';
 export const DetailedServiceCard = (props) => {
 	const { service } = props;
 	return (
-		<TouchableOpacity
-			style={styles.touchCardStyle}
-			onPress={props.onPress}
-		>
-			<View
-				style={styles.contanierViewStyle}
-			>
-				<View
-					style={styles.imageContainerStyle}
-				>
+		<TouchableOpacity style={styles.touchCardStyle} onPress={props.onPress}>
+			<View style={styles.contanierViewStyle}>
+				<View style={styles.imageContainerStyle}>
 					<FadeImage
 						uri={props.uri}
 						image={require('../../../assets/default/baby/1.jpg')}
 						style={styles.imageStyle}
 					/>
 				</View>
-				<View style={{ paddingLeft: 15, marginLeft: 80, marginRight: 20 }}>
-					<Text
-						style={[styles.titleStyle, { color: props.color }]}
-					>
+				<View
+					style={{ paddingLeft: 15, marginLeft: 80, marginRight: 20 }}
+				>
+					<Text style={[styles.titleStyle, { color: props.color }]}>
 						{service.title}
 					</Text>
-					<Text style={{marginTop:5, fontSize: 12 }}>{service.displayName}</Text>
+					<Text style={{ marginTop: 5, fontSize: 12 }}>
+						{service.displayName}
+					</Text>
 					<View style={{ flexDirection: 'row' }}>
-						<StarsRating
-							size={10}
-							rating={service.rating}
-						/>
+						<StarsRating size={10} rating={service.rating} />
 						<Text style={{ color: colors.darkGray, fontSize: 10 }}>
 							({service.rating.toFixed(1)})
 						</Text>
@@ -47,20 +39,43 @@ export const DetailedServiceCard = (props) => {
 							rating={service.price}
 							style={{ marginTop: 2 }}
 						/>
-						<Text style={{ color: colors.darkGray, fontSize: 10, marginLeft: 2 }}>
+						<Text
+							style={{
+								color: colors.darkGray,
+								fontSize: 10,
+								marginLeft: 2
+							}}
+						>
 							({service.price.toFixed(1)})
 						</Text>
 					</View>
-					<Text style={{ marginTop: 5, fontSize: 12, color: colors.darkerGray }}>
-						{service.description.length > 30 ? service.description.substring(0, 30) + '...' : service.description}
+					<Text
+						style={{
+							marginTop: 5,
+							fontSize: 12,
+							color: colors.darkerGray
+						}}
+					>
+						{service.description.length > 30
+							? service.description.substring(0, 30) + '...'
+							: service.description}
 					</Text>
 					<View>
-						{props.distance ? <Text style={{ fontSize: 12, color: colors.darkGray }}>{Math.floor(service.distance)} miles</Text> : null}
+						{props.distance ? (
+							<Text
+								style={{ fontSize: 12, color: colors.darkGray }}
+							>
+								{Math.floor(service.distance)} miles
+							</Text>
+						) : null}
 					</View>
 				</View>
 				<View style={{ position: 'absolute', right: -15 }}>
 					<View
-						style={[styles.iconContainerStyle, {backgroundColor: props.color}]}
+						style={[
+							styles.iconContainerStyle,
+							{ backgroundColor: props.color }
+						]}
 					>
 						<Ionicons
 							name="ios-arrow-forward"
