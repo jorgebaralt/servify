@@ -45,8 +45,9 @@ export const DetailedServiceCard = (props) => {
 						<DollarRating
 							size={10}
 							rating={service.price}
+							style={{ marginTop: 2 }}
 						/>
-						<Text style={{ color: colors.darkGray, fontSize: 10 }}>
+						<Text style={{ color: colors.darkGray, fontSize: 10, marginLeft: 2 }}>
 							({service.price.toFixed(1)})
 						</Text>
 					</View>
