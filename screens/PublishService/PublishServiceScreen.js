@@ -32,7 +32,7 @@ const initialState = {
 	description: '',
 	loading: false,
 	images: null,
-	imageUrls: []
+	imagesInfo: null
 };
 
 let willFocusSubscription;
@@ -118,8 +118,10 @@ class PublishServiceScreen extends Component {
 			&& miles
 		) {
 			this.setState({ loading: true });
-			await uploadImages(this.state.images, (imageUrls) => { this.setState({ imageUrls }); });
-			console.log(this.state.imageUrls);
+			// make sure there are images
+			if (this.state.images != null) {
+				await uploadImages(this.state.images, (imagesInfo) => { this.setState({ imagesInfo }); });
+			}
 			const { displayName } = this.props.user;
 			const servicePost = {
 				selectedCategory,
@@ -130,7 +132,7 @@ class PublishServiceScreen extends Component {
 				description,
 				miles,
 				displayName,
-				imagesInfo: this.state.imageUrls
+				imagesInfo: this.state.imagesInfo
 			};
 			await createService(
 				servicePost,
@@ -233,12 +235,12 @@ class PublishServiceScreen extends Component {
 							width={WIDTH}
 							onNext={this.scrollTo5}
 							onBack={() => this.scrollTo3}
-							addImage={(position, image, name, type) => this.setState((prevState) => {
+							addImage={(position, image, fileName, type) => this.setState((prevState) => {
 									let imageArray = prevState.images;
 									if (imageArray === null) {
 										imageArray = [];
 									}
-									imageArray.push({ position, image, name, type });
+									imageArray.push({ position, image, fileName, type });
 									return { images: imageArray };
 								})
 							}

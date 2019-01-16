@@ -65,7 +65,7 @@ class SortableRow extends Component {
 					name="delete"
 					size={18}
 					style={{ color: colors.danger, position: 'absolute', right: 5, top: 5 }}
-					onPress={() => this.props.removeImage(data.position, data)}
+					onPress={() => this.props.removeImage(data.position)}
 				/>
 			</Animated.View>
 		);

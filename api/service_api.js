@@ -291,7 +291,7 @@ export const deleteService = async (service) => {
 
 // UPDATE-SERVICE
 export const updateService = async (service, callback) => {
-	const updateUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/updateService';
+	const updateUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/updateService';
 	const newService = service;
 	let locationData;
 	try {
@@ -317,7 +317,7 @@ export const updateService = async (service, callback) => {
 	}
 	try {
 		await axios.post(updateUrl, newService);
-		callback('Service hace been updated', 'success');
+		callback('Service hace been updated, Allow a few minutess for changes to display', 'success');
 	} catch (e) {
 		console.log(e);
 		callback('error updating your service, Try again later', 'warning');

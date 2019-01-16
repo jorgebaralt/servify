@@ -603,7 +603,9 @@ class SpecificServiceScreen extends Component {
 						horizontal
 						data={
 							this.state.service.imagesInfo
-								? this.state.service.imagesInfo
+								? this.state.service.imagesInfo.length > 0
+									? this.state.service.imagesInfo
+									: images
 								: images
 						}
 						renderItem={({ item, index }) => this.renderHeaderImages(item, index)

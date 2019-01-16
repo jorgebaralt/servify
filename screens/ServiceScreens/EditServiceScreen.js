@@ -9,23 +9,28 @@ import {
 	SafeAreaView,
 	ScrollView,
 	Text,
-	Slider
+	Slider,
+	Platform
 } from 'react-native';
-import { MapView } from 'expo';
+import SortableList from 'react-native-sortable-list';
+import { MapView, Permissions, ImagePicker } from 'expo';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import _ from 'lodash';
 import { connect } from 'react-redux';
 import { showToast } from '../../actions';
 import { pageHit } from '../../shared/ga_helper';
 import {
 	deleteService,
 	updateService,
-	getLocationFromAddress
+	getLocationFromAddress,
+	updateImages
 } from '../../api';
 import {
 	CustomHeader,
 	FloatingLabelInput,
 	TextArea,
-	Button
+	Button,
+	SortableRow
 } from '../../components/UI';
 import { colors, globalStyles } from '../../shared/styles';
 import { formatPhone } from '../../shared/helpers';
@@ -35,33 +40,53 @@ let backPressSubscriptions;
 class EditServiceScreen extends Component {
 	state = {
 		service: this.props.navigation.getParam('service'),
-		loading: false
+		loading: false,
+		imageArray: null,
+		position: 0
 	};
 
 	componentWillMount() {
+		// Filling all values from current service
+		// if service has images
+		const imageArray = [];
+		if (
+			this.state.service.imagesInfo
+			&& this.state.service.imagesInfo.length > 0
+		) {
+			this.state.service.imagesInfo.forEach((image, index) => {
+				imageArray.push({
+					position: index,
+					image: image.url,
+					fileName: image.fileName
+				});
+				this.setState({ position: index });
+			});
+			this.setState({ imageArray });
+		}
+		// fill rest of the service info
 		this.setState((prevState) => ({
-				title: prevState.service.title,
-				description: prevState.service.description,
-				phone: prevState.service.phone,
-				location:
-					prevState.service.locationData.city
-					+ ', '
-					+ prevState.service.locationData.region
-					+ ' '
-					+ prevState.service.locationData.postalCode,
-				miles: prevState.service.miles,
-				region: {
-					latitude: prevState.service.geolocation.latitude,
-					longitude: prevState.service.geolocation.longitude,
-					latitudeDelta: 0.03215 * prevState.service.miles,
-					longitudeDelta: 0.0683 * prevState.service.miles
-				},
-				radius: prevState.service.miles * 1609.34,
-				center: {
-					latitude: prevState.service.geolocation.latitude,
-					longitude: prevState.service.geolocation.longitude
-				}
-			}));
+			title: prevState.service.title,
+			description: prevState.service.description,
+			phone: prevState.service.phone,
+			location:
+				prevState.service.locationData.city
+				+ ', '
+				+ prevState.service.locationData.region
+				+ ' '
+				+ prevState.service.locationData.postalCode,
+			miles: prevState.service.miles,
+			region: {
+				latitude: prevState.service.geolocation.latitude,
+				longitude: prevState.service.geolocation.longitude,
+				latitudeDelta: 0.03215 * prevState.service.miles,
+				longitudeDelta: 0.0683 * prevState.service.miles
+			},
+			radius: prevState.service.miles * 1609.34,
+			center: {
+				latitude: prevState.service.geolocation.latitude,
+				longitude: prevState.service.geolocation.longitude
+			}
+		}));
 
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
@@ -135,7 +160,7 @@ class EditServiceScreen extends Component {
 
 	showToast = (text, type) => {
 		this.setState({ loading: false });
-		this.props.showToast({ message: text, type, duration: 1500 });
+		this.props.showToast({ message: text, type, duration: 3000 });
 	};
 
 	handleAndroidBack = () => {
@@ -187,6 +212,10 @@ class EditServiceScreen extends Component {
 		this.scrollRef.scrollTo({ x: 0, y: 0, animated: true });
 		this.setState({ loading: true });
 		const { service } = this.state;
+
+		// TODO: upload new images
+		this.fixPositions();
+		await updateImages(this.state.imageArray, (imageArray) => this.setState({ imageArray }));
 		const updatedService = {
 			category: service.category,
 			subcategory: service.subcategory,
@@ -200,7 +229,8 @@ class EditServiceScreen extends Component {
 			ratingCount: service.ratingCount,
 			ratingSum: service.ratingSum,
 			rating: service.rating,
-			favUsers: service.favUsers
+			favUsers: service.favUsers,
+			imagesInfo: this.state.imageArray
 		};
 		await updateService(updatedService, (text, type) => this.showToast(text, type));
 		this.props.navigation.pop(3);
@@ -232,6 +262,183 @@ class EditServiceScreen extends Component {
 			disabled={this.state.loading}
 		/>
 	);
+
+	pickImage = async () => {
+		const { status: cameraPerm } = await Permissions.askAsync(
+			Permissions.CAMERA
+		);
+
+		const { status: cameraRollPerm } = await Permissions.askAsync(
+			Permissions.CAMERA_ROLL
+		);
+
+		if (cameraPerm === 'granted' && cameraRollPerm === 'granted') {
+			const result = await ImagePicker.launchImageLibraryAsync({
+				allowsEditing: true,
+				base64: true
+			});
+			if (!result.cancelled) {
+				const fileName = result.uri.split('/').pop();
+				// Infer the type of the image
+				const match = /\.(\w+)$/.exec(fileName);
+				const type = match ? `image/${match[1]}` : 'image';
+				// TODO: fix here for current screen
+				this.setState((prevState) => {
+					let { imageArray } = prevState;
+					const currentPosition = prevState.position;
+					if (imageArray === null) {
+						imageArray = [];
+					}
+					imageArray.push({
+						position: currentPosition + 1,
+						image: result.uri,
+						fileName,
+						type
+					});
+					return {
+						imageArray,
+						position: currentPosition + 1
+					};
+				});
+			}
+		}
+	};
+
+	// fix positions of imageArray
+	fixPositions = () => {
+		this.setState((prevState) => {
+			const currentImagesArray = prevState.imageArray;
+			const resultArray = [];
+			currentImagesArray.forEach((image, index) => {
+				const newImage = image;
+				newImage.position = index;
+				resultArray.push(newImage);
+			});
+			return { imageArray: resultArray };
+		});
+	};
+
+	changeOrder = (orderArray) => {
+		const reorderedImages = [];
+		this.setState((prevState) => {
+			const currentImagesArray = prevState.imageArray;
+			// find and copy one by one, according to the order array received
+			orderArray.forEach((index) => {
+				const result = currentImagesArray.find(
+					(obj) => obj.position === parseInt(index, 10)
+				);
+				reorderedImages.push(result);
+			});
+			return { imageArray: reorderedImages };
+		});
+	};
+
+	removeImage = (position) => {
+		// TODO: remove image from firebase storage
+		this.setState((prevState) => {
+			const { imageArray } = prevState;
+			// filter, copy all but the same position (the one deleted)
+			const result = imageArray.filter(
+				(obj) => obj.position !== position
+			);
+			return { imageArray: result };
+		});
+	};
+
+	_renderRow = ({ data, active }) => (
+		<SortableRow
+			data={data}
+			active={active}
+			removeImage={(position) => this.removeImage(position)}
+		/>
+	);
+
+	editImages = () => {
+		const data = _.keyBy(this.state.imageArray, 'position');
+		if (this.state.imageArray) {
+			return (
+				<View>
+					<Text
+						style={[
+							globalStyles.sectionTitle,
+							{ color: colors.secondaryColor }
+						]}
+					>
+						Edit images
+					</Text>
+					<View>
+						<SortableList
+							horizontal
+							data={data}
+							style={styles.list}
+							contentContainerStyle={styles.contentContainer}
+							renderRow={this._renderRow}
+							autoscrollAreaSize={-200}
+							onChangeOrder={(nextOrder) => this.changeOrder(nextOrder)
+							}
+						/>
+					</View>
+
+					<Text style={{ fontSize: 12, color: colors.darkGray }}>
+						Reorder images as you want them to be seen by customers
+						(press and hold to reorder). the first image will be the
+						main image of your service
+					</Text>
+					<Button
+						bordered
+						color={colors.secondaryColor}
+						textColor={colors.secondaryColor}
+						onPress={() => this.pickImage()}
+						disabled={
+							this.state.imageArray
+							&& this.state.imageArray.length >= 5
+						}
+						style={{ marginTop: 10 }}
+					>
+						<Text>Add image</Text>
+					</Button>
+				</View>
+			);
+		}
+		return (
+			<View>
+				<Text
+					style={[
+						globalStyles.sectionTitle,
+						{ color: colors.secondaryColor }
+					]}
+				>
+					Add images
+				</Text>
+				<Text style={{ fontSize: 14, color: colors.darkGray }}>
+					Customers love to see images, pick some good quality images
+					to atract more customers to use your services
+				</Text>
+				<SortableList
+					horizontal
+					data={data}
+					style={styles.list}
+					contentContainerStyle={styles.contentContainer}
+					renderRow={this._renderRow}
+					autoscrollAreaSize={-200}
+					onChangeOrder={(nextOrder) => this.changeOrder(nextOrder)}
+				/>
+				<Button
+					bordered
+					color={colors.secondaryColor}
+					textColor={colors.secondaryColor}
+					onPress={() => this.pickImage()}
+					disabled={
+						this.state.imageArray
+						&& this.state.imageArray.length >= 5
+					}
+					style={{ marginTop: 10 }}
+				>
+					<Text>Add image</Text>
+				</Button>
+			</View>
+		);
+	};
 
 	renderSpinner() {
 		if (this.state.loading) {
@@ -352,6 +559,7 @@ class EditServiceScreen extends Component {
 								/>
 							</MapView>
 						</View>
+						{this.editImages()}
 						<Button
 							bordered
 							disabled={this.state.loading}
@@ -379,6 +587,22 @@ const styles = {
 		top: 20,
 		marginBottom: 30,
 		width: '100%'
+	},
+	list: {
+		height: 160,
+		width: '100%'
+	},
+
+	contentContainer: {
+		...Platform.select({
+			ios: {
+				paddingVertical: 30
+			},
+
+			android: {
+				paddingVertical: 0
+			}
+		})
 	}
 };
 
