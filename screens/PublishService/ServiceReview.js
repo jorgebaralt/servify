@@ -28,7 +28,7 @@ class ServiceReview extends Component {
 		if (this.props.loading) {
 			return (
 				<ActivityIndicator
-					style={{ marginTop: 20 }}
+					style={{ marginTop: 20, marginBottom: 20 }}
 					size="large"
 					color={colors.primaryColor}
 				/>

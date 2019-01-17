@@ -23,7 +23,8 @@ import {
 	deleteService,
 	updateService,
 	getLocationFromAddress,
-	updateImages
+	updateImages,
+	deleteImage
 } from '../../api';
 import {
 	CustomHeader,
@@ -42,7 +43,8 @@ class EditServiceScreen extends Component {
 		service: this.props.navigation.getParam('service'),
 		loading: false,
 		imageArray: null,
-		position: 0
+		position: 0,
+		deleteImagesArray: []
 	};
 
 	componentWillMount() {
@@ -182,6 +184,14 @@ class EditServiceScreen extends Component {
 	deleteService = async () => {
 		Keyboard.dismiss();
 		this.setState({ loading: true });
+		// Delete service images from firestore
+		const toDelete = [];
+		this.state.imageArray.forEach((imageInfo) => {
+			toDelete.push(imageInfo.fileName);
+		});
+		this.setState({ deleteImagesArray: toDelete });
+		await this.deleteImages();
+		// delete service
 		await deleteService(this.state.service);
 		this.setState({
 			title: '',
@@ -212,10 +222,13 @@ class EditServiceScreen extends Component {
 		this.scrollRef.scrollTo({ x: 0, y: 0, animated: true });
 		this.setState({ loading: true });
 		const { service } = this.state;
-
-		// TODO: upload new images
+		// according to order, assign position number, to push images in order
 		this.fixPositions();
+		// Delete images from db
+		await this.deleteImages();
+		// Upload new images
 		await updateImages(this.state.imageArray, (imageArray) => this.setState({ imageArray }));
+		// set updated service information
 		const updatedService = {
 			category: service.category,
 			subcategory: service.subcategory,
@@ -232,6 +245,7 @@ class EditServiceScreen extends Component {
 			favUsers: service.favUsers,
 			imagesInfo: this.state.imageArray
 		};
+		// post service (update)
 		await updateService(updatedService, (text, type) => this.showToast(text, type));
 		this.props.navigation.pop(3);
 	};
@@ -267,11 +281,9 @@ class EditServiceScreen extends Component {
 		const { status: cameraPerm } = await Permissions.askAsync(
 			Permissions.CAMERA
 		);
-
 		const { status: cameraRollPerm } = await Permissions.askAsync(
 			Permissions.CAMERA_ROLL
 		);
-
 		if (cameraPerm === 'granted' && cameraRollPerm === 'granted') {
 			const result = await ImagePicker.launchImageLibraryAsync({
 				allowsEditing: true,
@@ -282,7 +294,7 @@ class EditServiceScreen extends Component {
 				// Infer the type of the image
 				const match = /\.(\w+)$/.exec(fileName);
 				const type = match ? `image/${match[1]}` : 'image';
-				// TODO: fix here for current screen
+				// add to our image array state to keep track
 				this.setState((prevState) => {
 					let { imageArray } = prevState;
 					const currentPosition = prevState.position;
@@ -333,28 +345,38 @@ class EditServiceScreen extends Component {
 		});
 	};
 
-	removeImage = (position) => {
-		// TODO: remove image from firebase storage
+	deleteImages = async () => {
+		if (this.state.deleteImagesArray.length > 0) {
+			await deleteImage(this.state.deleteImagesArray);
+		}
+	};
+
+	removeImage = async (position, fileName) => {
 		this.setState((prevState) => {
-			const { imageArray } = prevState;
+			const { imageArray, deleteImagesArray } = prevState;
 			// filter, copy all but the same position (the one deleted)
 			const result = imageArray.filter(
 				(obj) => obj.position !== position
 			);
-			return { imageArray: result };
+			// deleted add to array for later delete
+			const deleteResult = deleteImagesArray;
+			deleteResult.push(fileName);
+			return { imageArray: result, deleteImagesArray: deleteResult };
 		});
 	};
 
-	_renderRow = ({ data, active }) => (
+	renderRow = ({ data, active }) => (
 		<SortableRow
 			data={data}
 			active={active}
-			removeImage={(position) => this.removeImage(position)}
+			removeImage={(position, fileName) => this.removeImage(position, fileName)
+			}
 		/>
 	);
 
 	editImages = () => {
 		const data = _.keyBy(this.state.imageArray, 'position');
+		// if there are images on the service already, edit
 		if (this.state.imageArray) {
 			return (
 				<View>
@@ -372,13 +394,12 @@ class EditServiceScreen extends Component {
 							data={data}
 							style={styles.list}
 							contentContainerStyle={styles.contentContainer}
-							renderRow={this._renderRow}
+							renderRow={this.renderRow}
 							autoscrollAreaSize={-200}
 							onChangeOrder={(nextOrder) => this.changeOrder(nextOrder)
 							}
 						/>
 					</View>
-
 					<Text style={{ fontSize: 12, color: colors.darkGray }}>
 						Reorder images as you want them to be seen by customers
 						(press and hold to reorder). the first image will be the
@@ -400,6 +421,7 @@ class EditServiceScreen extends Component {
 				</View>
 			);
 		}
+		// Else. option to add images
 		return (
 			<View>
 				<Text
@@ -414,15 +436,18 @@ class EditServiceScreen extends Component {
 					Customers love to see images, pick some good quality images
 					to atract more customers to use your services
 				</Text>
-				<SortableList
-					horizontal
-					data={data}
-					style={styles.list}
-					contentContainerStyle={styles.contentContainer}
-					renderRow={this._renderRow}
-					autoscrollAreaSize={-200}
-					onChangeOrder={(nextOrder) => this.changeOrder(nextOrder)}
-				/>
+				{this.state.imageArray && this.state.imageArray.length > 0 ? (
+					<SortableList
+						horizontal
+						data={data}
+						style={styles.list}
+						contentContainerStyle={styles.contentContainer}
+						renderRow={this.renderRow}
+						autoscrollAreaSize={-200}
+						onChangeOrder={(nextOrder) => this.changeOrder(nextOrder)
+						}
+					/>
+				) : null}
 				<Button
 					bordered
 					color={colors.secondaryColor}

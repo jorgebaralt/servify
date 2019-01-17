@@ -85,3 +85,21 @@ export const updateImages = async (imagesDataArray, callback) => {
 		console.log(e);
 	}
 };
+
+export const deleteImage = async (deleteImagesArray) => {
+	const deleteUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/deleteFile';
+	try {
+		await Promise.all(
+			deleteImagesArray.map(async (fileName) => {
+				const { data } = await axios.delete(deleteUrl, {
+					params: {
+						fileName
+					}
+				});
+				return data;
+			})
+		);
+	} catch (e) {
+		console.log(e);
+	}
+};

@@ -57,7 +57,6 @@ class SortableRow extends Component {
 
 	render() {
 		const { data, active } = this.props;
-
 		return (
 			<Animated.View style={[styles.row, this._style]}>
 				<FadeImage uri={data.image} style={styles.image} />
@@ -65,7 +64,7 @@ class SortableRow extends Component {
 					name="delete"
 					size={18}
 					style={{ color: colors.danger, position: 'absolute', right: 5, top: 5 }}
-					onPress={() => this.props.removeImage(data.position)}
+					onPress={() => this.props.removeImage(data.position, data.fileName)}
 				/>
 			</Animated.View>
 		);
