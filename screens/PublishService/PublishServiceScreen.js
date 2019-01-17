@@ -120,7 +120,9 @@ class PublishServiceScreen extends Component {
 			this.setState({ loading: true });
 			// make sure there are images
 			if (this.state.images != null) {
-				await uploadImages(this.state.images, (imagesInfo) => { this.setState({ imagesInfo }); });
+				await uploadImages(this.state.images, (imagesInfo) => {
+					this.setState({ imagesInfo });
+				});
 			}
 			const { displayName } = this.props.user;
 			const servicePost = {
@@ -240,7 +242,12 @@ class PublishServiceScreen extends Component {
 									if (imageArray === null) {
 										imageArray = [];
 									}
-									imageArray.push({ position, image, fileName, type });
+									imageArray.push({
+										position,
+										image,
+										fileName,
+										type
+									});
 									return { images: imageArray };
 								})
 							}

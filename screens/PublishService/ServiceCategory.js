@@ -6,12 +6,12 @@ import { colors, globalStyles } from '../../shared/styles';
 class ServiceCategory extends Component {
 	state = {
 		categoryModalVisible: false,
-		subcategoryModalVisible: false,
+		subcategoryModalVisible: false
 	};
 
 	onNext = () => {
 		this.props.onNext();
-	}
+	};
 
 	renderSubcategoriesPicker() {
 		if (this.props.state.selectedCategory) {
@@ -49,11 +49,15 @@ class ServiceCategory extends Component {
 				}}
 				keyboardShouldPersistTaps="always"
 			>
+				{/* <StatusBar backgroundColor="blue" barStyle="light-content" /> */}
 				<Text style={globalStyles.stepStyle}>Step 1</Text>
 				<Text style={[globalStyles.sectionTitle, { marginTop: 10 }]}>
 					Select a category for your service.
 				</Text>
-				<Text style={globalStyles.publishDescriptionStyle}>To narrow customer search, we need to gather some information about your service.</Text>
+				<Text style={globalStyles.publishDescriptionStyle}>
+					To narrow customer search, we need to gather some
+					information about your service.
+				</Text>
 				{/* Pick category */}
 				<ListPicker
 					onPress={() => this.setState({ categoryModalVisible: true })
@@ -92,7 +96,12 @@ class ServiceCategory extends Component {
 						color={colors.primaryColor}
 						onPress={this.props.onNext}
 						style={{ width: '40%' }}
-						disabled={this.props.state.selectedCategory === undefined || this.props.state.selectedCategory.subcategories ? this.props.state.selectedSubcategory === undefined : false}
+						disabled={
+							this.props.state.selectedCategory === undefined
+							|| this.props.state.selectedCategory.subcategories
+								? this.props.state.selectedSubcategory === undefined
+								: false
+						}
 					>
 						<Text>Next</Text>
 					</Button>

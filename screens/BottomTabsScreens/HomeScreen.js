@@ -10,7 +10,8 @@ import {
 	ScrollView,
 	ActivityIndicator,
 	Text,
-	Dimensions
+	Dimensions,
+	StatusBar
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Permissions } from 'expo';
@@ -285,6 +286,7 @@ class HomeScreen extends Component {
 		if (this.state.dataLoaded) {
 			return (
 				<View>
+					<StatusBar backgroundColor="blue" barStyle="dark-content" />
 					{this.renderPopularCategories()}
 					<View style={{ paddingLeft: 20, paddingRight: 20 }}>
 						<InfoImage
