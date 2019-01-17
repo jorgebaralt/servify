@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Animated, StyleSheet, View } from 'react-native';
+import { Animated, View } from 'react-native';
+import { colors } from '../../../shared/styles';
 
 class FadeImage extends Component {
 	state = { fadeAnimation: new Animated.Value(0) };
@@ -11,6 +12,34 @@ class FadeImage extends Component {
 		}).start();
 	};
 
+	renderDots = () => {
+		if (this.props.showDots) {
+			const dots = [];
+			for (let i = 0; i < this.props.dotCount; i++) {
+				if (i === this.props.currentDot) {
+					dots.push(<View key={i} style={styles.currentDot} />);
+				} else {
+					dots.push(<View key={i} style={styles.defaultDot} />);
+				}
+			}
+			return (
+				<View
+					style={{
+						flexDirection: 'row',
+						position: 'absolute',
+						bottom: 20,
+						left: 0,
+						right: 0,
+						justifyContent: 'center',
+						alignItems: 'center',
+					}}
+				>
+					{dots}
+				</View>
+			);
+		}
+	};
+
 	render() {
 		const { width, height } = this.props.style;
 		const imageContainerStyle = {
@@ -20,13 +49,14 @@ class FadeImage extends Component {
 			overflow: 'hidden',
 			borderRadius: this.props.circle ? width / 2 : null
 		};
-
 		return (
-			<View
-				style={[imageContainerStyle, this.props.style]}
-			>
+			<View style={[imageContainerStyle, this.props.style]}>
 				<Animated.Image
-					source={this.props.uri ? { uri: this.props.uri } : this.props.image}
+					source={
+						this.props.uri
+							? { uri: this.props.uri }
+							: this.props.image
+					}
 					style={{
 						width: 'auto',
 						height: '100%',
@@ -36,9 +66,29 @@ class FadeImage extends Component {
 					onLoad={this.onLoad}
 					resizeMode="cover"
 				/>
+				{this.renderDots()}
 			</View>
 		);
 	}
 }
+
+const styles = {
+	defaultDot: {
+		top: 10,
+		height: 10,
+		width: 10,
+		backgroundColor: colors.black,
+		borderRadius: 100 / 2,
+		margin: 10
+	},
+	currentDot: {
+		top: 10,
+		height: 10,
+		width: 10,
+		backgroundColor: colors.white,
+		borderRadius: 100 / 2,
+		margin: 10
+	}
+};
 
 export { FadeImage };

@@ -549,11 +549,18 @@ class SpecificServiceScreen extends Component {
 		);
 	};
 
-	renderHeaderImages = (imagesInfo) => (
+	renderHeaderImages = (imagesInfo, i) => (
 		<FadeImage
 			uri={imagesInfo.url}
 			image={imagesInfo.url ? null : imagesInfo.image}
 			style={{ height: 300, width: WIDTH }}
+			showDots={imagesInfo.url}
+			currentDot={i}
+			dotCount={
+				this.state.service.imagesInfo
+					? this.state.service.imagesInfo.length
+					: 0
+			}
 		/>
 	);
 
