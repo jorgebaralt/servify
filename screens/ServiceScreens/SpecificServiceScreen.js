@@ -36,6 +36,7 @@ import {
 import { formatDate } from '../../shared/helpers';
 import { Category, Subcategory, Location, Description } from '../../assets/svg';
 import DollarRating from '../../components/Ratings/DollarRating';
+import { defaultImage } from '../../assets/default/categories';
 
 const maxCharCount = 100;
 
@@ -548,8 +549,12 @@ class SpecificServiceScreen extends Component {
 		);
 	};
 
-	renderHeaderImages = (imagesInfo, i) => (
-		<FadeImage uri={imagesInfo.url} style={{ height: 300, width: WIDTH }} />
+	renderHeaderImages = (imagesInfo) => (
+		<FadeImage
+			uri={imagesInfo.url}
+			image={imagesInfo.url ? null : imagesInfo.image}
+			style={{ height: 300, width: WIDTH }}
+		/>
 	);
 
 	render() {
@@ -578,7 +583,11 @@ class SpecificServiceScreen extends Component {
 			}
 			subcategoryName = subcategoryName.join(' ');
 		}
-
+		const imageData = this.state.service.imagesInfo
+			? this.state.service.imagesInfo.length > 0
+				? this.state.service.imagesInfo
+				: [{ fileName: 1, image: defaultImage(service.category) }]
+			: [{ fileName: 1, image: defaultImage(service.category) }];
 		return (
 			<KeyboardAvoidingView
 				behavior="padding"
@@ -601,13 +610,7 @@ class SpecificServiceScreen extends Component {
 				>
 					<FlatList
 						horizontal
-						data={
-							this.state.service.imagesInfo
-								? this.state.service.imagesInfo.length > 0
-									? this.state.service.imagesInfo
-									: images
-								: images
-						}
+						data={imageData}
 						renderItem={({ item, index }) => this.renderHeaderImages(item, index)
 						}
 						keyExtractor={(item) => item.fileName}
