@@ -196,25 +196,6 @@ class HomeScreen extends Component {
 				</View>
 			);
 		}
-		if (this.state.newNearServices.length === 0) {
-			// TODO: change for image
-			return (
-				<View style={{ marginTop: 10, marginBottom: 10 }}>
-					<Text style={styles.textStyle}>
-						No new services near you, be the first on creating new
-						services around your area on the
-						<Text
-							style={[styles.textStyle, { color: '#0277BD' }]}
-							onPress={() => this.props.navigation.navigate('publishInfo')
-							}
-						>
-							{' '}
-							Post tab
-						</Text>
-					</Text>
-				</View>
-			);
-		}
 	};
 
 	// each item in popular categories
