@@ -5,6 +5,7 @@ import StarsRating from '../../Ratings/StarsRating';
 import DollarRating from '../../Ratings/DollarRating';
 import { colors } from '../../../shared/styles';
 import { FadeImage } from '..';
+import { defaultImage } from '../../../assets/default/categories'
 
 export const DetailedServiceCard = (props) => {
 	const { service } = props;
@@ -14,7 +15,7 @@ export const DetailedServiceCard = (props) => {
 				<View style={styles.imageContainerStyle}>
 					<FadeImage
 						uri={props.uri}
-						image={require('../../../assets/default/baby/1.jpg')}
+						image={defaultImage(service.category)}
 						style={styles.imageStyle}
 					/>
 				</View>

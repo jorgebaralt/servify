@@ -25,6 +25,7 @@ import { colors, globalStyles } from '../../shared/styles';
 import { getUserLocation } from '../../actions';
 import * as api from '../../api';
 import { pageHit } from '../../shared/ga_helper';
+import { defaultImage } from '../../assets/default/categories';
 
 let backPressSubscriptions;
 let willFocusSubscription;
@@ -165,7 +166,7 @@ class HomeScreen extends Component {
 		<HomeServiceCard
 			last={this.state.newNearServices.length - 1 === i}
 			uri={service.imagesInfo ? (service.imagesInfo[0] ? service.imagesInfo[0].url : null) : null}
-			image={require('../../assets/default/food/food_catering.jpg')}
+			image={service.imagesInfo ? (service.imagesInfo[0] ? service.imagesInfo[0].url : defaultImage(service.category)) : defaultImage(service.category)}
 			service={service}
 			showLocation
 			onPress={() => {
@@ -246,7 +247,7 @@ class HomeScreen extends Component {
 		<View>
 			<HomeServiceCard
 				last={this.state.popularNearServices.length - 1 === i}
-				image={require('../../assets/default/food/food_catering.jpg')}
+				image={service.imagesInfo ? (service.imagesInfo[0] ? service.imagesInfo[0].url : defaultImage(service.category)) : defaultImage(service.category)}
 				uri={service.imagesInfo ? (service.imagesInfo[0] ? service.imagesInfo[0].url : null) : null}
 				service={service}
 				showRating
