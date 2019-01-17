@@ -20,6 +20,7 @@ import {
 	InfoImage,
 	Button
 } from '../../components/UI';
+import { defaultImage } from '../../assets/default/categories';
 
 let currentItem;
 let willFocusSubscription;
@@ -106,7 +107,7 @@ class ProfileServicesScreen extends Component {
 			service={service}
 			type={currentItem.id}
 			currentUser={this.props.user}
-			image={require('../../assets/default/subcategories/home_cleaning.jpg')}
+			image={service.imagesInfo ? (service.imagesInfo[0] ? service.imagesInfo[0].url : defaultImage(service.category)) : defaultImage(service.category)}
 			uri={service.imagesInfo ? (service.imagesInfo.length > 0 ? service.imagesInfo[0].url : null) : null}
 			onPress={() => {
 				this.props.navigation.navigate('service', { service });
