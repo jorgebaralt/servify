@@ -19,10 +19,6 @@ export const ReviewCard = (props) => {
 				borderColor: colors.lightGray,
 				borderRadius: 8,
 				backgroundColor: colors.white,
-				shadowOpacity: 0.3,
-				shadowOffset: { width: 0, height: 0 },
-				shadowColor: colors.darkGray,
-				shadowRadius: 3
 			}}
 		>
 			<View
