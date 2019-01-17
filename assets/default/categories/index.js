@@ -32,7 +32,7 @@ export const defaultImage = (category) => {
 			return require('./fit.jpg');
 		case 'insurance':
 			return require('./insurance.jpg');
-		case 'handmande':
+		case 'handmade':
 			return require('./handmade.jpg');
 		case 'other':
 			return require('./other.jpg');
