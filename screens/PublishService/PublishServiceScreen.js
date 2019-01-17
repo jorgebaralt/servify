@@ -85,7 +85,7 @@ class PublishServiceScreen extends Component {
 				}
 			}
 		});
-		backPressSubscriptions.add(() => this.props.navigation.navigate('home'));
+		backPressSubscriptions.add(() => this.props.navigation.navigate('publishInfo'));
 	};
 
 	showToast = (text, type) => {

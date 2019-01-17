@@ -59,7 +59,7 @@ const categories = [
 				id: 0.6,
 				title: 'Other',
 				description: 'Just other',
-				dbReference: 'other'
+				dbReference: 'other_home'
 			}
 		]
 	},
@@ -107,7 +107,7 @@ const categories = [
 				id: 1.4,
 				title: 'Other',
 				description: 'Something else',
-				dbReference: 'other'
+				dbReference: 'other_car'
 			}
 		]
 	},
@@ -154,7 +154,7 @@ const categories = [
 				id: 2.4,
 				title: 'Other',
 				description: 'Something else',
-				dbReference: 'other'
+				dbReference: 'other_handyman'
 			}
 		]
 	},
@@ -213,14 +213,14 @@ const categories = [
 			{
 				id: 4.3,
 				title: 'Toilets',
-				description: 'We always need it working',
+				description: 'We always need them working',
 				dbReference: 'toilet'
 			},
 			{
 				id: 4.4,
 				title: 'Other',
 				description: 'Something else',
-				dbReference: 'other'
+				dbReference: 'other_plumbing'
 			}
 		]
 	},
@@ -316,6 +316,12 @@ const categories = [
 				title: 'Make up',
 				description: 'Get prettier',
 				dbReference: 'make_up'
+			},
+			{
+				id: 8.4,
+				title: 'Other',
+				description: 'Anything else?',
+				dbReference: 'other_beauty'
 			}
 		]
 	},
