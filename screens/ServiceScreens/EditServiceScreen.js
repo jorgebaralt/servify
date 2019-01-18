@@ -230,6 +230,7 @@ class EditServiceScreen extends Component {
 		await updateImages(this.state.imageArray, (imageArray) => this.setState({ imageArray }));
 		// set updated service information
 		const updatedService = {
+			id: service.id,
 			category: service.category,
 			subcategory: service.subcategory,
 			title: this.state.title,
@@ -242,6 +243,9 @@ class EditServiceScreen extends Component {
 			ratingCount: service.ratingCount,
 			ratingSum: service.ratingSum,
 			rating: service.rating,
+			priceCount: service.priceCount,
+			priceSum: service.priceSum,
+			price: service.price,
 			favUsers: service.favUsers,
 			imagesInfo: this.state.imageArray
 		};

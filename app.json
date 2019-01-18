@@ -12,7 +12,7 @@
       "ios",
       "android"
     ],
-    "version": "1.0.5",
+    "version": "1.0.6",
     "orientation": "portrait",
     "icon": "./assets/servifyIcon2.png",
     "splash": {
@@ -37,7 +37,7 @@
     },
     "android": {
       "package": "com.jorgebaralt.servify",
-      "versionCode": 4,
+      "versionCode": 6,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyD5KIVp89sqAl6ogAwncya3ltZcEwVUcwU"
