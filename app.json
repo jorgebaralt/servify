@@ -33,6 +33,11 @@
         "NSLocationWhenInUseUsageDescription": "Servify uses current location to find and display nearby services",
         "NSCameraUsageDescription": "Servify uses the camera to upload images of the services and display them to users",
         "NSPhotoLibraryUsageDescription": "Servify uses the camera library to upload images to the services so users can see it"
+      },
+      "config":{
+        "googleSignIn":{
+          "reservedClientId":"com.googleusercontent.apps.737506787644-vhmrpn1ejikv8mcstqmol81l26gnudev"
+        }
       }
     },
     "android": {
@@ -41,6 +46,10 @@
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyD5KIVp89sqAl6ogAwncya3ltZcEwVUcwU"
+        },
+        "googleSignIn":{
+          "apiKey": "AIzaSyAaYxWn6nQi0kOMX4gLovsWkm7QQ6abXrg",
+          "certificateHash": "231FAA55C69E3343FB6D42A0C770A882317C4A9A"
         }
       }
     }
