@@ -196,7 +196,7 @@ class PublishServiceScreen extends Component {
 							onBack={() => this.props.navigation.navigate('publishInfo')
 							}
 							categories={categories}
-							selectCategory={(selectedCategory) => this.setState({ selectedCategory })
+							selectCategory={(selectedCategory) => this.setState({ selectedCategory, selectedSubcategory: undefined })
 							}
 							selectSubcategory={(selectedSubcategory) => this.setState({ selectedSubcategory })
 							}
