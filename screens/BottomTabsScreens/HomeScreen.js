@@ -306,7 +306,7 @@ class HomeScreen extends Component {
 									bordered
 									style={{ fontSize: 20 }}
 									onPress={() => this.props.navigation.navigate(
-											'publishInfo'
+											'browse'
 										)
 									}
 								>

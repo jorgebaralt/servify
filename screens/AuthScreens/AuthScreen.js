@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo';
-import { facebookLogin } from '../../api/index';
+import { facebookLogin, googleLogin } from '../../api/index';
 import { Button } from '../../components/UI';
 import LogoBorderWhite from '../../assets/logoBorderWhite.png';
 import { pageHit } from '../../shared/ga_helper';
@@ -58,6 +58,10 @@ class AuthScreen extends Component {
 		await facebookLogin((text, type) => console.log(text, type));
 	};
 
+	loginWithGoogle = async () => {
+		await googleLogin((text, type) => console.log(text, type));
+	}
+
 	render() {
 		return (
 			<LinearGradient
@@ -73,6 +77,22 @@ class AuthScreen extends Component {
 						resizeMode="cover"
 					/>
 					<Text style={styles.titleStyle}> Servify </Text>
+					<View style={styles.buttonStyle}>
+						<Button bordered onPress={this.loginWithGoogle} style={{ fontSize: 18 }}>
+							<Text>
+							<MaterialCommunityIcons
+								style={{
+									color: 'white',
+									fontSize: 20,
+									marginRight: 10
+								}}
+								name="google"
+							/>{' '}
+							Log in with Google
+							</Text>
+							
+						</Button>
+					</View>
 					{/* log in with facebook */}
 					<View style={styles.buttonStyle}>
 						<Button bordered onPress={this.loginWithFacebook} style={{ fontSize: 18 }}>
@@ -148,7 +168,7 @@ const styles = {
 		alignItems: 'center'
 	},
 	buttonStyle: {
-		marginTop: 40
+		marginTop: 20
 	},
 	textStyle: {
 		fontSize: 16

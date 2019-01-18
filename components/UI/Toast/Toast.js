@@ -64,7 +64,7 @@ class Toast extends Component {
 
 		return (
 			<Animated.View style={animatedViewStyle}>
-				<Text style={{ color: colors.white, fontSize: 18 }}>
+				<Text style={{ color: colors.white, fontSize: 18, marginRight: 10 }}>
 					{this.props.toast.message}
 				</Text>
 				<Text

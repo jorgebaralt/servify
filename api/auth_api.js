@@ -1,9 +1,50 @@
 import axios from 'axios';
-import { Facebook } from 'expo';
+import { Facebook, Google } from 'expo';
 import firebase from 'firebase';
-import { FB_APP_ID } from '../config/keys';
+import { FB_APP_ID, iosClientIdGoogle, androidClientIdGoogle } from '../config/keys';
 
-const addUserDbURL = 'https://us-central1-servify-716c6.cloudfunctions.net/addUserdb';
+const addUserDbURL =	'https://us-central1-servify-716c6.cloudfunctions.net/addUserdb';
+
+// Google login
+export const googleLogin = async (callback) => {
+	try {
+		const result = await Google.logInAsync({
+			androidClientId: androidClientIdGoogle,
+			iosClientId: iosClientIdGoogle,
+			scopes: ['profile', 'email'],
+			behavior: 'web'
+		});
+
+		if (result.type === 'success') {
+			// sign in with credentials
+
+			const credential = await firebase.auth.GoogleAuthProvider.credential(
+				result.idToken,
+				result.accessToken
+			);
+			// get current logged in user from firebase
+			const {
+				user
+			} = await firebase
+				.auth()
+				.signInAndRetrieveDataWithCredential(credential);
+
+			// add user to firestore DB
+			await axios.post(addUserDbURL, {
+				email: user.email,
+				displayName: user.displayName,
+				uid: user.uid,
+				emailVerified: user.emailVerified,
+				photoURL: user.providerData[0].photoURL,
+				provider: user.providerData[0].providerId
+			});
+		} else {
+			console.log('canceled');
+		}
+	} catch (e) {
+		return { error: true };
+	}
+};
 
 // Facebook login
 export const facebookLogin = async (callback) => {
@@ -13,7 +54,7 @@ export const facebookLogin = async (callback) => {
 			FB_APP_ID,
 			{ permissions: ['public_profile', 'email'] }
 		);
-		
+
 		// if permission denied
 		if (type === 'cancel') {
 			callback('Permission denied', 'error');
@@ -23,22 +64,26 @@ export const facebookLogin = async (callback) => {
 		const credential = await firebase.auth.FacebookAuthProvider.credential(
 			token
 		);
-		
+
 		// get current logged in user from firebase
-		const { user } = await firebase
+		const {
+			user
+		} = await firebase
 			.auth()
 			.signInAndRetrieveDataWithCredential(credential);
-		
+
 		// add user to firestore DB
 		await axios.post(addUserDbURL, {
-			userId: user.uid,
 			email: user.email,
-			displayName: user.displayName
+			displayName: user.displayName,
+			uid: user.uid,
+			emailVerified: user.emailVerified,
+			photoURL: user.providerData[0].photoURL,
+			provider: user.providerData[0].providerId
 		});
-
+		await user.sendEmailVerification();
 		// store user in redux
 		callback(`Welcome ${user.displayName}`, 'success');
-
 	} catch (e) {
 		console.log(e);
 	}
@@ -50,9 +95,8 @@ export const emailAndPasswordLogin = async (email, password, callback) => {
 		const { user } = await firebase
 			.auth()
 			.signInWithEmailAndPassword(email, password);
-		
-		callback(`Welcome ${user.displayName}`, 'success');
 
+		callback(`Welcome ${user.displayName}`, 'success');
 	} catch (e) {
 		console.log(e);
 		callback('Incorrect information', 'warning');
@@ -60,7 +104,7 @@ export const emailAndPasswordLogin = async (email, password, callback) => {
 };
 // create email account
 export const createEmailAccount = async (newUser, callback) => {
-	const url = 'https://us-central1-servify-716c6.cloudfunctions.net/createUser';
+	const createUserUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/createUser';
 	const { email, password, firstName, lastName } = newUser;
 	// check not empty
 	if (email && password && firstName && lastName) {
@@ -69,23 +113,33 @@ export const createEmailAccount = async (newUser, callback) => {
 		}
 		// create the account
 		try {
-			await axios.post(url, {
+			const { data } = await axios.post(createUserUrl, {
 				email,
 				password,
 				firstName,
 				lastName
 			});
-
 			// Perform Login Using Firebase.
-			const displayName = firstName + ' ' + lastName;
-			await axios.post(addUserDbURL, { email, displayName });
+			// TODO: photo url for
+			await axios.post(addUserDbURL, {
+				email: data.email,
+				displayName: data.displayName,
+				uid: data.uid,
+				emailVerified: data.emailVerified,
+				photoURL: null,
+				provider: data.providerData[0].providerId
+			});
 			const { user } = await firebase
 				.auth()
 				.signInWithEmailAndPassword(email, password);
 			await user.sendEmailVerification();
 			callback(`Welcome ${user.displayName}`, 'success');
 		} catch (e) {
-			callback('Email already exist, or information is invalid', 'warning');
+			callback(
+				'Email already exist, or information is invalid',
+				'warning'
+			);
+			console.log(e);
 		}
 	} else {
 		callback('Please fill all information', 'warning');
