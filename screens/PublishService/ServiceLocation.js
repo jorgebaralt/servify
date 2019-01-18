@@ -63,7 +63,7 @@ class ServiceLocation extends Component {
 		} else {
 			// update map to new location
 			const newAddress = await getLocationFromAddress(text);
-			if (newAddress.longitude && newAddress.latitude) {
+			if (newAddress) {
 				this.setState((prevState) => ({
 					region: {
 						latitude: newAddress.latitude,

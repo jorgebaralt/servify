@@ -48,7 +48,6 @@ class ServiceImagePick extends Component {
 
 	_renderRow = ({ data, active }) => (
 		<SortableRow
-			key={data.position}
 			data={data}
 			active={active}
 			removeImage={(position, newData) => this.props.removeImage(position, newData)

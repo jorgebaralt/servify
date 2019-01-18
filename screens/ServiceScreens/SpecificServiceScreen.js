@@ -593,8 +593,8 @@ class SpecificServiceScreen extends Component {
 		const imageData = this.state.service.imagesInfo
 			? this.state.service.imagesInfo.length > 0
 				? this.state.service.imagesInfo
-				: [{ fileName: 1, image: defaultImage(service.category) }]
-			: [{ fileName: 1, image: defaultImage(service.category) }];
+				: [{ fileName: '1', image: defaultImage(service.category) }]
+			: [{ fileName: '1', image: defaultImage(service.category) }];
 		return (
 			<KeyboardAvoidingView
 				behavior="padding"
