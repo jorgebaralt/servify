@@ -105,7 +105,8 @@ export const emailAndPasswordLogin = async (email, password, callback) => {
 // create email account
 export const createEmailAccount = async (newUser, callback) => {
 	const createUserUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/createUser';
-	const { email, password, firstName, lastName } = newUser;
+	const { email, password, firstName, lastName, imageInfo } = newUser;
+	console.log(imageInfo);
 	// check not empty
 	if (email && password && firstName && lastName) {
 		if (password.length < 6) {
@@ -117,16 +118,16 @@ export const createEmailAccount = async (newUser, callback) => {
 				email,
 				password,
 				firstName,
-				lastName
+				lastName,
 			});
 			// Perform Login Using Firebase.
-			// TODO: photo url for
+			console.log(data);
 			await axios.post(addUserDbURL, {
 				email: data.email,
 				displayName: data.displayName,
 				uid: data.uid,
 				emailVerified: data.emailVerified,
-				photoURL: null,
+				imageInfo,
 				provider: data.providerData[0].providerId
 			});
 			const { user } = await firebase

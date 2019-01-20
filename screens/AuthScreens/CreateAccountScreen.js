@@ -14,8 +14,8 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { showToast } from '../../actions';
-import { Button, FloatingLabelInput } from '../../components/UI';
-import { createEmailAccount } from '../../api';
+import { Button, FloatingLabelInput, FadeImage } from '../../components/UI';
+import { createEmailAccount, profileImageUpload } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 import { colors } from '../../shared/styles';
 
@@ -75,12 +75,18 @@ class CreateAccountScreen extends Component {
 	createAccount = async () => {
 		Keyboard.dismiss();
 		this.setState({ loading: true });
+		let imageInfo = null;
+		if (this.state.imageInfo) {
+			imageInfo = await profileImageUpload(this.state.imageInfo);
+		}
+		
 		const { firstName, lastName, email, password } = this.state;
 		const user = {
 			firstName,
 			lastName,
 			email,
-			password
+			password,
+			imageInfo
 		};
 		await createEmailAccount(user, (text, type) => this.showToast(text, type));
 	};
@@ -100,19 +106,18 @@ class CreateAccountScreen extends Component {
 				base64: true
 			});
 			if (!result.cancelled) {
-				const filename = result.uri.split('/').pop();
+				const fileName = result.uri.split('/').pop();
 				// Infer the type of the image
-				const match = /\.(\w+)$/.exec(filename);
+				const match = /\.(\w+)$/.exec(fileName);
 				const type = match ? `image/${match[1]}` : 'image';
 				// TODO: add to state.
 				// upload images, receives an array of images
 				this.setState({
-					imageInfo: [{
+					imageInfo: {
 						image: result.uri,
-						filename,
-						type,
-						folder: '/profile_images/'
-					}]
+						fileName,
+						type
+					}
 				});
 			}
 		}
@@ -171,7 +176,9 @@ class CreateAccountScreen extends Component {
 									}}
 								>
 									<Text style={titleStyle}>Sign up</Text>
-									{this.state.imageInfo ? null : (
+									{this.state.imageInfo ? (
+										<FadeImage onPress={this.pickImage} style={{ height: 100, width: 100, borderRadius: 50 }} uri={this.state.imageInfo.image} />
+									) : (
 										<View>
 											<TouchableOpacity
 												style={{

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Animated, View } from 'react-native';
+import { Animated, View, TouchableOpacity } from 'react-native';
 import { colors } from '../../../shared/styles';
 
 class FadeImage extends Component {
@@ -50,7 +50,7 @@ class FadeImage extends Component {
 			borderRadius: this.props.circle ? width / 2 : null
 		};
 		return (
-			<View style={[imageContainerStyle, this.props.style]}>
+			<TouchableOpacity disabled={!this.props.onPress} onPress={this.props.onPress} style={[imageContainerStyle, this.props.style]}>
 				<Animated.Image
 					source={
 						this.props.uri
@@ -67,7 +67,7 @@ class FadeImage extends Component {
 					resizeMode="cover"
 				/>
 				{this.renderDots()}
-			</View>
+			</TouchableOpacity>
 		);
 	}
 }

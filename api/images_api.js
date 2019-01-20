@@ -86,6 +86,25 @@ export const updateImages = async (imagesDataArray, callback) => {
 	}
 };
 
+export const profileImageUpload = async (imageData) => {
+	const profileImageUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/profileImageUpload';
+	const formData = new FormData();
+	formData.append('photo', {
+		uri: imageData.image,
+		name: imageData.fileName,
+		type: imageData.type
+	});
+	try {
+		const { data } = await axios.post(
+			profileImageUrl,
+			formData
+		);
+		return data;
+	} catch (e) {
+		console.log(e);
+	}
+};
+
 export const deleteImage = async (deleteImagesArray) => {
 	const deleteUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/deleteFile';
 	try {
