@@ -186,11 +186,14 @@ class EditServiceScreen extends Component {
 		this.setState({ loading: true });
 		// Delete service images from firestore
 		const toDelete = [];
-		this.state.imageArray.forEach((imageInfo) => {
-			toDelete.push(imageInfo.fileName);
-		});
-		this.setState({ deleteImagesArray: toDelete });
-		await this.deleteImages();
+		if (this.state.imageArray) {
+			this.state.imageArray.forEach((imageInfo) => {
+				toDelete.push(imageInfo.fileName);
+			});
+			this.setState({ deleteImagesArray: toDelete });
+			await this.deleteImages();
+		}
+
 		// delete service
 		await deleteService(this.state.service);
 		this.setState({
