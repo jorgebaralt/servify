@@ -6,7 +6,7 @@ const SCREEN_WIDTH = Dimensions.get('window').width;
 
 class Slides extends Component {
 	// Render button on last slide
-	renderLastSlide(i) {
+	renderLastSlide = (i) => {
 		if (i === this.props.data.length - 1) {
 			return (
 				<View style={styles.buttonStyle}>
@@ -23,7 +23,7 @@ class Slides extends Component {
 	}
 
 	// Render progress dots dots depending on slide
-	renderDots(current) {
+	renderDots = (current) => {
 		return this.props.data.map((slide, i) => {
 			if (i === current) {
 				return <View key={i} style={styles.currentDot} />;
@@ -33,7 +33,7 @@ class Slides extends Component {
 	}
 
 	// Render skip button on first slide
-	renderSkipButton(current) {
+	renderSkipButton = (current) => {
 		if (current === 0) {
 			return (
 				<TouchableOpacity
@@ -42,7 +42,7 @@ class Slides extends Component {
 				>
                     <Text
                         style={{ fontSize: 16, color: 'white' }}
-                        onPress={this.props.onComplete}
+                        onPress={async () => this.props.onComplete()}
                     >
                         Skip Tutorial
                     </Text>

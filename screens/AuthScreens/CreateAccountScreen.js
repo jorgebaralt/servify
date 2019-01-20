@@ -74,6 +74,7 @@ class CreateAccountScreen extends Component {
 
 	createAccount = async () => {
 		Keyboard.dismiss();
+		this.scrollview.scrollToEnd();
 		this.setState({ loading: true });
 		let imageInfo = null;
 		if (this.state.imageInfo) {
@@ -131,7 +132,7 @@ class CreateAccountScreen extends Component {
 		if (this.state.loading) {
 			return (
 				<ActivityIndicator
-					style={{ marginTop: 100 }}
+					style={{ marginTop: 20 }}
 					size="large"
 					color={colors.white}
 				/>
@@ -161,7 +162,7 @@ class CreateAccountScreen extends Component {
 								this.props.navigation.navigate('auth');
 							}}
 						/>
-						<ScrollView>
+						<ScrollView ref={(scrollview) => { this.scrollview = scrollview; }}>
 							<View
 								style={{
 									flex: 1,

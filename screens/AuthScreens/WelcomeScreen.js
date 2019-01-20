@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { AppLoading } from 'expo';
-import { View, UIManager, Platform } from 'react-native';
+import { View, UIManager, Platform, AsyncStorage } from 'react-native';
 import _ from 'lodash';
 import firebase from 'firebase';
 import { connect } from 'react-redux';
@@ -31,18 +31,25 @@ class WelcomeScreen extends Component {
 		await this.checkForUser();
 	}
 
-	componentDidMount() {
+
+	async componentDidMount() {
 		// ga hit
 		pageHit('Welcome Screen');
 	}
 
-	onSlidesComplete = () => {
+	onSlidesComplete = async () => {
+		try {
+			await AsyncStorage.setItem('seenTutorial', 'seen');
+		} catch (e) {
+			console.log(e);
+		}
+		
 		this.props.navigation.navigate('auth');
 	};
 
 	async checkForUser() {
 		// Listen for user loggin change
-		firebase.auth().onAuthStateChanged(async (user) => {
+		await firebase.auth().onAuthStateChanged(async (user) => {
 			if (user) {
 				await this.props.getCurrentUser();
 				// navigate to main if already logged in
@@ -51,7 +58,14 @@ class WelcomeScreen extends Component {
 			} else {
 				// No user is signed in.
 				this.setState({ authenticated: false });
-				this.props.navigation.navigate('welcome');
+				// check if user already went through tutorial
+				const seenTutorial = await AsyncStorage.getItem('seenTutorial');
+				if (seenTutorial === 'seen') {
+					this.props.navigation.navigate('auth');
+				} else {
+					this.props.navigation.navigate('welcome');
+				}
+				
 			}
 		});
 	}
