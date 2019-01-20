@@ -7,7 +7,7 @@ let source;
 const GET_URL =	'https://us-central1-servify-716c6.cloudfunctions.net/getServices';
 
 // Create a service
-export const createService = async (servicePost, email, callback) => {
+export const createService = async (servicePost, user, callback) => {
 	let isEmpty;
 	const createServiceURL =		'https://us-central1-servify-716c6.cloudfunctions.net/postService';
 	const checkDuplicateBaseUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getServicesCount/';
@@ -19,7 +19,6 @@ export const createService = async (servicePost, email, callback) => {
 		description,
 		title,
 		miles,
-		displayName,
 		imagesInfo
 	} = servicePost;
 
@@ -61,8 +60,9 @@ export const createService = async (servicePost, email, callback) => {
 		geolocation,
 		locationData,
 		miles,
-		email,
-		displayName,
+		email: user.email,
+		displayName: user.displayName,
+		uid: user.uid,
 		zipCode: locationData.postalCode,
 		imagesInfo
 	};
@@ -76,13 +76,13 @@ export const createService = async (servicePost, email, callback) => {
 	if (selectedSubcategory) {
 		newServicePost.subcategory = selectedSubcategory.dbReference;
 		// Check duplicate service using subcategory
-		const checkURL =			checkDuplicateBaseUrl
-			+ '/?email='
-			+ email
-			+ '&subcategory='
-			+ selectedSubcategory.dbReference;
 		try {
-			const response = await axios.get(checkURL);
+			const response = await axios.get(checkDuplicateBaseUrl, {
+				params: {
+					email: user.email,
+					subcategory: selectedSubcategory.dbReference
+				}
+			});
 			isEmpty = response.data;
 			if (!isEmpty) {
 				return callback(
@@ -91,17 +91,13 @@ export const createService = async (servicePost, email, callback) => {
 				);
 			}
 		} catch (e) {
+			console.log('error checking duplicate for subcategory');
 			return callback('Error connecting to server', 'warning');
 		}
 	} else {
 		// Check duplicate using category
-		const checkURL =			checkDuplicateBaseUrl
-			+ '/?email='
-			+ email
-			+ '&category='
-			+ category;
 		try {
-			const response = await axios.get(checkURL);
+			const response = await axios.get(checkDuplicateBaseUrl, { params: { email: user.email, category } });
 			isEmpty = response.data;
 			if (!isEmpty) {
 				return callback(
@@ -110,6 +106,7 @@ export const createService = async (servicePost, email, callback) => {
 				);
 			}
 		} catch (error) {
+			console.log('error checking duplicate for category');
 			return callback('Error connecting to server', 'warning');
 		}
 	}
@@ -291,7 +288,7 @@ export const deleteService = async (service) => {
 
 // UPDATE-SERVICE
 export const updateService = async (service, callback) => {
-	const updateUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/updateService';
+	const updateUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/updateService';
 	const newService = service;
 	let locationData;
 	try {
@@ -317,7 +314,10 @@ export const updateService = async (service, callback) => {
 	}
 	try {
 		await axios.post(updateUrl, newService);
-		callback('Service hace been updated, Allow a few minutess for changes to display', 'success');
+		callback(
+			'Service hace been updated, Allow a few minutess for changes to display',
+			'success'
+		);
 	} catch (e) {
 		console.log(e);
 		callback('error updating your service, Try again later', 'warning');

@@ -124,7 +124,6 @@ class PublishServiceScreen extends Component {
 					this.setState({ imagesInfo });
 				});
 			}
-			const { displayName } = this.props.user;
 			const servicePost = {
 				selectedCategory,
 				selectedSubcategory,
@@ -133,12 +132,11 @@ class PublishServiceScreen extends Component {
 				location,
 				description,
 				miles,
-				displayName,
 				imagesInfo: this.state.imagesInfo
 			};
 			await createService(
 				servicePost,
-				this.props.user.email,
+				this.props.user,
 				(text, type) => this.showToast(text, type)
 			);
 			// on blur we reset everything so we should be good here.

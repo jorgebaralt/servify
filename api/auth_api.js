@@ -110,7 +110,10 @@ export const createEmailAccount = async (newUser, callback) => {
 	// check not empty
 	if (email && password && firstName && lastName) {
 		if (password.length < 6) {
-			callback('Password must be at least 6 characters long', 'warning');
+			return callback('Password must be at least 6 characters long', 'warning');
+		}
+		if (!email.includes('@')) {
+			return callback('Email is bad formatted', 'warning');
 		}
 		// create the account
 		try {
@@ -121,7 +124,6 @@ export const createEmailAccount = async (newUser, callback) => {
 				lastName,
 			});
 			// Perform Login Using Firebase.
-			console.log(data);
 			await axios.post(addUserDbURL, {
 				email: data.email,
 				displayName: data.displayName,

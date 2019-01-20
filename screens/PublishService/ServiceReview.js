@@ -21,6 +21,7 @@ import {
 
 class ServiceReview extends Component {
 	onNext = async () => {
+		this.scrollview.scrollToEnd();
 		await this.props.onComplete();
 	};
 
@@ -99,6 +100,7 @@ class ServiceReview extends Component {
 		const { state } = this.props;
 		return (
 			<ScrollView
+				ref={(scrollview) => { this.scrollview = scrollview; }}
 				style={{
 					width: this.props.width,
 					paddingLeft: 20,
