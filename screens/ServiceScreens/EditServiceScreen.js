@@ -231,6 +231,7 @@ class EditServiceScreen extends Component {
 		// set updated service information
 		const updatedService = {
 			id: service.id,
+			timestamp: service.timestamp,
 			category: service.category,
 			subcategory: service.subcategory,
 			title: this.state.title,

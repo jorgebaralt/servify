@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { LinearGradient } from 'expo';
+import { LinearGradient, ImagePicker, Permissions } from 'expo';
 import {
 	View,
 	ScrollView,
 	KeyboardAvoidingView,
 	SafeAreaView,
-	Platform,
 	Keyboard,
 	DeviceEventEmitter,
 	ActivityIndicator,
-	Text
+	Text,
+	TouchableOpacity
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
@@ -27,7 +27,8 @@ const initialState = {
 	lastName: '',
 	email: '',
 	password: '',
-	loading: false
+	loading: false,
+	imageInfo: null
 };
 class CreateAccountScreen extends Component {
 	state = initialState;
@@ -71,7 +72,6 @@ class CreateAccountScreen extends Component {
 		backPressSubscriptions.add(() => this.props.navigation.navigate('auth'));
 	};
 
-
 	createAccount = async () => {
 		Keyboard.dismiss();
 		this.setState({ loading: true });
@@ -85,22 +85,58 @@ class CreateAccountScreen extends Component {
 		await createEmailAccount(user, (text, type) => this.showToast(text, type));
 	};
 
+	pickImage = async () => {
+		const { status: cameraPerm } = await Permissions.askAsync(
+			Permissions.CAMERA
+		);
+
+		const { status: cameraRollPerm } = await Permissions.askAsync(
+			Permissions.CAMERA_ROLL
+		);
+
+		if (cameraPerm === 'granted' && cameraRollPerm === 'granted') {
+			const result = await ImagePicker.launchImageLibraryAsync({
+				allowsEditing: true,
+				base64: true
+			});
+			if (!result.cancelled) {
+				const filename = result.uri.split('/').pop();
+				// Infer the type of the image
+				const match = /\.(\w+)$/.exec(filename);
+				const type = match ? `image/${match[1]}` : 'image';
+				// TODO: add to state.
+				// upload images, receives an array of images
+				this.setState({
+					imageInfo: [{
+						image: result.uri,
+						filename,
+						type,
+						folder: '/profile_images/'
+					}]
+				});
+			}
+		}
+	};
+
 	clearState() {
 		this.setState(initialState);
 	}
 
 	renderSpinner() {
 		if (this.state.loading) {
-			return <ActivityIndicator style={{ marginTop: 100 }} size="large" color={colors.white} />;
+			return (
+				<ActivityIndicator
+					style={{ marginTop: 100 }}
+					size="large"
+					color={colors.white}
+				/>
+			);
 		}
 		return <View />;
 	}
 
 	render() {
-		const {
-			backIconStyle,
-			titleStyle
-		} = styles;
+		const { backIconStyle, titleStyle } = styles;
 
 		return (
 			<LinearGradient
@@ -108,21 +144,58 @@ class CreateAccountScreen extends Component {
 				style={{ flex: 1 }}
 			>
 				<SafeAreaView style={{ flex: 1 }}>
-					<Ionicons
-						style={backIconStyle}
-						name="ios-arrow-back"
-						size={40}
-						onPress={() => {
-							this.props.navigation.navigate('auth');
-						}}
-					/>
 					<KeyboardAvoidingView
 						behavior="padding"
-						style={{ flex: 1, justifyContent: 'center' }}
+						style={{ flex: 1 }}
 					>
+						<Ionicons
+							style={backIconStyle}
+							name="ios-arrow-back"
+							size={40}
+							onPress={() => {
+								this.props.navigation.navigate('auth');
+							}}
+						/>
 						<ScrollView>
-							<View style={{ flex: 1, paddingLeft: 20, paddingRight: 20 }}>
-								<Text style={titleStyle}>Sign up</Text>
+							<View
+								style={{
+									flex: 1,
+									paddingLeft: 20,
+									paddingRight: 20
+								}}
+							>
+								<View
+									style={{
+										flexDirection: 'row',
+										justifyContent: 'space-between'
+									}}
+								>
+									<Text style={titleStyle}>Sign up</Text>
+									{this.state.imageInfo ? null : (
+										<View>
+											<TouchableOpacity
+												style={{
+													height: 100,
+													width: 100,
+													borderRadius: 50,
+													backgroundColor:
+														colors.darkGray
+												}}
+												onPress={this.pickImage}
+											/>
+											<Text
+												style={{
+													fontSize: 12,
+													color: colors.white,
+													textAlign: 'center'
+												}}
+											>
+												Add profile image
+											</Text>
+										</View>
+									)}
+								</View>
+
 								<FloatingLabelInput
 									value={this.state.firstName}
 									label="First name"
@@ -174,7 +247,6 @@ class CreateAccountScreen extends Component {
 									<Text>Create Account</Text>
 								</Button>
 								{this.renderSpinner()}
-
 							</View>
 						</ScrollView>
 					</KeyboardAvoidingView>
@@ -189,14 +261,17 @@ const styles = {
 		color: 'white',
 		top: 10,
 		left: 5,
-		marginBottom: 40
+		marginBottom: 10
 	},
 	titleStyle: {
 		color: 'white',
 		fontWeight: 'bold',
 		fontSize: 30,
+		marginTop: 40
 	}
 };
 
-
-export default connect(null, { showToast })(CreateAccountScreen);
+export default connect(
+	null,
+	{ showToast }
+)(CreateAccountScreen);
