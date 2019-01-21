@@ -190,7 +190,7 @@ class HomeScreen extends Component {
 						data={this.state.newNearServices}
 						renderItem={({ item, index }) => this.renderNearNearServices(item, index)
 						}
-						keyExtractor={(item) => item.title}
+						keyExtractor={(item) => item.id}
 						horizontal
 					/>
 				</View>
@@ -254,7 +254,7 @@ class HomeScreen extends Component {
 						data={this.state.popularNearServices}
 						renderItem={({ item, index }) => this.renderPopularNearServicesList(item, index)
 						}
-						keyExtractor={(item) => item.title}
+						keyExtractor={(item) => item.id}
 						horizontal
 					/>
 				</View>

@@ -44,23 +44,6 @@ const WIDTH = Dimensions.get('window').width;
 
 let willFocusSubscription;
 let backPressSubscriptions;
-const images = [
-	{
-		fileName: '1',
-		url:
-			'https://images.unsplash.com/photo-1547380109-a2fffd5b9036?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60'
-	},
-	{
-		fileName: '2',
-		url:
-			'https://images.unsplash.com/photo-1543364195-077a16c30ff3?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60'
-	},
-	{
-		fileName: '3',
-		url:
-			'https://images.unsplash.com/photo-1507682520764-93440a60e9b5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60'
-	}
-];
 
 class SpecificServiceScreen extends Component {
 	state = {
@@ -92,12 +75,12 @@ class SpecificServiceScreen extends Component {
 			loadingUserComment: true
 		});
 		// if current user, is in the service favUser, then we he cant add another review
-		if (service.favUsers.includes(this.props.user.email)) {
+		if (service.favUsers.includes(this.props.user.uid)) {
 			this.setState({ isFav: true });
 		}
 		// get all reviews, except for current user
 		await getReviews(
-			service,
+			service.id,
 			this.props.user.email,
 			(currentUserReview, reviews) => this.setState({ currentUserReview, reviews })
 		);
@@ -146,23 +129,23 @@ class SpecificServiceScreen extends Component {
 		this.props.navigation.pop();
 	};
 
-	addFavorite = async (email) => {
+	addFavorite = async (uid) => {
 		this.setState({ isFav: true });
-		await addFavorite(email, this.state.service);
+		await addFavorite(uid, this.state.service.id);
 	};
 
-	removeFavorite = async (email) => {
+	removeFavorite = async (uid) => {
 		this.setState({ isFav: false });
-		await removeFavorite(email, this.state.service);
+		await removeFavorite(uid, this.state.service.id);
 	};
 
 	favPressed = async () => {
 		this.setState({ favLoading: true });
 		const { user } = this.props;
 		if (this.state.isFav) {
-			await this.removeFavorite(user.email);
+			await this.removeFavorite(user.uid);
 		} else {
-			await this.addFavorite(user.email);
+			await this.addFavorite(user.uid);
 		}
 		this.setState({ favLoading: false });
 	};
@@ -205,10 +188,12 @@ class SpecificServiceScreen extends Component {
 				price: this.state.dollarCount,
 				comment: this.state.comment,
 				reviewerDisplayName: this.props.user.displayName,
-				reviewerEmail: this.props.user.email
+				reviewerEmail: this.props.user.email,
+				uid: this.props.user.uid,
+				serviceId: this.state.service.id
 			};
 			await submitReview(
-				this.state.service,
+				this.state.service.id,
 				review,
 				(currentUserReview) => this.setState({
 						loadingUserComment: false,
@@ -473,7 +458,7 @@ class SpecificServiceScreen extends Component {
 	);
 
 	headerRightIcon = () => {
-		if (this.props.user.email === this.state.service.email) {
+		if (this.props.user.uid === this.state.service.uid) {
 			return (
 				<Entypo
 					size={32}
@@ -748,6 +733,7 @@ const styles = {
 		fontSize: 16,
 		fontWeight: '500',
 		marginLeft: 10,
+		marginRight: 10,
 		color: colors.darkerGray
 	},
 	divideLine: {

@@ -7,26 +7,26 @@ const removeFavURL =	'https://us-central1-servify-716c6.cloudfunctions.net/remov
 const { CancelToken } = axios;
 let source;
 
-export const addFavorite = async (email, service) => {
+export const addFavorite = async (uid, id) => {
 	try {
-		await axios.post(addFavURL, { email, service });
+		await axios.post(addFavURL, { uid, id });
 	} catch (e) {
 		console.log(e);
 	}
 };
-export const removeFavorite = async (email, service) => {
+export const removeFavorite = async (uid, id) => {
 	try {
-		await axios.post(removeFavURL, { email, service });
+		await axios.post(removeFavURL, { uid, id });
 	} catch (e) {
 		console.log(e);
 	}
 };
 
-export const getFavorites = async (email, callback) => {
+export const getFavorites = async (uid, callback) => {
 	try {
 		source = CancelToken.source();
 		const { data } = await axios.get(getFavURL, {
-			params: { email },
+			params: { uid },
 			cancelToken: source.token
 		});
 		callback(data);

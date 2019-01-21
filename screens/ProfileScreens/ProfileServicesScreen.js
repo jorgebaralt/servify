@@ -85,7 +85,7 @@ class ProfileServicesScreen extends Component {
 
 	refreshData = async () => {
 		if (currentItem.id === 'favorites') {
-			await getFavorites(this.props.user.email, (data) => this.setState({ favorites: data }));
+			await getFavorites(this.props.user.uid, (data) => this.setState({ favorites: data }));
 		} else if (currentItem.id === 'my_services') {
 			await getServicesByEmail(this.props.user.email, (data) => this.setState({ myServices: data }));
 		}

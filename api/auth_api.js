@@ -70,8 +70,8 @@ export const facebookLogin = async (callback) => {
 			user
 		} = await firebase
 			.auth()
-			.signInAndRetrieveDataWithCredential(credential);
-
+				.signInAndRetrieveDataWithCredential(credential);
+		
 		// add user to firestore DB
 		await axios.post(addUserDbURL, {
 			email: user.email,
@@ -81,7 +81,7 @@ export const facebookLogin = async (callback) => {
 			photoURL: user.providerData[0].photoURL,
 			provider: user.providerData[0].providerId
 		});
-		await user.sendEmailVerification();
+		// await user.sendEmailVerification();
 		// store user in redux
 		callback(`Welcome ${user.displayName}`, 'success');
 	} catch (e) {

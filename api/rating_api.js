@@ -4,14 +4,10 @@ import _ from 'lodash';
 const { CancelToken } = axios;
 let source;
 
-export const submitReview = async (service, review, callback) => {
-	const data = {
-		service,
-		review
-	};
-	const submitReviewUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/postRating';
+export const submitReview = async (serviceId, review, callback) => {
+	const submitReviewUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/postServiceReview';
 	try {
-		await axios.post(submitReviewUrl, data);
+		await axios.post(submitReviewUrl, { serviceId, review });
 		return callback(review);
 	} catch (e) {
 		console.log(e);
@@ -19,12 +15,12 @@ export const submitReview = async (service, review, callback) => {
 };
 
 // get all reviews by service
-export const getServiceReviews = async (service, callback) => {
-	const getReviewsUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getRatings';
+export const getServiceReviews = async (serviceId, callback) => {
+	const getReviewsUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getServiceReviews';
 	try {
 		source = CancelToken.source();
 		const { data } = await axios.get(getReviewsUrl, {
-			params: service,
+			params: { serviceId },
 			cancelToken: source.token
 		});
 		return callback(data);
@@ -33,21 +29,19 @@ export const getServiceReviews = async (service, callback) => {
 	}
 };
 
-export const getReviews = async (service, userEmail, callback) => {
-	const getReviewsUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getRatings';
+// get reviews of just one service
+export const getReviews = async (serviceId, userEmail, callback) => {
+	const getReviewsUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getServiceReviews';
 	try {
 		source = CancelToken.source();
 		const { data } = await axios.get(getReviewsUrl, {
-			params: service,
+			params: { serviceId },
 			cancelToken: source.token
 		});
 		const newData = handleData(data, userEmail);
 		if (newData.currentUserReview) {
-			return callback(
-				newData.currentUserReview,
-				newData.data
-			);
-		} 
+			return callback(newData.currentUserReview, newData.data);
+		}
 		return callback(null, newData);
 	} catch (e) {
 		console.log(e);

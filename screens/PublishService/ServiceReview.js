@@ -21,7 +21,6 @@ import {
 
 class ServiceReview extends Component {
 	onNext = async () => {
-		this.scrollview.scrollToEnd();
 		await this.props.onComplete();
 	};
 
@@ -107,6 +106,7 @@ class ServiceReview extends Component {
 					paddingRight: 20
 				}}
 			>
+				{this.renderSpinner()}
 				<Text style={globalStyles.stepStyle}>Step 5</Text>
 				<Text style={[globalStyles.sectionTitle, { marginTop: 10 }]}>
 					Confirm the information
@@ -184,7 +184,6 @@ class ServiceReview extends Component {
 						<Text>Submit</Text>
 					</Button>
 				</View>
-				{this.renderSpinner()}
 			</ScrollView>
 		);
 	}

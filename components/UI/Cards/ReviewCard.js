@@ -47,7 +47,7 @@ export const ReviewCard = (props) => {
 					spacing={5}
 					style={{ marginTop: 1 }}
 				/>
-				{review.price ? <DollarRating rating={review.price} size={14} style={{ marginTop: 1, marginLeft: 10}} /> : null}
+				{review.price ? <View style={{ marginLeft: 10 }}><DollarRating rating={review.price} size={14} style={{ marginTop: 1, marginLeft: 1}} /></View> : null}
 			</View>
 			
 			<Text style={{marginTop: 10, fontSize: 14, color: colors.darkGray }}>
