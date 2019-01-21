@@ -13,12 +13,13 @@ import { pageHit } from '../../shared/ga_helper';
 import categories from '../../shared/categories';
 import { createService, uploadImages } from '../../api';
 
-// Screens
+// Slides
 import ServiceCategory from './ServiceCategory';
 import ServiceInformation from './ServiceInformation';
 import ServiceLocation from './ServiceLocation';
 import ServiceReview from './ServiceReview';
 import ServiceImagePick from './ServiceImagePick';
+import ServiceDeliveryStore from './ServiceDeliveryStore';
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -28,11 +29,15 @@ const initialState = {
 	title: '',
 	phone: '',
 	location: '',
-	miles: 1,
+	miles: null,
 	description: '',
+	physicalStore: '',
 	loading: false,
 	images: null,
-	imagesInfo: null
+	imagesInfo: null,
+	deliveryStore: undefined,
+	hasDelivery: false,
+	hasPhysicalLocation: false
 };
 
 let willFocusSubscription;
@@ -115,7 +120,6 @@ class PublishServiceScreen extends Component {
 			&& location
 			&& description
 			&& title
-			&& miles
 		) {
 			this.setState({ loading: true });
 			// make sure there are images
@@ -132,13 +136,17 @@ class PublishServiceScreen extends Component {
 				location,
 				description,
 				miles,
-				imagesInfo: this.state.imagesInfo
+				imagesInfo: this.state.imagesInfo,
+				delivery:
+					this.state.deliveryStore
+					&& this.state.deliveryStore.option === (0 || 2),
+				physicalLocation:
+					this.state.deliveryStore
+					&& this.state.deliveryStore.option === (1 || 2)
+						? this.state.location
+						: null
 			};
-			await createService(
-				servicePost,
-				this.props.user,
-				(text, type) => this.showToast(text, type)
-			);
+			await createService(servicePost, this.props.user, (text, type) => this.showToast(text, type));
 			// on blur we reset everything so we should be good here.
 			this.props.navigation.navigate('home');
 		} else {
@@ -172,6 +180,11 @@ class PublishServiceScreen extends Component {
 		this.scrollRef.scrollTo({ x: scrollXPos, y: 0 });
 	};
 
+	scrollTo6 = () => {
+		const scrollXPos = WIDTH * 5;
+		this.scrollRef.scrollTo({ x: scrollXPos, y: 0 });
+	};
+
 	render() {
 		return (
 			<SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
@@ -194,7 +207,10 @@ class PublishServiceScreen extends Component {
 							onBack={() => this.props.navigation.navigate('publishInfo')
 							}
 							categories={categories}
-							selectCategory={(selectedCategory) => this.setState({ selectedCategory, selectedSubcategory: undefined })
+							selectCategory={(selectedCategory) => this.setState({
+									selectedCategory,
+									selectedSubcategory: undefined
+								})
 							}
 							selectSubcategory={(selectedSubcategory) => this.setState({ selectedSubcategory })
 							}
@@ -218,23 +234,47 @@ class PublishServiceScreen extends Component {
 								description: this.state.description
 							}}
 						/>
-						<ServiceLocation
+						<ServiceDeliveryStore
 							width={WIDTH}
 							onNext={this.scrollTo4}
 							onBack={() => this.scrollTo2}
+							selectDeliveryStore={(deliveryStore) => {
+								if (deliveryStore.option === 0) {
+									this.setState({ deliveryStore, hasDelivery: true, hasPhysicalLocation: false });
+								}
+								if (deliveryStore.option === 1) {
+									this.setState({ deliveryStore, hasDelivery: false, hasPhysicalLocation: true, miles: 5 });
+								}
+								if (deliveryStore.option === 2) {
+									this.setState({ deliveryStore, hasDelivery: true, hasPhysicalLocation: true });
+								}
+							}
+							}
+							state={{ deliveryStore: this.state.deliveryStore }}
+						/>
+						<ServiceLocation
+							width={WIDTH}
+							onNext={this.scrollTo5}
+							onBack={() => this.scrollTo3}
 							locationChange={(location) => this.setState({ location })
 							}
 							milesChange={(miles) => this.setState({ miles })}
+							physicalStoreChange={(physicalStore) => this.setState({ physicalStore })
+							}
 							state={{
 								location: this.state.location,
-								miles: this.state.miles
+								miles: this.state.miles,
+								physicalStore: this.state.physicalStore,
+								deliveryStore: this.state.deliveryStore,
+								hasDelivery: this.state.hasDelivery,
+								hasPhysicalLocation: this.state.hasPhysicalLocation
 							}}
 						/>
 
 						<ServiceImagePick
 							width={WIDTH}
-							onNext={this.scrollTo5}
-							onBack={() => this.scrollTo3}
+							onNext={this.scrollTo6}
+							onBack={() => this.scrollTo4}
 							addImage={(position, image, fileName, type) => this.setState((prevState) => {
 									let imageArray = prevState.images;
 									if (imageArray === null) {
@@ -278,7 +318,7 @@ class PublishServiceScreen extends Component {
 
 						<ServiceReview
 							width={WIDTH}
-							onBack={() => this.scrollTo4}
+							onBack={() => this.scrollTo5}
 							onComplete={this.doPostService}
 							loading={this.state.loading}
 							state={this.state}

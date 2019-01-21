@@ -504,12 +504,16 @@ class SpecificServiceScreen extends Component {
 		const { service } = this.state;
 		const { latitude, longitude } = service.geolocation;
 		const center = { latitude, longitude };
-		const radius = service.miles * 1609.34;
+		let serviceMiles = 1;
+		if (service.miles != null) {
+			serviceMiles = service.miles;
+		}
+		const radius = serviceMiles * 1609.34;
 		const fixedRegion = {
 			latitude,
 			longitude,
-			latitudeDelta: 0.03215 * service.miles,
-			longitudeDelta: 0.0683 * service.miles
+			latitudeDelta: 0.03215 * serviceMiles,
+			longitudeDelta: 0.0683 * serviceMiles
 		};
 		return (
 			<View pointerEvents="none">
@@ -523,11 +527,13 @@ class SpecificServiceScreen extends Component {
 					}}
 					region={fixedRegion}
 				>
-					<MapView.Circle
-						center={center}
-						radius={radius}
-						strokeColor={colors.primaryColor}
-					/>
+					{service.miles ? (
+						<MapView.Circle
+							center={center}
+							radius={radius}
+							strokeColor={colors.primaryColor}
+						/>
+					) : null}
 				</MapView>
 				<View style={styles.divideLine} />
 			</View>

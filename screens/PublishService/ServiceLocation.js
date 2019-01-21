@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
-import { ScrollView, Text, View, Slider, Keyboard } from 'react-native';
+import { ScrollView, Text, View, Slider, Keyboard, Switch } from 'react-native';
 import { MapView } from 'expo';
 import { connect } from 'react-redux';
 import { Button, FloatingLabelInput } from '../../components/UI';
 import { colors, globalStyles } from '../../shared/styles';
 import { getLocationFromAddress } from '../../api';
-
 
 class ServiceLocation extends Component {
 	state = {
@@ -19,7 +18,9 @@ class ServiceLocation extends Component {
 			latitude: 37.78825,
 			longitude: -122.4324
 		},
-		radius: 1609.34
+		radius: 1609.34,
+		deliver: false,
+		physicalLocation: false
 	};
 
 	componentDidMount() {
@@ -40,6 +41,10 @@ class ServiceLocation extends Component {
 	}
 
 	onNext = () => {
+		// make sure there are no miles, if the user do not deliver
+		if (!this.state.props.hasDelivery) {
+			this.props.milesChange(null);
+		}
 		this.props.onNext();
 		Keyboard.dismiss();
 	};
@@ -59,7 +64,7 @@ class ServiceLocation extends Component {
 					latitude: coords.latitude,
 					longitude: coords.longitude
 				}
-			}));	
+			}));
 		} else {
 			// update map to new location
 			const newAddress = await getLocationFromAddress(text);
@@ -78,7 +83,7 @@ class ServiceLocation extends Component {
 				}));
 			}
 		}
-	}
+	};
 
 	onLocationChange = async (text) => {
 		this.props.locationChange(text);
@@ -110,44 +115,65 @@ class ServiceLocation extends Component {
 				}}
 				keyboardShouldPersistTaps="handled"
 			>
-				<Text style={globalStyles.stepStyle}>Step 3</Text>
+				<Text style={globalStyles.stepStyle}>Step 4</Text>
 				<Text style={[globalStyles.sectionTitle, { marginTop: 10 }]}>
 					Enter your address
 				</Text>
 				<Text style={globalStyles.publishDescriptionStyle}>
-					This is to let customers know where you provide the service.
+					This is to let customers know the are where you provide the
+					service, you can simply write a state, zipcode or specific
+					address
 				</Text>
 
 				<FloatingLabelInput
 					value={props.state.location}
-					label="Address, Zip Code, or Location"
+					label={
+						props.state.hasPhysicalLocation
+							? 'Enter your exact location'
+							: 'Address, Location, or Zipcode'
+					}
 					firstColor={colors.darkGray}
 					secondColor={colors.secondaryColor}
 					fontColor={colors.black}
 					onChangeText={(text) => this.onLocationChange(text)}
 					style={{ marginTop: 30 }}
 				/>
+				{/* Only diplay if has physical location */}
+				{props.state.hasPhysicalLocation ? (
+					<View>
+						<Text style={{ marginTop: 2, fontSize: 10 }}>
+							Enter street number, street, city and zip code
+						</Text>
+					</View>
+				) : null}
 
-				<Text
-					style={[
-						globalStyles.sectionTitle,
-						{ marginTop: 20, fontWeight: '300' }
-					]}
-				>
-					Distance:{' '}
-					<Text style={{ fontWeight: '400' }}>
-						{props.state.miles} miles
-					</Text>
-				</Text>
+				{/* Display miles slider if the service can be delivered */}
+				{props.state.hasDelivery ? (
+					<View>
+						<Text
+							style={[
+								globalStyles.sectionTitle,
+								{ marginTop: 20, fontWeight: '300' }
+							]}
+						>
+							Distance:{' '}
+							<Text style={{ fontWeight: '400' }}>
+								{props.state.miles} miles
+							</Text>
+						</Text>
 
-				<Slider
-					onValueChange={async (value) => this.onMilesChange(value)}
-					step={1}
-					minimumValue={1}
-					maximumValue={60}
-					minimumTrackTintColor={colors.secondaryColor}
-					thumbTintColor={colors.secondaryColor}
-				/>
+						<Slider
+							onValueChange={async (value) => this.onMilesChange(value)
+							}
+							step={1}
+							minimumValue={1}
+							maximumValue={60}
+							minimumTrackTintColor={colors.secondaryColor}
+							thumbTintColor={colors.secondaryColor}
+						/>
+					</View>
+				) : null}
+
 				<View pointerEvents="none">
 					<MapView
 						style={{
@@ -159,11 +185,16 @@ class ServiceLocation extends Component {
 						initialRegion={this.state.region}
 						region={this.state.region}
 					>
-						<MapView.Circle
-							center={this.state.center}
-							radius={this.state.radius}
-							strokeColor="#FF7043"
-						/>
+						{props.state.hasDelivery ? (
+							<MapView.Circle
+								center={this.state.center}
+								radius={this.state.radius}
+								strokeColor="#FF7043"
+							/>
+						) : null}
+						{props.state.hasPhysicalLocation ? (
+							<MapView.Marker coordinate={this.state.center} />
+						) : null}
 					</MapView>
 				</View>
 
@@ -187,7 +218,7 @@ class ServiceLocation extends Component {
 						color={colors.primaryColor}
 						onPress={() => this.onNext()}
 						style={{ width: '40%' }}
-						disabled={this.props.state.location === ''}
+						disabled={props.state.location === ''}
 					>
 						<Text>Next</Text>
 					</Button>

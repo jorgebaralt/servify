@@ -107,7 +107,7 @@ class ServiceReview extends Component {
 				}}
 			>
 				{this.renderSpinner()}
-				<Text style={globalStyles.stepStyle}>Step 5</Text>
+				<Text style={globalStyles.stepStyle}>Step 6</Text>
 				<Text style={[globalStyles.sectionTitle, { marginTop: 10 }]}>
 					Confirm the information
 				</Text>

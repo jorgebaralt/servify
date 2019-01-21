@@ -50,13 +50,14 @@ const ListModal = (props) => (
 
 const styles = StyleSheet.create({
 	cardStyle: {
-		height: 60,
+		height: 'auto',
 		borderRadius: 8,
 		marginLeft: 10,
-		marginTop: 5,
-		width: SCREEN_WIDTH / 2 - 15,
+		width: SCREEN_WIDTH / 2 - 25,
 		overflow: 'hidden',
-		fontSize: 20
+		fontSize: 20,
+		marginRight: 10,
+		marginTop: 30
 	}
 });
 

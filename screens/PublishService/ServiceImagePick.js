@@ -91,7 +91,7 @@ class ServiceImagePick extends Component {
 				}}
 				keyboardShouldPersistTaps="handled"
 			>
-				<Text style={globalStyles.stepStyle}>Step 4 (optional)</Text>
+				<Text style={globalStyles.stepStyle}>Step 6 (optional)</Text>
 				<Text style={[globalStyles.sectionTitle, { marginTop: 10 }]}>
 					Pick some images for your service
 				</Text>
