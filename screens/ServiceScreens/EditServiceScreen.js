@@ -224,7 +224,6 @@ class EditServiceScreen extends Component {
 		Keyboard.dismiss();
 		this.scrollRef.scrollTo({ x: 0, y: 0, animated: true });
 		this.setState({ loading: true });
-		const { service } = this.state;
 		// according to order, assign position number, to push images in order
 		this.fixPositions();
 		// Delete images from db
@@ -233,10 +232,6 @@ class EditServiceScreen extends Component {
 		await updateImages(this.state.imageArray, (imageArray) => this.setState({ imageArray }));
 		// set updated service information
 		const updatedService = {
-			id: service.id,
-			timestamp: service.timestamp,
-			category: service.category,
-			subcategory: service.subcategory,
 			title: this.state.title,
 			phone: this.state.phone,
 			location: this.state.location,
@@ -244,17 +239,10 @@ class EditServiceScreen extends Component {
 			description: this.state.description,
 			displayName: this.props.user.displayName,
 			email: this.props.user.email,
-			ratingCount: service.ratingCount,
-			ratingSum: service.ratingSum,
-			rating: service.rating,
-			priceCount: service.priceCount,
-			priceSum: service.priceSum,
-			price: service.price,
-			favUsers: service.favUsers,
 			imagesInfo: this.state.imageArray
 		};
 		// post service (update)
-		await updateService(updatedService, (text, type) => this.showToast(text, type));
+		await updateService(updatedService, this.state.service.id, (text, type) => this.showToast(text, type));
 		this.props.navigation.pop(3);
 	};
 

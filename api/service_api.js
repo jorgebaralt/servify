@@ -287,9 +287,9 @@ export const deleteService = async (service) => {
 };
 
 // UPDATE-SERVICE
-export const updateService = async (service, callback) => {
+export const updateService = async (service, serviceId, callback) => {
 	const updateUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/updateService';
-	const newService = service;
+	const updatedService = service;
 	let locationData;
 	try {
 		const geolocationData = await Location.geocodeAsync(service.location);
@@ -303,9 +303,9 @@ export const updateService = async (service, callback) => {
 		delete geolocation.altitude;
 		delete geolocation.accuracy;
 
-		newService.locationData = locationData;
-		newService.geolocation = geolocation;
-		newService.zipCode = locationData.postalCode;
+		updatedService.locationData = locationData;
+		updatedService.geolocation = geolocation;
+		updatedService.zipCode = locationData.postalCode;
 	} catch (e) {
 		callback(
 			'We could not find your address, please provide a correct address',
@@ -313,7 +313,7 @@ export const updateService = async (service, callback) => {
 		);
 	}
 	try {
-		await axios.post(updateUrl, newService);
+		await axios.post(updateUrl, { updatedService, serviceId });
 		callback(
 			'Service hace been updated, Allow a few minutess for changes to display',
 			'success'
