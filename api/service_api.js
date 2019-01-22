@@ -31,7 +31,8 @@ export const createService = async (servicePost, user, callback) => {
 			'warning'
 		);
 	}
-
+	
+	// TODO: move to a function (I THINK IS ALREADY DONE)
 	// Get geoLocation based on location data
 	const geolocationData = await Location.geocodeAsync(location);
 	const geolocation = geolocationData[0];
@@ -72,7 +73,7 @@ export const createService = async (servicePost, user, callback) => {
 		physicalLocation,
 		providerDescription
 	};
-
+	// TODO: MOVE THIS CHECK TO BACKEND
 	// if there is subcategory option, and didnt pick one
 	if (selectedCategory.subcategories && !selectedSubcategory) {
 		return callback('Please Fill Subcategory', 'warning');

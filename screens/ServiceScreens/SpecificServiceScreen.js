@@ -88,7 +88,7 @@ class SpecificServiceScreen extends Component {
 		// get all reviews, except for current user
 		await getReviews(
 			service.id,
-			this.props.user.email,
+			this.props.user.uid,
 			(currentUserReview, reviews) => this.setState({ currentUserReview, reviews })
 		);
 
@@ -230,7 +230,6 @@ class SpecificServiceScreen extends Component {
 	deleteComment = async () => {
 		this.setState({ loadingUserComment: true });
 		await deleteReview(
-			this.state.service,
 			this.state.currentUserReview,
 			() => this.setState({ currentUserReview: null })
 		);
