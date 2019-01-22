@@ -21,7 +21,8 @@ export const createService = async (servicePost, user, callback) => {
 		miles,
 		imagesInfo,
 		isDelivery,
-		physicalLocation
+		physicalLocation,
+		providerDescription
 	} = servicePost;
 
 	if (miles > 60) {
@@ -68,7 +69,8 @@ export const createService = async (servicePost, user, callback) => {
 		zipCode: locationData.postalCode,
 		imagesInfo,
 		isDelivery,
-		physicalLocation
+		physicalLocation,
+		providerDescription
 	};
 
 	// if there is subcategory option, and didnt pick one

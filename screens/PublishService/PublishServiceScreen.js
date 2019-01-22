@@ -31,6 +31,7 @@ const initialState = {
 	location: '',
 	miles: null,
 	description: '',
+	providerDescription: '',
 	loading: false,
 	images: null,
 	imagesInfo: null,
@@ -111,7 +112,8 @@ class PublishServiceScreen extends Component {
 			phone,
 			location,
 			description,
-			miles
+			miles,
+			providerDescription
 		} = this.state;
 		if (selectedCategory && phone && location && description && title) {
 			this.setState({ loading: true });
@@ -133,7 +135,8 @@ class PublishServiceScreen extends Component {
 				isDelivery: this.state.hasDelivery,
 				physicalLocation: this.state.hasPhysicalLocation
 					? location
-					: null
+					: null,
+				providerDescription
 			};
 			await createService(servicePost, this.props.user, (text, type) => this.showToast(text, type));
 			// on blur we reset everything so we should be good here.
@@ -215,12 +218,13 @@ class PublishServiceScreen extends Component {
 							onBack={() => this.scrollTo1}
 							titleChange={(title) => this.setState({ title })}
 							phoneChange={(phone) => this.setState({ phone })}
-							descriptionChange={(description) => this.setState({ description })
-							}
+							descriptionChange={(description) => this.setState({ description })}
+							providerDescriptionChange={(providerDescription) => this.setState({ providerDescription })}
 							state={{
 								title: this.state.title,
 								phone: this.state.phone,
-								description: this.state.description
+								description: this.state.description,
+								providerDescription: this.state.providerDescription
 							}}
 						/>
 						<ServiceDeliveryStore

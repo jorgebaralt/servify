@@ -71,6 +71,21 @@ const ServiceInformation = (props) => (
 			value={props.state.description}
 			onChangeText={(text) => props.descriptionChange(text)}
 		/>
+		{/* Provider Description */}
+		<TextArea
+			style={{ marginTop: 30 }}
+			label="Provider description"
+			size={40}
+			firstColor={colors.darkGray}
+			secondColor={colors.secondaryColor}
+			fontColor={colors.black}
+			multiline
+			bordered
+			numberOfLines={6}
+			placeholder="Describe what you or your company is about"
+			value={props.state.providerDescription}
+			onChangeText={(text) => props.providerDescriptionChange(text)}
+		/>
 		<View
 			style={{
 				flexDirection: 'row',
