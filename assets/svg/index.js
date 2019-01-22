@@ -8,3 +8,5 @@ export * from './Tools';
 export * from './Checkmark';
 export * from './User';
 export * from './Email';
+export * from './Delivery';
+export * from './Home';

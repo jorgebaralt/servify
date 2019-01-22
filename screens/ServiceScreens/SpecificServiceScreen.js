@@ -34,7 +34,14 @@ import {
 	FadeImage
 } from '../../components/UI';
 import { formatDate } from '../../shared/helpers';
-import { Category, Subcategory, Location, Description } from '../../assets/svg';
+import {
+	Category,
+	Subcategory,
+	Location,
+	Description,
+	Delivery,
+	Home
+} from '../../assets/svg';
 import DollarRating from '../../components/Ratings/DollarRating';
 import { defaultImage } from '../../assets/default/categories';
 
@@ -534,6 +541,9 @@ class SpecificServiceScreen extends Component {
 							strokeColor={colors.primaryColor}
 						/>
 					) : null}
+					{service.physicalLocation ? (
+						<MapView.Marker coordinate={center} />
+					) : null}
 				</MapView>
 				<View style={styles.divideLine} />
 			</View>
@@ -720,6 +730,32 @@ class SpecificServiceScreen extends Component {
 								{service.locationData.region}
 							</Text>
 						</View>
+						{/* If service is delivery, say it */}
+						{service.isDelivery ? (
+							<View style={rowStyle}>
+								<Delivery
+									height={18}
+									width={18}
+									style={{ color: colors.secondaryColor }}
+								/>
+								<Text style={descriptionStyle}>
+									We deliver our service
+								</Text>
+							</View>
+						) : null}
+						{/* If there is physical location */}
+						{service.physicalLocation ? (
+							<View style={rowStyle}>
+								<Home
+									height={18}
+									width={18}
+									style={{ color: colors.secondaryColor }}
+								/>
+								<Text style={descriptionStyle}>
+									we are located at {service.physicalLocation}
+								</Text>
+							</View>
+						) : null}
 						{this.renderMap()}
 						{this.renderCurrentUserReview()}
 						{this.renderAllReviews()}

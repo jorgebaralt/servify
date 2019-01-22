@@ -42,7 +42,7 @@ class ServiceLocation extends Component {
 
 	onNext = () => {
 		// make sure there are no miles, if the user do not deliver
-		if (!this.state.props.hasDelivery) {
+		if (!this.props.state.hasDelivery) {
 			this.props.milesChange(null);
 		}
 		this.props.onNext();

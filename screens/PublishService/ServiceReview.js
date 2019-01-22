@@ -5,7 +5,8 @@ import {
 	View,
 	ActivityIndicator,
 	StyleSheet,
-	FlatList
+	FlatList,
+	Image
 } from 'react-native';
 import { Button, FadeImage } from '../../components/UI';
 import { colors, globalStyles } from '../../shared/styles';
@@ -59,14 +60,14 @@ class ServiceReview extends Component {
 	};
 
 	renderEachImage = (item) => (
-		<FadeImage
+		<Image
 			style={{
 				height: 100,
 				width: 100,
 				marginHorizontal: 10,
 				borderRadius: 5
 			}}
-			uri={item.image}
+			source={{ uri: item.image }}
 		/>
 	);
 

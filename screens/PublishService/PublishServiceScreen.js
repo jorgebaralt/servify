@@ -31,7 +31,6 @@ const initialState = {
 	location: '',
 	miles: null,
 	description: '',
-	physicalStore: '',
 	loading: false,
 	images: null,
 	imagesInfo: null,
@@ -114,13 +113,7 @@ class PublishServiceScreen extends Component {
 			description,
 			miles
 		} = this.state;
-		if (
-			selectedCategory
-			&& phone
-			&& location
-			&& description
-			&& title
-		) {
+		if (selectedCategory && phone && location && description && title) {
 			this.setState({ loading: true });
 			// make sure there are images
 			if (this.state.images != null) {
@@ -137,14 +130,10 @@ class PublishServiceScreen extends Component {
 				description,
 				miles,
 				imagesInfo: this.state.imagesInfo,
-				delivery:
-					this.state.deliveryStore
-					&& this.state.deliveryStore.option === (0 || 2),
-				physicalLocation:
-					this.state.deliveryStore
-					&& this.state.deliveryStore.option === (1 || 2)
-						? this.state.location
-						: null
+				isDelivery: this.state.hasDelivery,
+				physicalLocation: this.state.hasPhysicalLocation
+					? location
+					: null
 			};
 			await createService(servicePost, this.props.user, (text, type) => this.showToast(text, type));
 			// on blur we reset everything so we should be good here.
@@ -240,16 +229,28 @@ class PublishServiceScreen extends Component {
 							onBack={() => this.scrollTo2}
 							selectDeliveryStore={(deliveryStore) => {
 								if (deliveryStore.option === 0) {
-									this.setState({ deliveryStore, hasDelivery: true, hasPhysicalLocation: false });
+									this.setState({
+										deliveryStore,
+										hasDelivery: true,
+										hasPhysicalLocation: false
+									});
 								}
 								if (deliveryStore.option === 1) {
-									this.setState({ deliveryStore, hasDelivery: false, hasPhysicalLocation: true, miles: 5 });
+									this.setState({
+										deliveryStore,
+										hasDelivery: false,
+										hasPhysicalLocation: true,
+										miles: 5
+									});
 								}
 								if (deliveryStore.option === 2) {
-									this.setState({ deliveryStore, hasDelivery: true, hasPhysicalLocation: true });
+									this.setState({
+										deliveryStore,
+										hasDelivery: true,
+										hasPhysicalLocation: true
+									});
 								}
-							}
-							}
+							}}
 							state={{ deliveryStore: this.state.deliveryStore }}
 						/>
 						<ServiceLocation
@@ -259,15 +260,13 @@ class PublishServiceScreen extends Component {
 							locationChange={(location) => this.setState({ location })
 							}
 							milesChange={(miles) => this.setState({ miles })}
-							physicalStoreChange={(physicalStore) => this.setState({ physicalStore })
-							}
 							state={{
 								location: this.state.location,
 								miles: this.state.miles,
-								physicalStore: this.state.physicalStore,
 								deliveryStore: this.state.deliveryStore,
 								hasDelivery: this.state.hasDelivery,
-								hasPhysicalLocation: this.state.hasPhysicalLocation
+								hasPhysicalLocation: this.state
+									.hasPhysicalLocation
 							}}
 						/>
 
