@@ -115,7 +115,7 @@ class PublishServiceScreen extends Component {
 		} = this.state;
 		if (selectedCategory && phone && location && description && title) {
 			this.setState({ loading: true });
-			// make sure there are images
+			// make sure there are images, and add them to backend
 			if (this.state.images != null) {
 				await uploadImages(this.state.images, (imagesInfo) => {
 					this.setState({ imagesInfo });
