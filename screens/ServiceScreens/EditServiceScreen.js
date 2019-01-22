@@ -221,6 +221,7 @@ class EditServiceScreen extends Component {
 		]);
 	};
 
+	// send updates to api to update the service on db
 	updateService = async () => {
 		Keyboard.dismiss();
 		this.scrollRef.scrollTo({ x: 0, y: 0, animated: true });
