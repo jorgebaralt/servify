@@ -30,7 +30,7 @@ class ReportScreen extends Component {
 		loading: false,
 		modalVisible: false,
 		service: this.props.navigation.getParam('service')
-	}
+	};
 
 	componentWillMount() {
 		willFocusSubscription = this.props.navigation.addListener(
@@ -71,14 +71,17 @@ class ReportScreen extends Component {
 	sendReport = async () => {
 		this.setState({ loading: true });
 		const report = {
-			reason: this.state.selectedOption,
+			reason: this.state.selectedOption.title,
 			description: this.state.description,
-			serviceTitle: this.state.service.title,
-			serviceOwner: this.state.service.email
+			serviceId: this.state.service.id
 		};
 		await reportService(report);
 		this.setState({ loading: false });
-		this.props.showToast({ message: 'Service reported', type:'success', duration: 3000 });
+		this.props.showToast({
+			message: 'Service reported',
+			type: 'success',
+			duration: 3000
+		});
 		this.onBackPress();
 	};
 
@@ -146,10 +149,7 @@ class ReportScreen extends Component {
 	}
 
 	render() {
-		const {
-			DescriptionStyle,
-			titleStyle,
-		} = styles;
+		const { DescriptionStyle, titleStyle } = styles;
 
 		return (
 			<View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -159,13 +159,15 @@ class ReportScreen extends Component {
 						backgroundColor: colors.white
 					}}
 				/>
-				<SafeAreaView style={{ flex: 1}}>
+				<SafeAreaView style={{ flex: 1 }}>
 					<CustomHeader
 						color={colors.white}
 						title="Report"
 						left={this.headerLeftIcon()}
 					/>
-					<ScrollView style={{ flex: 1, paddingLeft: 20, paddingRight: 20 }}>
+					<ScrollView
+						style={{ flex: 1, paddingLeft: 20, paddingRight: 20 }}
+					>
 						<Text style={titleStyle}>Report a service</Text>
 						<Text style={DescriptionStyle}>
 							Does
@@ -215,8 +217,10 @@ const styles = {
 		marginTop: 20,
 		fontSize: 20,
 		fontWeight: 'bold'
-	},
+	}
 };
 
-
-export default connect(null, { showToast })(ReportScreen);
+export default connect(
+	null,
+	{ showToast }
+)(ReportScreen);

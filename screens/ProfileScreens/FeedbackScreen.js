@@ -84,8 +84,8 @@ class FeedbackScreen extends Component {
 		Keyboard.dismiss();
 		this.setState({ loading: true });
 		const feedback = {
-			email: this.props.user.email,
-			option: this.state.selectedOption,
+			uid: this.props.user.uid,
+			option: this.state.selectedOption.title,
 			description: this.state.description
 		};
 		await submitFeedback(feedback, (text, type) => this.showToast(text, type));

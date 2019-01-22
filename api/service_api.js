@@ -333,7 +333,7 @@ export const updateService = async (service, serviceId, callback) => {
 
 // REPORT-SERVICE
 export const reportService = async (report) => {
-	const reportUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/reportService';
+	const reportUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/report';
 	try {
 		await axios.post(reportUrl, report);
 	} catch (e) {

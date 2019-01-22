@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const feedbackURL = 'https://us-central1-servify-716c6.cloudfunctions.net/postFeedback';
+const feedbackURL = 'https://us-central1-servify-716c6.cloudfunctions.net/feedback';
 
 // Submit a feedback
 export const submitFeedback = async (feedback, callback) => {
