@@ -3,7 +3,8 @@ import { Facebook, Google } from 'expo';
 import firebase from 'firebase';
 import { FB_APP_ID, iosClientIdGoogle, androidClientIdGoogle } from '../config/keys';
 
-const addUserDbURL =	'https://us-central1-servify-716c6.cloudfunctions.net/addUserdb';
+const userURL = 'https://us-central1-servify-716c6.cloudfunctions.net/user';
+const authURL = 'https://us-central1-servify-716c6.cloudfunctions.net/auth';
 
 // Google login
 export const googleLogin = async (callback) => {
@@ -30,13 +31,15 @@ export const googleLogin = async (callback) => {
 				.signInAndRetrieveDataWithCredential(credential);
 
 			// add user to firestore DB
-			await axios.post(addUserDbURL, {
-				email: user.email,
-				displayName: user.displayName,
-				uid: user.uid,
-				emailVerified: user.emailVerified,
-				photoURL: user.providerData[0].photoURL,
-				provider: user.providerData[0].providerId
+			await axios.post(userURL, {
+				user: {
+					email: user.email,
+					displayName: user.displayName,
+					uid: user.uid,
+					emailVerified: user.emailVerified,
+					photoURL: user.providerData[0].photoURL,
+					provider: user.providerData[0].providerId
+				}
 			});
 		} else {
 			console.log('canceled');
@@ -73,13 +76,15 @@ export const facebookLogin = async (callback) => {
 				.signInAndRetrieveDataWithCredential(credential);
 		
 		// add user to firestore DB
-		await axios.post(addUserDbURL, {
-			email: user.email,
-			displayName: user.displayName,
-			uid: user.uid,
-			emailVerified: user.emailVerified,
-			photoURL: user.providerData[0].photoURL,
-			provider: user.providerData[0].providerId
+		await axios.post(userURL, {
+			user: {
+				email: user.email,
+				displayName: user.displayName,
+				uid: user.uid,
+				emailVerified: user.emailVerified,
+				photoURL: user.providerData[0].photoURL,
+				provider: user.providerData[0].providerId
+			}
 		});
 		// await user.sendEmailVerification();
 		// store user in redux
@@ -104,9 +109,7 @@ export const emailAndPasswordLogin = async (email, password, callback) => {
 };
 // create email account
 export const createEmailAccount = async (newUser, callback) => {
-	const createUserUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/createUser';
 	const { email, password, firstName, lastName, imageInfo } = newUser;
-	console.log(imageInfo);
 	// check not empty
 	if (email && password && firstName && lastName) {
 		if (password.length < 6) {
@@ -115,23 +118,26 @@ export const createEmailAccount = async (newUser, callback) => {
 		if (!email.includes('@')) {
 			return callback('Email is bad formatted', 'warning');
 		}
-		// create the account
+		// create the account on authentication
 		try {
-			const { data } = await axios.post(createUserUrl, {
+			const { data } = await axios.post(authURL, {
 				email,
 				password,
 				firstName,
 				lastName,
 			});
-			// Perform Login Using Firebase.
-			await axios.post(addUserDbURL, {
+			// new user object to be added to DB
+			const createdUser = {
 				email: data.email,
 				displayName: data.displayName,
 				uid: data.uid,
 				emailVerified: data.emailVerified,
 				imageInfo,
 				provider: data.providerData[0].providerId
-			});
+			};
+			// ass user to DB
+			await axios.post(userURL, { user: createdUser });
+			// Perform Login Using Firebase.
 			const { user } = await firebase
 				.auth()
 				.signInWithEmailAndPassword(email, password);
