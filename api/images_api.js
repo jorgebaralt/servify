@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import axios from 'axios';
 
+const imagesServiceURL = 'https://us-central1-servify-716c6.cloudfunctions.net/images_service';
 export const uploadImages = async (imagesDataArray, callback) => {
 	try {
 		if (imagesDataArray.length > 0) {
@@ -14,7 +15,7 @@ export const uploadImages = async (imagesDataArray, callback) => {
 					});
 
 					const { data } = await axios.post(
-						'https://us-central1-servify-716c6.cloudfunctions.net/uploadFile',
+						imagesServiceURL,
 						formData
 					);
 					return data;
@@ -54,7 +55,7 @@ export const updateImages = async (imagesDataArray, callback) => {
 				});
 
 				const { data } = await axios.post(
-					'https://us-central1-servify-716c6.cloudfunctions.net/uploadFile',
+					imagesServiceURL,
 					formData
 				);
 				// add position, so we can keep track of the order
@@ -105,16 +106,20 @@ export const profileImageUpload = async (imageData) => {
 	}
 };
 
-export const deleteImage = async (deleteImagesArray) => {
+export const deleteImage = async (deleteImagesArray, serviceId) => {
 	const deleteUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/deleteFile';
 	try {
+		console.log('deleting from ' + serviceId);
+		console.log(deleteImagesArray);
 		await Promise.all(
 			deleteImagesArray.map(async (fileName) => {
-				const { data } = await axios.delete(deleteUrl, {
-					params: {
-						fileName
+				const { data } = await axios.delete(imagesServiceURL, {
+					data: {
+						fileName,
+						serviceId
 					}
 				});
+				console.log(data);
 				return data;
 			})
 		);

@@ -187,8 +187,7 @@ class EditServiceScreen extends Component {
 		// Delete service images from firestore
 		const toDelete = [];
 
-		// delete service
-		await deleteService(this.state.service);
+	
 		// delete image from storage
 		if (this.state.imageArray) {
 			this.state.imageArray.forEach((imageInfo) => {
@@ -197,6 +196,8 @@ class EditServiceScreen extends Component {
 			this.setState({ deleteImagesArray: toDelete });
 			await this.deleteImages();
 		}
+		// delete service
+		await deleteService(this.state.service);
 		this.setState({
 			title: '',
 			description: '',
@@ -345,7 +346,7 @@ class EditServiceScreen extends Component {
 
 	deleteImages = async () => {
 		if (this.state.deleteImagesArray.length > 0) {
-			await deleteImage(this.state.deleteImagesArray);
+			await deleteImage(this.state.deleteImagesArray, this.state.service.id);
 		}
 	};
 
@@ -545,6 +546,7 @@ class EditServiceScreen extends Component {
 							onChangeText={(text) => this.onLocationChange(text)}
 							style={{ marginTop: 20 }}
 						/>
+						{/* FIXME: MAKE SURE TO LOOK FOR DELIVERY AND PHYSICAL LOC */}
 						<Text
 							style={[
 								globalStyles.sectionTitle,
