@@ -93,7 +93,7 @@ class ProfileServicesScreen extends Component {
 
 	removeFavorite = async (service) => {
 		this.setState({ loading: true });
-		await removeFavorite(this.props.user.email, service);
+		await removeFavorite(this.props.user.uid, service.id);
 		await this.refreshData();
 		this.setState({ loading: false });
 	};

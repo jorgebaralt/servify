@@ -1,22 +1,19 @@
 import axios from 'axios';
 
-const getFavURL =	'https://us-central1-servify-716c6.cloudfunctions.net/getFavorite';
-const addFavURL =	'https://us-central1-servify-716c6.cloudfunctions.net/addFavorite';
-const removeFavURL =	'https://us-central1-servify-716c6.cloudfunctions.net/removeFavorite';
-
+const favoritesURL = 'https://us-central1-servify-716c6.cloudfunctions.net/favorites';
 const { CancelToken } = axios;
 let source;
 
-export const addFavorite = async (uid, id) => {
+export const addFavorite = async (uid, serviceId) => {
 	try {
-		await axios.post(addFavURL, { uid, id });
+		await axios.post(favoritesURL, { uid, serviceId });
 	} catch (e) {
 		console.log(e);
 	}
 };
-export const removeFavorite = async (uid, id) => {
+export const removeFavorite = async (uid, serviceId) => {
 	try {
-		await axios.post(removeFavURL, { uid, id });
+		await axios.delete(favoritesURL, { data: { uid, serviceId } });
 	} catch (e) {
 		console.log(e);
 	}
@@ -25,7 +22,7 @@ export const removeFavorite = async (uid, id) => {
 export const getFavorites = async (uid, callback) => {
 	try {
 		source = CancelToken.source();
-		const { data } = await axios.get(getFavURL, {
+		const { data } = await axios.get(favoritesURL, {
 			params: { uid },
 			cancelToken: source.token
 		});
