@@ -151,7 +151,7 @@ class CreateAccountScreen extends Component {
 			>
 				<SafeAreaView style={{ flex: 1 }}>
 					<KeyboardAvoidingView
-						behavior="padding"
+						behavior="position"
 						style={{ flex: 1 }}
 					>
 						<Ionicons

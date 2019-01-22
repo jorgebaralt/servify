@@ -180,7 +180,7 @@ class PublishServiceScreen extends Component {
 	render() {
 		return (
 			<SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-				<KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+				<KeyboardAvoidingView behavior="position" style={{ flex: 1 }}>
 					<ScrollView
 						ref={(ref) => {
 							this.scrollRef = ref;

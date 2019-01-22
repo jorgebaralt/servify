@@ -597,7 +597,7 @@ class SpecificServiceScreen extends Component {
 			: [{ fileName: '1', image: defaultImage(service.category) }];
 		return (
 			<KeyboardAvoidingView
-				behavior="padding"
+				behavior="position"
 				style={{
 					zIndex: -1,
 					backgroundColor: colors.white
