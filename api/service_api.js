@@ -5,7 +5,7 @@ import _ from 'lodash';
 const { CancelToken } = axios;
 let source;
 const serviceURL =	'https://us-central1-servify-716c6.cloudfunctions.net/service';
-const GET_URL =	'https://us-central1-servify-716c6.cloudfunctions.net/getServices';
+const servicesURL =	'https://us-central1-servify-716c6.cloudfunctions.net/services';
 
 // Create a service
 export const createService = async (servicePost, user, callback) => {
@@ -202,7 +202,7 @@ export const getServicesCategory = async (
 ) => {
 	try {
 		source = CancelToken.source();
-		let { data } = await axios.get(GET_URL, {
+		let { data } = await axios.get(servicesURL, {
 			params: {
 				category
 			},
@@ -240,7 +240,7 @@ export const getServicesSubcategory = async (
 ) => {
 	try {
 		source = CancelToken.source();
-		let { data } = await axios.get(GET_URL, {
+		let { data } = await axios.get(servicesURL, {
 			params: {
 				subcategory
 			},
@@ -273,7 +273,7 @@ export const getServicesSubcategory = async (
 export const getServicesByEmail = async (email, callback) => {
 	try {
 		source = CancelToken.source();
-		const { data } = await axios.get(GET_URL, {
+		const { data } = await axios.get(servicesURL, {
 			params: {
 				email
 			},
