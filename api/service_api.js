@@ -4,12 +4,12 @@ import _ from 'lodash';
 
 const { CancelToken } = axios;
 let source;
+const serviceURL =	'https://us-central1-servify-716c6.cloudfunctions.net/service';
 const GET_URL =	'https://us-central1-servify-716c6.cloudfunctions.net/getServices';
 
 // Create a service
 export const createService = async (servicePost, user, callback) => {
 	let isEmpty;
-	const createServiceURL =		'https://us-central1-servify-716c6.cloudfunctions.net/postService';
 	const checkDuplicateBaseUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getServicesCount/';
 	const {
 		selectedCategory,
@@ -101,7 +101,9 @@ export const createService = async (servicePost, user, callback) => {
 	} else {
 		// Check duplicate using category
 		try {
-			const response = await axios.get(checkDuplicateBaseUrl, { params: { email: user.email, category } });
+			const response = await axios.get(checkDuplicateBaseUrl, {
+				params: { email: user.email, category }
+			});
 			isEmpty = response.data;
 			if (!isEmpty) {
 				return callback(
@@ -116,7 +118,7 @@ export const createService = async (servicePost, user, callback) => {
 	}
 	try {
 		// Everything is fine, publish the service
-		await axios.post(createServiceURL, newServicePost);
+		await axios.post(serviceURL, newServicePost);
 		return callback('Service has been published', 'success');
 	} catch (error) {
 		return callback('Error connecting to server', 'warning');
@@ -281,10 +283,9 @@ export const getServicesByEmail = async (email, callback) => {
 };
 
 // DELETE-SERVICE
-export const deleteService = async (service) => {
-	const deleteUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/deleteService';
+export const deleteService = async (deletedService) => {
 	try {
-		await axios.delete(deleteUrl, { data: service });
+		await axios.delete(serviceURL, { data: { deletedService } });
 	} catch (e) {
 		console.log(e);
 	}
@@ -292,7 +293,6 @@ export const deleteService = async (service) => {
 
 // UPDATE-SERVICE
 export const updateService = async (service, serviceId, callback) => {
-	const updateUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/updateService';
 	const updatedService = service;
 	let locationData;
 	try {
@@ -317,7 +317,7 @@ export const updateService = async (service, serviceId, callback) => {
 		);
 	}
 	try {
-		await axios.post(updateUrl, { updatedService, serviceId });
+		await axios.put(serviceURL, { updatedService, serviceId });
 		callback(
 			'Service hace been updated, Allow a few minutess for changes to display',
 			'success'
