@@ -11,7 +11,12 @@ import { connect } from 'react-redux';
 import { showToast } from '../../actions';
 import { pageHit } from '../../shared/ga_helper';
 import categories from '../../shared/categories';
-import { createService, uploadImages } from '../../api';
+import {
+	createService,
+	uploadImages,
+	getLocationFromAddress,
+	getLocationInfo
+} from '../../api';
 
 // Slides
 import ServiceCategory from './ServiceCategory';
@@ -105,6 +110,8 @@ class PublishServiceScreen extends Component {
 	};
 
 	doPostService = async () => {
+		this.setState({ loading: true });
+		// grab everything from state
 		const {
 			selectedCategory,
 			selectedSubcategory,
@@ -115,36 +122,50 @@ class PublishServiceScreen extends Component {
 			miles,
 			providerDescription
 		} = this.state;
-		if (selectedCategory && phone && location && description && title) {
-			this.setState({ loading: true });
-			// make sure there are images, and add them to backend
-			if (this.state.images != null) {
-				await uploadImages(this.state.images, (imagesInfo) => {
-					this.setState({ imagesInfo });
-				});
-			}
-			const servicePost = {
-				selectedCategory,
-				selectedSubcategory,
-				title,
-				phone,
-				location,
-				description,
-				miles,
-				imagesInfo: this.state.imagesInfo,
-				isDelivery: this.state.hasDelivery,
-				physicalLocation: this.state.hasPhysicalLocation
-					? location
-					: null,
-				providerDescription
-			};
-			await createService(servicePost, this.props.user, (text, type) => this.showToast(text, type));
-			// on blur we reset everything so we should be good here.
-			this.props.navigation.navigate('home');
-		} else {
-			this.showToast('Please fill all the fields', 'warning');
-			this.setState({ loading: false });
+
+		// make sure there are images, and add them to backend
+		if (this.state.images != null) {
+			await uploadImages(this.state.images, (imagesInfo) => {
+				this.setState({ imagesInfo });
+			});
 		}
+		// get coords from location
+		const geolocation = await getLocationFromAddress(location);
+		delete geolocation.accuracy;
+		delete geolocation.altitude;
+
+		// get location data from coords (city, country, etc)
+		const locationData = await getLocationInfo({
+			latitude: geolocation.latitude,
+			longitude: geolocation.longitude
+		});
+		
+		// create object to send to backend
+		const servicePost = {
+			category: selectedCategory.dbReference,
+			subcategory: selectedCategory.subcategories
+				? selectedSubcategory.dbReference
+				: null,
+			title,
+			phone,
+			geolocation,
+			locationData,
+			description,
+			miles,
+			imagesInfo: this.state.imagesInfo,
+			isDelivery: this.state.hasDelivery,
+			physicalLocation: this.state.hasPhysicalLocation ? location : null,
+			providerDescription,
+			email: this.props.user.email,
+			uid: this.props.user.uid,
+			displayName: this.props.user.displayName
+		};
+		// send object to backend
+		await createService(servicePost, (text, type) => this.showToast(text, type));
+		// on blur we reset everything so we should be good here.
+		
+		// TODO: navigate to specific service
+		this.props.navigation.navigate('home');
 	};
 
 	scrollTo1 = () => {
@@ -218,13 +239,16 @@ class PublishServiceScreen extends Component {
 							onBack={this.scrollTo1}
 							titleChange={(title) => this.setState({ title })}
 							phoneChange={(phone) => this.setState({ phone })}
-							descriptionChange={(description) => this.setState({ description })}
-							providerDescriptionChange={(providerDescription) => this.setState({ providerDescription })}
+							descriptionChange={(description) => this.setState({ description })
+							}
+							providerDescriptionChange={(providerDescription) => this.setState({ providerDescription })
+							}
 							state={{
 								title: this.state.title,
 								phone: this.state.phone,
 								description: this.state.description,
-								providerDescription: this.state.providerDescription
+								providerDescription: this.state
+									.providerDescription
 							}}
 						/>
 						<ServiceDeliveryStore
@@ -232,27 +256,29 @@ class PublishServiceScreen extends Component {
 							onNext={this.scrollTo4}
 							onBack={this.scrollTo2}
 							selectDeliveryStore={(deliveryStore) => {
-								if (deliveryStore.option === 0) {
-									this.setState({
-										deliveryStore,
-										hasDelivery: true,
-										hasPhysicalLocation: false
-									});
-								}
-								if (deliveryStore.option === 1) {
-									this.setState({
-										deliveryStore,
-										hasDelivery: false,
-										hasPhysicalLocation: true,
-										miles: 5
-									});
-								}
-								if (deliveryStore.option === 2) {
-									this.setState({
-										deliveryStore,
-										hasDelivery: true,
-										hasPhysicalLocation: true
-									});
+								if (deliveryStore) {
+									if (deliveryStore.option === 0) {
+										this.setState({
+											deliveryStore,
+											hasDelivery: true,
+											hasPhysicalLocation: false
+										});
+									}
+									if (deliveryStore.option === 1) {
+										this.setState({
+											deliveryStore,
+											hasDelivery: false,
+											hasPhysicalLocation: true,
+											miles: 5
+										});
+									}
+									if (deliveryStore.option === 2) {
+										this.setState({
+											deliveryStore,
+											hasDelivery: true,
+											hasPhysicalLocation: true
+										});
+									}
 								}
 							}}
 							state={{ deliveryStore: this.state.deliveryStore }}

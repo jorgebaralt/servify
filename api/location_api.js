@@ -6,10 +6,10 @@ export const getLocationFromAddress = async (address) => {
 	return geolocation;
 };
 
-export const getLocationInfo = async (coords, callback) => {
+export const getLocationInfo = async (coords) => {
 	const locationInfo = await Location.reverseGeocodeAsync({
 		latitude: coords.latitude,
 		longitude: coords.longitude
 	});
-	callback(locationInfo[0]);
+	return locationInfo[0];
 };

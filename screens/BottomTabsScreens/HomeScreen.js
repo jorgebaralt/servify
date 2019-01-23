@@ -124,11 +124,11 @@ class HomeScreen extends Component {
 				await this.props.getUserLocation();
 			}
 			// Loc info
-			await api.getLocationInfo({
+			const locInfo = await api.getLocationInfo({
 				latitude: this.props.userLocation.coords.latitude,
 				longitude: this.props.userLocation.coords.longitude
-			},(locInfo) => this.setState({ currentCity: locInfo.city + ' ' + locInfo.region }));
-
+			});
+			this.setState({ currentCity: locInfo.city + ' ' + locInfo.region })
 			
 			// Get New Near Services
 			await api.getNewNearServices(

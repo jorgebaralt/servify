@@ -281,7 +281,7 @@ class ProfileServicesScreen extends Component {
 				<FlatList
 					data={data}
 					renderItem={({ item }) => this.renderServices(item)}
-					keyExtractor={(item) => item.title}
+					keyExtractor={(item) => item.id}
 					refreshControl={this.flatListRefreshControl()}
 					style={{ paddingLeft: 20, paddingRight: 20 }}
 				/>

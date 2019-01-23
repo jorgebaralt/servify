@@ -8,122 +8,13 @@ const serviceURL =	'https://us-central1-servify-716c6.cloudfunctions.net/service
 const servicesURL =	'https://us-central1-servify-716c6.cloudfunctions.net/services';
 
 // Create a service
-export const createService = async (servicePost, user, callback) => {
-	let isEmpty;
-	const checkDuplicateBaseUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getServicesCount/';
-	const {
-		selectedCategory,
-		selectedSubcategory,
-		phone,
-		location,
-		description,
-		title,
-		miles,
-		imagesInfo,
-		isDelivery,
-		physicalLocation,
-		providerDescription
-	} = servicePost;
-
-	if (miles > 60) {
-		return callback(
-			'No more than 60 miles for local services, we are working on services across states',
-			'warning'
-		);
-	}
-	
-	// TODO: move to a function (I THINK IS ALREADY DONE)
-	// Get geoLocation based on location data
-	const geolocationData = await Location.geocodeAsync(location);
-	const geolocation = geolocationData[0];
-	let locationData;
-	try {
-		const locationInfo = await Location.reverseGeocodeAsync({
-			latitude: geolocation.latitude,
-			longitude: geolocation.longitude
-		});
-		[locationData] = locationInfo;
-		delete geolocation.accuracy;
-		delete geolocation.altitude;
-	} catch (e) {
-		console.log(e);
-		callback(
-			'We could not find your address, please provide a correct address',
-			'warning'
-		);
-	}
-
-	// service to be posted, if everything is fine
-	// the rest data (ratings, location(geopoints) is set on backend)
-	const category = selectedCategory.dbReference;
-	const newServicePost = {
-		category,
-		phone,
-		description,
-		title,
-		geolocation,
-		locationData,
-		miles,
-		email: user.email,
-		displayName: user.displayName,
-		uid: user.uid,
-		zipCode: locationData.postalCode,
-		imagesInfo,
-		isDelivery,
-		physicalLocation,
-		providerDescription
-	};
-	// TODO: MOVE THIS CHECK TO BACKEND
-	// if there is subcategory option, and didnt pick one
-	if (selectedCategory.subcategories && !selectedSubcategory) {
-		return callback('Please Fill Subcategory', 'warning');
-	}
-
-	// if there is a subcategory selected, add it to the object
-	if (selectedSubcategory) {
-		newServicePost.subcategory = selectedSubcategory.dbReference;
-		// Check duplicate service using subcategory
-		try {
-			const response = await axios.get(checkDuplicateBaseUrl, {
-				params: {
-					email: user.email,
-					subcategory: selectedSubcategory.dbReference
-				}
-			});
-			isEmpty = response.data;
-			if (!isEmpty) {
-				return callback(
-					'This account already have a Service under this Subcategory, Only 1 service per subcategory is allowed',
-					'warning'
-				);
-			}
-		} catch (e) {
-			console.log('error checking duplicate for subcategory');
-			return callback('Error connecting to server', 'warning');
-		}
-	} else {
-		// Check duplicate using category
-		try {
-			const response = await axios.get(checkDuplicateBaseUrl, {
-				params: { email: user.email, category }
-			});
-			isEmpty = response.data;
-			if (!isEmpty) {
-				return callback(
-					'This account already have a Service under this category, Only 1 service per category is allowed',
-					'warning'
-				);
-			}
-		} catch (error) {
-			console.log('error checking duplicate for category');
-			return callback('Error connecting to server', 'warning');
-		}
-	}
+export const createService = async (servicePost, callback) => {
 	try {
 		// Everything is fine, publish the service
-		await axios.post(serviceURL, newServicePost);
-		return callback('Service has been published', 'success');
+		const { data } = await axios.post(serviceURL, servicePost);
+		return callback(data.message, data.type);
 	} catch (error) {
+		console.log(error);
 		return callback('Error connecting to server', 'warning');
 	}
 };

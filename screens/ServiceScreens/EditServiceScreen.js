@@ -488,7 +488,7 @@ class EditServiceScreen extends Component {
 					right={this.headerRightIcon()}
 				/>
 				<KeyboardAvoidingView
-					behavior="position"
+					behavior="padding"
 					style={{ flex: 1, justifyContent: 'center' }}
 				>
 					<ScrollView
