@@ -209,7 +209,7 @@ class ServiceLocation extends Component {
 					<Button
 						bordered
 						color={colors.primaryColor}
-						onPress={props.onBack()}
+						onPress={() => props.onBack()}
 						textColor={colors.primaryColor}
 					>
 						<Text>Back</Text>

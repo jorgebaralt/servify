@@ -180,7 +180,7 @@ class PublishServiceScreen extends Component {
 	render() {
 		return (
 			<SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-				<KeyboardAvoidingView behavior="position" style={{ flex: 1 }}>
+				<KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
 					<ScrollView
 						ref={(ref) => {
 							this.scrollRef = ref;
@@ -215,7 +215,7 @@ class PublishServiceScreen extends Component {
 						<ServiceInformation
 							width={WIDTH}
 							onNext={this.scrollTo3}
-							onBack={() => this.scrollTo1}
+							onBack={this.scrollTo1}
 							titleChange={(title) => this.setState({ title })}
 							phoneChange={(phone) => this.setState({ phone })}
 							descriptionChange={(description) => this.setState({ description })}
@@ -230,7 +230,7 @@ class PublishServiceScreen extends Component {
 						<ServiceDeliveryStore
 							width={WIDTH}
 							onNext={this.scrollTo4}
-							onBack={() => this.scrollTo2}
+							onBack={this.scrollTo2}
 							selectDeliveryStore={(deliveryStore) => {
 								if (deliveryStore.option === 0) {
 									this.setState({
@@ -260,7 +260,7 @@ class PublishServiceScreen extends Component {
 						<ServiceLocation
 							width={WIDTH}
 							onNext={this.scrollTo5}
-							onBack={() => this.scrollTo3}
+							onBack={this.scrollTo3}
 							locationChange={(location) => this.setState({ location })
 							}
 							milesChange={(miles) => this.setState({ miles })}
@@ -277,7 +277,7 @@ class PublishServiceScreen extends Component {
 						<ServiceImagePick
 							width={WIDTH}
 							onNext={this.scrollTo6}
-							onBack={() => this.scrollTo4}
+							onBack={this.scrollTo4}
 							addImage={(position, image, fileName, type) => this.setState((prevState) => {
 									let imageArray = prevState.images;
 									if (imageArray === null) {

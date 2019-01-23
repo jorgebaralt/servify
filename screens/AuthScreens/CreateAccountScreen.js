@@ -151,7 +151,7 @@ class CreateAccountScreen extends Component {
 			>
 				<SafeAreaView style={{ flex: 1 }}>
 					<KeyboardAvoidingView
-						behavior="position"
+						behavior="padding"
 						style={{ flex: 1 }}
 					>
 						<Ionicons
@@ -243,7 +243,7 @@ class CreateAccountScreen extends Component {
 									onChangeText={(password) => {
 										this.setState({ password });
 									}}
-									style={{ marginTop: 20 }}
+									style={{ marginTop: 20, marginBottom: 20 }}
 									secureTextEntry
 								/>
 								<Button

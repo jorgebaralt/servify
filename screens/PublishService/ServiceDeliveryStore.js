@@ -60,7 +60,7 @@ class ServiceDeliveryStore extends Component {
 					<Button
 						bordered
 						color={colors.primaryColor}
-						onPress={this.props.onBack()}
+						onPress={() => this.props.onBack()}
 						textColor={colors.primaryColor}
 					>
 						<Text>Back</Text>
