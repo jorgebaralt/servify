@@ -12,7 +12,7 @@
       "ios",
       "android"
     ],
-    "version": "1.0.6",
+    "version": "1.0.7",
     "orientation": "portrait",
     "icon": "./assets/servifyIcon2.png",
     "splash": {
@@ -42,14 +42,14 @@
     },
     "android": {
       "package": "com.jorgebaralt.servify",
-      "versionCode": 6,
+      "versionCode": 7,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyD5KIVp89sqAl6ogAwncya3ltZcEwVUcwU"
         },
         "googleSignIn": {
           "apiKey": "AIzaSyAaYxWn6nQi0kOMX4gLovsWkm7QQ6abXrg",
-          "certificateHash": "231FAA55C69E3343FB6D42A0C770A882317C4A9A"
+          "certificateHash": "5476B8C469C151EA35482C5D9D366B0F422088AA"
         }
       }
     }

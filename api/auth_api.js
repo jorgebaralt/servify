@@ -1,7 +1,11 @@
 import axios from 'axios';
 import { Facebook, Google } from 'expo';
 import firebase from 'firebase';
-import { FB_APP_ID, iosClientIdGoogle, androidClientIdGoogle } from '../config/keys';
+import {
+	FB_APP_ID,
+	iosClientIdGoogle,
+	androidClientIdGoogle
+} from '../config/keys';
 
 const userURL = 'https://us-central1-servify-716c6.cloudfunctions.net/user';
 const authURL = 'https://us-central1-servify-716c6.cloudfunctions.net/auth';
@@ -12,6 +16,8 @@ export const googleLogin = async (callback) => {
 		const result = await Google.logInAsync({
 			androidClientId: androidClientIdGoogle,
 			iosClientId: iosClientIdGoogle,
+			androidStandaloneAppClientId: androidClientIdGoogle,
+			iosStandaloneAppClientId: iosClientIdGoogle,
 			scopes: ['profile', 'email'],
 			behavior: 'web'
 		});
@@ -41,8 +47,9 @@ export const googleLogin = async (callback) => {
 					provider: user.providerData[0].providerId
 				}
 			});
+			callback(`Welcome ${user.displayName}`, 'success');
 		} else {
-			console.log('canceled');
+			callback('Permission denied', 'warning');
 		}
 	} catch (e) {
 		return { error: true };
@@ -60,7 +67,7 @@ export const facebookLogin = async (callback) => {
 
 		// if permission denied
 		if (type === 'cancel') {
-			callback('Permission denied', 'error');
+			callback('Permission denied', 'warning');
 		}
 
 		// firebase login with token from permission
@@ -73,8 +80,8 @@ export const facebookLogin = async (callback) => {
 			user
 		} = await firebase
 			.auth()
-				.signInAndRetrieveDataWithCredential(credential);
-		
+			.signInAndRetrieveDataWithCredential(credential);
+
 		// add user to firestore DB
 		await axios.post(userURL, {
 			user: {
@@ -113,7 +120,10 @@ export const createEmailAccount = async (newUser, callback) => {
 	// check not empty
 	if (email && password && firstName && lastName) {
 		if (password.length < 6) {
-			return callback('Password must be at least 6 characters long', 'warning');
+			return callback(
+				'Password must be at least 6 characters long',
+				'warning'
+			);
 		}
 		if (!email.includes('@')) {
 			return callback('Email is bad formatted', 'warning');
@@ -124,7 +134,7 @@ export const createEmailAccount = async (newUser, callback) => {
 				email,
 				password,
 				firstName,
-				lastName,
+				lastName
 			});
 			// new user object to be added to DB
 			const createdUser = {
