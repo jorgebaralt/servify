@@ -719,15 +719,17 @@ class SpecificServiceScreen extends Component {
 							>
 								<Text>Call Now</Text>
 							</Button>
-							<Button
-								bordered
-								onPress={() => this.openEmail()}
-								color={colors.primaryColor}
-								textColor={colors.primaryColor}
-								style={{ marginLeft: 10 }}
-							>
-								<Text>Send an Email</Text>
-							</Button>
+							{service.contactEmail ? (
+								<Button
+									bordered
+									onPress={() => this.openEmail()}
+									color={colors.primaryColor}
+									textColor={colors.primaryColor}
+									style={{ marginLeft: 10 }}
+								>
+									<Text>Send an Email</Text>
+								</Button>
+							) : null}
 						</View>
 						<View style={divideLine} />
 						{/* Location */}
