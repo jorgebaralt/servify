@@ -88,7 +88,7 @@ class ServiceReview extends Component {
 					<FlatList
 						data={state.images}
 						renderItem={({ item }) => this.renderEachImage(item)}
-						keyExtractor={(item) => item.title}
+						keyExtractor={(item) => item.fileName}
 						horizontal
 					/>
 				</View>

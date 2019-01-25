@@ -164,7 +164,7 @@ class SpecificServiceScreen extends Component {
 	};
 
 	openEmail = async () => {
-		Linking.openURL(`mailto:${this.state.service.email}`);
+		Linking.openURL(`mailto:${this.state.service.contactEmail}`);
 	};
 
 	reportAlert = () => {
@@ -263,7 +263,7 @@ class SpecificServiceScreen extends Component {
 				/>
 			);
 		}
-		if (this.props.user.email !== this.state.service.email) {
+		if (this.props.user.uid !== this.state.service.uid) {
 			// User have not added a review yet
 			if (!currentUserReview) {
 				return (
@@ -697,7 +697,7 @@ class SpecificServiceScreen extends Component {
 								style={{ color: colors.secondaryColor }}
 							/>
 							<Text style={descriptionStyle}>
-								{service.email}
+								{service.contactEmail}
 							</Text>
 						</View>
 						<View style={rowStyle}>

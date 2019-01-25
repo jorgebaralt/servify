@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import React, { Component } from 'react';
 import {
 	Alert,
@@ -24,7 +25,8 @@ import {
 	updateService,
 	getLocationFromAddress,
 	updateImages,
-	deleteImage
+	deleteImage,
+	getLocationInfo
 } from '../../api';
 import {
 	CustomHeader,
@@ -44,7 +46,9 @@ class EditServiceScreen extends Component {
 		loading: false,
 		imageArray: null,
 		position: 0,
-		deleteImagesArray: []
+		deleteImagesArray: [],
+		isDelivery: null,
+		locationChange: false
 	};
 
 	componentWillMount() {
@@ -68,14 +72,16 @@ class EditServiceScreen extends Component {
 		// fill rest of the service info
 		this.setState((prevState) => ({
 			title: prevState.service.title,
+			contactEmail: prevState.service.contactEmail,
 			description: prevState.service.description,
 			phone: prevState.service.phone,
-			location:
-				prevState.service.locationData.city
-				+ ', '
-				+ prevState.service.locationData.region
-				+ ' '
-				+ prevState.service.locationData.postalCode,
+			location: prevState.service.physicalLocation
+				? prevState.service.physicalLocation
+				: prevState.service.locationData.city
+				  + ', '
+				  + prevState.service.locationData.region
+				  + ' '
+				  + prevState.service.locationData.postalCode,
 			miles: prevState.service.miles,
 			region: {
 				latitude: prevState.service.geolocation.latitude,
@@ -87,7 +93,8 @@ class EditServiceScreen extends Component {
 			center: {
 				latitude: prevState.service.geolocation.latitude,
 				longitude: prevState.service.geolocation.longitude
-			}
+			},
+			isDelivery: prevState.service.isDelivery
 		}));
 
 		willFocusSubscription = this.props.navigation.addListener(
@@ -113,8 +120,8 @@ class EditServiceScreen extends Component {
 				region: {
 					latitude: coords.latitude,
 					longitude: coords.longitude,
-					latitudeDelta: prevState.latitudeDelta,
-					longitudeDelta: prevState.longitudeDelta
+					latitudeDelta: prevState.region.latitudeDelta,
+					longitudeDelta: prevState.region.longitudeDelta
 				},
 				center: {
 					latitude: coords.latitude,
@@ -124,13 +131,13 @@ class EditServiceScreen extends Component {
 		} else {
 			// update map to new location
 			const newAddress = await getLocationFromAddress(text);
-			if (newAddress.longitude && newAddress.latitude) {
+			if (newAddress && newAddress.longitude && newAddress.latitude) {
 				this.setState((prevState) => ({
 					region: {
 						latitude: newAddress.latitude,
 						longitude: newAddress.longitude,
-						latitudeDelta: prevState.latitudeDelta,
-						longitudeDelta: prevState.longitudeDelta
+						latitudeDelta: prevState.region.latitudeDelta,
+						longitudeDelta: prevState.region.longitudeDelta
 					},
 					center: {
 						latitude: newAddress.latitude,
@@ -187,7 +194,6 @@ class EditServiceScreen extends Component {
 		// Delete service images from firestore
 		const toDelete = [];
 
-	
 		// delete image from storage
 		if (this.state.imageArray) {
 			this.state.imageArray.forEach((imageInfo) => {
@@ -233,19 +239,46 @@ class EditServiceScreen extends Component {
 		await this.deleteImages();
 		// Upload new images
 		await updateImages(this.state.imageArray, (imageArray) => this.setState({ imageArray }));
+		let geolocation;
+		let locationData;
+		if (this.state.locationChange) {
+			// get coords from location
+			geolocation = await getLocationFromAddress(this.state.location);
+			delete geolocation.accuracy;
+			delete geolocation.altitude;
+
+			// get location data from coords (city, country, etc)
+			locationData = await getLocationInfo({
+				latitude: geolocation.latitude,
+				longitude: geolocation.longitude
+			});
+		}
+
 		// set updated service information
 		const updatedService = {
 			title: this.state.title,
 			phone: this.state.phone,
-			location: this.state.location,
 			miles: this.state.miles,
 			description: this.state.description,
 			displayName: this.props.user.displayName,
-			email: this.props.user.email,
-			imagesInfo: this.state.imageArray
+			contactEmail: this.state.contactEmail,
+			imagesInfo: this.state.imageArray,
+			geolocation: this.state.locationChange
+				? geolocation
+				: this.state.service.geolocation,
+			locationData: this.state.locationChange
+				? locationData
+				: this.state.service.locationData,
+			physicalLocation: this.state.locationChange
+				? this.state.location
+				: this.state.service.physicalLocation
 		};
 		// post service (update)
-		await updateService(updatedService, this.state.service.id, (text, type) => this.showToast(text, type));
+		await updateService(
+			updatedService,
+			this.state.service.id,
+			(text, type) => this.showToast(text, type)
+		);
 		this.props.navigation.pop(3);
 	};
 
@@ -346,7 +379,10 @@ class EditServiceScreen extends Component {
 
 	deleteImages = async () => {
 		if (this.state.deleteImagesArray.length > 0) {
-			await deleteImage(this.state.deleteImagesArray, this.state.service.id);
+			await deleteImage(
+				this.state.deleteImagesArray,
+				this.state.service.id
+			);
 		}
 	};
 
@@ -524,6 +560,18 @@ class EditServiceScreen extends Component {
 							onChangeText={(description) => this.setState({ description })
 							}
 						/>
+						<FloatingLabelInput
+							value={this.state.contactEmail}
+							label="Contact Email"
+							firstColor={colors.darkGray}
+							secondColor={colors.secondaryColor}
+							fontColor={colors.black}
+							onChangeText={(contactEmail) => this.setState({ contactEmail })
+							}
+							style={{ marginTop: 20 }}
+							maxLength={16}
+							autoCapitalize="none"
+						/>
 
 						<FloatingLabelInput
 							value={this.state.phone}
@@ -545,28 +593,38 @@ class EditServiceScreen extends Component {
 							fontColor={colors.black}
 							onChangeText={(text) => this.onLocationChange(text)}
 							style={{ marginTop: 20 }}
+							onFocus={() => this.setState({ locationChange: true })
+							}
 						/>
 						{/* FIXME: MAKE SURE TO LOOK FOR DELIVERY AND PHYSICAL LOC */}
-						<Text
-							style={[
-								globalStyles.sectionTitle,
-								{ marginTop: 10, fontWeight: '300' }
-							]}
-						>
-							Distance:{' '}
-							<Text style={{ fontWeight: '400' }}>
-								{this.state.miles} miles
-							</Text>
-						</Text>
-						<Slider
-							onValueChange={(value) => this.onMilesChange(value)}
-							value={this.state.miles}
-							step={1}
-							minimumValue={1}
-							maximumValue={60}
-							minimumTrackTintColor={colors.secondaryColor}
-							thumbTintColor={colors.secondaryColor}
-						/>
+						{this.state.isDelivery ? (
+							<View>
+								<Text
+									style={[
+										globalStyles.sectionTitle,
+										{ marginTop: 10, fontWeight: '300' }
+									]}
+								>
+									Distance:{' '}
+									<Text style={{ fontWeight: '500' }}>
+										{this.state.miles} miles
+									</Text>
+								</Text>
+								<Slider
+									onValueChange={(value) => this.onMilesChange(value)
+									}
+									value={this.state.miles}
+									step={1}
+									minimumValue={1}
+									maximumValue={60}
+									minimumTrackTintColor={
+										colors.secondaryColor
+									}
+									thumbTintColor={colors.secondaryColor}
+								/>
+							</View>
+						) : null}
+
 						<View pointerEvents="none">
 							<MapView
 								style={{
@@ -577,11 +635,18 @@ class EditServiceScreen extends Component {
 								}}
 								region={this.state.region}
 							>
-								<MapView.Circle
-									center={this.state.center}
-									radius={this.state.radius}
-									strokeColor="#FF7043"
-								/>
+								{this.state.isDelivery ? (
+									<MapView.Circle
+										center={this.state.center}
+										radius={this.state.radius}
+										strokeColor="#FF7043"
+									/>
+								) : null}
+								{this.state.service.physicalLocation ? (
+									<MapView.Marker
+										coordinate={this.state.center}
+									/>
+								) : null}
 							</MapView>
 						</View>
 						{this.editImages()}
@@ -632,7 +697,8 @@ const styles = {
 };
 
 const mapStateToProps = (state) => ({
-	user: state.auth.user
+	user: state.auth.user,
+	userLocation: state.location.data
 });
 
 export default connect(

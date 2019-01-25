@@ -186,30 +186,7 @@ export const deleteService = async (deletedService) => {
 };
 
 // UPDATE-SERVICE
-export const updateService = async (service, serviceId, callback) => {
-	const updatedService = service;
-	let locationData;
-	try {
-		const geolocationData = await Location.geocodeAsync(service.location);
-		const geolocation = geolocationData[0];
-		const locationInfo = await Location.reverseGeocodeAsync({
-			latitude: geolocation.latitude,
-			longitude: geolocation.longitude
-		});
-		[locationData] = locationInfo;
-
-		delete geolocation.altitude;
-		delete geolocation.accuracy;
-
-		updatedService.locationData = locationData;
-		updatedService.geolocation = geolocation;
-		updatedService.zipCode = locationData.postalCode;
-	} catch (e) {
-		callback(
-			'We could not find your address, please provide a correct address',
-			'warning'
-		);
-	}
+export const updateService = async (updatedService, serviceId, callback) => {
 	try {
 		await axios.put(serviceURL, { updatedService, serviceId });
 		callback(

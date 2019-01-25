@@ -43,7 +43,8 @@ const initialState = {
 	deliveryStore: undefined,
 	hasDelivery: false,
 	hasPhysicalLocation: false,
-	website: ''
+	website: '',
+	contactEmail: ''
 };
 
 let willFocusSubscription;
@@ -122,6 +123,7 @@ class PublishServiceScreen extends Component {
 			description,
 			miles,
 			providerDescription,
+			contactEmail
 		} = this.state;
 
 		// make sure there are images, and add them to backend
@@ -140,7 +142,7 @@ class PublishServiceScreen extends Component {
 			latitude: geolocation.latitude,
 			longitude: geolocation.longitude
 		});
-		
+
 		// create object to send to backend
 		const servicePost = {
 			category: selectedCategory.dbReference,
@@ -157,7 +159,7 @@ class PublishServiceScreen extends Component {
 			isDelivery: this.state.hasDelivery,
 			physicalLocation: this.state.hasPhysicalLocation ? location : null,
 			providerDescription,
-			email: this.props.user.email,
+			contactEmail,
 			uid: this.props.user.uid,
 			displayName: this.props.user.displayName,
 			website: this.state.website ? this.state.website : null
@@ -165,7 +167,7 @@ class PublishServiceScreen extends Component {
 		// send object to backend
 		await createService(servicePost, (text, type) => this.showToast(text, type));
 		// on blur we reset everything so we should be good here.
-		
+
 		// TODO: navigate to specific service
 		this.props.navigation.navigate('home');
 	};
@@ -202,8 +204,8 @@ class PublishServiceScreen extends Component {
 
 	render() {
 		return (
-			<SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
-				<KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+			<KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+				<SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
 					<ScrollView
 						ref={(ref) => {
 							this.scrollRef = ref;
@@ -245,13 +247,18 @@ class PublishServiceScreen extends Component {
 							}
 							providerDescriptionChange={(providerDescription) => this.setState({ providerDescription })
 							}
-							websiteChange={(website) => this.setState({ website })}
+							websiteChange={(website) => this.setState({ website })
+							}
+							contactEmailChange={(contactEmail) => this.setState({ contactEmail })
+							}
 							state={{
 								title: this.state.title,
 								phone: this.state.phone,
 								description: this.state.description,
-								providerDescription: this.state.providerDescription,
-								website: this.state.website
+								providerDescription: this.state
+									.providerDescription,
+								website: this.state.website,
+								contactEmail: this.state.contactEmail
 							}}
 						/>
 						<ServiceDeliveryStore
@@ -356,8 +363,8 @@ class PublishServiceScreen extends Component {
 							state={this.state}
 						/>
 					</ScrollView>
-				</KeyboardAvoidingView>
-			</SafeAreaView>
+				</SafeAreaView>
+			</KeyboardAvoidingView>
 		);
 	}
 }

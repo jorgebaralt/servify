@@ -44,17 +44,19 @@ const ServiceInformation = (props) => (
 			style={{ marginTop: 30 }}
 			maxLength={25}
 		/>
-		{/* Website */}
+		{/* Contact Email */}
 		<FloatingLabelInput
-			value={props.state.website}
-			label="Website (optional)"
+			value={props.state.contactEmail}
+			label="Contact Email"
 			firstColor={colors.darkGray}
 			secondColor={colors.secondaryColor}
 			fontColor={colors.black}
-			onChangeText={(text) => props.websiteChange(text)}
+			onChangeText={(text) => props.contactEmailChange(text)}
 			style={{ marginTop: 30 }}
 			maxLength={25}
+			autoCapitalize="none"
 		/>
+
 		{/* Phone */}
 		<FloatingLabelInput
 			value={props.state.phone}
@@ -66,6 +68,18 @@ const ServiceInformation = (props) => (
 			style={{ marginTop: 30 }}
 			maxLength={16}
 			keyboardType="phone-pad"
+		/>
+		{/* Website */}
+		<FloatingLabelInput
+			value={props.state.website}
+			label="Website (optional)"
+			firstColor={colors.darkGray}
+			secondColor={colors.secondaryColor}
+			fontColor={colors.black}
+			onChangeText={(text) => props.websiteChange(text)}
+			style={{ marginTop: 30 }}
+			maxLength={25}
+			autoCapitalize="none"
 		/>
 		{/* Description */}
 		<TextArea

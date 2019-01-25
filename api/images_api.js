@@ -107,10 +107,7 @@ export const profileImageUpload = async (imageData) => {
 };
 
 export const deleteImage = async (deleteImagesArray, serviceId) => {
-	const deleteUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/deleteFile';
 	try {
-		console.log('deleting from ' + serviceId);
-		console.log(deleteImagesArray);
 		await Promise.all(
 			deleteImagesArray.map(async (fileName) => {
 				const { data } = await axios.delete(imagesServiceURL, {
