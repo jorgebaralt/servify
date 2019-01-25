@@ -42,7 +42,8 @@ const initialState = {
 	imagesInfo: null,
 	deliveryStore: undefined,
 	hasDelivery: false,
-	hasPhysicalLocation: false
+	hasPhysicalLocation: false,
+	website: ''
 };
 
 let willFocusSubscription;
@@ -120,7 +121,7 @@ class PublishServiceScreen extends Component {
 			location,
 			description,
 			miles,
-			providerDescription
+			providerDescription,
 		} = this.state;
 
 		// make sure there are images, and add them to backend
@@ -158,7 +159,8 @@ class PublishServiceScreen extends Component {
 			providerDescription,
 			email: this.props.user.email,
 			uid: this.props.user.uid,
-			displayName: this.props.user.displayName
+			displayName: this.props.user.displayName,
+			website: this.state.website ? this.state.website : null
 		};
 		// send object to backend
 		await createService(servicePost, (text, type) => this.showToast(text, type));
@@ -243,12 +245,13 @@ class PublishServiceScreen extends Component {
 							}
 							providerDescriptionChange={(providerDescription) => this.setState({ providerDescription })
 							}
+							websiteChange={(website) => this.setState({ website })}
 							state={{
 								title: this.state.title,
 								phone: this.state.phone,
 								description: this.state.description,
-								providerDescription: this.state
-									.providerDescription
+								providerDescription: this.state.providerDescription,
+								website: this.state.website
 							}}
 						/>
 						<ServiceDeliveryStore

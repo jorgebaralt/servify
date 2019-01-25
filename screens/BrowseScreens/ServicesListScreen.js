@@ -207,7 +207,7 @@ class ServicesListScreen extends Component {
 				<FlatList
 					data={this.state.servicesList}
 					renderItem={({ item }) => this.renderServices(item)}
-					keyExtractor={(item) => item.title}
+					keyExtractor={(item) => item.id}
 					enableEmptySections
 					refreshControl={this.serviceListRefreshControl()}
 				/>

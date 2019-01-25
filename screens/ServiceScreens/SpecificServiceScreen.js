@@ -40,7 +40,8 @@ import {
 	Location,
 	Description,
 	Delivery,
-	Home
+	Home,
+	Website
 } from '../../assets/svg';
 import DollarRating from '../../components/Ratings/DollarRating';
 import { defaultImage } from '../../assets/default/categories';
@@ -229,10 +230,7 @@ class SpecificServiceScreen extends Component {
 
 	deleteComment = async () => {
 		this.setState({ loadingUserComment: true });
-		await deleteReview(
-			this.state.currentUserReview,
-			() => this.setState({ currentUserReview: null })
-		);
+		await deleteReview(this.state.currentUserReview, () => this.setState({ currentUserReview: null }));
 		this.setState({
 			loadingUserComment: false,
 			starCount: 0,
@@ -615,6 +613,7 @@ class SpecificServiceScreen extends Component {
 					onScroll={(event) => this.handleScroll(event)}
 					scrollEventThrottle={10}
 				>
+					{/* Header Images */}
 					<FlatList
 						horizontal
 						data={imageData}
@@ -630,6 +629,7 @@ class SpecificServiceScreen extends Component {
 							backgroundColor: colors.white
 						}}
 					>
+						{/* Service info */}
 						<Text style={titleStyle}>{service.title}</Text>
 						<View style={rowStyle}>
 							<Category
@@ -640,7 +640,6 @@ class SpecificServiceScreen extends Component {
 							<Text style={descriptionStyle}>{categoryName}</Text>
 						</View>
 						{/* if there is subcategory */}
-						{/* TODO:  */}
 						{service.subcategory ? (
 							<View style={{ flexDirection: 'row' }}>
 								<Subcategory
@@ -663,8 +662,23 @@ class SpecificServiceScreen extends Component {
 								{service.description}
 							</Text>
 						</View>
-						<View style={divideLine} />
+						{/* If website */}
+						{/* TODO: on press redirect to websit, using webview */}
+						{service.website ? (
+							<View style={rowStyle}>
+								<Website
+									height={18}
+									width={18}
+									style={{ marginTop: 0 }}
+								/>
+								<Text style={descriptionStyle} selectable>
+									{service.website}
+								</Text>
+							</View>
+						) : null}
 
+						<View style={divideLine} />
+						{/* Contact information  */}
 						<Text style={titleStyle}>Contact Information </Text>
 						<View style={rowStyle}>
 							<Feather
@@ -716,6 +730,7 @@ class SpecificServiceScreen extends Component {
 							</Button>
 						</View>
 						<View style={divideLine} />
+						{/* Location */}
 						<Text style={titleStyle}>Location</Text>
 						<View style={rowStyle}>
 							<Location
@@ -795,10 +810,6 @@ const styles = {
 		borderRadius: 8,
 		padding: 10,
 		marginBottom: 20,
-		// shadowOpacity: 0.3,
-		// shadowOffset: { width: 0, height: 0 },
-		// shadowColor: colors.darkGray,
-		// shadowRadius: 3,
 		backgroundColor: colors.white
 	},
 	showMoreStyle: {

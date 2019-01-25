@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-	ScrollView,
-	Text,
-	View,
-	Keyboard,
-	KeyboardAvoidingView
-} from 'react-native';
+import { ScrollView, Text, View, Keyboard } from 'react-native';
 import { Button, FloatingLabelInput, TextArea } from '../../components/UI';
 import { colors, globalStyles } from '../../shared/styles';
 import { formatPhone } from '../../shared/helpers';
@@ -47,6 +41,17 @@ const ServiceInformation = (props) => (
 			secondColor={colors.secondaryColor}
 			fontColor={colors.black}
 			onChangeText={(text) => props.titleChange(text)}
+			style={{ marginTop: 30 }}
+			maxLength={25}
+		/>
+		{/* Website */}
+		<FloatingLabelInput
+			value={props.state.website}
+			label="Website (optional)"
+			firstColor={colors.darkGray}
+			secondColor={colors.secondaryColor}
+			fontColor={colors.black}
+			onChangeText={(text) => props.websiteChange(text)}
 			style={{ marginTop: 30 }}
 			maxLength={25}
 		/>

@@ -19,8 +19,6 @@ class ServiceLocation extends Component {
 			longitude: -122.4324
 		},
 		radius: 1609.34,
-		deliver: false,
-		physicalLocation: false
 	};
 
 	componentDidMount() {
@@ -218,7 +216,7 @@ class ServiceLocation extends Component {
 						color={colors.primaryColor}
 						onPress={() => this.onNext()}
 						style={{ width: '40%' }}
-						disabled={props.state.location === ''}
+						disabled={props.state.location === '' || (props.state.hasDelivery && props.state.miles === null)}
 					>
 						<Text>Next</Text>
 					</Button>
