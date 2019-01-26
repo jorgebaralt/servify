@@ -755,7 +755,7 @@ class SpecificServiceScreen extends Component {
 									style={{ color: colors.secondaryColor }}
 								/>
 								<Text style={descriptionStyle}>
-									We deliver our service
+									We deliver
 								</Text>
 							</View>
 						) : null}

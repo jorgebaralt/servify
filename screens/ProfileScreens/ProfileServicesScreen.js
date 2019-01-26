@@ -11,7 +11,7 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
-import { getServicesByEmail, getFavorites, removeFavorite, cancelAxiosFavs } from '../../api';
+import { getServicesByUid, getFavorites, removeFavorite, cancelAxiosFavs } from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 import { colors } from '../../shared/styles';
 import {
@@ -87,7 +87,7 @@ class ProfileServicesScreen extends Component {
 		if (currentItem.id === 'favorites') {
 			await getFavorites(this.props.user.uid, (data) => this.setState({ favorites: data }));
 		} else if (currentItem.id === 'my_services') {
-			await getServicesByEmail(this.props.user.email, (data) => this.setState({ myServices: data }));
+			await getServicesByUid(this.props.user.uid, (data) => this.setState({ myServices: data }));
 		}
 	};
 

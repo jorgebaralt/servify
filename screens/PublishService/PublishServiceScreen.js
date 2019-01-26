@@ -44,7 +44,8 @@ const initialState = {
 	hasDelivery: false,
 	hasPhysicalLocation: false,
 	website: '',
-	contactEmail: ''
+	contactEmail: '',
+	logistic: null
 };
 
 let willFocusSubscription;
@@ -123,7 +124,8 @@ class PublishServiceScreen extends Component {
 			description,
 			miles,
 			providerDescription,
-			contactEmail
+			contactEmail,
+			logistic
 		} = this.state;
 
 		// make sure there are images, and add them to backend
@@ -162,7 +164,8 @@ class PublishServiceScreen extends Component {
 			contactEmail,
 			uid: this.props.user.uid,
 			displayName: this.props.user.displayName,
-			website: this.state.website ? this.state.website : null
+			website: this.state.website ? this.state.website : null,
+			logistic
 		};
 		// send object to backend
 		await createService(servicePost, (text, type) => this.showToast(text, type));
@@ -271,7 +274,8 @@ class PublishServiceScreen extends Component {
 										this.setState({
 											deliveryStore,
 											hasDelivery: true,
-											hasPhysicalLocation: false
+											hasPhysicalLocation: false,
+											logistic: 'delivery'
 										});
 									}
 									if (deliveryStore.option === 1) {
@@ -279,14 +283,16 @@ class PublishServiceScreen extends Component {
 											deliveryStore,
 											hasDelivery: false,
 											hasPhysicalLocation: true,
-											miles: 5
+											miles: 5,
+											logistic: 'physical'
 										});
 									}
 									if (deliveryStore.option === 2) {
 										this.setState({
 											deliveryStore,
 											hasDelivery: true,
-											hasPhysicalLocation: true
+											hasPhysicalLocation: true,
+											logistic: 'both'
 										});
 									}
 								}

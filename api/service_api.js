@@ -39,10 +39,9 @@ export const getPopularNearServices = async (
 	distance,
 	callback
 ) => {
-	const getNearUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getNearService';
 	try {
 		source = CancelToken.source();
-		let { data } = await axios.get(getNearUrl, {
+		let { data } = await axios.get(servicesURL, {
 			params: {
 				currentLocation,
 				distance
@@ -65,10 +64,9 @@ export const getNewNearServices = async (
 	distance,
 	callback
 ) => {
-	const getNearUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getNearService';
 	try {
 		source = CancelToken.source();
-		let { data } = await axios.get(getNearUrl, {
+		let { data } = await axios.get(servicesURL, {
 			params: {
 				currentLocation,
 				distance
@@ -161,12 +159,12 @@ export const getServicesSubcategory = async (
 };
 
 // Get services by email
-export const getServicesByEmail = async (email, callback) => {
+export const getServicesByUid = async (uid, callback) => {
 	try {
 		source = CancelToken.source();
 		const { data } = await axios.get(servicesURL, {
 			params: {
-				email
+				uid
 			},
 			cancelToken: source.token
 		});
