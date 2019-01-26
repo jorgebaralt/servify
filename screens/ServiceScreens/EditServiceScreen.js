@@ -260,7 +260,6 @@ class EditServiceScreen extends Component {
 			phone: this.state.phone,
 			miles: this.state.miles,
 			description: this.state.description,
-			displayName: this.props.user.displayName,
 			contactEmail: this.state.contactEmail,
 			imagesInfo: this.state.imageArray,
 			geolocation: this.state.locationChange
@@ -697,7 +696,6 @@ const styles = {
 };
 
 const mapStateToProps = (state) => ({
-	user: state.auth.user,
 	userLocation: state.location.data
 });
 

@@ -80,9 +80,12 @@ export const facebookLogin = async (callback) => {
 			user
 		} = await firebase
 			.auth()
-			.signInAndRetrieveDataWithCredential(credential);
+				.signInAndRetrieveDataWithCredential(credential);
+		
+		console.log(user);
 
 		// add user to firestore DB
+		// TODO: add full name
 		await axios.post(userURL, {
 			user: {
 				email: user.email,
@@ -116,9 +119,9 @@ export const emailAndPasswordLogin = async (email, password, callback) => {
 };
 // create email account
 export const createEmailAccount = async (newUser, callback) => {
-	const { email, password, firstName, lastName, imageInfo } = newUser;
+	const { email, password, imageInfo, username } = newUser;
 	// check not empty
-	if (email && password && firstName && lastName) {
+	if (email && password) {
 		if (password.length < 6) {
 			return callback(
 				'Password must be at least 6 characters long',
@@ -133,17 +136,18 @@ export const createEmailAccount = async (newUser, callback) => {
 			const { data } = await axios.post(authURL, {
 				email,
 				password,
-				firstName,
-				lastName
+				username,
+				photoURL: imageInfo ? imageInfo.url : null
 			});
 			// new user object to be added to DB
 			const createdUser = {
 				email: data.email,
-				displayName: data.displayName,
+				displayName: username,
 				uid: data.uid,
 				emailVerified: data.emailVerified,
 				imageInfo,
-				provider: data.providerData[0].providerId
+				provider: data.providerData[0].providerId,
+				photoURL: imageInfo ? imageInfo.url : null
 			};
 			// ass user to DB
 			await axios.post(userURL, { user: createdUser });

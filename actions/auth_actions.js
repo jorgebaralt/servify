@@ -8,7 +8,8 @@ import {
 // AsyncStorage.getItem('fb_token');
 
 export const getCurrentUser = () => async (dispatch) => {
-	const { displayName, email, uid } = await firebase.auth().currentUser;
+	const response = await firebase.auth().currentUser;
+	const { displayName, email, uid } = response;
 	const user = { displayName, email, uid };
 	return dispatch({ type: GET_CURRENT_USER, payload: user });
 };

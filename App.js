@@ -32,6 +32,7 @@ import HelpScreen from './screens/ProfileScreens/HelpScreen';
 import SpecificFaqScreen from './screens/ProfileScreens/SpecificFaqScreen';
 import ReportScreen from './screens/ServiceScreens/ReportScreen';
 import PublishServiceScreen from './screens/PublishService/PublishServiceScreen';
+import EditUserScreen from './screens/ProfileScreens/EditUserScreen';
 // Style
 import { colors } from './shared/styles';
 import Toast from './components/UI/Toast/Toast';
@@ -107,7 +108,8 @@ export default class App extends React.Component {
 				help: { screen: HelpScreen },
 				specificFaq: { screen: SpecificFaqScreen },
 				report: { screen: ReportScreen },
-				publish: { screen: PublishServiceScreen }
+				publish: { screen: PublishServiceScreen },
+				editUser: { screen: EditUserScreen }
 			},
 			{
 				headerMode: 'none'
@@ -121,7 +123,9 @@ export default class App extends React.Component {
 						styles.container,
 						{
 							paddingTop:
-								Platform.OS === 'android' ? StatusBar.currentHeight : 0
+								Platform.OS === 'android'
+									? StatusBar.currentHeight
+									: 0
 						}
 					]}
 				>

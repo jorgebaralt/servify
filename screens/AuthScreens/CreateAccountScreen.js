@@ -23,10 +23,9 @@ let willFocusSubscription;
 let backPressSubscriptions;
 
 const initialState = {
-	firstName: '',
-	lastName: '',
 	email: '',
 	password: '',
+	username: '',
 	loading: false,
 	imageInfo: null
 };
@@ -80,14 +79,20 @@ class CreateAccountScreen extends Component {
 		if (this.state.imageInfo) {
 			imageInfo = await profileImageUpload(this.state.imageInfo);
 		}
-		
-		const { firstName, lastName, email, password } = this.state;
-		const user = {
-			firstName,
-			lastName,
+
+		const {
 			email,
 			password,
-			imageInfo
+			displayName,
+			username
+		} = this.state;
+
+		const user = {
+			displayName,
+			email,
+			password,
+			imageInfo,
+			username
 		};
 		await createEmailAccount(user, (text, type) => this.showToast(text, type));
 	};
@@ -162,7 +167,11 @@ class CreateAccountScreen extends Component {
 								this.props.navigation.navigate('auth');
 							}}
 						/>
-						<ScrollView ref={(scrollview) => { this.scrollview = scrollview; }}>
+						<ScrollView
+							ref={(scrollview) => {
+								this.scrollview = scrollview;
+							}}
+						>
 							<View
 								style={{
 									flex: 1,
@@ -178,7 +187,15 @@ class CreateAccountScreen extends Component {
 								>
 									<Text style={titleStyle}>Sign up</Text>
 									{this.state.imageInfo ? (
-										<FadeImage onPress={this.pickImage} style={{ height: 100, width: 100, borderRadius: 50 }} uri={this.state.imageInfo.image} />
+										<FadeImage
+											onPress={this.pickImage}
+											style={{
+												height: 100,
+												width: 100,
+												borderRadius: 50
+											}}
+											uri={this.state.imageInfo.image}
+										/>
 									) : (
 										<View>
 											<TouchableOpacity
@@ -203,27 +220,6 @@ class CreateAccountScreen extends Component {
 										</View>
 									)}
 								</View>
-
-								<FloatingLabelInput
-									value={this.state.firstName}
-									label="First name"
-									firstColor={colors.white}
-									secondColor={colors.white}
-									onChangeText={(firstName) => {
-										this.setState({ firstName });
-									}}
-									style={{ marginTop: 20 }}
-								/>
-								<FloatingLabelInput
-									value={this.state.lastName}
-									label="Last name"
-									firstColor={colors.white}
-									secondColor={colors.white}
-									onChangeText={(lastName) => {
-										this.setState({ lastName });
-									}}
-									style={{ marginTop: 20 }}
-								/>
 								<FloatingLabelInput
 									value={this.state.email}
 									label="Email"
@@ -231,6 +227,17 @@ class CreateAccountScreen extends Component {
 									secondColor={colors.white}
 									onChangeText={(email) => {
 										this.setState({ email });
+									}}
+									style={{ marginTop: 20 }}
+									autoCapitalize="none"
+								/>
+								<FloatingLabelInput
+									value={this.state.username}
+									label="Username"
+									firstColor={colors.white}
+									secondColor={colors.white}
+									onChangeText={(username) => {
+										this.setState({ username });
 									}}
 									style={{ marginTop: 20 }}
 									autoCapitalize="none"

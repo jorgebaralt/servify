@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { Location } from 'expo';
 import _ from 'lodash';
 
 const { CancelToken } = axios;

@@ -107,7 +107,7 @@ class ProfileScreen extends Component {
 	);
 
 	leftHeader = () => (
-		<Text style={{ fontWeight: '600', fontSize: 22 }}>
+		<Text style={{ fontWeight: '600', fontSize: 22 }} onPress={() => this.props.navigation.navigate('editUser')}>
 			{this.props.user.displayName}
 		</Text>
 	);
