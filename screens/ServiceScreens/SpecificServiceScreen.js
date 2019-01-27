@@ -65,7 +65,8 @@ class SpecificServiceScreen extends Component {
 		currentUserReview: null,
 		reviews: null,
 		service: this.props.navigation.getParam('service'),
-		transparentHeader: true
+		transparentHeader: true,
+		descriptionLength: 100
 	};
 
 	componentWillMount = async () => {
@@ -659,9 +660,26 @@ class SpecificServiceScreen extends Component {
 								style={{ marginTop: 0 }}
 							/>
 							<Text style={descriptionStyle}>
-								{service.description}
+								{service.description.substring(
+									0,
+									this.state.descriptionLength
+								)}
 							</Text>
 						</View>
+						{/* extend description */}
+						{service.description.length > 100
+						&& this.state.descriptionLength < service.description.length ? (
+							<Text
+								style={{ color: colors.secondaryColor, alignSelf: 'flex-end' }}
+								onPress={() => this.setState({
+										descriptionLength:
+											service.description.length
+									})
+								}
+							>
+								more
+							</Text>
+						) : null}
 						{/* If website */}
 						{/* TODO: on press redirect to websit, using webview */}
 						{service.website ? (
@@ -754,9 +772,7 @@ class SpecificServiceScreen extends Component {
 									width={18}
 									style={{ color: colors.secondaryColor }}
 								/>
-								<Text style={descriptionStyle}>
-									We deliver
-								</Text>
+								<Text style={descriptionStyle}>We deliver</Text>
 							</View>
 						) : null}
 						{/* If there is physical location */}

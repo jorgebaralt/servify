@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import axios from 'axios';
 import {
 	GET_CURRENT_USER,
 } from './types';
@@ -7,9 +8,14 @@ import {
 // AsyncStorage.setItem(''fb_token,token);
 // AsyncStorage.getItem('fb_token');
 
-export const getCurrentUser = () => async (dispatch) => {
-	const response = await firebase.auth().currentUser;
-	const { displayName, email, uid } = response;
-	const user = { displayName, email, uid };
+const userURL = 'https://us-central1-servify-716c6.cloudfunctions.net/user';
+
+export const getCurrentUser = (uid) => async (dispatch) => {
+	const { data } = await axios.get(userURL, {
+		params: {
+			uid
+		},
+	});
+	const user = data;
 	return dispatch({ type: GET_CURRENT_USER, payload: user });
 };

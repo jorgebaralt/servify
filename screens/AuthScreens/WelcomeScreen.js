@@ -51,7 +51,7 @@ class WelcomeScreen extends Component {
 		// Listen for user loggin change
 		await firebase.auth().onAuthStateChanged(async (user) => {
 			if (user) {
-				await this.props.getCurrentUser();
+				await this.props.getCurrentUser(user.uid);
 				// navigate to main if already logged in
 				this.props.navigation.navigate('home');
 				this.setState({ authenticated: true });

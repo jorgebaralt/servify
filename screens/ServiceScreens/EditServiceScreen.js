@@ -509,7 +509,6 @@ class EditServiceScreen extends Component {
 				/>
 			);
 		}
-		return <View />;
 	}
 
 	render() {
