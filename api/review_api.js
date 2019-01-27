@@ -3,6 +3,7 @@ import axios from 'axios';
 const { CancelToken } = axios;
 let source;
 const reviewURL = 'https://us-central1-servify-716c6.cloudfunctions.net/review';
+const reviewsURL = 'https://us-central1-servify-716c6.cloudfunctions.net/reviews';
 
 // Submit a review to db
 export const submitReview = async (serviceId, review, callback) => {
@@ -18,7 +19,7 @@ export const submitReview = async (serviceId, review, callback) => {
 export const getServiceReviews = async (serviceId, callback) => {
 	try {
 		source = CancelToken.source();
-		const { data } = await axios.get(reviewURL, {
+		const { data } = await axios.get(reviewsURL, {
 			params: { serviceId },
 			cancelToken: source.token
 		});
@@ -32,7 +33,7 @@ export const getServiceReviews = async (serviceId, callback) => {
 export const getReviews = async (serviceId, uid, callback) => {
 	try {
 		source = CancelToken.source();
-		const { data } = await axios.get(reviewURL, {
+		const { data } = await axios.get(reviewsURL, {
 			params: { serviceId, uid },
 			cancelToken: source.token
 		});
