@@ -87,7 +87,6 @@ export const updateImages = async (imagesDataArray, callback) => {
 };
 
 export const profileImageUpload = async (imageData) => {
-	console.log(imageData);
 	const formData = new FormData();
 	formData.append('photo', {
 		uri: imageData.image,
@@ -122,16 +121,14 @@ export const deleteServiceImage = async (deleteImagesArray, serviceId) => {
 };
 
 export const deleteProfileImage = async (uid, fileName, callback) => {
-	console.log(uid, fileName);
 	try {
-		const { data } = await axios.delete(profileImageURL, {
+		await axios.delete(profileImageURL, {
 			data: {
 				fileName,
 				uid
 			}
 		});
 		callback();
-		console.log(data);
 	} catch (e) {
 		console.log(e);
 	}

@@ -22,12 +22,10 @@ export const getCurrentUser = (uid) => async (dispatch) => {
 };
 
 export const updateCurrentUser = (updatedUser, uid) => async (dispatch) => {
-	console.log(updatedUser, uid);
 	try {
 		const { data } = await axios.put(userURL, { updatedUser, uid });
 		const user = data;
-		console.log(user);
-		// return dispatch({ type: GET_CURRENT_USER, payload: user });
+		return dispatch({ type: GET_CURRENT_USER, payload: user });
 	} catch (e) {
 		console.log(e);
 	}

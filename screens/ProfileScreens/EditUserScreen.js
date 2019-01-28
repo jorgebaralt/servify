@@ -117,7 +117,6 @@ class EditUserScreen extends Component {
 		this.setState({ loading: true });
 		// TODO: update profile
 		if (this.state.deleteImage && this.props.user.imageInfo != null) {
-			console.log('deleting image');
 			await deleteProfileImage(
 				this.props.user.uid,
 				this.props.user.imageInfo.fileName,
@@ -126,7 +125,6 @@ class EditUserScreen extends Component {
 		}
 		let imageInfo = null;
 		if (this.state.uploadImage && this.state.fileName) {
-			console.log('updating image');
 			imageInfo = await profileImageUpload({
 				image: this.state.imageURL,
 				fileName: this.state.fileName,
@@ -140,6 +138,7 @@ class EditUserScreen extends Component {
 		};
 		await this.props.updateCurrentUser(updatedUser, this.props.user.uid);
 		this.setState({ loading: false });
+		this.props.navigation.pop();
 	};
 
 	renderSpinner() {
