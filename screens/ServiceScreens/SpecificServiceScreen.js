@@ -235,7 +235,9 @@ class SpecificServiceScreen extends Component {
 		this.setState({
 			loadingUserComment: false,
 			starCount: 0,
-			dollarCount: 0
+			dollarCount: 0,
+			currentUserReview: null,
+			comment: ''
 		});
 	};
 
