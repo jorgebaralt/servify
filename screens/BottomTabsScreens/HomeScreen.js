@@ -31,7 +31,7 @@ import { defaultImage } from '../../assets/default/categories';
 let backPressSubscriptions;
 let willFocusSubscription;
 let didFocusSubscription;
-let currentCity;
+
 const DISTANCE = 30;
 const WIDTH = Dimensions.get('window').width;
 
@@ -128,8 +128,8 @@ class HomeScreen extends Component {
 				latitude: this.props.userLocation.coords.latitude,
 				longitude: this.props.userLocation.coords.longitude
 			});
-			this.setState({ currentCity: locInfo.city + ' ' + locInfo.region })
-			
+			this.setState({ currentCity: locInfo.city + ' ' + locInfo.region });
+
 			// Get New Near Services
 			await api.getNewNearServices(
 				this.props.userLocation.coords,
@@ -166,8 +166,20 @@ class HomeScreen extends Component {
 	renderNearNearServices = (service, i) => (
 		<HomeServiceCard
 			last={this.state.newNearServices.length - 1 === i}
-			uri={service.imagesInfo ? (service.imagesInfo[0] ? service.imagesInfo[0].url : null) : null}
-			image={service.imagesInfo ? (service.imagesInfo[0] ? service.imagesInfo[0].url : defaultImage(service.category)) : defaultImage(service.category)}
+			uri={
+				service.imagesInfo
+					? service.imagesInfo[0]
+						? service.imagesInfo[0].url
+						: null
+					: null
+			}
+			image={
+				service.imagesInfo
+					? service.imagesInfo[0]
+						? service.imagesInfo[0].url
+						: defaultImage(service.category)
+					: defaultImage(service.category)
+			}
 			service={service}
 			showLocation
 			onPress={() => {
@@ -229,8 +241,20 @@ class HomeScreen extends Component {
 		<View>
 			<HomeServiceCard
 				last={this.state.popularNearServices.length - 1 === i}
-				image={service.imagesInfo ? (service.imagesInfo[0] ? service.imagesInfo[0].url : defaultImage(service.category)) : defaultImage(service.category)}
-				uri={service.imagesInfo ? (service.imagesInfo[0] ? service.imagesInfo[0].url : null) : null}
+				image={
+					service.imagesInfo
+						? service.imagesInfo[0]
+							? service.imagesInfo[0].url
+							: defaultImage(service.category)
+						: defaultImage(service.category)
+				}
+				uri={
+					service.imagesInfo
+						? service.imagesInfo[0]
+							? service.imagesInfo[0].url
+							: null
+						: null
+				}
 				service={service}
 				showRating
 				onPress={() => {
@@ -267,7 +291,10 @@ class HomeScreen extends Component {
 		if (this.state.dataLoaded) {
 			return (
 				<View>
-					<StatusBar backgroundColor="transparent" barStyle="dark-content" />
+					<StatusBar
+						backgroundColor="transparent"
+						barStyle="dark-content"
+					/>
 					{this.renderPopularCategories()}
 					<View style={{ paddingLeft: 20, paddingRight: 20 }}>
 						<InfoImage
@@ -305,9 +332,7 @@ class HomeScreen extends Component {
 								<Button
 									bordered
 									style={{ fontSize: 20 }}
-									onPress={() => this.props.navigation.navigate(
-											'browse'
-										)
+									onPress={() => this.props.navigation.navigate('browse')
 									}
 								>
 									<Text>Browse</Text>
@@ -353,11 +378,11 @@ class HomeScreen extends Component {
 										color: colors.white
 									}}
 								>
-									Publish a service near {this.state.currentCity}
+									Publish a service near{' '}
+									{this.state.currentCity}
 								</Text>
 								<Button
 									bordered
-
 									style={{ fontSize: 20 }}
 									onPress={() => this.props.navigation.navigate(
 											'publishInfo'

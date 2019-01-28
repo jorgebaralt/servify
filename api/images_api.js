@@ -1,7 +1,9 @@
 /* eslint-disable no-param-reassign */
 import axios from 'axios';
 
-const imagesServiceURL = 'https://us-central1-servify-716c6.cloudfunctions.net/images_service';
+const imagesServiceURL =	'https://us-central1-servify-716c6.cloudfunctions.net/images_service';
+const profileImageURL =	'https://us-central1-servify-716c6.cloudfunctions.net/images_profile';
+
 export const uploadImages = async (imagesDataArray, callback) => {
 	try {
 		if (imagesDataArray.length > 0) {
@@ -54,10 +56,7 @@ export const updateImages = async (imagesDataArray, callback) => {
 					type: imageData.type
 				});
 
-				const { data } = await axios.post(
-					imagesServiceURL,
-					formData
-				);
+				const { data } = await axios.post(imagesServiceURL, formData);
 				// add position, so we can keep track of the order
 				data.position = imageData.position;
 				return data;
@@ -88,7 +87,7 @@ export const updateImages = async (imagesDataArray, callback) => {
 };
 
 export const profileImageUpload = async (imageData) => {
-	const profileImageUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/profileImageUpload';
+	console.log(imageData);
 	const formData = new FormData();
 	formData.append('photo', {
 		uri: imageData.image,
@@ -96,17 +95,14 @@ export const profileImageUpload = async (imageData) => {
 		type: imageData.type
 	});
 	try {
-		const { data } = await axios.post(
-			profileImageUrl,
-			formData
-		);
+		const { data } = await axios.post(profileImageURL, formData);
 		return data;
 	} catch (e) {
 		console.log(e);
 	}
 };
 
-export const deleteImage = async (deleteImagesArray, serviceId) => {
+export const deleteServiceImage = async (deleteImagesArray, serviceId) => {
 	try {
 		await Promise.all(
 			deleteImagesArray.map(async (fileName) => {
@@ -120,6 +116,22 @@ export const deleteImage = async (deleteImagesArray, serviceId) => {
 				return data;
 			})
 		);
+	} catch (e) {
+		console.log(e);
+	}
+};
+
+export const deleteProfileImage = async (uid, fileName, callback) => {
+	console.log(uid, fileName);
+	try {
+		const { data } = await axios.delete(profileImageURL, {
+			data: {
+				fileName,
+				uid
+			}
+		});
+		callback();
+		console.log(data);
 	} catch (e) {
 		console.log(e);
 	}

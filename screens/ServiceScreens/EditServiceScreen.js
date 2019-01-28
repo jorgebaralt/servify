@@ -25,7 +25,7 @@ import {
 	updateService,
 	getLocationFromAddress,
 	updateImages,
-	deleteImage,
+	deleteServiceImage,
 	getLocationInfo
 } from '../../api';
 import {
@@ -378,7 +378,7 @@ class EditServiceScreen extends Component {
 
 	deleteImages = async () => {
 		if (this.state.deleteImagesArray.length > 0) {
-			await deleteImage(
+			await deleteServiceImage(
 				this.state.deleteImagesArray,
 				this.state.service.id
 			);
