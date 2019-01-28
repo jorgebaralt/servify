@@ -33,10 +33,10 @@ export const CustomHeader = (props) => {
 				<Text
 					style={{
 						textAlign: props.span ? 'left' : 'center',
-						fontSize: props.span ? 24 : 20,
+						fontSize: props.span ? 26 : 20,
 						fontWeight: 'bold',
 						color: props.titleColor ? props.titleColor : colors.black,
-						marginTop: props.span ? props.height - props.titleBottomMargin : 5,
+						marginTop: props.span ? props.titleMarginTop : 5,
 						marginLeft: props.span ? 50 : null,
 						paddingRight: props.span ? 10 : null
 					}}

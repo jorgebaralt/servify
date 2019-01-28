@@ -8,8 +8,8 @@ const reviewsURL = 'https://us-central1-servify-716c6.cloudfunctions.net/reviews
 // Submit a review to db
 export const submitReview = async (serviceId, review, callback) => {
 	try {
-		await axios.post(reviewURL, { serviceId, review });
-		return callback(review);
+		const { data } = await axios.post(reviewURL, { serviceId, review });
+		return callback(data);
 	} catch (e) {
 		console.log(e);
 	}
@@ -37,7 +37,7 @@ export const getReviews = async (serviceId, uid, callback) => {
 			params: { serviceId, uid },
 			cancelToken: source.token
 		});
-		return callback(data.userReview, data.reviews.splice(6));
+		return callback(data.userReview, data.reviews);
 	} catch (e) {
 		console.log(e);
 	}
