@@ -8,14 +8,14 @@ import {
 	Text,
 	View,
 	Share,
-	Platform
+	Platform,
+	TouchableOpacity
 } from 'react-native';
 import { connect } from 'react-redux';
 import { pageHit } from '../../shared/ga_helper';
 import { profileList } from '../../shared/data';
-import { CustomHeader, ListIcon } from '../../components/UI';
+import { CustomHeader, ListIcon, FadeImage } from '../../components/UI';
 import { colors } from '../../shared/styles';
-
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -70,46 +70,100 @@ class ProfileScreen extends Component {
 	goSelectedScreen = (item) => {
 		if (item.isList) {
 			this.props.navigation.navigate('profileService', { item });
-		} else if (item.id === 'feedback') {
-			this.props.navigation.navigate('feedback');
-		} else if (item.id === 'contactUs') {
-			Linking.openURL('mailto:servifyapp@gmail.com');
-		} else if (item.id === 'help') {
-			this.props.navigation.navigate('help');
-		} else if (item.id === 'share') {
-			Share.share({
-				title: 'Share Servify',
-				message: 'Download Servify, the best way to find local services in your area: ',
-				url: Platform.OS === 'ios' ? 'https://itunes.apple.com/us/app/servify-find-local-services/id1439203889?mt=8' : 'https://play.google.com/store/apps/details?id=com.jorgebaralt.servify'
-			});
+		} else {
+			switch (item.id) {
+				case 'feedback':
+					this.props.navigation.navigate('feedback');
+					break;
+				case 'contactUs':
+					Linking.openURL('mailto:servifyapp@gmail.com');
+					break;
+				case 'share':
+					Share.share({
+						title: 'Share Servify',
+						message:
+							'Download Servify, the best way to find local services in your area: ',
+						url:
+							Platform.OS === 'ios'
+								? 'https://itunes.apple.com/us/app/servify-find-local-services/id1439203889?mt=8'
+								: 'https://play.google.com/store/apps/details?id=com.jorgebaralt.servify'
+					});
+					break;
+				case 'help':
+					this.props.navigation.navigate('help');
+					break;
+				case 'editProfile':
+					if (this.props.user.provider === (null || 'password')) {
+						this.props.navigation.navigate('editUser');
+					}
+					break;
+				default:
+					break;
+			}
 		}
 	};
 
 	rightList = (item) => (
-			<MaterialIcons
-				name={item.iconName}
-				style={{ color: colors.black }}
-				size={24}
-			/>
-		);
+		<MaterialIcons
+			name={item.iconName}
+			style={{ color: colors.black }}
+			size={24}
+		/>
+	);
 
 	leftList = (item) => (
 		<Text style={{ fontSize: 20, color: colors.black }}>{item.title}</Text>
 	);
 
-	renderListItems = (item) => (
-		<ListIcon
-			style={{ marginTop: 50 }}
-			left={this.leftList(item)}
-			right={this.rightList(item)}
-			onPress={() => this.goSelectedScreen(item)}
-		/>
-	);
+	renderListItems = (item) => {
+		if (item.id === 'editProfile') {
+			if (!(this.props.user.provider === (null || 'password'))) {
+				return null;
+			}
+		}
+		return (
+			<ListIcon
+				style={{ marginTop: 50 }}
+				left={this.leftList(item)}
+				right={this.rightList(item)}
+				onPress={() => this.goSelectedScreen(item)}
+			/>
+		);
+	};
 
 	leftHeader = () => (
-		<Text style={{ fontWeight: '600', fontSize: 22 }} onPress={() => this.props.navigation.navigate('editUser')}>
-			{this.props.user.displayName}
-		</Text>
+		<TouchableOpacity
+			style={{ flexDirection: 'row' }}
+			onPress={() => {
+				if (this.props.user.provider === (null || 'password')) {
+					this.props.navigation.navigate('editUser');
+				}
+			}}
+		>
+			{/* if there is image, show it */}
+			{this.props.user.imageInfo || this.props.user.photoURL ? (
+				<FadeImage
+					style={{
+						height: 30,
+						width: 30,
+						borderRadius: 15
+					}}
+					uri={
+						this.props.user.photoURL
+							? this.props.user.photoURL
+							: this.props.user.imageInfo
+							? this.props.user.imageInfo.url
+							: null
+					}
+				/>
+			) : (
+				<View />
+			)}
+
+			<Text style={{ fontWeight: '600', fontSize: 22, marginLeft: 5 }}>
+				{this.props.user.displayName}
+			</Text>
+		</TouchableOpacity>
 	);
 
 	rightHeader = () => (
@@ -123,7 +177,7 @@ class ProfileScreen extends Component {
 
 	render() {
 		return (
-			<View style={{ flex: 1}}>
+			<View style={{ flex: 1 }}>
 				<SafeAreaView
 					style={{
 						flex: 0,

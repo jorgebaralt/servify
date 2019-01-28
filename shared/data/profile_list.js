@@ -40,5 +40,12 @@ export const profileList = [
 		iconType: 'MaterialIcons',
 		iconName: 'email',
 		isList: false
+	},
+	{
+		id: 'editProfile',
+		title: 'Edit profile',
+		iconType: 'MaterialIcons',
+		iconName: 'person',
+		isList: false
 	}
 ];

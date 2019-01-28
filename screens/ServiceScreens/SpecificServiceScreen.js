@@ -8,7 +8,8 @@ import {
 	ScrollView,
 	Text,
 	ActivityIndicator,
-	Dimensions
+	Dimensions,
+	TouchableOpacity
 } from 'react-native';
 import { Ionicons, Entypo, MaterialIcons, Feather } from '@expo/vector-icons';
 import { connect } from 'react-redux';
@@ -41,7 +42,8 @@ import {
 	Description,
 	Delivery,
 	Home,
-	Website
+	Website,
+	Tooltip
 } from '../../assets/svg';
 import DollarRating from '../../components/Ratings/DollarRating';
 import { defaultImage } from '../../assets/default/categories';
@@ -66,7 +68,8 @@ class SpecificServiceScreen extends Component {
 		reviews: null,
 		service: this.props.navigation.getParam('service'),
 		transparentHeader: true,
-		descriptionLength: 100
+		descriptionLength: 100,
+		showTooltip: false
 	};
 
 	componentWillMount = async () => {
@@ -270,12 +273,15 @@ class SpecificServiceScreen extends Component {
 			// User have not added a review yet
 			if (!currentUserReview) {
 				return (
-					<View>
+					<View style={{ zIndex: 0 }}>
 						<Text style={styles.titleStyle}>Leave a review</Text>
 						<View
 							style={[
 								commentBorder,
-								{ marginTop: 10, marginBottom: 20 }
+								{
+									marginTop: 10,
+									marginBottom: 20,
+								}
 							]}
 						>
 							<Text style={{ fontSize: 20, color: colors.black }}>
@@ -291,15 +297,82 @@ class SpecificServiceScreen extends Component {
 									})
 								}
 							/>
-							<DollarRatingPick
-								style={{ marginTop: 5 }}
-								size={16}
-								rating={this.state.dollarCount}
-								selectRating={(count) => this.setState({
-										dollarCount: count
-									})
-								}
-							/>
+
+							<View>
+								{/* Tooltip */}
+								{this.state.showTooltip ? (
+									<View
+										style={{
+											borderWidth: 1,
+											borderColor: colors.primaryColor,
+											backgroundColor:
+												colors.primaryColor,
+											alignSelf: 'flex-end',
+											borderRadius: 4,
+											zIndex: 10,
+											padding: 10,
+											position: 'absolute',
+											bottom: 40
+										}}
+									>
+										<Text style={{ color: colors.white }}>
+											$: price is low compared to similar
+											services
+											{'\n'}
+											$$: price is similar compared to
+											similar services{'\n'}
+											$$$: price is higher than similar
+											services
+											{'\n'}
+											$$$$: price is more expensive than
+											similar services{'\n'}
+											<Text
+												style={{
+													fontSize: 14,
+													alignSelf: 'flex-end',
+													textAlign: 'right'
+												}}
+												onPress={() => this.setState({
+														showTooltip: false
+													})
+												}
+											>
+												Close
+											</Text>
+										</Text>
+									</View>
+								) : null}
+								<View
+									style={[
+										styles.rowStyle,
+										{ justifyContent: 'space-between' }
+									]}
+								>
+									<DollarRatingPick
+										style={{ marginTop: 5 }}
+										size={16}
+										rating={this.state.dollarCount}
+										selectRating={(count) => this.setState({
+												dollarCount: count
+											})
+										}
+									/>
+									<TouchableOpacity
+										onPress={() => this.setState({ showTooltip: true })
+										}
+									>
+										<Tooltip
+											size={30}
+											style={{ marginTop: 3 }}
+											onPress={() => this.setState({
+													showTooltip: true
+												})
+											}
+										/>
+									</TouchableOpacity>
+								</View>
+							</View>
+
 							<TextArea
 								label="Comment"
 								size={30}
@@ -670,9 +743,13 @@ class SpecificServiceScreen extends Component {
 						</View>
 						{/* extend description */}
 						{service.description.length > 100
-						&& this.state.descriptionLength < service.description.length ? (
+						&& this.state.descriptionLength
+							< service.description.length ? (
 							<Text
-								style={{ color: colors.secondaryColor, alignSelf: 'flex-end' }}
+								style={{
+									color: colors.secondaryColor,
+									alignSelf: 'flex-end'
+								}}
 								onPress={() => this.setState({
 										descriptionLength:
 											service.description.length
@@ -816,7 +893,7 @@ const styles = {
 		height: 1,
 		backgroundColor: colors.lightGray,
 		width: '100%',
-		marginTop: 10
+		marginTop: 10,
 	},
 	titleStyle: {
 		fontSize: 22,

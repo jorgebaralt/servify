@@ -44,7 +44,8 @@ export const googleLogin = async (callback) => {
 					uid: user.uid,
 					emailVerified: user.emailVerified,
 					photoURL: user.providerData[0].photoURL,
-					provider: user.providerData[0].providerId
+					provider: user.providerData[0].providerId,
+					imageInfo: null
 				}
 			});
 			callback(`Welcome ${user.displayName}`, 'success');
@@ -80,8 +81,8 @@ export const facebookLogin = async (callback) => {
 			user
 		} = await firebase
 			.auth()
-				.signInAndRetrieveDataWithCredential(credential);
-		
+			.signInAndRetrieveDataWithCredential(credential);
+
 		console.log(user);
 
 		// add user to firestore DB
@@ -93,7 +94,8 @@ export const facebookLogin = async (callback) => {
 				uid: user.uid,
 				emailVerified: user.emailVerified,
 				photoURL: user.providerData[0].photoURL,
-				provider: user.providerData[0].providerId
+				provider: user.providerData[0].providerId,
+				imageInfo: null
 			}
 		});
 		// await user.sendEmailVerification();

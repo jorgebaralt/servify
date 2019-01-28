@@ -1,12 +1,12 @@
 import React from 'react';
 import Svg, { G, Path } from 'react-native-svg';
 
-export const Tooltop = (props) => (
+export const Tooltip = (props) => (
 	<Svg
 		{...props}
 		viewBox="0 0 52 52"
-		width={props.width ? props.width : 16}
-		height={props.height ? props.height : 16}
+		width={props.size ? props.size : 16}
+		height={props.size ? props.size : 16}
 	>
 		<G fill="#1ea3cc">
 			<Path d="M26 0C11.663 0 0 11.663 0 26s11.663 26 26 26 26-11.663 26-26S40.337 0 26 0zm0 50C12.767 50 2 39.233 2 26S12.767 2 26 2s24 10.767 24 24-10.767 24-24 24z" />

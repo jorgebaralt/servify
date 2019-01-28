@@ -9,18 +9,18 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { pageHit } from '../../shared/ga_helper';
 import { colors } from '../../shared/styles';
-import {
-	CustomHeader,
-} from '../../components/UI';
+import { CustomHeader } from '../../components/UI';
 
 let willFocusSubscription;
 let backPressSubscriptions;
 
 class SpecificFaqScreen extends Component {
 	state = { selectedFaq: null };
-	
+
 	async componentWillMount() {
-		await this.setState({ selectedFaq: this.props.navigation.getParam('faq') });
+		await this.setState({
+			selectedFaq: this.props.navigation.getParam('faq')
+		});
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
 			this.handleAndroidBack
@@ -66,14 +66,16 @@ class SpecificFaqScreen extends Component {
 		const { answerStyle } = styles;
 
 		return (
-			<View style={{flex: 1, backgorundColor: colors.white }}>
+			<View style={{ flex: 1, backgorundColor: colors.white }}>
 				<SafeAreaView
 					style={{
 						flex: 0,
 						backgroundColor: colors.secondaryColor
 					}}
 				/>
-				<SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
+				<SafeAreaView
+					style={{ flex: 1, backgroundColor: colors.white }}
+				>
 					<CustomHeader
 						color={colors.secondaryColor}
 						left={this.headerLeftIcon()}
@@ -81,10 +83,12 @@ class SpecificFaqScreen extends Component {
 						height={150}
 						title={this.state.selectedFaq.question}
 						titleColor={colors.white}
-						titleBottomMargin={90}
+						titleMarginTop={50}
 					/>
 					<ScrollView style={{ paddingLeft: 20, paddingRight: 20 }}>
-						<Text style={answerStyle}>{this.state.selectedFaq.answer}</Text>
+						<Text style={answerStyle}>
+							{this.state.selectedFaq.answer}
+						</Text>
 					</ScrollView>
 				</SafeAreaView>
 			</View>
