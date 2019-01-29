@@ -280,7 +280,7 @@ class SpecificServiceScreen extends Component {
 								commentBorder,
 								{
 									marginTop: 10,
-									marginBottom: 20,
+									marginBottom: 20
 								}
 							]}
 						>
@@ -760,7 +760,7 @@ class SpecificServiceScreen extends Component {
 							</Text>
 						) : null}
 						{/* If website */}
-						{/* TODO: on press redirect to websit, using webview */}
+						{/* TODO: on press redirect to website, using webview */}
 						{service.website ? (
 							<View style={rowStyle}>
 								<Website
@@ -893,7 +893,7 @@ const styles = {
 		height: 1,
 		backgroundColor: colors.lightGray,
 		width: '100%',
-		marginTop: 10,
+		marginTop: 10
 	},
 	titleStyle: {
 		fontSize: 22,

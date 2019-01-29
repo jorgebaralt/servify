@@ -63,7 +63,6 @@ class EditUserScreen extends Component {
 				type: null,
 				deleteImage: true
 			});
-			// TODO: fire action to update user
 		} else {
 			this.setState({ imageURL: null, fileName: null, type: null });
 		}
@@ -115,7 +114,6 @@ class EditUserScreen extends Component {
 
 	updateProfile = async () => {
 		this.setState({ loading: true });
-		// TODO: update profile
 		let { imageInfo } = this.props.user;
 		if (this.state.deleteImage && this.props.user.imageInfo != null) {
 			await deleteProfileImage(
@@ -166,7 +164,6 @@ class EditUserScreen extends Component {
 					style={{ flex: 1, paddingLeft: 20, paddingRight: 20 }}
 				>
 					{this.renderSpinner()}
-					{/* TODO: else, show image picker */}
 					{this.state.imageURL != null ? (
 						<View>
 							{this.state.imageURL ? (

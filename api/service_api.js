@@ -82,12 +82,7 @@ export const getNewNearServices = async (
 };
 
 // Get service by category
-export const getServicesCategory = async (
-	category,
-	userLocation,
-	sortBy,
-	callback
-) => {
+export const getServicesCategory = async (category, userLocation, callback) => {
 	try {
 		source = CancelToken.source();
 		let { data } = await axios.get(servicesURL, {
@@ -96,23 +91,8 @@ export const getServicesCategory = async (
 			},
 			cancelToken: source.token
 		});
-		// TODO: DECIDE SORTING
-		switch (sortBy) {
-			case 'Distance':
-				data = sortByDistance(data, userLocation);
-				break;
-			case 'Popularity':
-				data = sortByPopularity(data);
-				break;
-			case 'Newest':
-				data = sortByNewest(data);
-				break;
-			case 'Oldest':
-				data = sortByOldest(data);
-				break;
-			default:
-				data = sortByDistance(data, userLocation);
-		}
+		// sort services
+		data = sortServices(data, 'Distance', userLocation);
 		callback(data);
 	} catch (e) {
 		console.log(e);
@@ -123,7 +103,6 @@ export const getServicesCategory = async (
 export const getServicesSubcategory = async (
 	subcategory,
 	userLocation,
-	sortBy,
 	callback
 ) => {
 	try {
@@ -134,23 +113,8 @@ export const getServicesSubcategory = async (
 			},
 			cancelToken: source.token
 		});
-		// TODO: DECIDE SORTING
-		switch (sortBy) {
-			case 'Distance':
-				data = sortByDistance(data, userLocation);
-				break;
-			case 'Popularity':
-				data = sortByPopularity(data);
-				break;
-			case 'Newest':
-				data = sortByNewest(data);
-				break;
-			case 'Oldest':
-				data = sortByOldest(data);
-				break;
-			default:
-				data = sortByDistance(data, userLocation);
-		}
+		// sort services
+		data = sortServices(data, 'Distance', userLocation);
 		callback(data);
 	} catch (e) {
 		console.log(e);
@@ -198,7 +162,7 @@ export const updateService = async (updatedService, serviceId, callback) => {
 
 // REPORT-SERVICE
 export const reportService = async (report) => {
-	const reportUrl = 'https://us-central1-servify-716c6.cloudfunctions.net/report';
+	const reportUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/report';
 	try {
 		await axios.post(reportUrl, report);
 	} catch (e) {
@@ -206,8 +170,29 @@ export const reportService = async (report) => {
 	}
 };
 
+// service sorting
+export const sortServices = (data, sortBy, userLocation) => {
+	let sortedData;
+	switch (sortBy) {
+		case 'Distance':
+			sortedData = sortByDistance(data, userLocation);
+			break;
+		case 'Popularity':
+			sortedData = sortByPopularity(data);
+			break;
+		case 'Newest':
+			sortedData = sortByNewest(data);
+			break;
+		case 'Oldest':
+			sortedData = sortByOldest(data);
+			break;
+		default:
+			sortedData = sortByDistance(data, userLocation);
+	}
+	return sortedData;
+};
+
 // sort array by distance
-// TODO: handle better on back end.
 const sortByDistance = (data, userLocation) => {
 	let newData = [];
 	// for each service, calculate distance from user to service

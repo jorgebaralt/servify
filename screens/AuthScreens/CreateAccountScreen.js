@@ -80,12 +80,7 @@ class CreateAccountScreen extends Component {
 			imageInfo = await profileImageUpload(this.state.imageInfo);
 		}
 
-		const {
-			email,
-			password,
-			displayName,
-			username
-		} = this.state;
+		const { email, password, displayName, username } = this.state;
 
 		const user = {
 			displayName,
@@ -116,7 +111,6 @@ class CreateAccountScreen extends Component {
 				// Infer the type of the image
 				const match = /\.(\w+)$/.exec(fileName);
 				const type = match ? `image/${match[1]}` : 'image';
-				// TODO: add to state.
 				// upload images, receives an array of images
 				this.setState({
 					imageInfo: {

@@ -86,7 +86,6 @@ export const facebookLogin = async (callback) => {
 		console.log(user);
 
 		// add user to firestore DB
-		// TODO: add full name
 		await axios.post(userURL, {
 			user: {
 				email: user.email,

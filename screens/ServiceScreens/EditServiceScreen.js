@@ -513,7 +513,6 @@ class EditServiceScreen extends Component {
 
 	render() {
 		const { contentStyle, buttonStyle } = styles;
-		// TODO: WORKING HERE
 		return (
 			<SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
 				<CustomHeader
@@ -594,7 +593,6 @@ class EditServiceScreen extends Component {
 							onFocus={() => this.setState({ locationChange: true })
 							}
 						/>
-						{/* FIXME: MAKE SURE TO LOOK FOR DELIVERY AND PHYSICAL LOC */}
 						{this.state.isDelivery ? (
 							<View>
 								<Text

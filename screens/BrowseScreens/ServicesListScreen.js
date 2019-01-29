@@ -1,3 +1,4 @@
+/* eslint-disable react/no-access-state-in-setstate */
 import React, { Component } from 'react';
 import {
 	TouchableOpacity,
@@ -17,7 +18,12 @@ import EmptyListMessage from '../../components/ErrorMessage/EmptyListMessage';
 import { pageHit } from '../../shared/ga_helper';
 import { CustomHeader, DetailedServiceCard } from '../../components/UI';
 import { colors } from '../../shared/styles';
-import { getServicesCategory, getServicesSubcategory, cancelAxios } from '../../api';
+import {
+	getServicesCategory,
+	getServicesSubcategory,
+	cancelAxios,
+	sortServices
+} from '../../api';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -29,7 +35,7 @@ const sortByOptions = [DISTANCE, POPULARITY, NEWEST, OLDEST, 'Cancel'];
 
 class ServicesListScreen extends Component {
 	state = {
-		dataLoaded: undefined,
+		loading: true,
 		refreshing: false,
 		sortBy: DISTANCE,
 		category: null,
@@ -37,7 +43,7 @@ class ServicesListScreen extends Component {
 		servicesList: null
 	};
 
-	async componentWillMount(){
+	async componentWillMount() {
 		await this.setState({
 			category: this.props.navigation.getParam('category'),
 			subcategory: this.props.navigation.getParam('subcategory')
@@ -100,6 +106,15 @@ class ServicesListScreen extends Component {
 		}
 	};
 
+	sortServices = async () => {
+		const sortedServices = await sortServices(
+			this.state.servicesList,
+			this.state.sortBy,
+			this.props.userLocation
+		);
+		this.setState({ servicesList: sortedServices });
+	};
+
 	fetchData = async () => {
 		const { category, subcategory } = this.state;
 		const categoryRef = category.dbReference;
@@ -108,18 +123,24 @@ class ServicesListScreen extends Component {
 			await getServicesSubcategory(
 				subcategoryRef,
 				this.props.userLocation,
-				this.state.sortBy,
-				(data) => this.setState({ servicesList: data, dataLoaded: true, refreshing: false })
+				(data) => this.setState({
+						servicesList: data,
+						loading: false,
+						refreshing: false
+					})
 			);
 		} else {
 			await getServicesCategory(
 				categoryRef,
 				this.props.userLocation,
-				this.state.sortBy,
-				(data) => this.setState({ servicesList: data, dataLoaded: true, refreshing: false })
+				(data) => this.setState({
+						servicesList: data,
+						loading: false,
+						refreshing: false
+					})
 			);
 		}
-	}
+	};
 
 	// TODO: sorting function here, after actin sheet **** IMPORTANT ****
 
@@ -127,6 +148,7 @@ class ServicesListScreen extends Component {
 	// TODO: animate on scroll down dissapear, show on scroll up
 	renderSortBy = () => {
 		const { sortByStyle, iconSortStyle, viewSortStyle } = styles;
+		console.log(this.state.servicesList);
 		// if there are services
 		if (
 			this.state.servicesList != null
@@ -156,7 +178,7 @@ class ServicesListScreen extends Component {
 												]
 										});
 									}
-									this.decideGetService();
+									this.sortServices();
 								}
 							)
 						}
@@ -182,7 +204,13 @@ class ServicesListScreen extends Component {
 			onPress={() => {
 				this.props.navigation.navigate('service', { service });
 			}}
-			uri={service.imagesInfo ? (service.imagesInfo.length > 0 ? service.imagesInfo[0].url : null) : null}
+			uri={
+				service.imagesInfo
+					? service.imagesInfo.length > 0
+						? service.imagesInfo[0].url
+						: null
+					: null
+			}
 			color={this.state.category.color[0]}
 			distance={this.state.sortBy === DISTANCE}
 		/>
@@ -202,7 +230,16 @@ class ServicesListScreen extends Component {
 	);
 
 	renderListView() {
-		if (this.state.servicesList.length !== 0) {
+		if (this.state.servicesList != null) {
+			if (this.state.servicesList.length === 0) {
+				return (
+					<EmptyListMessage buttonPress={this.onBackPress}>
+						Unfortunetly there are no services published for this
+						category, we are working on getting more people to
+						publish services!
+					</EmptyListMessage>
+				);
+			}
 			return (
 				<FlatList
 					data={this.state.servicesList}
@@ -213,35 +250,29 @@ class ServicesListScreen extends Component {
 				/>
 			);
 		}
-		return (
-			<EmptyListMessage buttonPress={this.onBackPress}>
-				Unfortunetly there are no services published for this category,
-				we are working on getting more people to publish services!
-			</EmptyListMessage>
-		);
 	}
 
 	renderContent = () => {
-		if (this.state.dataLoaded) {
-			// if it is category / subcategory
-			if (this.state.category) {
-				return (
-					<View
-						style={{ flex: 1, paddingLeft: 20, paddingRight: 20 }}
-					>
-						{this.renderSortBy()}
-						{this.renderListView()}
-					</View>
-				);
-			}
+		if (this.state.category) {
+			return (
+				<View style={{ flex: 1, paddingLeft: 20, paddingRight: 20 }}>
+					{this.renderSortBy()}
+					{this.renderListView()}
+				</View>
+			);
 		}
-		return (
-			<ActivityIndicator
-				style={{ marginTop: 20 }}
-				size="large"
-				color={this.state.category.color[0] || colors.primaryColor}
-			/>
-		);
+	};
+
+	renderSpinner = () => {
+		if (this.state.loading) {
+			return (
+				<ActivityIndicator
+					style={{ marginTop: 20 }}
+					size="large"
+					color={this.state.category.color[0] || colors.primaryColor}
+				/>
+			);
+		}
 	};
 
 	render() {
@@ -261,7 +292,7 @@ class ServicesListScreen extends Component {
 						titleColor={colors.white}
 						left={this.headerLeftIcon()}
 					/>
-
+					{this.renderSpinner()}
 					{this.renderContent()}
 				</SafeAreaView>
 			</View>
@@ -291,6 +322,4 @@ const mapStateToProps = (state) => ({
 	userLocation: state.location.data
 });
 
-export default connect(
-	mapStateToProps,
-)(ServicesListScreen);
+export default connect(mapStateToProps)(ServicesListScreen);

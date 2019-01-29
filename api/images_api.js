@@ -111,7 +111,6 @@ export const deleteServiceImage = async (deleteImagesArray, serviceId) => {
 						serviceId
 					}
 				});
-				console.log(data);
 				return data;
 			})
 		);
