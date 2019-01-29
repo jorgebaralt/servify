@@ -1,16 +1,10 @@
 import React, { Component } from 'react';
-import {
-	DeviceEventEmitter,
-	FlatList,
-	View,
-	StyleSheet
-} from 'react-native';
+import { DeviceEventEmitter, FlatList, View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
 import { pageHit } from '../../shared/ga_helper';
 import { CustomHeader, SubcategoryCard } from '../../components/UI';
 import { colors } from '../../shared/styles';
-
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -49,7 +43,7 @@ class SubcategoriesListScreen extends Component {
 				}
 			}
 		});
-		backPressSubscriptions.add(() => this.props.navigation.pop());
+		backPressSubscriptions.add(() => this.onBackPressed());
 	};
 
 	onBackPressed = () => {
@@ -109,7 +103,7 @@ class SubcategoriesListScreen extends Component {
 							flex: 1,
 							justifyContent: 'center',
 							alignItems: 'center',
-							marginTop: -60,
+							marginTop: -60
 							// overflow: 'hidden'
 						}}
 					>
@@ -119,8 +113,24 @@ class SubcategoriesListScreen extends Component {
 							}
 							keyExtractor={(item) => item.title}
 						/>
-						<View style={[styles.bigCircleStyle, { backgroundColor: this.state.category.color[0] }]} />
-						<View style={[styles.smallCircleStyle, { backgroundColor: this.state.category.color[0] }]} />
+						<View
+							style={[
+								styles.bigCircleStyle,
+								{
+									backgroundColor: this.state.category
+										.color[0]
+								}
+							]}
+						/>
+						<View
+							style={[
+								styles.smallCircleStyle,
+								{
+									backgroundColor: this.state.category
+										.color[0]
+								}
+							]}
+						/>
 					</View>
 				</SafeAreaView>
 			</View>
