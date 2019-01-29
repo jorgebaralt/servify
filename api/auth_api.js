@@ -83,8 +83,6 @@ export const facebookLogin = async (callback) => {
 			.auth()
 			.signInAndRetrieveDataWithCredential(credential);
 
-		console.log(user);
-
 		// add user to firestore DB
 		await axios.post(userURL, {
 			user: {
