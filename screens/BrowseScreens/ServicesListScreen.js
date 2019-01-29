@@ -142,13 +142,10 @@ class ServicesListScreen extends Component {
 		}
 	};
 
-	// TODO: sorting function here, after actin sheet **** IMPORTANT ****
-
 	// Handles click and render of action sheet
 	// TODO: animate on scroll down dissapear, show on scroll up
 	renderSortBy = () => {
 		const { sortByStyle, iconSortStyle, viewSortStyle } = styles;
-		console.log(this.state.servicesList);
 		// if there are services
 		if (
 			this.state.servicesList != null

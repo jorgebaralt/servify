@@ -787,16 +787,20 @@ class SpecificServiceScreen extends Component {
 								{service.displayName}
 							</Text>
 						</View>
-						<View style={rowStyle}>
-							<MaterialIcons
-								name="email"
-								size={18}
-								style={{ color: colors.secondaryColor }}
-							/>
-							<Text style={descriptionStyle}>
-								{service.contactEmail}
-							</Text>
-						</View>
+						{/* Display contact email */}
+						{service.contactEmail ? (
+							<View style={rowStyle}>
+								<MaterialIcons
+									name="email"
+									size={18}
+									style={{ color: colors.secondaryColor }}
+								/>
+								<Text style={descriptionStyle}>
+									{service.contactEmail}
+								</Text>
+							</View>
+						) : null}
+
 						<View style={rowStyle}>
 							<MaterialIcons
 								name="phone"
