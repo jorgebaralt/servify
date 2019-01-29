@@ -1,57 +1,52 @@
 {
-  "expo": {
-    "name": "Servify",
-    "description": "Easy way to find local services brougth to your home, contact them and make your life easier ",
-    "slug": "servify",
-    "privacy": "public",
-    "sdkVersion": "31.0.0",
-    "facebookScheme": "fb270665710375213",
-    "facebookAppId": "270665710375213",
-    "facebookDisplayName": "servify",
-    "platforms": [
-      "ios",
-      "android"
-    ],
-    "version": "1.0.7",
-    "orientation": "portrait",
-    "icon": "./assets/servifyIcon2.png",
-    "splash": {
-      "image": "./assets/servifySplashOrange.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#FF7043"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.jorgebaralt.servify",
-      "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "Servify uses current location to find and display nearby services",
-        "NSCameraUsageDescription": "Servify uses the camera to upload images of the services and display them to users",
-        "NSPhotoLibraryUsageDescription": "Servify uses the camera library to upload images to the services so users can see it"
-      },
-      "config": {
-        "googleSignIn": {
-          "reservedClientId": "com.googleusercontent.apps.737506787644-vhmrpn1ejikv8mcstqmol81l26gnudev"
-        }
-      }
-    },
-    "android": {
-      "package": "com.jorgebaralt.servify",
-      "versionCode": 7,
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyD5KIVp89sqAl6ogAwncya3ltZcEwVUcwU"
-        },
-        "googleSignIn": {
-          "apiKey": "AIzaSyAaYxWn6nQi0kOMX4gLovsWkm7QQ6abXrg",
-          "certificateHash": "5476B8C469C151EA35482C5D9D366B0F422088AA"
-        }
-      }
-    }
-  }
+	"expo": {
+		"name": "Servify",
+		"description": "Easy way to find local services brougth to your home, contact them and make your life easier ",
+		"slug": "servify",
+		"privacy": "public",
+		"sdkVersion": "32.0.0",
+		"facebookScheme": "fb270665710375213",
+		"facebookAppId": "270665710375213",
+		"facebookDisplayName": "servify",
+		"platforms": ["ios", "android"],
+		"version": "1.0.7",
+		"orientation": "portrait",
+		"icon": "./assets/servifyIcon2.png",
+		"splash": {
+			"image": "./assets/servifySplashOrange.png",
+			"resizeMode": "cover",
+			"backgroundColor": "#FF7043"
+		},
+		"updates": {
+			"fallbackToCacheTimeout": 0
+		},
+		"assetBundlePatterns": ["**/*"],
+		"ios": {
+			"supportsTablet": true,
+			"bundleIdentifier": "com.jorgebaralt.servify",
+			"infoPlist": {
+				"NSLocationWhenInUseUsageDescription": "Servify uses current location to find and display nearby services",
+				"NSCameraUsageDescription": "Servify uses the camera to upload images of the services and display them to users",
+				"NSPhotoLibraryUsageDescription": "Servify uses the camera library to upload images to the services so users can see it"
+			},
+			"config": {
+				"googleSignIn": {
+					"reservedClientId": "com.googleusercontent.apps.737506787644-vhmrpn1ejikv8mcstqmol81l26gnudev"
+				}
+			}
+		},
+		"android": {
+			"package": "com.jorgebaralt.servify",
+			"versionCode": 7,
+			"config": {
+				"googleMaps": {
+					"apiKey": "AIzaSyD5KIVp89sqAl6ogAwncya3ltZcEwVUcwU"
+				},
+				"googleSignIn": {
+					"apiKey": "AIzaSyAaYxWn6nQi0kOMX4gLovsWkm7QQ6abXrg",
+					"certificateHash": "5476B8C469C151EA35482C5D9D366B0F422088AA"
+				}
+			}
+		}
+	}
 }

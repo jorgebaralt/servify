@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Dimensions, TouchableOpacity, Text } from 'react-native';
+import {
+	View,
+	ScrollView,
+	Dimensions,
+	TouchableOpacity,
+	Text,
+	FlatList
+} from 'react-native';
 import { Button } from '..';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
@@ -10,27 +17,22 @@ class Slides extends Component {
 		if (i === this.props.data.length - 1) {
 			return (
 				<View style={styles.buttonStyle}>
-					<Button
-						bordered
-						onPress={this.props.onComplete}
-					>
+					<Button bordered onPress={this.props.onComplete}>
 						<Text>Lets Go!</Text>
 					</Button>
 				</View>
 			);
 		}
 		return <View />;
-	}
+	};
 
 	// Render progress dots dots depending on slide
-	renderDots = (current) => {
-		return this.props.data.map((slide, i) => {
+	renderDots = (current) => this.props.data.map((slide, i) => {
 			if (i === current) {
 				return <View key={i} style={styles.currentDot} />;
 			}
 			return <View key={i} style={styles.defaultDot} />;
 		});
-	}
 
 	// Render skip button on first slide
 	renderSkipButton = (current) => {
@@ -40,35 +42,40 @@ class Slides extends Component {
 					style={{ position: 'absolute', bottom: 30, right: 20 }}
 					// onPress={} Navigate to Login Screen
 				>
-                    <Text
-                        style={{ fontSize: 16, color: 'white' }}
-                        onPress={async () => this.props.onComplete()}
-                    >
-                        Skip Tutorial
-                    </Text>
+					<Text
+						style={{ fontSize: 16, color: 'white' }}
+						onPress={async () => this.props.onComplete()}
+					>
+						Skip Tutorial
+					</Text>
 				</TouchableOpacity>
 			);
 		}
 		return <View />;
-	}
+	};
 
-	renderSlides = () => this.props.data.map((slide, i) => (
-			<View
-				key={slide.text}
-				style={[styles.slideStyle, { backgroundColor: slide.color }]}
-			>
-				<Text style={styles.textStyle}>{slide.text}</Text>
-				<View style={{ flexDirection: 'row' }}>{this.renderDots(i)}</View>
-				{this.renderLastSlide(i)}
-				{this.renderSkipButton(i)}
-			</View>
-		));
+	renderSlides = (slide, i) => (
+		<View
+			key={slide.text}
+			style={[styles.slideStyle, { backgroundColor: slide.color }]}
+		>
+			<Text style={styles.textStyle}>{slide.text}</Text>
+			<View style={{ flexDirection: 'row' }}>{this.renderDots(i)}</View>
+			{this.renderLastSlide(i)}
+			{this.renderSkipButton(i)}
+		</View>
+	);
 
 	render() {
 		return (
-			<ScrollView horizontal style={{ flex: 1 }} pagingEnabled>
-				{this.renderSlides()}
-			</ScrollView>
+			<FlatList
+				data={this.props.data}
+				renderItem={({ item, index }) => this.renderSlides(item, index)}
+				keyExtractor={(item) => item.color}
+				horizontal
+				style={{ flex: 1 }}
+				pagingEnabled
+			/>
 		);
 	}
 }
