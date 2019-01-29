@@ -31,7 +31,6 @@ class WelcomeScreen extends Component {
 		await this.checkForUser();
 	}
 
-
 	async componentDidMount() {
 		// ga hit
 		pageHit('Welcome Screen');
@@ -43,7 +42,7 @@ class WelcomeScreen extends Component {
 		} catch (e) {
 			console.log(e);
 		}
-		
+
 		this.props.navigation.navigate('auth');
 	};
 
@@ -51,7 +50,7 @@ class WelcomeScreen extends Component {
 		// Listen for user loggin change
 		await firebase.auth().onAuthStateChanged(async (user) => {
 			if (user) {
-				await this.props.getCurrentUser(user.uid);
+				await this.props.getCurrentUser(user.uid, user.email);
 				// navigate to main if already logged in
 				this.props.navigation.navigate('home');
 				this.setState({ authenticated: true });
@@ -65,7 +64,6 @@ class WelcomeScreen extends Component {
 				} else {
 					this.props.navigation.navigate('welcome');
 				}
-				
 			}
 		});
 	}

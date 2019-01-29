@@ -116,14 +116,16 @@ class EditUserScreen extends Component {
 	updateProfile = async () => {
 		this.setState({ loading: true });
 		// TODO: update profile
+		let { imageInfo } = this.props.user;
 		if (this.state.deleteImage && this.props.user.imageInfo != null) {
 			await deleteProfileImage(
 				this.props.user.uid,
 				this.props.user.imageInfo.fileName,
 				() => this.setState({ fileName: null, imageURL: null })
 			);
+			imageInfo = null;
 		}
-		let imageInfo = null;
+
 		if (this.state.uploadImage && this.state.fileName) {
 			imageInfo = await profileImageUpload({
 				image: this.state.imageURL,

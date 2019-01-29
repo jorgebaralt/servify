@@ -7,7 +7,7 @@ import { GET_CURRENT_USER } from './types';
 
 const userURL = 'https://us-central1-servify-716c6.cloudfunctions.net/user';
 
-export const getCurrentUser = (uid) => async (dispatch) => {
+export const getCurrentUser = (uid, email) => async (dispatch) => {
 	try {
 		const { data } = await axios.get(userURL, {
 			params: {
@@ -15,6 +15,7 @@ export const getCurrentUser = (uid) => async (dispatch) => {
 			}
 		});
 		const user = data;
+		user.email = email;
 		return dispatch({ type: GET_CURRENT_USER, payload: user });
 	} catch (e) {
 		console.log(e);
