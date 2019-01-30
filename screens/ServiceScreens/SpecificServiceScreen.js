@@ -32,7 +32,8 @@ import {
 	Button,
 	TextArea,
 	AnimatedHeader,
-	FadeImage
+	FadeImage,
+	Tooltip
 } from '../../components/UI';
 import { formatDate } from '../../shared/helpers';
 import {
@@ -43,7 +44,7 @@ import {
 	Delivery,
 	Home,
 	Website,
-	Tooltip
+	TooltipIcon
 } from '../../assets/svg';
 import DollarRating from '../../components/Ratings/DollarRating';
 import { defaultImage } from '../../assets/default/categories';
@@ -301,27 +302,14 @@ class SpecificServiceScreen extends Component {
 							<View>
 								{/* Tooltip */}
 								{this.state.showTooltip ? (
-									<View
-										style={{
-											borderWidth: 1,
-											borderColor: colors.primaryColor,
-											backgroundColor:
-												colors.primaryColor,
-											alignSelf: 'flex-end',
-											borderRadius: 4,
-											zIndex: 10,
-											padding: 10,
-											position: 'absolute',
-											bottom: 40
-										}}
-									>
+									<Tooltip style={{ bottom: 40 }}>
 										<Text style={{ color: colors.white }}>
-											$: price is low compared to similar
-											services
+											${'   '}: price is low compared to
+											similar services
 											{'\n'}
-											$$: price is similar compared to
-											similar services{'\n'}
-											$$$: price is higher than similar
+											$${'  '}: price is similar compared
+											to similar services{'\n'}
+											$$$ : price is higher than similar
 											services
 											{'\n'}
 											$$$$: price is more expensive than
@@ -340,7 +328,7 @@ class SpecificServiceScreen extends Component {
 												Close
 											</Text>
 										</Text>
-									</View>
+									</Tooltip>
 								) : null}
 								<View
 									style={[
@@ -358,10 +346,12 @@ class SpecificServiceScreen extends Component {
 										}
 									/>
 									<TouchableOpacity
-										onPress={() => this.setState({ showTooltip: true })
+										onPress={() => this.setState((prevState) => ({
+												showTooltip: !prevState.showTooltip
+											}))
 										}
 									>
-										<Tooltip
+										<TooltipIcon
 											size={30}
 											style={{ marginTop: 3 }}
 											onPress={() => this.setState({

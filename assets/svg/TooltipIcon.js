@@ -1,7 +1,7 @@
 import React from 'react';
 import Svg, { G, Path } from 'react-native-svg';
 
-export const Tooltip = (props) => (
+export const TooltipIcon = (props) => (
 	<Svg
 		{...props}
 		viewBox="0 0 52 52"

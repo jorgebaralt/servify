@@ -20,3 +20,5 @@ export * from './Header/SearchHeader';
 export * from './Header/AnimatedHeader';
 // List
 export * from './List/ListIcon';
+// Tooltip
+export * from './Tooltip/Tooltip';
