@@ -1,23 +1,18 @@
 import React from 'react';
-import {
-	TouchableOpacity,
-	StyleSheet,
-	Text,
-	View,
-	Dimensions
-} from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import StarsRating from '../../Ratings/StarsRating';
+import { TouchableOpacity, Text, View, Dimensions } from 'react-native';
 import { colors } from '../../../shared/styles';
 import { FadeImage } from '..';
 import { getImagePath } from '../../../assets/default/subcategories';
 
-const WIDTH = Dimensions.get('window').width - 140;
+const WIDTH = Dimensions.get('window').width - 100;
 
 export const SubcategoryCard = (props) => {
 	const { subcategory } = props;
 	return (
-		<TouchableOpacity style={{ margin: 5, marginTop: 20 }} onPress={props.onPress}>
+		<TouchableOpacity
+			style={{ margin: 5, marginTop: 20 }}
+			onPress={props.onPress}
+		>
 			<View
 				style={{
 					flexDirection: 'row',
@@ -65,7 +60,13 @@ export const SubcategoryCard = (props) => {
 					>
 						{subcategory.title}
 					</Text>
-					<Text style={{ fontSize: 16, color: colors.darkGray, marginTop: 10 }}>
+					<Text
+						style={{
+							fontSize: 16,
+							color: colors.darkGray,
+							marginTop: 10
+						}}
+					>
 						{subcategory.description}
 					</Text>
 				</View>

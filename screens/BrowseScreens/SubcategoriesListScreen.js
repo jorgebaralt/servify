@@ -104,7 +104,6 @@ class SubcategoriesListScreen extends Component {
 							justifyContent: 'center',
 							alignItems: 'center',
 							marginTop: -40
-							// overflow: 'hidden'
 						}}
 					>
 						<FlatList
