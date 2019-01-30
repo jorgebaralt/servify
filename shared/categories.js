@@ -4,7 +4,7 @@ const categories = [
 		title: 'Home Services',
 		description: 'Home Services Description',
 		dbReference: 'home_services',
-		color: ['#5E35B1', '#673AB7'],
+		color: ['#42A5F5', '#64B5F6'],
 		keyWords: [
 			'home',
 			'cleaning',
@@ -19,10 +19,7 @@ const categories = [
 			'cleaning',
 			'garage',
 			'carpet',
-			'carpets',
-			'pool',
-			'swimming',
-			'fence'
+			'carpets'
 		],
 		subcategories: [
 			{
@@ -45,21 +42,88 @@ const categories = [
 			},
 			{
 				id: 0.4,
-				title: 'Pool services',
-				description: 'Get a clean pool',
-				dbReference: 'pool'
+				title: 'Windows and Curtains',
+				description: 'The best view',
+				dbReference: 'windows'
 			},
 			{
 				id: 0.5,
+				title: 'Other',
+				description: 'Just other',
+				dbReference: 'other_home'
+			}
+		]
+	},
+	{
+		id: 19,
+		title: 'Home Outdoor',
+		description: 'Home Outdoor Description',
+		dbReference: 'home_outdoor',
+		color: ['#43A047', '#388E3C'],
+		keyWords: [
+			'home',
+			'outdoor',
+			'fence',
+			'pool',
+			'landscape',
+			'screen',
+			'repair',
+			'pest',
+			'pest',
+			'landscape',
+			'grass',
+			'palms',
+			'tree',
+			'trees',
+			'wild',
+			'lawn',
+			'debris',
+			'rodent',
+			'fence',
+			'control'
+		],
+		subcategories: [
+			{
+				id: 19.1,
+				title: 'Pool Services',
+				description: 'Get a cleaner house',
+				dbReference: 'pool'
+			},
+			{
+				id: 19.2,
+				title: 'Pest Control',
+				description: 'Shiny walls',
+				dbReference: 'pest_control'
+			},
+			{
+				id: 19.3,
+				title: 'Screen Repair',
+				description: 'Softy carpets',
+				dbReference: 'screen_repair'
+			},
+			{
+				id: 19.5,
 				title: 'Fence services',
 				description: 'Great looking backyard',
 				dbReference: 'fence'
 			},
 			{
-				id: 0.6,
+				id: 19.6,
+				title: 'Landscaping and Sprinklers',
+				description: 'Great looking backyard',
+				dbReference: 'landscape'
+			},
+			{
+				id: 19.7,
+				title: 'Garage and doors',
+				description: 'Nice entrance',
+				dbReference: 'garage_doors'
+			},
+			{
+				id: 19.8,
 				title: 'Other',
 				description: 'Just other',
-				dbReference: 'other_home'
+				dbReference: 'other_home_outdoor'
 			}
 		]
 	},
@@ -152,6 +216,12 @@ const categories = [
 			},
 			{
 				id: 2.4,
+				title: 'Carpentry',
+				description: 'Built stuff',
+				dbReference: 'carpentry'
+			},
+			{
+				id: 2.5,
 				title: 'Other',
 				description: 'Something else',
 				dbReference: 'other_handyman'
@@ -318,39 +388,12 @@ const categories = [
 				dbReference: 'make_up'
 			},
 			{
-				id: 8.4,
+				id: 8.5,
 				title: 'Other',
 				description: 'Anything else?',
 				dbReference: 'other_beauty'
 			}
 		]
-	},
-	{
-		id: 9,
-		title: 'Landscaping',
-		description: 'landscape Description',
-		dbReference: 'landscape',
-		keyWords: ['landscape', 'grass', 'cut', 'palms', 'tree', 'trees', 'grass'],
-		color: ['#33691E', '#558B2F']
-	},
-	{
-		id: 10,
-		title: 'Pest control',
-		description: 'Pest control',
-		dbReference: 'pest',
-		keyWords: [
-			'pest',
-			'landscape',
-			'grass',
-			'palms',
-			'tree',
-			'trees',
-			'wild',
-			'lawn',
-			'debris',
-			'rodent'
-		],
-		color: ['#827717', '#9E9D24']
 	},
 	{
 		id: 11,
@@ -409,8 +452,48 @@ const categories = [
 		title: 'Insurance',
 		description: 'Insurance description',
 		dbReference: 'insurance',
-		keyWords: ['insurance', 'health', 'car', 'auto', 'policy', 'claim'],
-		color: ['#7E57C2', '#9575CD']
+		keyWords: [
+			'insurance',
+			'health',
+			'car',
+			'auto',
+			'policy',
+			'claim',
+			'medical'
+		],
+		color: ['#7E57C2', '#9575CD'],
+		subcategories: [
+			{
+				id: 16.1,
+				title: 'Car Insurance',
+				description: 'Safe crash',
+				dbReference: 'car_insurance'
+			},
+			{
+				id: 16.2,
+				title: 'Home Insurance',
+				description: 'storm protector',
+				dbReference: 'home_insurance'
+			},
+			{
+				id: 16.3,
+				title: 'Health Insurance',
+				description: 'Medical expenses covered',
+				dbReference: 'health_insurance'
+			},
+			{
+				id: 16.4,
+				title: 'Bussiness Insurance',
+				description: 'Employee protection',
+				dbReference: 'business_insurance'
+			},
+			{
+				id: 16.5,
+				title: 'Other',
+				description: 'Anything else?',
+				dbReference: 'other_insurance'
+			}
+		]
 	},
 	{
 		id: 17,
@@ -422,6 +505,67 @@ const categories = [
 	},
 	{
 		id: 18,
+		title: 'Computer and Smartphone',
+		description: 'Tech consultation',
+		dbReference: 'computer_repair',
+		keyWords: [
+			'computer',
+			'iphone',
+			'broke',
+			'android',
+			'repair',
+			'software',
+			'install',
+			'printer',
+			'screen',
+			'protector',
+			'laptop',
+			'desktop'
+		],
+		color: ['#0288D1', '#0277BD']
+	},
+	{
+		id: 20,
+		title: 'Remodel',
+		description: 'Redesign',
+		dbReference: 'remodel',
+		keyWords: ['remodel', 'kitchen', 'batroom', 'floor'],
+		color: ['#FFB74D', '#FFA726'],
+		subcategories: [
+			{
+				id: 20.1,
+				title: 'Kitchen Remodel',
+				description: 'Love cooking',
+				dbReference: 'kitchen_remodel'
+			},
+			{
+				id: 20.2,
+				title: 'Bathroom Remodel',
+				description: 'Take the perfect bath',
+				dbReference: 'bathroom_remodel'
+			},
+			{
+				id: 20.3,
+				title: 'Floor remodel',
+				description: 'Walk without shoes',
+				dbReference: 'floor_remodel'
+			},
+			{
+				id: 20.4,
+				title: 'Countertops and Cabinets',
+				description: 'Custom cabinets',
+				dbReference: 'cabinets_remodel'
+			},
+			{
+				id: 20.5,
+				title: 'Other',
+				description: 'Anything else?',
+				dbReference: 'other_remodel'
+			}
+		]
+	},
+	{
+		id: 21,
 		title: 'Other',
 		description: 'Something else',
 		dbReference: 'other',

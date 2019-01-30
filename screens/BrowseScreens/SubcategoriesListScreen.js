@@ -103,7 +103,7 @@ class SubcategoriesListScreen extends Component {
 							flex: 1,
 							justifyContent: 'center',
 							alignItems: 'center',
-							marginTop: -60
+							marginTop: -40
 							// overflow: 'hidden'
 						}}
 					>
@@ -112,6 +112,7 @@ class SubcategoriesListScreen extends Component {
 							renderItem={({ item }) => this.renderSubcategories(item)
 							}
 							keyExtractor={(item) => item.title}
+							style={{ marginBottom: 40 }}
 						/>
 						<View
 							style={[
