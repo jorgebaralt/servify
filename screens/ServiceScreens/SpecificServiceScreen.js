@@ -616,7 +616,6 @@ class SpecificServiceScreen extends Component {
 	renderHeaderImages = (imagesInfo, i) => (
 		<FadeImage
 			uri={imagesInfo.url}
-			image={imagesInfo.url ? null : imagesInfo.image}
 			style={{ height: 300, width: WIDTH }}
 			showDots={imagesInfo.url}
 			currentDot={i}
@@ -654,11 +653,12 @@ class SpecificServiceScreen extends Component {
 			}
 			subcategoryName = subcategoryName.join(' ');
 		}
-		const imageData = this.state.service.imagesInfo
-			? this.state.service.imagesInfo.length > 0
-				? this.state.service.imagesInfo
-				: [{ fileName: '1', image: defaultImage(service.category) }]
-			: [{ fileName: '1', image: defaultImage(service.category) }];
+		// Images for the header
+		const imageData = service.imagesInfo
+			? service.imagesInfo.length > 0
+				? service.imagesInfo
+				: [{ fileName: '1', url: defaultImage(service.category) }]
+			: [{ fileName: '1', url: defaultImage(service.category) }];
 		return (
 			<KeyboardAvoidingView
 				behavior="position"

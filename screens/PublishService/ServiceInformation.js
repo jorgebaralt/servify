@@ -47,7 +47,7 @@ const ServiceInformation = (props) => (
 		{/* Contact Email */}
 		<FloatingLabelInput
 			value={props.state.contactEmail}
-			label="Contact Email"
+			label="Contact email"
 			firstColor={colors.darkGray}
 			secondColor={colors.secondaryColor}
 			fontColor={colors.black}
@@ -69,18 +69,6 @@ const ServiceInformation = (props) => (
 			maxLength={16}
 			keyboardType="phone-pad"
 		/>
-		{/* Website */}
-		<FloatingLabelInput
-			value={props.state.website}
-			label="Website (optional)"
-			firstColor={colors.darkGray}
-			secondColor={colors.secondaryColor}
-			fontColor={colors.black}
-			onChangeText={(text) => props.websiteChange(text)}
-			style={{ marginTop: 30 }}
-			maxLength={25}
-			autoCapitalize="none"
-		/>
 		{/* Description */}
 		<TextArea
 			style={{ marginTop: 30 }}
@@ -96,10 +84,22 @@ const ServiceInformation = (props) => (
 			value={props.state.description}
 			onChangeText={(text) => props.descriptionChange(text)}
 		/>
+		{/* Website */}
+		<FloatingLabelInput
+			value={props.state.website}
+			label="Website (optional)"
+			firstColor={colors.darkGray}
+			secondColor={colors.secondaryColor}
+			fontColor={colors.black}
+			onChangeText={(text) => props.websiteChange(text)}
+			style={{ marginTop: 30 }}
+			maxLength={25}
+			autoCapitalize="none"
+		/>
 		{/* Provider Description */}
 		<TextArea
 			style={{ marginTop: 30 }}
-			label="Provider description"
+			label="Provider description (optional)"
 			size={40}
 			firstColor={colors.darkGray}
 			secondColor={colors.secondaryColor}
@@ -107,7 +107,7 @@ const ServiceInformation = (props) => (
 			multiline
 			bordered
 			numberOfLines={6}
-			placeholder="Describe what you or your company is about"
+			placeholder="Describe what you or your company are about"
 			value={props.state.providerDescription}
 			onChangeText={(text) => props.providerDescriptionChange(text)}
 		/>

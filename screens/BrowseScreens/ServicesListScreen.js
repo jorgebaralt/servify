@@ -24,6 +24,7 @@ import {
 	cancelAxios,
 	sortServices
 } from '../../api';
+import { defaultImage } from '../../assets/default/categories';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -203,10 +204,10 @@ class ServicesListScreen extends Component {
 			}}
 			uri={
 				service.imagesInfo
-					? service.imagesInfo.length > 0
+					? service.imagesInfo[0].url
 						? service.imagesInfo[0].url
-						: null
-					: null
+						: defaultImage(service.category)
+					: defaultImage(service.category)
 			}
 			color={this.state.category.color[0]}
 			distance={this.state.sortBy === DISTANCE}

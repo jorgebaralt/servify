@@ -336,11 +336,37 @@ const categories = [
 	},
 	{
 		id: 7,
-		title: 'Food Catering',
+		title: 'Food',
 		description: 'Food Description',
-		dbReference: 'food_catering',
+		dbReference: 'food',
 		keyWords: ['food', 'eat', 'catering', 'diet', 'restaurant', 'delivery'],
-		color: ['#0097A7', '#00ACC1']
+		color: ['#0097A7', '#00ACC1'],
+		subcategories: [
+			{
+				id: 7.1,
+				title: 'Restaurant',
+				description: 'Perfect dinner',
+				dbReference: 'food_restaurant'
+			},
+			{
+				id: 7.2,
+				title: 'Catering',
+				description: 'Cheff is home',
+				dbReference: 'food_catering'
+			},
+			{
+				id: 7.3,
+				title: 'Delivery',
+				description: 'Fast solution',
+				dbReference: 'food_delivery'
+			},
+			{
+				id: 7.4,
+				title: 'Other',
+				description: 'Something else',
+				dbReference: 'other_food'
+			}
+		]
 	},
 	{
 		id: 8,

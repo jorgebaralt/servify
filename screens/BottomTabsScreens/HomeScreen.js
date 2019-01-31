@@ -168,14 +168,7 @@ class HomeScreen extends Component {
 			last={this.state.newNearServices.length - 1 === i}
 			uri={
 				service.imagesInfo
-					? service.imagesInfo[0]
-						? service.imagesInfo[0].url
-						: null
-					: null
-			}
-			image={
-				service.imagesInfo
-					? service.imagesInfo[0]
+					? service.imagesInfo[0].url
 						? service.imagesInfo[0].url
 						: defaultImage(service.category)
 					: defaultImage(service.category)
@@ -241,19 +234,12 @@ class HomeScreen extends Component {
 		<View>
 			<HomeServiceCard
 				last={this.state.popularNearServices.length - 1 === i}
-				image={
+				uri={
 					service.imagesInfo
-						? service.imagesInfo[0]
+						? service.imagesInfo[0].url
 							? service.imagesInfo[0].url
 							: defaultImage(service.category)
 						: defaultImage(service.category)
-				}
-				uri={
-					service.imagesInfo
-						? service.imagesInfo[0]
-							? service.imagesInfo[0].url
-							: null
-						: null
 				}
 				service={service}
 				showRating

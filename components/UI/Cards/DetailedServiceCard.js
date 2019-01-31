@@ -13,11 +13,7 @@ export const DetailedServiceCard = (props) => {
 		<TouchableOpacity style={styles.touchCardStyle} onPress={props.onPress}>
 			<View style={styles.contanierViewStyle}>
 				<View style={styles.imageContainerStyle}>
-					<FadeImage
-						uri={props.uri}
-						image={props.uri ? null : defaultImage(service.category)}
-						style={styles.imageStyle}
-					/>
+					<FadeImage uri={props.uri} style={styles.imageStyle} />
 				</View>
 				<View
 					style={{ paddingLeft: 15, marginLeft: 80, marginRight: 20 }}
