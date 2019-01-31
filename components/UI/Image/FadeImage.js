@@ -31,7 +31,7 @@ class FadeImage extends Component {
 						left: 0,
 						right: 0,
 						justifyContent: 'center',
-						alignItems: 'center',
+						alignItems: 'center'
 					}}
 				>
 					{dots}
@@ -50,7 +50,11 @@ class FadeImage extends Component {
 			borderRadius: this.props.circle ? width / 2 : null
 		};
 		return (
-			<TouchableOpacity disabled={!this.props.onPress} onPress={this.props.onPress} style={[imageContainerStyle, this.props.style]}>
+			<TouchableOpacity
+				disabled={!this.props.onPress}
+				onPress={this.props.onPress}
+				style={[imageContainerStyle, this.props.style]}
+			>
 				<Animated.Image
 					source={
 						this.props.uri

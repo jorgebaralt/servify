@@ -20,8 +20,8 @@ export const getImagePath = (reference) => {
 		// 	return require('./tire_change.jpg');
 		// case 'mechanic':
 		// 	return require('./mechanic.jpg');
-		// case 'other_car':
-		// 	return require('./other_car.jpg');
+		case 'other_car':
+			return 'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/subcategory_default%2Fcar_other.jpg?alt=media&token=cb48b667-905a-494b-b8a3-a4e7469aa335';
 		// // Plumbing
 		// case 'water_leak':
 		// 	return require('./water_leak.jpg');
@@ -31,9 +31,9 @@ export const getImagePath = (reference) => {
 		// 	return require('./drains.jpg');
 		// case 'other_plumbing':
 		// 	return require('./other_plumbing.jpg');
-		// // Handyman
-		// case 'ac_repair':
-		// 	return require('./ac_repair.jpg');
+		// Handyman
+		case 'ac_repair':
+			return 'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/subcategory_default%2Fac_repair.jpg?alt=media&token=3aca8d58-9b44-4cec-b8e4-b43824dfa47d';
 		// case 'moving':
 		// 	return require('./moving.jpg');
 		// case 'furniture_fix_assembly':

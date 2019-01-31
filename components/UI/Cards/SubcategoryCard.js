@@ -29,7 +29,7 @@ export const SubcategoryCard = (props) => {
 				>
 					<FadeImage
 						circle
-						image={getImagePath(subcategory.dbReference)}
+						uri={getImagePath(subcategory.dbReference)}
 						style={{ width: 90, height: 90 }}
 					/>
 				</View>
