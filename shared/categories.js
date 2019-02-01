@@ -1,6 +1,8 @@
 const categories = [
 	{
 		id: 0,
+		uri:
+			'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Fhome_services.jpg?alt=media&token=dd006b7f-a768-42ac-b07b-ecf10c5db9fe',
 		title: 'Home Services',
 		description: 'Home Services Description',
 		dbReference: 'home_services',
@@ -56,6 +58,8 @@ const categories = [
 	},
 	{
 		id: 19,
+		uri:
+			'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Fhome_outdoor.jpg?alt=media&token=68a6cd39-c322-4b03-95f8-7ebea5d5c9a9',
 		title: 'Home Outdoor',
 		description: 'Home Outdoor Description',
 		dbReference: 'home_outdoor',
@@ -129,9 +133,11 @@ const categories = [
 	},
 	{
 		id: 1,
+		uri:
+			'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Fcar_services.jpg?alt=media&token=65d06664-0fa1-47ca-a68a-f6c28d2626d7',
 		title: 'Auto Services',
-		description: 'Car Wash and Repair Description',
-		dbReference: 'car_services',
+		description: 'Auto services description',
+		dbReference: 'auto_services',
 		color: ['#37474F', '#455A64'],
 		keyWords: [
 			'car',
@@ -177,6 +183,8 @@ const categories = [
 	},
 	{
 		id: 2,
+		uri:
+			'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Fhandyman.jpg?alt=media&token=a6e20474-8a5c-46e9-990a-160078c0769a',
 		title: 'Handyman',
 		description: 'Handyman Description',
 		dbReference: 'handyman',
@@ -230,6 +238,8 @@ const categories = [
 	},
 	{
 		id: 3,
+		uri:
+			'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Fbaby_sitting.jpg?alt=media&token=68fdea57-1a53-45b2-8e6c-e4505f3d792b',
 		title: 'Baby Sitting',
 		description: 'Baby Sitting Description',
 		dbReference: 'baby_sitting',
@@ -249,6 +259,8 @@ const categories = [
 	},
 	{
 		id: 4,
+		uri:
+			'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Fplumbing.jpg?alt=media&token=f1e7d9e9-4d78-4af5-b50d-13352777c347',
 		title: 'Plumbing',
 		description: 'Plumbing Description',
 		dbReference: 'plumbing',
@@ -296,6 +308,8 @@ const categories = [
 	},
 	{
 		id: 5,
+		uri:
+			'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Felectrical.jpg?alt=media&token=89327866-1863-4d8a-8697-a62072cea187',
 		title: 'Electrical',
 		description: 'Electrical Description',
 		dbReference: 'electrical',
@@ -314,6 +328,8 @@ const categories = [
 	},
 	{
 		id: 6,
+		uri:
+			'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Fpet.jpg?alt=media&token=70ee28e7-664f-49e1-adce-4aef634c28a5',
 		title: 'Pet Services',
 		description: 'Pet Description',
 		dbReference: 'pet',
@@ -336,6 +352,8 @@ const categories = [
 	},
 	{
 		id: 7,
+		uri:
+			'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Ffood.jpg?alt=media&token=1fa79d02-3e91-4479-94d5-fcbb2628c900',
 		title: 'Food',
 		description: 'Food Description',
 		dbReference: 'food',
@@ -346,13 +364,13 @@ const categories = [
 				id: 7.1,
 				title: 'Restaurant',
 				description: 'Perfect dinner',
-				dbReference: 'food_restaurant'
+				dbReference: 'restaurant'
 			},
 			{
 				id: 7.2,
 				title: 'Catering',
 				description: 'Cheff is home',
-				dbReference: 'food_catering'
+				dbReference: 'catering'
 			},
 			{
 				id: 7.3,
@@ -370,6 +388,8 @@ const categories = [
 	},
 	{
 		id: 8,
+		uri:
+			'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Fbeauty.jpg?alt=media&token=633170f3-1d46-4c2b-8b6c-01669e0a11a1',
 		title: 'Beauty',
 		description: 'Beauty Description',
 		dbReference: 'beauty',
@@ -423,6 +443,8 @@ const categories = [
 	},
 	{
 		id: 11,
+		uri:
+			'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Ftutoring.jpg?alt=media&token=33292070-1628-49dd-800b-0a68d389bb8c',
 		title: 'Tutoring',
 		description: 'Tutoring Description',
 		dbReference: 'tutoring',
@@ -440,6 +462,8 @@ const categories = [
 	},
 	{
 		id: 12,
+		uri:
+			'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Fhealth.jpg?alt=media&token=6d8b8ecd-9970-4a8c-928f-1bb63a4a4304',
 		title: 'Health',
 		description: 'Get healthy',
 		dbReference: 'health',
@@ -448,6 +472,8 @@ const categories = [
 	},
 	{
 		id: 13,
+		uri:
+			'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Freal_estate.jpg?alt=media&token=9e9a57ea-d6d1-46c1-a2bf-6473f43f27e0',
 		title: 'Real Estate',
 		description: 'Get your dream house',
 		dbReference: 'real_estate',
@@ -456,6 +482,8 @@ const categories = [
 	},
 	{
 		id: 14,
+		uri:
+			'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Ffit.jpg?alt=media&token=60a6669f-736d-4f5e-954b-2ad8c8198abd',
 		title: 'Fit',
 		description: 'Get in shape',
 		dbReference: 'fit',
@@ -475,6 +503,8 @@ const categories = [
 	},
 	{
 		id: 16,
+		uri:
+			'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Finsurance.jpg?alt=media&token=1d488bfa-6e4c-4b68-bc0b-d4f413adbe61',
 		title: 'Insurance',
 		description: 'Insurance description',
 		dbReference: 'insurance',
@@ -523,6 +553,8 @@ const categories = [
 	},
 	{
 		id: 17,
+		uri:
+			'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Fhandmade.jpg?alt=media&token=d5734c87-c55d-4ace-b253-696862bf5de0',
 		title: 'Handmade',
 		description: 'Built with love',
 		dbReference: 'handmade',
@@ -531,9 +563,11 @@ const categories = [
 	},
 	{
 		id: 18,
+		uri:
+			'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Fcomputer_repair.jpg?alt=media&token=40c0dcad-1108-42e0-ae5a-ea15ea6c5965',
 		title: 'Computer and Smartphone',
 		description: 'Tech consultation',
-		dbReference: 'computer_repair',
+		dbReference: 'computer_phone',
 		keyWords: [
 			'computer',
 			'iphone',
@@ -552,6 +586,8 @@ const categories = [
 	},
 	{
 		id: 20,
+		uri:
+			'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Fremodel.jpg?alt=media&token=678d208d-7c85-4396-828f-9857929e3e49',
 		title: 'Remodel',
 		description: 'Redesign',
 		dbReference: 'remodel',
@@ -592,6 +628,8 @@ const categories = [
 	},
 	{
 		id: 21,
+		uri:
+			'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Fother.jpg?alt=media&token=78450869-0cc1-4545-b170-ba4ad0f65e1d',
 		title: 'Other',
 		description: 'Something else',
 		dbReference: 'other',
