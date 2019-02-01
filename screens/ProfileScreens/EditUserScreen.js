@@ -136,7 +136,15 @@ class EditUserScreen extends Component {
 			displayName: this.state.displayName,
 			imageInfo
 		};
-		await this.props.updateCurrentUser(updatedUser, this.props.user.uid);
+		let deletePhotoURL = false;
+		if (this.state.deleteImage && !this.state.uploadImage) {
+			deletePhotoURL = true;
+		}
+		await this.props.updateCurrentUser(
+			updatedUser,
+			this.props.user.uid,
+			deletePhotoURL
+		);
 		this.setState({ loading: false });
 		this.props.navigation.pop();
 	};

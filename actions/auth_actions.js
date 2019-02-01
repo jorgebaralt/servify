@@ -22,12 +22,14 @@ export const getCurrentUser = (uid, email) => async (dispatch) => {
 	}
 };
 
-export const updateCurrentUser = (updatedUser, uid) => async (dispatch) => {
+export const updateCurrentUser = (updatedUser, uid, deletePhotoURL) => async (
+	dispatch
+) => {
 	try {
 		const { data } = await axios.put(userURL, {
 			updatedUser,
 			uid,
-			deletePhotoURL: false
+			deletePhotoURL
 		});
 		const user = data;
 		return dispatch({ type: GET_CURRENT_USER, payload: user });
