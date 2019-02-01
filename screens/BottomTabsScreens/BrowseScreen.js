@@ -49,7 +49,14 @@ class BrowseScreen extends Component {
 				this.setState({ filter: '' });
 				this.handleSearch();
 				// Scroll to top on blur
-				setTimeout(() => this.listRef.scrollToOffset({ x: 0, y: 0, animated: true }), 400);
+				setTimeout(
+					() => this.listRef.scrollToOffset({
+							x: 0,
+							y: 0,
+							animated: true
+						}),
+					400
+				);
 			}
 		);
 		keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => this._keyboardDidHide());
@@ -90,11 +97,12 @@ class BrowseScreen extends Component {
 		}
 	};
 
-	renderCategories = (category) => (
+	renderCategories = (category, i) => (
 		<CategoryCard
 			cardStyle={styles.cardStyle}
 			category={category}
 			onPress={() => this.doSelectCategory(category)}
+			lastBottom={i === this.state.categories.length - 1}
 		/>
 	);
 
@@ -152,15 +160,15 @@ class BrowseScreen extends Component {
 						this.handleSearch();
 					}}
 					onCancel={() => {
-							this.setState({ filter: '' });
-							this.handleSearch();
-						}
-					}
+						this.setState({ filter: '' });
+						this.handleSearch();
+					}}
 				/>
 
 				<FlatList
 					data={this.state.categories}
-					renderItem={({ item }) => this.renderCategories(item)}
+					renderItem={({ item, index }) => this.renderCategories(item, index)
+					}
 					keyExtractor={(category) => category.title}
 					numColumns={2}
 					ref={(listRef) => {
@@ -186,6 +194,7 @@ const styles = {
 		borderRadius: 8,
 		marginLeft: 10,
 		marginTop: 10,
+		marginBottom: 5,
 		width: SCREEN_WIDTH / 2 - 15,
 		overflow: 'hidden'
 	}

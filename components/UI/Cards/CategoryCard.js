@@ -6,14 +6,23 @@ class CategoryCard extends Component {
 	componentWillMount() {
 		LayoutAnimation.easeInEaseOut();
 	}
-	
-	render() {
-		const { category, cardStyle } = this.props;
-		const { color } = category;
 
+	render() {
+		const { category, cardStyle, last } = this.props;
+		const { color } = category;
 		return (
 			<TouchableOpacity onPress={() => this.props.onPress()}>
-				<View style={[cardStyle, { marginRight: this.props.last ? 20 : 0 }]}>
+				<View
+					style={[
+						cardStyle,
+						{
+							marginRight: this.props.last ? 20 : 0,
+							marginBottom: this.props.lastBottom
+								? 20
+								: cardStyle.marginBottom
+						}
+					]}
+				>
 					{/* TODO: grab specific color from each category, ADD: An array of [x, y] where x and y are floats */}
 					<LinearGradient
 						colors={color}
@@ -21,11 +30,25 @@ class CategoryCard extends Component {
 						end={{ x: 1, y: 1 }}
 						style={{ flex: 1 }}
 					>
-						<View header style={{ backgroundColor: 'transparent', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-							<Text style={{ color: 'white', fontSize: 16, alignItems: 'center' }}>
+						<View
+							header
+							style={{
+								backgroundColor: 'transparent',
+								flex: 1,
+								justifyContent: 'center',
+								alignItems: 'center'
+							}}
+						>
+							<Text
+								style={{
+									color: 'white',
+									fontSize: 16,
+									alignItems: 'center'
+								}}
+							>
 								{category.title}
 							</Text>
-						</View>	
+						</View>
 					</LinearGradient>
 				</View>
 			</TouchableOpacity>
