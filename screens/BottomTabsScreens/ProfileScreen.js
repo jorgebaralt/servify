@@ -143,10 +143,10 @@ class ProfileScreen extends Component {
 			{/* if there is image, show it */}
 			{this.props.user.imageInfo || this.props.user.photoURL ? (
 				<FadeImage
+					circle
 					style={{
 						height: 30,
-						width: 30,
-						borderRadius: 15
+						width: 30
 					}}
 					uri={
 						this.props.user.photoURL
