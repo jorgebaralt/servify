@@ -20,7 +20,7 @@ export const createService = async (servicePost, callback) => {
 
 // Get popular categories
 export const getPopularCategories = async (callback) => {
-	const popularCategoryUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/getPopularCategories';
+	const popularCategoryUrl =		'https://us-central1-servify-716c6.cloudfunctions.net/categories';
 	try {
 		source = CancelToken.source();
 		const { data } = await axios.get(popularCategoryUrl, {
