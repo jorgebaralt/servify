@@ -12,7 +12,6 @@ import { colors } from '../../../shared/styles';
 
 const WIDTH = Dimensions.get('window').width;
 
-
 class HomeServiceCard extends Component {
 	// animate on appear
 	componentWillMount() {

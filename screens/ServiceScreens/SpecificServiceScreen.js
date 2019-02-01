@@ -57,6 +57,11 @@ let willFocusSubscription;
 let backPressSubscriptions;
 
 class SpecificServiceScreen extends Component {
+	// disable gestures back
+	static navigationOptions = {
+		gesturesEnabled: false
+	}
+
 	state = {
 		isFav: false,
 		favLoading: false,
@@ -139,7 +144,12 @@ class SpecificServiceScreen extends Component {
 
 	onBackPress = async () => {
 		await cancelAxiosRating();
-		this.props.navigation.pop();
+		const customBack = this.props.navigation.getParam('onBack');
+		if (customBack) {
+			this.props.navigation.navigate(customBack);
+		} else {
+			this.props.navigation.pop();
+		}
 	};
 
 	addFavorite = async (uid) => {

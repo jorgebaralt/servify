@@ -168,11 +168,14 @@ class PublishServiceScreen extends Component {
 			logistic
 		};
 		// send object to backend
-		await createService(servicePost, (text, type) => this.showToast(text, type));
+		await createService(servicePost, (text, type, service) => {
+			this.showToast(text, type);
+			this.props.navigation.navigate('service', {
+				service,
+				onBack: 'home'
+			});
+		});
 		// on blur we reset everything so we should be good here.
-
-		// TODO: navigate to specific service
-		this.props.navigation.navigate('home');
 	};
 
 	scrollTo1 = () => {

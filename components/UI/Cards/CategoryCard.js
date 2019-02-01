@@ -23,7 +23,6 @@ class CategoryCard extends Component {
 						}
 					]}
 				>
-					{/* TODO: grab specific color from each category, ADD: An array of [x, y] where x and y are floats */}
 					<LinearGradient
 						colors={color}
 						start={{ x: 0, y: 0 }}

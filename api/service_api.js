@@ -11,7 +11,7 @@ export const createService = async (servicePost, callback) => {
 	try {
 		// Everything is fine, publish the service
 		const { data } = await axios.post(serviceURL, servicePost);
-		return callback(data.message, data.type);
+		return callback(data.message, data.type, data.service);
 	} catch (error) {
 		console.log(error);
 		return callback('Error connecting to server', 'warning');

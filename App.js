@@ -108,7 +108,12 @@ export default class App extends React.Component {
 				help: { screen: HelpScreen },
 				specificFaq: { screen: SpecificFaqScreen },
 				report: { screen: ReportScreen },
-				publish: { screen: PublishServiceScreen },
+				publish: {
+					screen: PublishServiceScreen,
+					navigationOptions: {
+						gesturesEnabled: false
+					}
+				},
 				editUser: { screen: EditUserScreen }
 			},
 			{
