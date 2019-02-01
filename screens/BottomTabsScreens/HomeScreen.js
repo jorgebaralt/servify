@@ -284,7 +284,7 @@ class HomeScreen extends Component {
 					{this.renderPopularCategories()}
 					<View style={{ paddingLeft: 20, paddingRight: 20 }}>
 						<InfoImage
-							uri="https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80"
+							uri="https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/other_default%2Fmore_categories.jpeg?alt=media&token=9375a136-54b9-403c-8962-2ca4900dd1f2"
 							text="Host your service near Orlando, FL "
 							buttonText="Post a service"
 							style={{
@@ -335,7 +335,7 @@ class HomeScreen extends Component {
 							Keep growing
 						</Text>
 						<InfoImage
-							uri="https://images.unsplash.com/photo-1518226203301-8e7f833c6a94?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60"
+							uri="https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/other_default%2Fpublish.jpeg?alt=media&token=33b8ef19-56f4-4905-ab25-d5d35e3e4ead"
 							text="Host your service near Orlando, FL "
 							buttonText="Post a service"
 							style={{

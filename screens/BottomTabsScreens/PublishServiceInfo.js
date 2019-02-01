@@ -29,7 +29,10 @@ class PostServiceScreen extends Component {
 			'willBlur',
 			() => {
 				// Scroll to top on blur
-				setTimeout(() => this.scrollRef.scrollTo({ x: 0, y: 0, animated: true }), 400);
+				setTimeout(
+					() => this.scrollRef.scrollTo({ x: 0, y: 0, animated: true }),
+					400
+				);
 			}
 		);
 	}
@@ -69,7 +72,7 @@ class PostServiceScreen extends Component {
 				}}
 			>
 				<InfoImage
-					image={require('../../assets/backgrounds/overview.jpeg')}
+					uri="https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/other_default%2Foverview.jpeg?alt=media&token=01a0bbb1-1067-476a-8919-4f082332efd8"
 					buttonText="Publish a service"
 					text="Increase your customers by hosting your services on Servify"
 					textColor={colors.white}
@@ -102,7 +105,7 @@ class PostServiceScreen extends Component {
 							onPress={() => {
 								this.props.navigation.navigate('publish');
 							}}
-							style={{marginRight: 10}}
+							style={{ marginRight: 10 }}
 						>
 							<Text>Get started</Text>
 						</Button>
@@ -192,7 +195,7 @@ class PostServiceScreen extends Component {
 					<View style={styles.publishContainer}>
 						<View style={{ width: '50%', height: 'auto' }}>
 							<FadeImage
-								image={require('../../assets/backgrounds/happy.jpg')}
+								uri="https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/other_default%2Fhappy.jpeg?alt=media&token=1c06c026-5c39-4500-89a7-aa5fd26ac382"
 								style={{ height: 280, borderRadius: 8 }}
 							/>
 						</View>

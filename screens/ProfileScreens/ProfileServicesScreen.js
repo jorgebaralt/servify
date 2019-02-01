@@ -11,7 +11,12 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-navigation';
 import { connect } from 'react-redux';
-import { getServicesByUid, getFavorites, removeFavorite, cancelAxiosFavs } from '../../api';
+import {
+	getServicesByUid,
+	getFavorites,
+	removeFavorite,
+	cancelAxiosFavs
+} from '../../api';
 import { pageHit } from '../../shared/ga_helper';
 import { colors } from '../../shared/styles';
 import {
@@ -53,7 +58,7 @@ class ProfileServicesScreen extends Component {
 		if (currentItem.id === 'favorites') {
 			await cancelAxiosFavs();
 		}
-		
+
 		willFocusSubscription.remove();
 	}
 
@@ -107,8 +112,13 @@ class ProfileServicesScreen extends Component {
 			service={service}
 			type={currentItem.id}
 			currentUser={this.props.user}
-			image={service.imagesInfo ? (service.imagesInfo[0] ? service.imagesInfo[0].url : defaultImage(service.category)) : defaultImage(service.category)}
-			uri={service.imagesInfo ? (service.imagesInfo.length > 0 ? service.imagesInfo[0].url : null) : null}
+			uri={
+				service.imagesInfo
+					? service.imagesInfo[0].url
+						? service.imagesInfo[0].url
+						: defaultImage(service.category)
+					: defaultImage(service.category)
+			}
 			onPress={() => {
 				this.props.navigation.navigate('service', { service });
 			}}
@@ -159,14 +169,20 @@ class ProfileServicesScreen extends Component {
 				// Empty favorites
 				return (
 					<ScrollView style={{ paddingLeft: 20, paddingRight: 20 }}>
-						<Text style={{ fontSize: 18, marginTop: 10, color: colors.black }}>
+						<Text
+							style={{
+								fontSize: 18,
+								marginTop: 10,
+								color: colors.black
+							}}
+						>
 							You have not added any service to favorite list,
 							press below to browse some services, if you see
 							something you like, you can add it to favorite
 						</Text>
 						<View style={{ height: 300, marginTop: 10 }}>
 							<InfoImage
-								image={require('../../assets/backgrounds/plant.jpg')}
+								uri="https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/other_default%2Fempty_fav.jpeg?alt=media&token=b55b02f7-b8bf-40f2-ba7e-3fa8461ebcfa"
 								style={{
 									marginTop: 5,
 									height: 250,
@@ -218,13 +234,19 @@ class ProfileServicesScreen extends Component {
 				// Empty my services
 				return (
 					<ScrollView style={{ paddingLeft: 20, paddingRight: 20 }}>
-						<Text style={{ fontSize: 18, marginTop: 10, color: colors.black }}>
+						<Text
+							style={{
+								fontSize: 18,
+								marginTop: 10,
+								color: colors.black
+							}}
+						>
 							You have not created any service yet, click bellow
 							to create your first service
 						</Text>
 						<View style={{ height: 300, marginTop: 10 }}>
 							<InfoImage
-								image={require('../../assets/backgrounds/plant2.jpg')}
+								uri="https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/other_default%2Fempty_services.jpeg?alt=media&token=3b7bcddf-debf-4d82-9b93-3e9a12415d45"
 								style={{
 									marginTop: 5,
 									height: 250,
