@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { ScrollView, Text, View, Slider, Keyboard, Switch } from 'react-native';
+import { ScrollView, Text, View, Slider, Keyboard } from 'react-native';
+import _ from 'lodash';
 import { MapView } from 'expo';
 import { connect } from 'react-redux';
 import { Button, FloatingLabelInput } from '../../components/UI';
@@ -18,36 +19,11 @@ class ServiceLocation extends Component {
 			latitude: 37.78825,
 			longitude: -122.4324
 		},
-		radius: 1609.34,
+		radius: 1609.34
 	};
 
-	componentDidMount() {
-		if (this.props.userLocation) {
-			const { coords } = this.props.userLocation;
-			const region = {
-				latitude: coords.latitude,
-				longitude: coords.longitude,
-				latitudeDelta: 0.03215,
-				longitudeDelta: 0.0683
-			};
-			const center = {
-				latitude: coords.latitude,
-				longitude: coords.longitude
-			};
-			this.setState({ region, center });
-		}
-	}
-
-	onNext = () => {
-		// make sure there are no miles, if the user do not deliver
-		if (!this.props.state.hasDelivery) {
-			this.props.milesChange(null);
-		}
-		this.props.onNext();
-		Keyboard.dismiss();
-	};
-
-	updateLocation = async (text) => {
+	// update location debounced to limit api call
+	updateLocation = _.debounce(async (text) => {
 		// if empty the text box, go to current location
 		if (text.length < 2) {
 			const { coords } = this.props.userLocation;
@@ -81,6 +57,32 @@ class ServiceLocation extends Component {
 				}));
 			}
 		}
+	}, 500);
+
+	componentDidMount() {
+		if (this.props.userLocation) {
+			const { coords } = this.props.userLocation;
+			const region = {
+				latitude: coords.latitude,
+				longitude: coords.longitude,
+				latitudeDelta: 0.03215,
+				longitudeDelta: 0.0683
+			};
+			const center = {
+				latitude: coords.latitude,
+				longitude: coords.longitude
+			};
+			this.setState({ region, center });
+		}
+	}
+
+	onNext = () => {
+		// make sure there are no miles, if the user do not deliver
+		if (!this.props.state.hasDelivery) {
+			this.props.milesChange(null);
+		}
+		this.props.onNext();
+		Keyboard.dismiss();
 	};
 
 	onLocationChange = async (text) => {
@@ -216,7 +218,11 @@ class ServiceLocation extends Component {
 						color={colors.primaryColor}
 						onPress={() => this.onNext()}
 						style={{ width: '40%' }}
-						disabled={props.state.location === '' || (props.state.hasDelivery && props.state.miles === null)}
+						disabled={
+							props.state.location === ''
+							|| (props.state.hasDelivery
+								&& props.state.miles === null)
+						}
 					>
 						<Text>Next</Text>
 					</Button>

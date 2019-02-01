@@ -79,6 +79,59 @@ class ServicesListScreen extends Component {
 		/>
 	);
 
+	headerRightIcon = () => this.renderSortBy();
+
+	// Handles click and render of action sheet
+	renderSortBy = () => {
+		const { sortByStyle, iconSortStyle, viewSortStyle } = styles;
+		// if there are services
+		if (
+			this.state.servicesList != null
+			&& this.state.servicesList.length !== 0
+			&& Platform.OS === 'ios'
+		) {
+			return (
+				<TouchableOpacity
+					style={{
+						flexDirection: 'row',
+						justifyContent: 'center',
+						marginTop: 10
+					}}
+					onPress={() => ActionSheetIOS.showActionSheetWithOptions(
+							{
+								options: sortByOptions,
+								title:
+									'How would you like to sort the services?',
+								cancelButtonIndex: sortByOptions.length - 1
+							},
+							(selectedButtonIndex) => {
+								if (
+									selectedButtonIndex
+									!== sortByOptions.length - 1
+								) {
+									this.setState({
+										sortBy:
+											sortByOptions[selectedButtonIndex]
+									});
+								}
+								this.sortServices();
+							}
+						)
+					}
+				>
+					<Text style={{ fontSize: 14, color: colors.white }}>
+						{this.state.sortBy}
+					</Text>
+					<Ionicons
+						size={16}
+						name="ios-arrow-down"
+						style={styles.iconSortStyle}
+					/>
+				</TouchableOpacity>
+			);
+		}
+	};
+
 	handleAndroidBack = () => {
 		backPressSubscriptions = new Set();
 		DeviceEventEmitter.removeAllListeners('hardwareBackPress');
@@ -143,58 +196,6 @@ class ServicesListScreen extends Component {
 		}
 	};
 
-	// Handles click and render of action sheet
-	// TODO: animate on scroll down dissapear, show on scroll up
-	renderSortBy = () => {
-		const { sortByStyle, iconSortStyle, viewSortStyle } = styles;
-		// if there are services
-		if (
-			this.state.servicesList != null
-			&& this.state.servicesList.length !== 0
-			&& Platform.OS === 'ios'
-		) {
-			return (
-				<View style={viewSortStyle}>
-					<TouchableOpacity
-						style={{ flexDirection: 'row', marginRight: 10 }}
-						onPress={() => ActionSheetIOS.showActionSheetWithOptions(
-								{
-									options: sortByOptions,
-									title:
-										'How would you like to sort the services?',
-									cancelButtonIndex: sortByOptions.length - 1
-								},
-								(selectedButtonIndex) => {
-									if (
-										selectedButtonIndex
-										!== sortByOptions.length - 1
-									) {
-										this.setState({
-											sortBy:
-												sortByOptions[
-													selectedButtonIndex
-												]
-										});
-									}
-									this.sortServices();
-								}
-							)
-						}
-					>
-						<Text style={sortByStyle}>
-							Sort by: {this.state.sortBy}
-						</Text>
-						<Ionicons
-							size={18}
-							name="ios-arrow-down"
-							style={iconSortStyle}
-						/>
-					</TouchableOpacity>
-				</View>
-			);
-		}
-	};
-
 	// Each service card
 	renderServices = (service) => (
 		<DetailedServiceCard
@@ -254,7 +255,6 @@ class ServicesListScreen extends Component {
 		if (this.state.category) {
 			return (
 				<View style={{ flex: 1, paddingLeft: 20, paddingRight: 20 }}>
-					{this.renderSortBy()}
 					{this.renderListView()}
 				</View>
 			);
@@ -289,6 +289,7 @@ class ServicesListScreen extends Component {
 						title={subcategory ? subcategory.title : category.title}
 						titleColor={colors.white}
 						left={this.headerLeftIcon()}
+						right={this.headerRightIcon()}
 					/>
 					{this.renderSpinner()}
 					{this.renderContent()}
@@ -299,20 +300,10 @@ class ServicesListScreen extends Component {
 }
 
 const styles = {
-	viewSortStyle: {
-		flexDirection: 'row-reverse',
-		marginBottom: 10
-	},
-	sortByStyle: {
-		color: 'gray',
-		display: 'flex',
-		marginRight: 0,
-		marginTop: 10
-	},
 	iconSortStyle: {
-		color: 'gray',
-		marginTop: 10,
-		marginLeft: 2
+		color: colors.white,
+		marginLeft: 2,
+		marginTop: 2
 	}
 };
 

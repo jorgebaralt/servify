@@ -12,7 +12,7 @@ export const CustomHeader = (props) => {
 		backgroundColor: props.color ? props.color : colors.white,
 		shadowOpacity: 0.05,
 		shadowRadius: 5,
-		shadowOffset: { width: 0, height: 5 },
+		shadowOffset: { width: 0, height: 5 }
 	};
 
 	const spanStyle = {
@@ -22,20 +22,20 @@ export const CustomHeader = (props) => {
 		backgroundColor: props.color ? props.color : colors.white,
 		shadowOpacity: 0.05,
 		shadowRadius: 5,
-		shadowOffset: { width: 0, height: 5 },
+		shadowOffset: { width: 0, height: 5 }
 	};
 
 	return (
-		<View
-			style={props.span ? spanStyle : defaultStyle}
-		>
+		<View style={props.span ? spanStyle : defaultStyle}>
 			<View>
 				<Text
 					style={{
 						textAlign: props.span ? 'left' : 'center',
 						fontSize: props.span ? 26 : 20,
 						fontWeight: 'bold',
-						color: props.titleColor ? props.titleColor : colors.black,
+						color: props.titleColor
+							? props.titleColor
+							: colors.black,
 						marginTop: props.span ? props.titleMarginTop : 5,
 						marginLeft: props.span ? 50 : null,
 						paddingRight: props.span ? 10 : null
@@ -46,9 +46,14 @@ export const CustomHeader = (props) => {
 				<TouchableOpacity style={{ position: 'absolute', left: 10 }}>
 					{props.left}
 				</TouchableOpacity>
-				<TouchableOpacity style={{ position: 'absolute', right: 10 }}>
+				<View
+					style={{
+						position: 'absolute',
+						right: 10
+					}}
+				>
 					{props.right}
-				</TouchableOpacity>
+				</View>
 			</View>
 		</View>
 	);

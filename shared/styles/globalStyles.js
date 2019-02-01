@@ -16,7 +16,7 @@ export const globalStyles = {
 	sectionTitle: {
 		color: colors.black,
 		fontSize: 20,
-		fontWeight: '600',
+		fontWeight: '400',
 		marginTop: 10
 	},
 	publishServiceView: {
