@@ -74,6 +74,7 @@ class EditServiceScreen extends Component {
 			title: prevState.service.title,
 			contactEmail: prevState.service.contactEmail,
 			description: prevState.service.description,
+			providerDescription: prevState.service.providerDescription,
 			phone: prevState.service.phone,
 			location: prevState.service.physicalLocation
 				? prevState.service.physicalLocation
@@ -230,8 +231,8 @@ class EditServiceScreen extends Component {
 
 	// send updates to api to update the service on db
 	updateService = async () => {
+		await this.scrollRef.scrollTo({ x: 0, y: 0, animated: true });
 		Keyboard.dismiss();
-		this.scrollRef.scrollTo({ x: 0, y: 0, animated: true });
 		this.setState({ loading: true });
 		// according to order, assign position number, to push images in order
 		this.fixPositions();
@@ -260,8 +261,9 @@ class EditServiceScreen extends Component {
 			phone: this.state.phone,
 			miles: this.state.miles,
 			description: this.state.description,
+			providerDescription: this.state.providerDescription,
 			contactEmail: this.state.contactEmail,
-			imagesInfo: this.state.imageArray,
+			imagesInfo: this.state.imageArray.length > 0 ? this.state.imageArray : null,
 			geolocation: this.state.locationChange
 				? geolocation
 				: this.state.service.geolocation,
@@ -555,6 +557,21 @@ class EditServiceScreen extends Component {
 							placeholder="Describe your Service Here"
 							value={this.state.description}
 							onChangeText={(description) => this.setState({ description })
+							}
+						/>
+						<TextArea
+							style={{ marginTop: 20 }}
+							label="Provider Description"
+							size={40}
+							firstColor={colors.darkGray}
+							secondColor={colors.secondaryColor}
+							fontColor={colors.black}
+							multiline
+							bordered
+							numberOfLines={6}
+							placeholder="Describe your Service Here"
+							value={this.state.providerDescription}
+							onChangeText={(providerDescription) => this.setState({ providerDescription })
 							}
 						/>
 						<FloatingLabelInput

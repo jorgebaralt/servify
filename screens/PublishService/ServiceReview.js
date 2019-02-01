@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
+import { MaterialIcons } from '@expo/vector-icons';
 import {
 	ScrollView,
 	Text,
 	View,
 	ActivityIndicator,
 	StyleSheet,
-	FlatList,
-	Image
+	FlatList
 } from 'react-native';
 import { Button, FadeImage } from '../../components/UI';
 import { colors, globalStyles } from '../../shared/styles';
@@ -17,7 +17,9 @@ import {
 	Miles,
 	Phone,
 	Description,
-	Tools
+	Tools,
+	Delivery,
+	Website
 } from '../../assets/svg';
 
 class ServiceReview extends Component {
@@ -60,14 +62,14 @@ class ServiceReview extends Component {
 	};
 
 	renderEachImage = (item) => (
-		<Image
+		<FadeImage
 			style={{
 				height: 100,
 				width: 100,
 				marginHorizontal: 10,
 				borderRadius: 5
 			}}
-			source={{ uri: item.image }}
+			uri={item.image}
 		/>
 	);
 
@@ -100,7 +102,9 @@ class ServiceReview extends Component {
 		const { state } = this.props;
 		return (
 			<ScrollView
-				ref={(scrollview) => { this.scrollview = scrollview; }}
+				ref={(scrollview) => {
+					this.scrollview = scrollview;
+				}}
 				style={{
 					width: this.props.width,
 					paddingLeft: 20,
@@ -127,6 +131,18 @@ class ServiceReview extends Component {
 				</View>
 
 				{this.renderSubcategory()}
+				{state.contactEmail ? (
+					<View style={styles.viewDivider}>
+						<MaterialIcons
+							name="email"
+							size={18}
+							style={{ color: colors.secondaryColor }}
+						/>
+						<Text style={styles.textServiceStyle}>
+							{state.contactEmail}
+						</Text>
+					</View>
+				) : null}
 
 				<View style={styles.viewDivider}>
 					<Tools height={20} width={20} style={{ marginTop: 0 }} />
@@ -149,6 +165,32 @@ class ServiceReview extends Component {
 					</Text>
 				</View>
 
+				{state.providerDescription ? (
+					<View style={styles.viewDivider}>
+						<Description
+							height={20}
+							width={20}
+							style={{ marginTop: 0 }}
+						/>
+						<Text style={styles.textServiceStyle}>
+							{state.providerDescription}
+						</Text>
+					</View>
+				) : null}
+
+				{state.website ? (
+					<View style={styles.viewDivider}>
+						<Website
+							height={20}
+							width={20}
+							style={{ marginTop: 0 }}
+						/>
+						<Text style={styles.textServiceStyle}>
+							{state.website}
+						</Text>
+					</View>
+				) : null}
+
 				<View style={styles.viewDivider}>
 					<Location height={20} width={20} style={{ marginTop: 0 }} />
 					<Text style={styles.textServiceStyle}>
@@ -159,6 +201,13 @@ class ServiceReview extends Component {
 				<View style={styles.viewDivider}>
 					<Miles height={20} width={20} style={{ marginTop: 0 }} />
 					<Text style={styles.textServiceStyle}>{state.miles}</Text>
+				</View>
+
+				<View style={styles.viewDivider}>
+					<Delivery height={20} width={20} style={{ marginTop: 0 }} />
+					<Text style={styles.textServiceStyle}>
+						{state.logistic}
+					</Text>
 				</View>
 				{this.renderImages()}
 				<View

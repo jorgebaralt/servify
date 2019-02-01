@@ -60,7 +60,7 @@ class SpecificServiceScreen extends Component {
 	// disable gestures back
 	static navigationOptions = {
 		gesturesEnabled: false
-	}
+	};
 
 	state = {
 		isFav: false,
@@ -75,6 +75,7 @@ class SpecificServiceScreen extends Component {
 		service: this.props.navigation.getParam('service'),
 		transparentHeader: true,
 		descriptionLength: 100,
+		providerDescriptionLength: 100,
 		showTooltip: false
 	};
 
@@ -482,7 +483,7 @@ class SpecificServiceScreen extends Component {
 		}
 	};
 
-	renderReviews = (review, i) => <ReviewCard review={review} />;
+	renderReviews = (review) => <ReviewCard review={review} />;
 
 	renderAllReviews = () => {
 		if (this.state.reviews) {
@@ -832,6 +833,42 @@ class SpecificServiceScreen extends Component {
 								</Button>
 							) : null}
 						</View>
+						{/* Provider description */}
+						{service.providerDescription ? (
+							<View>
+								<View style={rowStyle}>
+									<Description
+										height={18}
+										width={18}
+										style={{ marginTop: 0 }}
+									/>
+									<Text style={descriptionStyle}>
+										{service.providerDescription.substring(
+											0,
+											this.state.providerDescriptionLength
+										)}
+									</Text>
+								</View>
+								{service.providerDescription.length > 100
+								&& this.state.providerDescriptionLength
+									< service.providerDescription.length ? (
+									<Text
+										style={{
+											color: colors.secondaryColor,
+											alignSelf: 'flex-end'
+										}}
+										onPress={() => this.setState({
+												providerDescriptionLength:
+													service.providerDescription
+														.length
+											})
+										}
+									>
+										more
+									</Text>
+								) : null}
+							</View>
+						) : null}
 						<View style={divideLine} />
 						{/* Location */}
 						<Text style={titleStyle}>Location</Text>
