@@ -32,7 +32,7 @@ export const defaultImage = (category) => {
 			return 'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Finsurance.jpeg?alt=media&token=2133a82b-4768-4136-9bfb-2fb76036a7d1';
 		case 'handmade':
 			return 'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Fhandmade.jpeg?alt=media&token=9b86e7af-69d9-4239-8b38-ab531d8fcb65';
-		case 'computer_phone':
+		case 'technology':
 			return 'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Fcomputer_phone.jpeg?alt=media&token=62bc7fdb-3b18-4bf9-afaa-bd277c9bb16f';
 		case 'remodel':
 			return 'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Fremodel.jpeg?alt=media&token=c70c958f-0a83-4423-be52-15b40fd3a0bd';

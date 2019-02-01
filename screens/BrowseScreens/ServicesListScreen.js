@@ -307,7 +307,7 @@ const styles = {
 	iconSortStyle: {
 		color: colors.white,
 		marginLeft: 2,
-		marginTop: 2
+		marginTop: 1
 	}
 };
 

@@ -112,7 +112,7 @@ class ServiceReview extends Component {
 				}}
 			>
 				{this.renderSpinner()}
-				<Text style={globalStyles.stepStyle}>Step 6</Text>
+				<Text style={globalStyles.stepStyle}>Step 7</Text>
 				<Text style={[globalStyles.sectionTitle, { marginTop: 10 }]}>
 					Confirm the information
 				</Text>
@@ -221,7 +221,7 @@ class ServiceReview extends Component {
 					<Button
 						bordered
 						color={colors.primaryColor}
-						onPress={this.props.onBack()}
+						onPress={() => this.props.onBack()}
 						textColor={colors.primaryColor}
 					>
 						<Text>Edit</Text>

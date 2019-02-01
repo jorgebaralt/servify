@@ -564,9 +564,9 @@ const categories = [
 		id: 18,
 		uri:
 			'https://firebasestorage.googleapis.com/v0/b/servify-716c6.appspot.com/o/category_default%2Fcomputer_phone.jpeg?alt=media&token=62bc7fdb-3b18-4bf9-afaa-bd277c9bb16f',
-		title: 'Computer and Smartphone',
+		title: 'Technology',
 		description: 'Tech consultation',
-		dbReference: 'computer_phone',
+		dbReference: 'technology',
 		keyWords: [
 			'computer',
 			'iphone',

@@ -4,7 +4,8 @@ import {
 	KeyboardAvoidingView,
 	DeviceEventEmitter,
 	ScrollView,
-	Dimensions
+	Dimensions,
+	View
 } from 'react-native';
 import { Entypo } from '@expo/vector-icons';
 import { connect } from 'react-redux';
@@ -17,6 +18,8 @@ import {
 	getLocationFromAddress,
 	getLocationInfo
 } from '../../api';
+import { colors } from '../../shared/styles';
+import { ProgressBar } from '../../components/UI';
 
 // Slides
 import ServiceCategory from './ServiceCategory';
@@ -45,7 +48,8 @@ const initialState = {
 	hasPhysicalLocation: false,
 	website: '',
 	contactEmail: '',
-	logistic: null
+	logistic: null,
+	screenProgress: 1
 };
 
 let willFocusSubscription;
@@ -179,31 +183,37 @@ class PublishServiceScreen extends Component {
 	};
 
 	scrollTo1 = () => {
+		this.setState({ screenProgress: 1 });
 		const scrollXPos = WIDTH * 0;
 		this.scrollRef.scrollTo({ x: scrollXPos, y: 0 });
 	};
 
 	scrollTo2 = () => {
+		this.setState({ screenProgress: 2 });
 		const scrollXPos = WIDTH * 1;
 		this.scrollRef.scrollTo({ x: scrollXPos, y: 0 });
 	};
 
 	scrollTo3 = () => {
+		this.setState({ screenProgress: 3 });
 		const scrollXPos = WIDTH * 2;
 		this.scrollRef.scrollTo({ x: scrollXPos, y: 0 });
 	};
 
 	scrollTo4 = () => {
+		this.setState({ screenProgress: 4 });
 		const scrollXPos = WIDTH * 3;
 		this.scrollRef.scrollTo({ x: scrollXPos, y: 0 });
 	};
 
 	scrollTo5 = () => {
+		this.setState({ screenProgress: 5 });
 		const scrollXPos = WIDTH * 4;
 		this.scrollRef.scrollTo({ x: scrollXPos, y: 0 });
 	};
 
 	scrollTo6 = () => {
+		this.setState({ screenProgress: 6 });
 		const scrollXPos = WIDTH * 5;
 		this.scrollRef.scrollTo({ x: scrollXPos, y: 0 });
 	};
@@ -212,6 +222,12 @@ class PublishServiceScreen extends Component {
 		return (
 			<KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
 				<SafeAreaView style={{ flex: 1, backgroundColor: '#FFFFFF' }}>
+					<ProgressBar
+						width={(this.state.screenProgress * WIDTH) / 6}
+						color={colors.primaryColor}
+						heigth={4}
+					/>
+
 					<ScrollView
 						ref={(ref) => {
 							this.scrollRef = ref;
@@ -226,7 +242,7 @@ class PublishServiceScreen extends Component {
 						{/* Pick category and subcategory */}
 						<ServiceCategory
 							width={WIDTH}
-							onNext={this.scrollTo2}
+							onNext={() => this.scrollTo2()}
 							onBack={() => this.props.navigation.navigate('publishInfo')
 							}
 							categories={categories}
@@ -245,8 +261,10 @@ class PublishServiceScreen extends Component {
 						/>
 						<ServiceInformation
 							width={WIDTH}
-							onNext={this.scrollTo3}
-							onBack={this.scrollTo1}
+							onNext={() => {
+								this.scrollTo3();
+							}}
+							onBack={() => this.scrollTo1()}
 							titleChange={(title) => this.setState({ title })}
 							phoneChange={(phone) => this.setState({ phone })}
 							descriptionChange={(description) => this.setState({ description })
@@ -269,8 +287,8 @@ class PublishServiceScreen extends Component {
 						/>
 						<ServiceDeliveryStore
 							width={WIDTH}
-							onNext={this.scrollTo4}
-							onBack={this.scrollTo2}
+							onNext={() => this.scrollTo4()}
+							onBack={() => this.scrollTo2()}
 							selectDeliveryStore={(deliveryStore) => {
 								if (deliveryStore) {
 									if (deliveryStore.option === 0) {
@@ -304,8 +322,8 @@ class PublishServiceScreen extends Component {
 						/>
 						<ServiceLocation
 							width={WIDTH}
-							onNext={this.scrollTo5}
-							onBack={this.scrollTo3}
+							onNext={() => this.scrollTo5()}
+							onBack={() => this.scrollTo3()}
 							locationChange={(location) => this.setState({ location })
 							}
 							milesChange={(miles) => this.setState({ miles })}
@@ -321,8 +339,8 @@ class PublishServiceScreen extends Component {
 
 						<ServiceImagePick
 							width={WIDTH}
-							onNext={this.scrollTo6}
-							onBack={this.scrollTo4}
+							onNext={() => this.scrollTo6()}
+							onBack={() => this.scrollTo4()}
 							addImage={(position, image, fileName, type) => this.setState((prevState) => {
 									let imageArray = prevState.images;
 									if (imageArray === null) {
@@ -366,7 +384,7 @@ class PublishServiceScreen extends Component {
 
 						<ServiceReview
 							width={WIDTH}
-							onBack={() => this.scrollTo5}
+							onBack={() => this.scrollTo5()}
 							onComplete={this.doPostService}
 							loading={this.state.loading}
 							state={this.state}

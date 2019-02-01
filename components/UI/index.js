@@ -22,3 +22,5 @@ export * from './Header/AnimatedHeader';
 export * from './List/ListIcon';
 // Tooltip
 export * from './Tooltip/Tooltip';
+// Progress Bar
+export * from './ProgressBar/ProgressBar';
