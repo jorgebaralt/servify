@@ -10,7 +10,11 @@ export const SubcategoryCard = (props) => {
 	const { subcategory } = props;
 	return (
 		<TouchableOpacity
-			style={{ margin: 5, marginTop: 20 }}
+			style={{
+				margin: 5,
+				marginTop: 20,
+				marginBottom: props.last ? 40 : null
+			}}
 			onPress={props.onPress}
 		>
 			<View

@@ -68,11 +68,12 @@ class SubcategoriesListScreen extends Component {
 		/>
 	);
 
-	renderSubcategories = (subcategory) => (
+	renderSubcategories = (subcategory, i) => (
 		<SubcategoryCard
 			subcategory={subcategory}
 			onPress={() => this.doSelectSubcategory(subcategory)}
 			color={this.state.category.color[0]}
+			last={this.state.category.subcategories.length - 1 === i}
 		/>
 	);
 
@@ -84,6 +85,7 @@ class SubcategoriesListScreen extends Component {
 						flex: 0,
 						backgroundColor: this.state.category.color[0]
 					}}
+					forceInset={{ bottom: 'never' }}
 				/>
 				<SafeAreaView
 					style={{ flex: 1, backgroundColor: colors.white }}
@@ -108,10 +110,9 @@ class SubcategoriesListScreen extends Component {
 					>
 						<FlatList
 							data={this.state.category.subcategories}
-							renderItem={({ item }) => this.renderSubcategories(item)
+							renderItem={({ item, index }) => this.renderSubcategories(item, index)
 							}
 							keyExtractor={(item) => item.title}
-							style={{ marginBottom: 40 }}
 						/>
 						<View
 							style={[

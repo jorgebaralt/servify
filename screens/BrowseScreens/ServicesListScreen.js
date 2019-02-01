@@ -6,12 +6,12 @@ import {
 	FlatList,
 	RefreshControl,
 	View,
-	SafeAreaView,
 	Text,
 	ActionSheetIOS,
 	Platform,
 	ActivityIndicator
 } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import EmptyListMessage from '../../components/ErrorMessage/EmptyListMessage';
@@ -280,9 +280,13 @@ class ServicesListScreen extends Component {
 		return (
 			<View style={{ flex: 1 }}>
 				{/* Handles SafeAreaView background color */}
-				<SafeAreaView style={{ flex: 0, backgroundColor: mainColor }} />
+				<SafeAreaView
+					style={{ flex: 0, backgroundColor: mainColor }}
+					forceInset={{ bottom: 'never' }}
+				/>
 				<SafeAreaView
 					style={{ flex: 1, backgroundColor: colors.white }}
+					forceInset={{ bottom: 'never' }}
 				>
 					<CustomHeader
 						color={mainColor}
