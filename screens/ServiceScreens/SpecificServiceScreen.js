@@ -778,16 +778,6 @@ class SpecificServiceScreen extends Component {
 						<View style={divideLine} />
 						{/* Contact information  */}
 						<Text style={titleStyle}>Contact Information </Text>
-						<View style={rowStyle}>
-							<Feather
-								name="user"
-								size={18}
-								style={{ color: colors.secondaryColor }}
-							/>
-							<Text style={descriptionStyle}>
-								{service.displayName}
-							</Text>
-						</View>
 						{/* Display contact email */}
 						{service.contactEmail ? (
 							<View style={rowStyle}>
@@ -811,27 +801,6 @@ class SpecificServiceScreen extends Component {
 							<Text style={descriptionStyle}>
 								{service.phone}
 							</Text>
-						</View>
-						<View style={rowStyle}>
-							<Button
-								bordered
-								onPress={() => this.callPressed()}
-								color={colors.primaryColor}
-								textColor={colors.primaryColor}
-							>
-								<Text>Call Now</Text>
-							</Button>
-							{service.contactEmail ? (
-								<Button
-									bordered
-									onPress={() => this.openEmail()}
-									color={colors.primaryColor}
-									textColor={colors.primaryColor}
-									style={{ marginLeft: 10 }}
-								>
-									<Text>Send an Email</Text>
-								</Button>
-							) : null}
 						</View>
 						{/* Provider description */}
 						{service.providerDescription ? (
@@ -869,6 +838,28 @@ class SpecificServiceScreen extends Component {
 								) : null}
 							</View>
 						) : null}
+						<View style={rowStyle}>
+							<Button
+								bordered
+								onPress={() => this.callPressed()}
+								color={colors.primaryColor}
+								textColor={colors.primaryColor}
+							>
+								<Text>Call Now</Text>
+							</Button>
+							{service.contactEmail ? (
+								<Button
+									bordered
+									onPress={() => this.openEmail()}
+									color={colors.primaryColor}
+									textColor={colors.primaryColor}
+									style={{ marginLeft: 10 }}
+								>
+									<Text>Send an Email</Text>
+								</Button>
+							) : null}
+						</View>
+						
 						<View style={divideLine} />
 						{/* Location */}
 						<Text style={titleStyle}>Location</Text>

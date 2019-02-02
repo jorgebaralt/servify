@@ -135,7 +135,7 @@ export const createEmailAccount = async (newUser, callback) => {
 			const { data } = await axios.post(authURL, {
 				email,
 				password,
-				username,
+				displayName: username,
 				photoURL: imageInfo ? imageInfo.url : null
 			});
 			// new user object to be added to DB

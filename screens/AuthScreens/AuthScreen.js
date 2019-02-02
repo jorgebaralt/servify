@@ -5,7 +5,8 @@ import {
 	DeviceEventEmitter,
 	SafeAreaView,
 	Image,
-	Text
+	Text,
+	ActivityIndicator
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo';
@@ -18,6 +19,8 @@ let backPressSubscriptions;
 let willFocusSubscription;
 let willBlurSubscriptions;
 class AuthScreen extends Component {
+	state = { loading: false };
+
 	async componentWillMount() {
 		willFocusSubscription = this.props.navigation.addListener(
 			'willFocus',
@@ -55,12 +58,31 @@ class AuthScreen extends Component {
 	};
 
 	loginWithFacebook = async () => {
-		await facebookLogin((text, type) => console.log(text, type));
+		this.setState({ loading: true });
+		await facebookLogin((text, type) => {
+			console.log(text, type);
+			this.setState({ loading: false });
+		});
 	};
 
 	loginWithGoogle = async () => {
-		await googleLogin((text, type) => console.log(text, type));
-	}
+		await googleLogin((text, type) => {
+			console.log(text, type);
+			this.setState({ loading: false });
+		});
+	};
+
+	renderSpinner = () => {
+		if (this.state.loading) {
+			return (
+				<ActivityIndicator
+					size="large"
+					color="white"
+					style={{ marginTop: 10 }}
+				/>
+			);
+		}
+	};
 
 	render() {
 		return (
@@ -77,37 +99,44 @@ class AuthScreen extends Component {
 						resizeMode="cover"
 					/>
 					<Text style={styles.titleStyle}> Servify </Text>
+					{this.renderSpinner()}
 					<View style={styles.buttonStyle}>
-						<Button bordered onPress={this.loginWithGoogle} style={{ fontSize: 18 }}>
+						<Button
+							bordered
+							onPress={this.loginWithGoogle}
+							style={{ fontSize: 18 }}
+						>
 							<Text>
-							<MaterialCommunityIcons
-								style={{
-									color: 'white',
-									fontSize: 20,
-									marginRight: 10
-								}}
-								name="google"
-							/>{' '}
-							Log in with Google
+								<MaterialCommunityIcons
+									style={{
+										color: 'white',
+										fontSize: 20,
+										marginRight: 10
+									}}
+									name="google"
+								/>{' '}
+								Log in with Google
 							</Text>
-							
 						</Button>
 					</View>
 					{/* log in with facebook */}
 					<View style={styles.buttonStyle}>
-						<Button bordered onPress={this.loginWithFacebook} style={{ fontSize: 18 }}>
+						<Button
+							bordered
+							onPress={this.loginWithFacebook}
+							style={{ fontSize: 18 }}
+						>
 							<Text>
-							<MaterialCommunityIcons
-								style={{
-									color: 'white',
-									fontSize: 20,
-									marginRight: 10
-								}}
-								name="facebook-box"
-							/>{' '}
-							Log in with Facebook
+								<MaterialCommunityIcons
+									style={{
+										color: 'white',
+										fontSize: 20,
+										marginRight: 10
+									}}
+									name="facebook-box"
+								/>{' '}
+								Log in with Facebook
 							</Text>
-							
 						</Button>
 					</View>
 					{/* Create account with email */}
