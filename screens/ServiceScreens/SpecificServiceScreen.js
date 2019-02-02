@@ -895,7 +895,7 @@ class SpecificServiceScreen extends Component {
 									style={{ color: colors.secondaryColor }}
 								/>
 								<Text style={descriptionStyle}>
-									we are located at {service.physicalLocation}
+									We are located at {service.physicalLocation}
 								</Text>
 							</View>
 						) : null}
