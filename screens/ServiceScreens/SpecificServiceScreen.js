@@ -542,7 +542,7 @@ class SpecificServiceScreen extends Component {
 		if (this.props.user.uid === this.state.service.uid) {
 			return (
 				<Entypo
-					size={32}
+					size={26}
 					name="dots-three-horizontal"
 					style={{
 						color: this.state.transparentHeader
@@ -557,7 +557,7 @@ class SpecificServiceScreen extends Component {
 			);
 		}
 		return (
-			<View style={{ flexDirection: 'row', marginTop: 5 }}>
+			<View style={{ flexDirection: 'row' }}>
 				<MaterialIcons
 					name="info-outline"
 					style={{

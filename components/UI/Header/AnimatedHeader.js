@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import {
+	View,
+	Text,
+	TouchableOpacity,
+	Dimensions,
+	Platform
+} from 'react-native';
 import { colors } from '../../../shared/styles';
+
+const { height, width } = Dimensions.get('window');
 
 class AnimatedHeader extends Component {
 	render() {
 		const { ...props } = this.props;
 
 		const defaultStyle = {
-			height: 90,
+			height: height > 800 ? 90 : 70,
 			borderBottomWidth: props.transparent ? 0 : 0.5,
 			borderBottomColor: colors.lightGray,
 			justifyContent: 'center',
@@ -20,7 +28,7 @@ class AnimatedHeader extends Component {
 			position: 'absolute',
 			top: 0,
 			left: 0,
-			right: 0,
+			right: 0
 		};
 
 		return (
@@ -41,12 +49,20 @@ class AnimatedHeader extends Component {
 						{props.title ? props.title : null}
 					</Text>
 					<TouchableOpacity
-						style={{ position: 'absolute', left: 10 }}
+						style={{
+							position: 'absolute',
+							left: 10,
+							justifyContent: 'center'
+						}}
 					>
 						{props.left}
 					</TouchableOpacity>
 					<TouchableOpacity
-						style={{ position: 'absolute', right: 10 }}
+						style={{
+							position: 'absolute',
+							right: 10,
+							justifyContent: 'center'
+						}}
 					>
 						{props.right}
 					</TouchableOpacity>

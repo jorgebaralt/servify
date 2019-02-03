@@ -54,7 +54,7 @@ export const DetailedServiceCard = (props) => {
 						}}
 					>
 						{service.description.length > 30
-							? service.description.substring(0, 30) + '...'
+							? service.description.substring(0, 15) + '...'
 							: service.description}
 					</Text>
 					<View>

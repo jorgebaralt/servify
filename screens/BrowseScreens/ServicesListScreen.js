@@ -285,7 +285,7 @@ class ServicesListScreen extends Component {
 					forceInset={{ bottom: 'never' }}
 				/>
 				<SafeAreaView
-					style={{ flex: 1, backgroundColor: colors.white }}
+					style={{ flex: 1, backgroundColor: mainColor }}
 					forceInset={{ bottom: 'never' }}
 				>
 					<CustomHeader
@@ -295,8 +295,10 @@ class ServicesListScreen extends Component {
 						left={this.headerLeftIcon()}
 						right={this.headerRightIcon()}
 					/>
-					{this.renderSpinner()}
-					{this.renderContent()}
+					<View style={{ flex: 1, backgroundColor: colors.white }}>
+						{this.renderSpinner()}
+						{this.renderContent()}
+					</View>
 				</SafeAreaView>
 			</View>
 		);
