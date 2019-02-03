@@ -539,6 +539,7 @@ class SpecificServiceScreen extends Component {
 	);
 
 	headerRightIcon = () => {
+		// if current user owns the service
 		if (this.props.user.uid === this.state.service.uid) {
 			return (
 				<Entypo
@@ -556,6 +557,7 @@ class SpecificServiceScreen extends Component {
 				/>
 			);
 		}
+		// another user sees the service
 		return (
 			<View style={{ flexDirection: 'row' }}>
 				<MaterialIcons
