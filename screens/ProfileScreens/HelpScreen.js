@@ -91,7 +91,10 @@ class HelpScreen extends Component {
 						backgroundColor: colors.white
 					}}
 				/>
-				<SafeAreaView style={{ flex: 1 }} forceInset={{ bottom: 'never' }}>
+				<SafeAreaView
+					style={{ flex: 1 }}
+					forceInset={{ bottom: 'never' }}
+				>
 					<CustomHeader
 						color={colors.white}
 						title="Help"

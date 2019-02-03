@@ -9,9 +9,10 @@ import {
 	Text,
 	ActionSheetIOS,
 	Platform,
-	ActivityIndicator
+	ActivityIndicator,
+	ScrollView,
+	SafeAreaView
 } from 'react-native';
-import { SafeAreaView } from 'react-navigation';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import EmptyListMessage from '../../components/ErrorMessage/EmptyListMessage';
@@ -25,6 +26,7 @@ import {
 	sortServices
 } from '../../api';
 import { defaultImage } from '../../assets/default/categories';
+import {} from 'react-native-gesture-handler';
 
 let willFocusSubscription;
 let backPressSubscriptions;
@@ -285,7 +287,7 @@ class ServicesListScreen extends Component {
 					forceInset={{ bottom: 'never' }}
 				/>
 				<SafeAreaView
-					style={{ flex: 1, backgroundColor: mainColor }}
+					style={{ flex: 1, backgroundColor: colors.white }}
 					forceInset={{ bottom: 'never' }}
 				>
 					<CustomHeader
@@ -295,10 +297,12 @@ class ServicesListScreen extends Component {
 						left={this.headerLeftIcon()}
 						right={this.headerRightIcon()}
 					/>
-					<View style={{ flex: 1, backgroundColor: colors.white }}>
+					<ScrollView
+						style={{ flex: 1, backgroundColor: colors.white }}
+					>
 						{this.renderSpinner()}
 						{this.renderContent()}
-					</View>
+					</ScrollView>
 				</SafeAreaView>
 			</View>
 		);
