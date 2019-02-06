@@ -297,12 +297,10 @@ class ServicesListScreen extends Component {
 						left={this.headerLeftIcon()}
 						right={this.headerRightIcon()}
 					/>
-					<ScrollView
-						style={{ flex: 1, backgroundColor: colors.white }}
-					>
+					<View style={{ flex: 1, backgroundColor: colors.white }}>
 						{this.renderSpinner()}
 						{this.renderContent()}
-					</ScrollView>
+					</View>
 				</SafeAreaView>
 			</View>
 		);
