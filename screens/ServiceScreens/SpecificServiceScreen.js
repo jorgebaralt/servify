@@ -33,7 +33,8 @@ import {
 	TextArea,
 	AnimatedHeader,
 	FadeImage,
-	Tooltip
+	Tooltip,
+	DisplayImagesModal
 } from '../../components/UI';
 import { formatDate } from '../../shared/helpers';
 import {
@@ -77,7 +78,8 @@ class SpecificServiceScreen extends Component {
 		descriptionLength: 100,
 		providerDescriptionLength: 100,
 		showTooltip: false,
-		showTitle: false
+		showTitle: false,
+		imageModalVisible: false
 	};
 
 	componentWillMount = async () => {
@@ -647,8 +649,9 @@ class SpecificServiceScreen extends Component {
 
 	renderHeaderImages = (imagesInfo, i) => (
 		<FadeImage
+			onPress={() => this.setState({ imageModalVisible: true })}
 			uri={imagesInfo.url}
-			style={{ height: 450, width: WIDTH }}
+			style={{ height: 350, width: WIDTH }}
 			showDots={imagesInfo.url}
 			currentDot={i}
 			dotCount={
@@ -658,6 +661,27 @@ class SpecificServiceScreen extends Component {
 			}
 		/>
 	);
+
+	renderImageModal = () => {
+		const { service } = this.state;
+		// Images for the header
+		// Images for the header
+		const imagesData = service.imagesInfo
+			? service.imagesInfo.length > 0
+				? service.imagesInfo
+				: [{ fileName: '1', url: defaultImage(service.category) }]
+			: [{ fileName: '1', url: defaultImage(service.category) }];
+
+		return (
+			<DisplayImagesModal
+				imageModalVisible={this.state.imageModalVisible}
+				closeImageModal={() => {
+					this.setState({ imageModalVisible: false });
+				}}
+				images={imagesData}
+			/>
+		);
+	};
 
 	render() {
 		const { service } = this.state;
@@ -699,6 +723,7 @@ class SpecificServiceScreen extends Component {
 					backgroundColor: colors.white
 				}}
 			>
+				{this.renderImageModal()}
 				<AnimatedHeader
 					left={this.headerLeftIcon()}
 					right={this.headerRightIcon()}

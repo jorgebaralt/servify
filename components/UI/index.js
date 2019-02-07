@@ -1,3 +1,5 @@
+import CustomModal from './Modal/AlertModal';
+
 export * from './Button/Button';
 // Form
 export * from './Form/FloatingLabelInput';
@@ -24,3 +26,5 @@ export * from './List/ListIcon';
 export * from './Tooltip/Tooltip';
 // Progress Bar
 export * from './ProgressBar/ProgressBar';
+// Modal
+export * from './Modal/DisplayImagesModal';
