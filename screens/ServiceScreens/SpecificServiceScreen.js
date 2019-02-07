@@ -76,7 +76,8 @@ class SpecificServiceScreen extends Component {
 		transparentHeader: true,
 		descriptionLength: 100,
 		providerDescriptionLength: 100,
-		showTooltip: false
+		showTooltip: false,
+		showTitle: false
 	};
 
 	componentWillMount = async () => {
@@ -118,10 +119,16 @@ class SpecificServiceScreen extends Component {
 	}
 
 	handleScroll = (event) => {
+		console.log(event.nativeEvent.contentOffset.y);
 		if (event.nativeEvent.contentOffset.y > 200) {
 			this.setState({ transparentHeader: false });
 		} else {
 			this.setState({ transparentHeader: true });
+		}
+		if (event.nativeEvent.contentOffset.y > 260) {
+			this.setState({ showTitle: true });
+		} else {
+			this.setState({ showTitle: false });
 		}
 	};
 
@@ -566,7 +573,7 @@ class SpecificServiceScreen extends Component {
 						color: this.state.transparentHeader
 							? colors.white
 							: colors.black,
-						marginRight: 10
+						marginRight: 5
 					}}
 					size={26}
 					onPress={() => this.reportAlert()}
@@ -684,6 +691,8 @@ class SpecificServiceScreen extends Component {
 					left={this.headerLeftIcon()}
 					right={this.headerRightIcon()}
 					transparent={this.state.transparentHeader}
+					title={service.title}
+					showTitle={this.state.showTitle}
 				/>
 				<ScrollView
 					style={contentStyle}
@@ -861,7 +870,7 @@ class SpecificServiceScreen extends Component {
 								</Button>
 							) : null}
 						</View>
-						
+
 						<View style={divideLine} />
 						{/* Location */}
 						<Text style={titleStyle}>Location</Text>

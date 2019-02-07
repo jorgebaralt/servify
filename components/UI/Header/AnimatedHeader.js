@@ -4,13 +4,22 @@ import {
 	Text,
 	TouchableOpacity,
 	Dimensions,
-	Platform
+	Animated
 } from 'react-native';
 import { colors } from '../../../shared/styles';
 
 const { height, width } = Dimensions.get('window');
 
 class AnimatedHeader extends Component {
+	state = { opacity: new Animated.Value(0) };
+
+	componentDidUpdate() {
+		Animated.timing(this.state.opacity, {
+			toValue: this.props.showTitle ? 1 : 0,
+			duration: 10
+		}).start();
+	}
+
 	render() {
 		const { ...props } = this.props;
 
@@ -30,24 +39,23 @@ class AnimatedHeader extends Component {
 			left: 0,
 			right: 0
 		};
-
 		return (
 			<View style={defaultStyle}>
 				<View style={{ marginTop: 30 }}>
-					<Text
+					<Animated.Text
 						style={{
 							textAlign: 'center',
-							fontSize: 20,
+							fontSize: 18,
 							fontWeight: 'bold',
 							color: props.titleColor
 								? props.titleColor
 								: colors.black,
 							marginTop: 5,
-							opacity: props.transparent ? 0 : 1
+							opacity: this.state.opacity
 						}}
 					>
 						{props.title ? props.title : null}
-					</Text>
+					</Animated.Text>
 					<TouchableOpacity
 						style={{
 							position: 'absolute',
