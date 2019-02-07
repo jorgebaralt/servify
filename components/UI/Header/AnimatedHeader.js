@@ -16,7 +16,7 @@ class AnimatedHeader extends Component {
 	componentDidUpdate() {
 		Animated.timing(this.state.opacity, {
 			toValue: this.props.showTitle ? 1 : 0,
-			duration: 10
+			duration: 1
 		}).start();
 	}
 

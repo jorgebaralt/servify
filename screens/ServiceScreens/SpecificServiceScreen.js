@@ -111,6 +111,18 @@ class SpecificServiceScreen extends Component {
 
 	componentDidMount() {
 		pageHit('Specific Service Screen');
+		setTimeout(
+			() => this.titleRef.measure((fx, fy, width, height, px, py) => {
+					this.titleY = py;
+				}),
+			40
+		);
+		setTimeout(
+			() => this.viewRef.measure((fx, fy, width, height, px, py) => {
+					this.viewY = py;
+				}),
+			40
+		);
 	}
 
 	async componentWillUnmount() {
@@ -119,16 +131,16 @@ class SpecificServiceScreen extends Component {
 	}
 
 	handleScroll = (event) => {
-		console.log(event.nativeEvent.contentOffset.y);
-		if (event.nativeEvent.contentOffset.y > 200) {
-			this.setState({ transparentHeader: false });
-		} else {
-			this.setState({ transparentHeader: true });
-		}
-		if (event.nativeEvent.contentOffset.y > 260) {
+		if (event.nativeEvent.contentOffset.y + 70 > this.titleY) {
 			this.setState({ showTitle: true });
 		} else {
 			this.setState({ showTitle: false });
+		}
+
+		if (event.nativeEvent.contentOffset.y + 70 > this.viewY) {
+			this.setState({ transparentHeader: false });
+		} else {
+			this.setState({ transparentHeader: true });
 		}
 	};
 
@@ -636,7 +648,7 @@ class SpecificServiceScreen extends Component {
 	renderHeaderImages = (imagesInfo, i) => (
 		<FadeImage
 			uri={imagesInfo.url}
-			style={{ height: 300, width: WIDTH }}
+			style={{ height: 450, width: WIDTH }}
 			showDots={imagesInfo.url}
 			currentDot={i}
 			dotCount={
@@ -691,7 +703,11 @@ class SpecificServiceScreen extends Component {
 					left={this.headerLeftIcon()}
 					right={this.headerRightIcon()}
 					transparent={this.state.transparentHeader}
-					title={service.title}
+					title={
+						service.title.length > 19
+							? service.title.substring(0, 19) + '..'
+							: service.title
+					}
 					showTitle={this.state.showTitle}
 				/>
 				<ScrollView
@@ -711,6 +727,9 @@ class SpecificServiceScreen extends Component {
 						pagingEnabled
 					/>
 					<View
+						ref={(viewRef) => {
+							this.viewRef = viewRef;
+						}}
 						style={{
 							paddingLeft: 20,
 							paddingRight: 20,
@@ -718,7 +737,14 @@ class SpecificServiceScreen extends Component {
 						}}
 					>
 						{/* Service info */}
-						<Text style={titleStyle}>{service.title}</Text>
+						<Text
+							ref={(titleRef) => {
+								this.titleRef = titleRef;
+							}}
+							style={titleStyle}
+						>
+							{service.title}
+						</Text>
 						<View style={rowStyle}>
 							<Category
 								height={18}
