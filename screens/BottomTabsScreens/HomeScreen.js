@@ -32,7 +32,8 @@ let backPressSubscriptions;
 let willFocusSubscription;
 let didFocusSubscription;
 
-const DISTANCE = 30;
+// TODO: change when we get enough services
+const DISTANCE = 3000;
 const WIDTH = Dimensions.get('window').width;
 
 class HomeScreen extends Component {
