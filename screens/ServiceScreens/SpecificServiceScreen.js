@@ -651,7 +651,7 @@ class SpecificServiceScreen extends Component {
 		<FadeImage
 			onPress={() => this.setState({ imageModalVisible: true })}
 			uri={imagesInfo.url}
-			style={{ height: 350, width: WIDTH }}
+			style={{ height: 400, width: WIDTH }}
 			showDots={imagesInfo.url}
 			currentDot={i}
 			dotCount={
