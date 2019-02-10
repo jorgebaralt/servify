@@ -235,11 +235,15 @@ class EditServiceScreen extends Component {
 		Keyboard.dismiss();
 		this.setState({ loading: true });
 		// according to order, assign position number, to push images in order
-		this.fixPositions();
-		// Delete images from db
-		await this.deleteImages();
-		// Upload new images
-		await updateImages(this.state.imageArray, (imageArray) => this.setState({ imageArray }));
+		// TODO: crash here
+		if (this.state.imageArray) {
+			this.fixPositions();
+			// Delete images from db
+			await this.deleteImages();
+			// Upload new images
+			await updateImages(this.state.imageArray, (imageArray) => this.setState({ imageArray }));
+		}
+
 		let geolocation;
 		let locationData;
 		if (this.state.locationChange) {
@@ -263,7 +267,7 @@ class EditServiceScreen extends Component {
 			description: this.state.description,
 			providerDescription: this.state.providerDescription,
 			contactEmail: this.state.contactEmail,
-			imagesInfo: this.state.imageArray.length > 0 ? this.state.imageArray : null,
+			imagesInfo: this.state.imageArray ? this.state.imageArray : null,
 			geolocation: this.state.locationChange
 				? geolocation
 				: this.state.service.geolocation,
