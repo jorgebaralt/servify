@@ -587,7 +587,7 @@ class EditServiceScreen extends Component {
 							onChangeText={(contactEmail) => this.setState({ contactEmail })
 							}
 							style={{ marginTop: 20 }}
-							maxLength={16}
+							maxLength={35}
 							autoCapitalize="none"
 						/>
 
