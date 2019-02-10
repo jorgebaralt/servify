@@ -53,7 +53,7 @@ const ServiceInformation = (props) => (
 			fontColor={colors.black}
 			onChangeText={(text) => props.contactEmailChange(text)}
 			style={{ marginTop: 30 }}
-			maxLength={25}
+			maxLength={35}
 			autoCapitalize="none"
 		/>
 
