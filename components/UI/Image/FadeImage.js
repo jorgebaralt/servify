@@ -89,7 +89,7 @@ const styles = {
 		top: 10,
 		height: 10,
 		width: 10,
-		backgroundColor: colors.white,
+		backgroundColor: colors.secondaryColor,
 		borderRadius: 100 / 2,
 		margin: 10
 	}
