@@ -73,6 +73,7 @@ class EditServiceScreen extends Component {
 		this.setState((prevState) => ({
 			title: prevState.service.title,
 			contactEmail: prevState.service.contactEmail,
+			website: prevState.service.website ? prevState.service.website : '',
 			description: prevState.service.description,
 			providerDescription: prevState.service.providerDescription,
 			phone: prevState.service.phone,
@@ -267,6 +268,7 @@ class EditServiceScreen extends Component {
 			description: this.state.description,
 			providerDescription: this.state.providerDescription,
 			contactEmail: this.state.contactEmail,
+			website: this.state.website !== '' ? this.state.website : null,
 			imagesInfo: this.state.imageArray ? this.state.imageArray : null,
 			geolocation: this.state.locationChange
 				? geolocation
@@ -578,6 +580,7 @@ class EditServiceScreen extends Component {
 							onChangeText={(providerDescription) => this.setState({ providerDescription })
 							}
 						/>
+						{/* contact email */}
 						<FloatingLabelInput
 							value={this.state.contactEmail}
 							label="Contact Email"
@@ -590,7 +593,20 @@ class EditServiceScreen extends Component {
 							maxLength={35}
 							autoCapitalize="none"
 						/>
-
+						{/* website */}
+						<FloatingLabelInput
+							value={this.state.website}
+							label="website"
+							firstColor={colors.darkGray}
+							secondColor={colors.secondaryColor}
+							fontColor={colors.black}
+							onChangeText={(website) => this.setState({ website })
+							}
+							style={{ marginTop: 20 }}
+							maxLength={50}
+							autoCapitalize="none"
+						/>
+						{/* phone */}
 						<FloatingLabelInput
 							value={this.state.phone}
 							label="Contact phone"
