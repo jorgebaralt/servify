@@ -50,7 +50,6 @@ import {
 import DollarRating from '../../components/Ratings/DollarRating';
 import { defaultImage } from '../../assets/default/categories';
 
-const maxCharCount = 100;
 
 const WIDTH = Dimensions.get('window').width;
 
@@ -67,7 +66,6 @@ class SpecificServiceScreen extends Component {
 		isFav: false,
 		favLoading: false,
 		comment: '',
-		commentCharCount: maxCharCount,
 		starCount: 0,
 		dollarCount: 0,
 		loadingUserComment: false,
@@ -221,7 +219,6 @@ class SpecificServiceScreen extends Component {
 	commentChangeText = (text) => {
 		this.setState({
 			comment: text,
-			commentCharCount: maxCharCount - text.length
 		});
 	};
 
@@ -410,15 +407,6 @@ class SpecificServiceScreen extends Component {
 								}
 								style={{ marginTop: 10 }}
 							/>
-							<Text
-								style={{
-									color: colors.darkGray,
-									fontSize: 14,
-									alignSelf: 'flex-end'
-								}}
-							>
-								{this.state.commentCharCount}
-							</Text>
 							<Button
 								bordered
 								onPress={() => this.submitReview()}
