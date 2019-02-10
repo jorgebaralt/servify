@@ -24,7 +24,6 @@ class HomeServiceCard extends Component {
 
 		return (
 			<View style={{ marginTop: 5 }}>
-				<Text style={displayNameStyle}>{service.displayName}</Text>
 				{/* Show rating */}
 				{this.props.showRating ? (
 					<View style={{ flexDirection: 'row' }}>
@@ -77,12 +76,13 @@ class HomeServiceCard extends Component {
 const styles = {
 	cardStyle: {
 		width: (WIDTH - 15) * 0.4,
-		height: 175,
 		marginLeft: 20,
 		marginTop: 20,
 		borderRadius: 8,
 		overflow: 'hidden',
-		marginBottom: 10
+		marginBottom: 10,
+		borderWidth: 0.5,
+		borderColor: colors.lightGray
 	},
 	titleStyleCard: {
 		fontSize: 12,
@@ -99,7 +99,7 @@ const styles = {
 		borderWidth: 0.5,
 		borderBottomStartRadius: 8,
 		borderBottomEndRadius: 8,
-		borderTopWidth: 0,
+		// borderTopWidth: 0,
 		padding: 5,
 		borderColor: colors.lightGray
 	},

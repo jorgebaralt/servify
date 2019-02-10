@@ -131,40 +131,47 @@ class ProfileScreen extends Component {
 		);
 	};
 
-	leftHeader = () => (
-		<TouchableOpacity
-			style={{ flexDirection: 'row' }}
-			onPress={() => {
-				if (this.props.user.provider === (null || 'password')) {
-					this.props.navigation.navigate('editUser');
-				}
-			}}
-		>
-			{/* if there is image, show it */}
-			{this.props.user.imageInfo || this.props.user.photoURL ? (
-				<FadeImage
-					circle
-					style={{
-						height: 30,
-						width: 30
-					}}
-					uri={
-						this.props.user.photoURL
-							? this.props.user.photoURL
-							: this.props.user.imageInfo
-							? this.props.user.imageInfo.url
-							: null
+	leftHeader = () => {
+		const { user, navigation } = this.props;
+		return (
+			<TouchableOpacity
+				style={{ flexDirection: 'row' }}
+				onPress={() => {
+					if (user.provider === (null || 'password')) {
+						navigation.navigate('editUser');
 					}
-				/>
-			) : (
-				<View />
-			)}
+				}}
+			>
+				{/* if there is image, show it */}
+				{user.imageInfo || user.photoURL ? (
+					<FadeImage
+						circle
+						style={{
+							height: 30,
+							width: 30
+						}}
+						uri={
+							user.photoURL
+								? user.photoURL
+								: user.imageInfo
+								? user.imageInfo.url
+								: null
+						}
+					/>
+				) : (
+					<View />
+				)}
 
-			<Text style={{ fontWeight: '600', fontSize: 22, marginLeft: 5 }}>
-				{this.props.user.displayName}
-			</Text>
-		</TouchableOpacity>
-	);
+				<Text
+					style={{ fontWeight: '600', fontSize: 22, marginLeft: 5 }}
+				>
+					{user.displayName.length > 18
+						? user.displayName.substring(0, 18)
+						: user.displayName}
+				</Text>
+			</TouchableOpacity>
+		);
+	};
 
 	rightHeader = () => (
 		<Entypo
