@@ -96,10 +96,7 @@ const styles = {
 		display: 'flex',
 		alignItems: 'flex-start',
 		overflow: 'hidden',
-		borderWidth: 0.5,
-		borderBottomStartRadius: 8,
-		borderBottomEndRadius: 8,
-		// borderTopWidth: 0,
+		borderTopWidth: 0.5,
 		padding: 5,
 		borderColor: colors.lightGray
 	},
