@@ -21,9 +21,6 @@ export const DetailedServiceCard = (props) => {
 					<Text style={[styles.titleStyle, { color: props.color }]}>
 						{service.title}
 					</Text>
-					<Text style={{ marginTop: 5, fontSize: 12 }}>
-						{service.displayName}
-					</Text>
 					<View style={{ flexDirection: 'row' }}>
 						<StarsRating size={10} rating={service.rating} />
 						<Text style={{ color: colors.darkGray, fontSize: 10 }}>

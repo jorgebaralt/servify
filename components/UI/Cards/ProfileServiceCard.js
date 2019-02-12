@@ -15,8 +15,8 @@ import { colors } from '../../../shared/styles';
 const HEIGHT = Dimensions.get('window').height;
 
 class ProfileServiceCard extends Component {
-	state = { favoriteIcon: 'favorite' }
-	
+	state = { favoriteIcon: 'favorite' };
+
 	componentWillUpdate() {
 		LayoutAnimation.easeInEaseOut();
 	}
@@ -24,40 +24,48 @@ class ProfileServiceCard extends Component {
 	favAlert = () => {
 		this.setState({ favoriteIcon: 'favorite-border' });
 		const { service } = this.props;
-		Alert.alert('Remove Favorite', `Do you want to remove "${service.title}" from favorite?`, [
-			{
-				text: 'Remove',
-				style: 'destructive',
-				onPress: this.props.onRemoveFavorite
-			},
-			{
-				text: 'Cancel',
-				style: 'cancel',
-				onPress: () => this.setState({ favoriteIcon: 'favorite' })
-			}
-		]);
+		Alert.alert(
+			'Remove Favorite',
+			`Do you want to remove "${service.title}" from favorite?`,
+			[
+				{
+					text: 'Remove',
+					style: 'destructive',
+					onPress: this.props.onRemoveFavorite
+				},
+				{
+					text: 'Cancel',
+					style: 'cancel',
+					onPress: () => this.setState({ favoriteIcon: 'favorite' })
+				}
+			]
+		);
 	};
 
 	editAlert = () => {
 		const { service } = this.props;
-		Alert.alert('Edit Service', `Do you want to edit "${service.title}" ?`, [
-			{
-				text: 'Edit',
-				style: 'cancel',
-				onPress: this.props.onEditService
-			},
-			{
-				text: 'Cancel',
-				style: 'default'
-			}
-		]);
-	}
+		Alert.alert(
+			'Edit Service',
+			`Do you want to edit "${service.title}" ?`,
+			[
+				{
+					text: 'Edit',
+					style: 'cancel',
+					onPress: this.props.onEditService
+				},
+				{
+					text: 'Cancel',
+					style: 'default'
+				}
+			]
+		);
+	};
 
 	render() {
 		const { service, ...props } = this.props;
 		return (
 			<TouchableOpacity
-				style={{ marginTop: 20,marginBottom: 20, overflow: 'hidden' }}
+				style={{ marginTop: 20, marginBottom: 20, overflow: 'hidden' }}
 				onPress={props.onPress}
 			>
 				<FadeImage
@@ -103,13 +111,12 @@ class ProfileServiceCard extends Component {
 						rating={service.rating}
 						style={{ marginTop: 1, color: colors.secondaryColor }}
 					/>
-					<Text style={{ fontSize: 12 }}>
-						{service.rating.toFixed(1)} - {service.displayName}{' '}
-					</Text>
-				</View>
-				<View>
 					<Text
-						style={{ fontSize: 12, color: colors.secondaryColor }}
+						style={{
+							fontSize: 12,
+							color: colors.secondaryColor,
+							marginLeft: 10
+						}}
 					>
 						{service.locationData.city},{' '}
 						{service.locationData.region}
