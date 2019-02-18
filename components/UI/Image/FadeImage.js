@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Animated, View, TouchableHighlight } from 'react-native';
-import { colors } from '../../../shared/styles';
 
 class FadeImage extends Component {
 	state = { fadeAnimation: new Animated.Value(0) };
@@ -48,24 +47,5 @@ class FadeImage extends Component {
 		);
 	}
 }
-
-const styles = {
-	defaultDot: {
-		top: 10,
-		height: 10,
-		width: 10,
-		backgroundColor: colors.black,
-		borderRadius: 100 / 2,
-		margin: 10
-	},
-	currentDot: {
-		top: 10,
-		height: 10,
-		width: 10,
-		backgroundColor: colors.secondaryColor,
-		borderRadius: 100 / 2,
-		margin: 10
-	}
-};
 
 export { FadeImage };
