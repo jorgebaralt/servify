@@ -11,7 +11,7 @@ import {
 	Dimensions,
 	TouchableOpacity
 } from 'react-native';
-import { Ionicons, Entypo, MaterialIcons, Feather } from '@expo/vector-icons';
+import { Ionicons, Entypo, MaterialIcons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { MapView, Linking } from 'expo';
 import {
@@ -50,7 +50,6 @@ import {
 import DollarRating from '../../components/Ratings/DollarRating';
 import { defaultImage } from '../../assets/default/categories';
 
-
 const WIDTH = Dimensions.get('window').width;
 
 let willFocusSubscription;
@@ -59,7 +58,7 @@ let backPressSubscriptions;
 class SpecificServiceScreen extends Component {
 	// disable gestures back
 	static navigationOptions = {
-		gesturesEnabled: false
+		// gesturesEnabled: false
 	};
 
 	state = {
@@ -77,7 +76,8 @@ class SpecificServiceScreen extends Component {
 		providerDescriptionLength: 100,
 		showTooltip: false,
 		showTitle: false,
-		imageModalVisible: false
+		imageModalVisible: false,
+		headerImagePosition: 0
 	};
 
 	componentWillMount = async () => {
@@ -111,6 +111,7 @@ class SpecificServiceScreen extends Component {
 
 	componentDidMount() {
 		pageHit('Specific Service Screen');
+		// wait a litlte before implementing this functions
 		setTimeout(
 			() => this.titleRef.measure((fx, fy, width, height, px, py) => {
 					this.titleY = py;
@@ -218,7 +219,7 @@ class SpecificServiceScreen extends Component {
 
 	commentChangeText = (text) => {
 		this.setState({
-			comment: text,
+			comment: text
 		});
 	};
 
@@ -671,6 +672,47 @@ class SpecificServiceScreen extends Component {
 		);
 	};
 
+	headerImageScroll = (event) => {
+		const xPos = event.nativeEvent.contentOffset.x;
+		if (xPos < WIDTH) {
+			this.setState({ headerImagePosition: 0 });
+		} else if (xPos < WIDTH * 2) {
+			this.setState({ headerImagePosition: 1 });
+		} else if (xPos < WIDTH * 3) {
+			this.setState({ headerImagePosition: 2 });
+		} else if (xPos < WIDTH * 4) {
+			this.setState({ headerImagePosition: 3 });
+		} else if (xPos < WIDTH * 5) {
+			this.setState({ headerImagePosition: 4 });
+		}
+	};
+
+	renderDots = (imageData) => {
+		const dots = [];
+		for (let i = 0; i < imageData.length; i++) {
+			if (i === this.state.headerImagePosition) {
+				dots.push(<View key={i} style={styles.currentDot} />);
+			} else {
+				dots.push(<View key={i} style={styles.defaultDot} />);
+			}
+		}
+		return (
+			<View
+				style={{
+					flexDirection: 'row',
+					position: 'absolute',
+					bottom: 20,
+					left: 0,
+					right: 0,
+					justifyContent: 'center',
+					alignItems: 'center'
+				}}
+			>
+				{dots}
+			</View>
+		);
+	};
+
 	render() {
 		const { service } = this.state;
 		const {
@@ -731,14 +773,23 @@ class SpecificServiceScreen extends Component {
 					scrollEventThrottle={10}
 				>
 					{/* Header Images */}
-					<FlatList
-						horizontal
-						data={imageData}
-						renderItem={({ item, index }) => this.renderHeaderImages(item, index)
-						}
-						keyExtractor={(item) => item.fileName}
-						pagingEnabled
-					/>
+					<View style={{ backgroundColor: colors.darkGray }}>
+						<FlatList
+							ref={(flatlist) => {
+								this.flatlist = flatlist;
+							}}
+							horizontal
+							data={imageData}
+							renderItem={({ item, index }) => this.renderHeaderImages(item, index)
+							}
+							keyExtractor={(item) => item.fileName}
+							pagingEnabled
+							onScroll={(event) => this.headerImageScroll(event)}
+							scrollEventThrottle={10}
+						/>
+						{this.renderDots(imageData)}
+					</View>
+
 					<View
 						ref={(viewRef) => {
 							this.viewRef = viewRef;
@@ -994,6 +1045,22 @@ const styles = {
 	showMoreStyle: {
 		color: '#03A9F4',
 		fontSize: 15
+	},
+	defaultDot: {
+		top: 10,
+		height: 10,
+		width: 10,
+		backgroundColor: colors.black,
+		borderRadius: 100 / 2,
+		margin: 10
+	},
+	currentDot: {
+		top: 10,
+		height: 10,
+		width: 10,
+		backgroundColor: colors.secondaryColor,
+		borderRadius: 100 / 2,
+		margin: 10
 	}
 };
 

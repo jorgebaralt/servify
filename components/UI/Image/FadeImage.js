@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Animated, View, TouchableOpacity } from 'react-native';
+import { Animated, View, TouchableHighlight } from 'react-native';
 import { colors } from '../../../shared/styles';
 
 class FadeImage extends Component {
@@ -12,34 +12,6 @@ class FadeImage extends Component {
 		}).start();
 	};
 
-	renderDots = () => {
-		if (this.props.showDots) {
-			const dots = [];
-			for (let i = 0; i < this.props.dotCount; i++) {
-				if (i === this.props.currentDot) {
-					dots.push(<View key={i} style={styles.currentDot} />);
-				} else {
-					dots.push(<View key={i} style={styles.defaultDot} />);
-				}
-			}
-			return (
-				<View
-					style={{
-						flexDirection: 'row',
-						position: 'absolute',
-						bottom: 20,
-						left: 0,
-						right: 0,
-						justifyContent: 'center',
-						alignItems: 'center'
-					}}
-				>
-					{dots}
-				</View>
-			);
-		}
-	};
-
 	render() {
 		const { width, height } = this.props.style;
 		const imageContainerStyle = {
@@ -50,28 +22,29 @@ class FadeImage extends Component {
 			borderRadius: this.props.circle ? width / 2 : null
 		};
 		return (
-			<TouchableOpacity
+			<TouchableHighlight
 				disabled={!this.props.onPress}
 				onPress={this.props.onPress}
 				style={[imageContainerStyle, this.props.style]}
 			>
-				<Animated.Image
-					source={
-						this.props.uri
-							? { uri: this.props.uri }
-							: this.props.image
-					}
-					style={{
-						width: 'auto',
-						height: '100%',
-						opacity: this.state.fadeAnimation,
-						borderRadius: this.props.circle ? width / 2 : null
-					}}
-					onLoad={this.onLoad}
-					resizeMode="cover"
-				/>
-				{this.renderDots()}
-			</TouchableOpacity>
+				<View>
+					<Animated.Image
+						source={
+							this.props.uri
+								? { uri: this.props.uri }
+								: this.props.image
+						}
+						style={{
+							width: 'auto',
+							height: '100%',
+							opacity: this.state.fadeAnimation,
+							borderRadius: this.props.circle ? width / 2 : null
+						}}
+						onLoad={this.onLoad}
+						resizeMode="cover"
+					/>
+				</View>
+			</TouchableHighlight>
 		);
 	}
 }
