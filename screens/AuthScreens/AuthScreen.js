@@ -8,7 +8,7 @@ import {
 	Text,
 	ActivityIndicator
 } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo';
 import { facebookLogin, googleLogin } from '../../api/index';
 import { Button } from '../../components/UI';
@@ -102,9 +102,9 @@ class AuthScreen extends Component {
 					{this.renderSpinner()}
 					<View style={styles.buttonStyle}>
 						<Button
-							bordered
+							color="#DB4437"
 							onPress={this.loginWithGoogle}
-							style={{ fontSize: 18 }}
+							style={{ fontSize: 18, width: '100%' }}
 						>
 							<Text>
 								<MaterialCommunityIcons
@@ -122,20 +122,20 @@ class AuthScreen extends Component {
 					{/* log in with facebook */}
 					<View style={styles.buttonStyle}>
 						<Button
-							bordered
+							color="#4267B2"
 							onPress={this.loginWithFacebook}
-							style={{ fontSize: 18 }}
+							style={{ fontSize: 18, width: '100%' }}
 						>
 							<Text>
-								<MaterialCommunityIcons
+								<Ionicons
+									size={20}
 									style={{
 										color: 'white',
-										fontSize: 20,
 										marginRight: 10
 									}}
-									name="facebook-box"
+									name="logo-facebook"
 								/>{' '}
-								Log in with Facebook
+								Continue with Facebook
 							</Text>
 						</Button>
 					</View>
@@ -144,7 +144,7 @@ class AuthScreen extends Component {
 						<Button
 							bordered
 							title="Servify"
-							style={{ fontSize: 18 }}
+							style={{ fontSize: 18, width: '100%' }}
 							onPress={() => {
 								this.props.navigation.navigate('createAccount');
 							}}
@@ -197,7 +197,8 @@ const styles = {
 		alignItems: 'center'
 	},
 	buttonStyle: {
-		marginTop: 20
+		marginTop: 20,
+		width: '80%'
 	},
 	textStyle: {
 		fontSize: 16
