@@ -115,7 +115,7 @@ class AuthScreen extends Component {
 									}}
 									name="google"
 								/>{' '}
-								Log in with Google
+								Continue with Google
 							</Text>
 						</Button>
 					</View>
