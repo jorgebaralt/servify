@@ -2,7 +2,8 @@ import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import {
 	createBottomTabNavigator,
-	createStackNavigator
+	createStackNavigator,
+	createAppContainer
 } from 'react-navigation';
 import { Provider } from 'react-redux';
 import { createStore, compose, applyMiddleware } from 'redux';
@@ -87,7 +88,7 @@ export default class App extends React.Component {
 				main: { screen: Main }
 			},
 			{
-				navigationOptions: {
+				defaultNavigationOptions: {
 					tabBarVisible: false
 				}
 			}
@@ -96,7 +97,7 @@ export default class App extends React.Component {
 		// ROOT NAVIGATION
 		const RootNavigation = createStackNavigator(
 			{
-				initial: WelcomeNavigator,
+				screen: WelcomeNavigator,
 				settings: { screen: SettingsScreen },
 				servicesList: { screen: ServicesListScreen },
 				subcategories: { screen: SubcategoriesListScreen },
@@ -121,6 +122,8 @@ export default class App extends React.Component {
 			}
 		);
 
+		const Root = createAppContainer(RootNavigation);
+
 		return (
 			<Provider store={store}>
 				<View
@@ -134,7 +137,7 @@ export default class App extends React.Component {
 						}
 					]}
 				>
-					<RootNavigation />
+					<Root />
 					<Toast type="warning" message="Welcome back" />
 				</View>
 			</Provider>
