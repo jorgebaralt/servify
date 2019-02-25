@@ -673,7 +673,7 @@ class SpecificServiceScreen extends Component {
 	};
 
 	headerImageScroll = (event) => {
-		const xPos = event.nativeEvent.contentOffset.x;
+		const xPos = event.nativeEvent.contentOffset.x + 40;
 		if (xPos < WIDTH) {
 			this.setState({ headerImagePosition: 0 });
 		} else if (xPos < WIDTH * 2) {
