@@ -85,7 +85,7 @@ const styles = {
 		borderColor: colors.lightGray
 	},
 	titleStyleCard: {
-		fontSize: 12,
+		fontSize: 11,
 		fontWeight: '600'
 	},
 	headerTitleStyle: {
