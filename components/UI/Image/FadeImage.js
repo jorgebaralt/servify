@@ -5,6 +5,7 @@ class FadeImage extends Component {
 	state = { fadeAnimation: new Animated.Value(0) };
 
 	onLoad = () => {
+		// on load start animation
 		Animated.timing(this.state.fadeAnimation, {
 			toValue: 1,
 			duration: 400

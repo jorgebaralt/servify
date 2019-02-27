@@ -30,7 +30,7 @@ export class FloatingLabelInput extends Component {
 
 	handleBlur = () => {
 		this.setState({ isFocused: false });
-				// if there is anything else that needs to be done onBlur (coming from props)
+		// if there is anything else that needs to be done onBlur (coming from props)
 		if (this.props.onBlur) {
 			this.props.onBlur();
 		}
@@ -57,16 +57,7 @@ export class FloatingLabelInput extends Component {
 			})
 		};
 
-		// Animate border bottom
-		const borderBottomAnimation = {
-			height: 1.5,
-			backgroundColor: this.props.secondColor,
-			// alignSelf: 'center',
-			width: this._animatedIsFocused.interpolate({
-				inputRange: [0, 1],
-				outputRange: ['0%', '100%']
-			})
-		};
+		// initial border bottom
 		const initialBorderBottom = {
 			alignSelf: 'flex-end',
 			height: this._animatedIsFocused.interpolate({
@@ -77,6 +68,17 @@ export class FloatingLabelInput extends Component {
 			width: this._animatedIsFocused.interpolate({
 				inputRange: [0, 1],
 				outputRange: ['100%', '0%']
+			})
+		};
+
+		// Animate border bottom
+		const borderBottomAnimation = {
+			height: 1.5,
+			backgroundColor: this.props.secondColor,
+			// alignSelf: 'center',
+			width: this._animatedIsFocused.interpolate({
+				inputRange: [0, 1],
+				outputRange: ['0%', '100%']
 			})
 		};
 
@@ -95,7 +97,7 @@ export class FloatingLabelInput extends Component {
 							color: props.fontColor
 								? props.fontColor
 								: props.firstColor
-                        }}
+						}}
 						onFocus={this.handleFocus}
 						onBlur={this.handleBlur}
 					/>

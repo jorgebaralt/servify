@@ -82,7 +82,12 @@ export const getNewNearServices = async (
 };
 
 // Get service by category
-export const getServicesCategory = async (category, userLocation, callback) => {
+export const getServicesCategory = async (
+	category,
+	userLocation,
+	sortBy,
+	callback
+) => {
 	try {
 		source = CancelToken.source();
 		let { data } = await axios.get(servicesURL, {
@@ -92,7 +97,7 @@ export const getServicesCategory = async (category, userLocation, callback) => {
 			cancelToken: source.token
 		});
 		// sort services
-		data = sortServices(data, 'Distance', userLocation);
+		data = sortServices(data, sortBy, userLocation);
 		callback(data);
 	} catch (e) {
 		console.log(e);
@@ -103,6 +108,7 @@ export const getServicesCategory = async (category, userLocation, callback) => {
 export const getServicesSubcategory = async (
 	subcategory,
 	userLocation,
+	sortBy,
 	callback
 ) => {
 	try {
@@ -114,7 +120,7 @@ export const getServicesSubcategory = async (
 			cancelToken: source.token
 		});
 		// sort services
-		data = sortServices(data, 'Distance', userLocation);
+		data = sortServices(data, sortBy, userLocation);
 		callback(data);
 	} catch (e) {
 		console.log(e);

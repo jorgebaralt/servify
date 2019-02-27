@@ -10,7 +10,6 @@ import {
 	ActionSheetIOS,
 	Platform,
 	ActivityIndicator,
-	ScrollView,
 	SafeAreaView
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
@@ -179,6 +178,7 @@ class ServicesListScreen extends Component {
 			await getServicesSubcategory(
 				subcategoryRef,
 				this.props.userLocation,
+				this.state.sortBy,
 				(data) => this.setState({
 						servicesList: data,
 						loading: false,
@@ -189,6 +189,7 @@ class ServicesListScreen extends Component {
 			await getServicesCategory(
 				categoryRef,
 				this.props.userLocation,
+				this.state.sortBy,
 				(data) => this.setState({
 						servicesList: data,
 						loading: false,
