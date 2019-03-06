@@ -8,6 +8,7 @@ export * from './Form/ListPicker';
 // Image
 export * from './Image/FadeImage';
 export * from './Image/InfoImage';
+export * from './Image/DraggableImage';
 // Cards
 export * from './Cards/HomeServiceCard';
 export * from './Cards/CategoryCard';

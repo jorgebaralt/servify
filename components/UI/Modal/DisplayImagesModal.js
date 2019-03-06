@@ -9,12 +9,16 @@ import {
 	FlatList,
 	TouchableOpacity
 } from 'react-native';
-import { FadeImage } from '..';
+import { FadeImage, DraggableImage } from '..';
 
 const WIDTH = Dimensions.get('window').width;
 
-const renderHeaderImages = (imagesInfo) => (
-	<FadeImage uri={imagesInfo.url} style={{ height: 350, width: WIDTH }} />
+const renderHeaderImages = (imagesInfo, props) => (
+	<DraggableImage
+		uri={imagesInfo.url}
+		style={{ height: 350, width: WIDTH }}
+		closeModal={() => props.closeImageModal()}
+	/>
 );
 
 export const DisplayImagesModal = (props) => (
@@ -49,7 +53,7 @@ export const DisplayImagesModal = (props) => (
 			<FlatList
 				horizontal
 				data={props.images}
-				renderItem={({ item }) => renderHeaderImages(item)}
+				renderItem={({ item }) => renderHeaderImages(item, props)}
 				keyExtractor={(item) => item.fileName}
 				pagingEnabled
 				contentContainerStyle={{
@@ -57,7 +61,7 @@ export const DisplayImagesModal = (props) => (
 					justifyContent: 'center',
 					alignItems: 'center'
 				}}
-				style={{ marginTop: 150, marginBottom: 150 }}
+				style={{ marginTop: 50 }}
 			/>
 		</View>
 	</Modal>
