@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import { Animated, PanResponder, View } from 'react-native';
+import { Animated, PanResponder } from 'react-native';
 import { FadeImage } from '..';
 
 class DraggableImage extends Component {
 	state = { position: new Animated.ValueXY() };
 
-	componentWillMount() {
+	async componentWillMount() {
 		this.panResponder = PanResponder.create({
 			onStartShouldSetPanResponder: () => true,
 			onPanResponderMove: (event, gesture) => {
-				// console.log(gesture);
 				this.setState((prevState) => {
 					const pos = prevState.position;
 					pos.setValue({
@@ -18,8 +17,17 @@ class DraggableImage extends Component {
 					});
 					return { position: pos };
 				});
+
+				if (gesture.dy > 60) {
+					this.props.onDragDown();
+				}
+
+				if (gesture.dy < 60) {
+					this.props.onDragUp();
+				}
 			},
 			onPanResponderRelease: (e, gesture) => {
+				this.props.onDragUp();
 				if (gesture.dy > 120) {
 					this.props.closeModal();
 				}
@@ -36,6 +44,7 @@ class DraggableImage extends Component {
 				if (gesture.dy > 120) {
 					this.props.closeModal();
 				}
+				this.props.onDragUp();
 				this.setState((prevState) => {
 					const pos = prevState.position;
 					pos.setValue({
