@@ -9,7 +9,7 @@ import {
 	ActivityIndicator
 } from 'react-native';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo';
+import { LinearGradient } from 'expo-linear-gradient';
 import { facebookLogin, googleLogin } from '../../api/index';
 import { Button } from '../../components/UI';
 import LogoBorderWhite from '../../assets/logoBorderWhite.png';
@@ -18,6 +18,7 @@ import { pageHit } from '../../shared/ga_helper';
 let backPressSubscriptions;
 let willFocusSubscription;
 let willBlurSubscriptions;
+
 class AuthScreen extends Component {
 	state = { loading: false };
 

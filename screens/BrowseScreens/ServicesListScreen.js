@@ -25,7 +25,6 @@ import {
 	sortServices
 } from '../../api';
 import { defaultImage } from '../../assets/default/categories';
-import {} from 'react-native-gesture-handler';
 
 let willFocusSubscription;
 let backPressSubscriptions;

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { LinearGradient, ImagePicker, Permissions } from 'expo';
+import { LinearGradient } from 'expo-linear-gradient';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 import {
 	View,
 	ScrollView,
@@ -9,7 +11,7 @@ import {
 	DeviceEventEmitter,
 	ActivityIndicator,
 	Text,
-	TouchableOpacity
+	TouchableOpacity,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
@@ -27,16 +29,13 @@ const initialState = {
 	password: '',
 	username: '',
 	loading: false,
-	imageInfo: null
+	imageInfo: null,
 };
 class CreateAccountScreen extends Component {
 	state = initialState;
 
 	componentWillMount() {
-		willFocusSubscription = this.props.navigation.addListener(
-			'willFocus',
-			this.handleAndroidBack
-		);
+		willFocusSubscription = this.props.navigation.addListener('willFocus', this.handleAndroidBack);
 	}
 
 	componentDidMount() {
@@ -61,7 +60,7 @@ class CreateAccountScreen extends Component {
 		DeviceEventEmitter.addListener('hardwareBackPress', () => {
 			const subscriptions = [];
 
-			backPressSubscriptions.forEach((sub) => subscriptions.push(sub));
+			backPressSubscriptions.forEach(sub => subscriptions.push(sub));
 			for (let i = 0; i < subscriptions.reverse().length; i += 1) {
 				if (subscriptions[i]()) {
 					break;
@@ -87,24 +86,20 @@ class CreateAccountScreen extends Component {
 			email,
 			password,
 			imageInfo,
-			username
+			username,
 		};
 		await createEmailAccount(user, (text, type) => this.showToast(text, type));
 	};
 
 	pickImage = async () => {
-		const { status: cameraPerm } = await Permissions.askAsync(
-			Permissions.CAMERA
-		);
+		const { status: cameraPerm } = await Permissions.askAsync(Permissions.CAMERA);
 
-		const { status: cameraRollPerm } = await Permissions.askAsync(
-			Permissions.CAMERA_ROLL
-		);
+		const { status: cameraRollPerm } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
 		if (cameraPerm === 'granted' && cameraRollPerm === 'granted') {
 			const result = await ImagePicker.launchImageLibraryAsync({
 				allowsEditing: true,
-				base64: true
+				base64: true,
 			});
 			if (!result.cancelled) {
 				const fileName = result.uri.split('/').pop();
@@ -116,8 +111,8 @@ class CreateAccountScreen extends Component {
 					imageInfo: {
 						image: result.uri,
 						fileName,
-						type
-					}
+						type,
+					},
 				});
 			}
 		}
@@ -129,13 +124,7 @@ class CreateAccountScreen extends Component {
 
 	renderSpinner() {
 		if (this.state.loading) {
-			return (
-				<ActivityIndicator
-					style={{ marginTop: 20 }}
-					size="large"
-					color={colors.white}
-				/>
-			);
+			return <ActivityIndicator style={{ marginTop: 20 }} size="large" color={colors.white} />;
 		}
 		return <View />;
 	}
@@ -144,15 +133,9 @@ class CreateAccountScreen extends Component {
 		const { backIconStyle, titleStyle } = styles;
 
 		return (
-			<LinearGradient
-				colors={['#FF7043', '#F4511E', '#BF360C']}
-				style={{ flex: 1 }}
-			>
+			<LinearGradient colors={['#FF7043', '#F4511E', '#BF360C']} style={{ flex: 1 }}>
 				<SafeAreaView style={{ flex: 1 }}>
-					<KeyboardAvoidingView
-						behavior="padding"
-						style={{ flex: 1 }}
-					>
+					<KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
 						<Ionicons
 							style={backIconStyle}
 							name="ios-arrow-back"
@@ -162,7 +145,7 @@ class CreateAccountScreen extends Component {
 							}}
 						/>
 						<ScrollView
-							ref={(scrollview) => {
+							ref={scrollview => {
 								this.scrollview = scrollview;
 							}}
 						>
@@ -170,13 +153,13 @@ class CreateAccountScreen extends Component {
 								style={{
 									flex: 1,
 									paddingLeft: 20,
-									paddingRight: 20
+									paddingRight: 20,
 								}}
 							>
 								<View
 									style={{
 										flexDirection: 'row',
-										justifyContent: 'space-between'
+										justifyContent: 'space-between',
 									}}
 								>
 									<Text style={titleStyle}>Sign up</Text>
@@ -186,7 +169,7 @@ class CreateAccountScreen extends Component {
 											style={{
 												height: 100,
 												width: 100,
-												borderRadius: 50
+												borderRadius: 50,
 											}}
 											uri={this.state.imageInfo.image}
 										/>
@@ -197,8 +180,7 @@ class CreateAccountScreen extends Component {
 													height: 100,
 													width: 100,
 													borderRadius: 50,
-													backgroundColor:
-														colors.darkGray
+													backgroundColor: colors.darkGray,
 												}}
 												onPress={this.pickImage}
 											/>
@@ -206,7 +188,7 @@ class CreateAccountScreen extends Component {
 												style={{
 													fontSize: 12,
 													color: colors.white,
-													textAlign: 'center'
+													textAlign: 'center',
 												}}
 											>
 												Add profile image
@@ -219,7 +201,7 @@ class CreateAccountScreen extends Component {
 									label="Email"
 									firstColor={colors.white}
 									secondColor={colors.white}
-									onChangeText={(email) => {
+									onChangeText={email => {
 										this.setState({ email });
 									}}
 									style={{ marginTop: 20 }}
@@ -230,7 +212,7 @@ class CreateAccountScreen extends Component {
 									label="Username"
 									firstColor={colors.white}
 									secondColor={colors.white}
-									onChangeText={(username) => {
+									onChangeText={username => {
 										this.setState({ username });
 									}}
 									style={{ marginTop: 20 }}
@@ -241,18 +223,13 @@ class CreateAccountScreen extends Component {
 									label="Password"
 									firstColor={colors.white}
 									secondColor={colors.white}
-									onChangeText={(password) => {
+									onChangeText={password => {
 										this.setState({ password });
 									}}
 									style={{ marginTop: 20, marginBottom: 20 }}
 									secureTextEntry
 								/>
-								<Button
-									bordered
-									light
-									style={{ marginTop: 40 }}
-									onPress={this.createAccount}
-								>
+								<Button bordered light style={{ marginTop: 40 }} onPress={this.createAccount}>
 									<Text>Create Account</Text>
 								</Button>
 								{this.renderSpinner()}
@@ -270,14 +247,14 @@ const styles = {
 		color: 'white',
 		top: 10,
 		left: 5,
-		marginBottom: 10
+		marginBottom: 10,
 	},
 	titleStyle: {
 		color: 'white',
 		fontWeight: 'bold',
 		fontSize: 30,
-		marginTop: 40
-	}
+		marginTop: 40,
+	},
 };
 
 export default connect(

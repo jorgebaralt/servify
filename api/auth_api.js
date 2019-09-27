@@ -1,5 +1,8 @@
 import axios from 'axios';
-import { Facebook, Google } from 'expo';
+import * as Facebook from 'expo-facebook';
+import * as Google from 'expo-google-app-auth';
+import * as GoogleSignIn from 'expo-google-sign-in';
+
 import firebase from 'firebase';
 import {
 	FB_APP_ID,

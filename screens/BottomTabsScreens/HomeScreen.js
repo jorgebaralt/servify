@@ -14,7 +14,7 @@ import {
 	StatusBar
 } from 'react-native';
 import { connect } from 'react-redux';
-import { Permissions } from 'expo';
+import * as Permissions from 'expo-permissions';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {
 	Button,

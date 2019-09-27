@@ -4,7 +4,7 @@
     "description": "Easy way to find local services around your area, contact them, look at reviews, price, comments, and make your life easier.",
     "slug": "servify",
     "privacy": "public",
-    "sdkVersion": "32.0.0",
+    "sdkVersion": "35.0.0",
     "facebookScheme": "fb270665710375213",
     "facebookAppId": "270665710375213",
     "facebookDisplayName": "servify",

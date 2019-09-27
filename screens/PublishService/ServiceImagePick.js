@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { ScrollView, Text, View, StyleSheet, Platform } from 'react-native';
-import { ImagePicker, Permissions } from 'expo';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 import SortableList from 'react-native-sortable-list';
 import _ from 'lodash';
 import { Button, SortableRow } from '../../components/UI';

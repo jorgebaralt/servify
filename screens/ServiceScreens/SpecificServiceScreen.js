@@ -9,11 +9,12 @@ import {
 	Text,
 	ActivityIndicator,
 	Dimensions,
-	TouchableOpacity
+	TouchableOpacity,
+	Linking
 } from 'react-native';
 import { Ionicons, Entypo, MaterialIcons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
-import { MapView, Linking } from 'expo';
+import MapView from 'react-native-maps';
 import {
 	addFavorite,
 	removeFavorite,

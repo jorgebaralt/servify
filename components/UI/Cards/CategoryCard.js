@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { TouchableOpacity, LayoutAnimation, View, Text } from 'react-native';
-import { LinearGradient } from 'expo';
+import { LinearGradient } from 'expo-linear-gradient';
 
 class CategoryCard extends Component {
 	componentWillMount() {

@@ -7,7 +7,7 @@ import {
 	Dimensions
 } from 'react-native';
 import StarsRating from '../../Ratings/StarsRating';
-import { FadeImage } from '..';
+import { FadeImage } from '../Image/FadeImage';
 import { colors } from '../../../shared/styles';
 
 const WIDTH = Dimensions.get('window').width;

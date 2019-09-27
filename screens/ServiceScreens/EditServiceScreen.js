@@ -14,7 +14,9 @@ import {
 	Platform
 } from 'react-native';
 import SortableList from 'react-native-sortable-list';
-import { MapView, Permissions, ImagePicker } from 'expo';
+import MapView from 'react-native-maps';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import _ from 'lodash';
 import { connect } from 'react-redux';

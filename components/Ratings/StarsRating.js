@@ -31,8 +31,9 @@ const StarsRating = (props) => {
 			);
 		}
 	}
+	console.log('zzz stars:', stars);
 	// Render array of stars
-	return <View style={{ flexDirection: 'row' }}>{stars}</View>;
+	return <View style={{ flexDirection: 'row' }}></View>;
 };
 
 export default StarsRating;

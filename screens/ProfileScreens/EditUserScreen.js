@@ -9,7 +9,8 @@ import {
 	Dimensions,
 	TouchableOpacity
 } from 'react-native';
-import { Permissions, ImagePicker } from 'expo';
+import * as Permissions from 'expo-permissions';
+import * as ImagePicker from 'expo-image-picker';
 import { connect } from 'react-redux';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { updateCurrentUser } from '../../actions';

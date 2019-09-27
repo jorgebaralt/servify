@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { View, Animated, Text } from 'react-native';
-import { DangerZone } from 'expo';
 import { Button } from '../UI';
-
-const { Lottie } = DangerZone;
+import LottieView from "lottie-react-native";
 
 class EmptyListMessage extends Component {
 	state = { fadeAnimation: new Animated.Value(0) };
@@ -31,7 +29,7 @@ class EmptyListMessage extends Component {
 						alignSelf: 'center'
 					}}
 				>
-					<Lottie
+					<LottieView
 						ref={(animation) => {
 							this.animation = animation;
 						}}
