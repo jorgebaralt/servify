@@ -1,7 +1,5 @@
 import React from 'react';
-import { Svg } from 'react-native-svg';
-
-const { Path, Rect, ClipPath, Defs } = Svg;
+import Svg, { Path, Rect, ClipPath, Defs }from 'react-native-svg';
 
 const Star = (props) => (
 	<Svg

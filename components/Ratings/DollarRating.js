@@ -21,7 +21,7 @@ const DollarRating = (props) => {
 		}
 	}
 	// Render array of stars
-	return <View style={{ flexDirection: 'row' }}></View>;
+	return <View style={{ flexDirection: 'row' }}>{dollars}</View>;
 };
 
 export default DollarRating;

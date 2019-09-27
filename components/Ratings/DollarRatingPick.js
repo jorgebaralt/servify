@@ -27,7 +27,7 @@ const StarsRatingPick = (props) => {
 		}
 	}
 
-	return <View style={{ flexDirection: 'row' }}></View>;
+	return <View style={{ flexDirection: 'row' }}>{dollars}</View>;
 };
 
 export default StarsRatingPick;
