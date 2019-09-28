@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as Facebook from 'expo-facebook';
-// import * as Google from 'expo-google-app-auth';
-import * as GoogleSignIn from 'expo-google-sign-in';
+import * as Google from 'expo-google-app-auth';
+// import * as GoogleSignIn from 'expo-google-sign-in';
 
 import firebase from 'firebase';
 import {
@@ -16,14 +16,14 @@ const authURL = 'https://us-central1-servify-716c6.cloudfunctions.net/auth';
 // Google login
 export const googleLogin = async (callback) => {
 	try {
-		const result = await GoogleSignIn.initAsync({
-			// androidClientId: androidClientIdGoogle,
-			// iosClientId: iosClientIdGoogle,
-			// androidStandaloneAppClientId: androidClientIdGoogle,
-			// iosStandaloneAppClientId: iosClientIdGoogle,
-			// scopes: ['profile', 'email'],
-			// behavior: 'web'
-			clientId: iosClientIdGoogle
+		const result = await Google.logInAsync({
+			androidClientId: androidClientIdGoogle,
+			iosClientId: iosClientIdGoogle,
+			androidStandaloneAppClientId: androidClientIdGoogle,
+			iosStandaloneAppClientId: iosClientIdGoogle,
+			scopes: ['profile', 'email'],
+			behavior: 'web'
+			// clientId: '737506787644-vhmrpn1ejikv8mcstqmol81l26gnudev.apps.googleusercontent.com'
 		});
 
 		if (result.type === 'success') {
