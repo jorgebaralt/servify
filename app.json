@@ -42,6 +42,7 @@
     },
     "android": {
       "package": "com.jorgebaralt.servify",
+      "googleServicesFile": "./google-services.json",
       "versionCode": 9,
       "config": {
         "googleMaps": {
